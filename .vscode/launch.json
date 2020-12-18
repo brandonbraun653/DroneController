@@ -1,0 +1,17 @@
+{
+  "version":"0.2.0",
+  "configurations": [
+    {
+      "name": "Last Built Version (JLink)",
+      "cwd": "${workspaceRoot}",
+      "executable": "./build/artifacts/bin/last_build_version/sys_image",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "jlink",
+      "interface": "swd",
+      "device": "STM32L432KB",
+      "svdFile": "${workspaceRoot}/lib/CommonTools/svd/STM32L4x2.svd",
+      "armToolchainPath": "/home/braunbr/programs/gcc/gcc-arm-none-eabi-9-2020-q2-update/bin",
+    },
+  ]
+}
