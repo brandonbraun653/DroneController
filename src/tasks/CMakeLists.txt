@@ -7,7 +7,7 @@ set(LINK_LIBS
   aurora_inc        # Aurora public headers
   ulog_inc
   project_inc
-  aurora_build_options
+  prj_device_target
 )
 
 # ====================================================
