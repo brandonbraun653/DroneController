@@ -55,8 +55,9 @@ namespace DC::Tasks::MON
    */
   static TaskTiming s_timing_stats[] = {
     /* clang-format off */
-    { .id = TaskId::MONITOR,    .lower = 0, .upper = 0,   .exact = 0 },
-    { .id = TaskId::HEART_BEAT, .lower = 1, .upper = 12,  .exact = 0 }
+    { .id = TaskId::MONITOR,    .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
+    { .id = TaskId::HEART_BEAT, .lower = 1, .upper = 12,  .exact = 0 },
+    { .id = TaskId::GRAPHICS,   .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
     /* clang-format on */
   };
   static_assert( ARRAY_COUNT( s_timing_stats ) == static_cast<size_t>( TaskId::NUM_OPTIONS ) );

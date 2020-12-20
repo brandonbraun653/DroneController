@@ -1,3 +1,4 @@
+add_subdirectory(config/ugfx)
 add_subdirectory(tasks)
 
 # -----------------------------------------------------------------------------
@@ -22,6 +23,12 @@ target_link_libraries(DroneController PRIVATE
 
   # Project Libraries
   lib_tasks
+
+  # Graphics Libraries
+  ugfx_inc
+  ugfx_lib
+  ugfx_st7735_lib
+  ugfx_prj_config
 
   # Static Libraries
   aurora_core_rel

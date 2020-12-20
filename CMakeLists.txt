@@ -29,6 +29,7 @@ add_subdirectory("lib/CommonTools/cpputest")
 add_subdirectory("lib/CommonTools/googletest")
 add_subdirectory("lib/FreeRTOS")
 add_subdirectory("lib/Thor")
+add_subdirectory("lib/ugfx")
 
 # ====================================================
 # Project Exports
@@ -38,6 +39,18 @@ add_library(project_inc INTERFACE)
 target_compile_definitions(project_inc INTERFACE THOR_USER_CONFIG)
 target_include_directories(project_inc INTERFACE "${PROJECT_ROOT}" "${PROJECT_ROOT}/src/config")
 export(TARGETS project_inc FILE "${PROJECT_BINARY_DIR}/Project/project_inc.cmake")
+
+# uGFX Configuration file
+add_library(project_ugfx_inc INTERFACE)
+target_include_directories(project_ugfx_inc INTERFACE "${PROJECT_ROOT}/src/config/ugfx")
+target_link_libraries(project_ugfx_inc INTERFACE
+  freertos_inc
+  freertos_inc_legacy
+  freertos_cfg
+  freertos_port
+  ugfx_st7735_inc
+)
+export(TARGETS project_ugfx_inc FILE "${PROJECT_BINARY_DIR}/project/project_ugfx_inc.cmake")
 
 # ====================================================
 # Project Imports

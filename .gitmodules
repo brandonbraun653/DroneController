@@ -13,3 +13,6 @@
 [submodule "lib/FreeRTOS"]
 	path = lib/FreeRTOS
 	url = https://github.com/brandonbraun653/FreeRTOS.git
+[submodule "lib/ugfx"]
+	path = lib/ugfx
+	url = https://github.com/brandonbraun653/ugfx.git

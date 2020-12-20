@@ -1,0 +1,20 @@
+{
+  "files.associations": {
+    "algorithm": "cpp",
+    "strstream": "cpp",
+    "*.tcc": "cpp",
+    "bitset": "cpp",
+    "deque": "cpp",
+    "functional": "cpp",
+    "iterator": "cpp",
+    "memory": "cpp",
+    "numeric": "cpp",
+    "list": "cpp",
+    "map": "cpp",
+    "queue": "cpp",
+    "set": "cpp",
+    "stack": "cpp",
+    "utility": "cpp",
+    "vector": "cpp"
+  }
+}

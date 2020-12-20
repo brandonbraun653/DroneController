@@ -14,6 +14,7 @@
 
 /* Project Includes */
 #include <src/tasks/tsk_common.hpp>
+#include <src/tasks/tsk_graphics.hpp>
 #include <src/tasks/tsk_heartbeat.hpp>
 #include <src/tasks/tsk_monitor.hpp>
 
@@ -49,6 +50,13 @@ namespace DC::Tasks
     Thread watchdog;
     watchdog.initialize( MON::MonitorThread, nullptr, MON::PRIORITY, MON::STACK, MON::NAME.cbegin() );
     s_thread_id[ static_cast<size_t>( TaskId::MONITOR ) ] = watchdog.start();
+
+    /*-------------------------------------------------
+    System Thread: Graphics
+    -------------------------------------------------*/
+    Thread graphics;
+    graphics.initialize( GFX::GraphicsThread, nullptr, GFX::PRIORITY, GFX::STACK, GFX::NAME.cbegin() );
+    s_thread_id[ static_cast<size_t>( TaskId::GRAPHICS ) ] = graphics.start();
   }
 
 
