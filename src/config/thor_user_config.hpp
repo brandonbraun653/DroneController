@@ -27,6 +27,10 @@ High Level Driver Support
 #define THOR_HLD_GPIO
 #endif
 
+#ifndef THOR_HLD_SPI
+#define THOR_HLD_SPI
+#endif
+
 #ifndef THOR_HLD_SYSTEM
 #define THOR_HLD_SYSTEM
 #endif
@@ -60,6 +64,10 @@ Low Level Driver Support
 
 #ifndef THOR_LLD_RCC
 #define THOR_LLD_RCC
+#endif
+
+#ifndef THOR_LLD_SPI
+#define THOR_LLD_SPI
 #endif
 
 #ifndef THOR_LLD_SYSCFG

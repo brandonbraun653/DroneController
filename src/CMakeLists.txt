@@ -42,7 +42,7 @@ target_link_libraries(DroneController PRIVATE
   thor_cmn_cm4_rel
   thor_hld_core_rel
   thor_lld_intf_rel
-  thor_lld_stm32l4_rel
+  thor_lld_stm32l4_dbg
 
   # Target Properties
   prj_device_target

@@ -30,7 +30,7 @@ extern "C"
   void acquire_bus( GDisplay *g );
   void release_bus( GDisplay *g );
   void write_cmd( GDisplay *g, gU8 cmd );
-  void write_data( GDisplay *g, gU8 *data, gU16 length );
+  void write_data( GDisplay *g, gU16 data );
   void write_data_byte( GDisplay *g, gU8 data );
   void set_backlight( GDisplay *g, gU8 percent );
 #ifdef __cplusplus
