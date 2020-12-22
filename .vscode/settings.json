@@ -17,6 +17,7 @@
     "utility": "cpp",
     "vector": "cpp",
     "random": "cpp",
-    "cfg": "cpp"
+    "cfg": "cpp",
+    "watchdog": "cpp"
   }
 }
