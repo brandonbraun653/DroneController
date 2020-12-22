@@ -16,3 +16,6 @@
 [submodule "lib/ugfx"]
 	path = lib/ugfx
 	url = https://github.com/brandonbraun653/ugfx.git
+[submodule "lib/Ripple"]
+	path = lib/Ripple
+	url = https://github.com/brandonbraun653/Ripple.git
