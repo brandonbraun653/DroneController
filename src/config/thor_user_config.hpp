@@ -39,6 +39,10 @@ High Level Driver Support
 #define THOR_HLD_SYSTEM
 #endif
 
+#ifndef THOR_HLD_WWDG
+#define THOR_HLD_WWDG
+#endif
+
 /*----------------------------------------------
 Low Level Driver Support
 ----------------------------------------------*/
@@ -80,6 +84,10 @@ Low Level Driver Support
 
 #ifndef THOR_LLD_SYSCFG
 #define THOR_LLD_SYSCFG
+#endif
+
+#ifndef THOR_LLD_WWDG
+#define THOR_LLD_WWDG
 #endif
 
 #endif /* !DC_THOR_PERIPHERAL_CONFIGURATION_HPP */
