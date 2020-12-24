@@ -50,6 +50,10 @@ Low Level Driver Support
 #define THOR_LLD_ADC
 #endif
 
+#ifndef THOR_LLD_DES
+#define THOR_LLD_DES
+#endif
+
 #ifndef THOR_LLD_EXTI
 #define THOR_LLD_EXTI
 #endif

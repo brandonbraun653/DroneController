@@ -24,10 +24,10 @@ namespace DC::Tasks::MON
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr size_t QUEUE_SIZE       = 300; /**< Number of queue events to hold */
-  static constexpr size_t TSK_PERIOD       = 100; /**< How often the MON task should run in ms */
-  static constexpr size_t HW_WDG_TIMEOUT   = 500; /**< Max timeout before hardware reset */
-  static constexpr size_t HW_WDG_KICK_RATE = 150; /**< How often the hardware watchdog should be kicked */
+  static constexpr size_t QUEUE_SIZE       = 300;  /**< Number of queue events to hold */
+  static constexpr size_t TSK_PERIOD       = 100;  /**< How often the MON task should run in ms */
+  static constexpr size_t HW_WDG_TIMEOUT   = 1000; /**< Max timeout before hardware reset */
+  static constexpr size_t HW_WDG_KICK_RATE = 150;  /**< How often the hardware watchdog should be kicked */
 
   static constexpr Chimera::Watchdog::IChannel WDG_CHANNEL = Chimera::Watchdog::IChannel::WATCHDOG0;
 
@@ -69,7 +69,7 @@ namespace DC::Tasks::MON
   static TaskTiming s_timing_stats[] = {
     /* clang-format off */
     { .id = TaskId::MONITOR,    .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
-    { .id = TaskId::HEART_BEAT, .lower = 1, .upper = 12,  .exact = 0 },
+    { .id = TaskId::HEART_BEAT, .lower = 0, .upper = 12,  .exact = 0 },
     { .id = TaskId::GRAPHICS,   .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
     /* clang-format on */
   };
@@ -210,7 +210,7 @@ namespace DC::Tasks::MON
 
     /*-------------------------------------------------
     Start up system threads. Monitor thread is always
-    the first task, so don't bother sending there.
+    the first task, so don't bother sending msg there.
     -------------------------------------------------*/
     for ( auto x = 1; x < ARRAY_COUNT( s_timing_stats ); x++ )
     {

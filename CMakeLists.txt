@@ -36,9 +36,12 @@ add_subdirectory("lib/ugfx")
 # ====================================================
 # Public include location
 add_library(project_inc INTERFACE)
-target_compile_definitions(project_inc INTERFACE THOR_USER_CONFIG)
-target_include_directories(project_inc INTERFACE "${PROJECT_ROOT}" "${PROJECT_ROOT}/src/config")
+target_include_directories(project_inc INTERFACE "${PROJECT_ROOT}")
 export(TARGETS project_inc FILE "${PROJECT_BINARY_DIR}/Project/project_inc.cmake")
+
+# Adjust Thor build configuration to use this project's config
+target_compile_definitions(thor_project_config INTERFACE "THOR_USER_CONFIG")
+target_include_directories(thor_project_config INTERFACE "${PROJECT_ROOT}/src/config")
 
 # uGFX Configuration file
 add_library(project_ugfx_inc INTERFACE)

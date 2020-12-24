@@ -32,6 +32,7 @@
                 "THOR_USER_CONFIG",
                 "UNICODE",
                 "USING_FREERTOS_THREADS",
+                "DEBUG",
                 "_DEBUG",
                 "_UNICODE",
                 "__GNUC__"

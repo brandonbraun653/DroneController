@@ -33,15 +33,15 @@ target_link_libraries(DroneController PRIVATE
   # Static Libraries
   aurora_core_rel
   aurora_logging_rel
-  chimera_core_rel
+  chimera_core_dbg
   freertos_cfg
   freertos_core_rel
   freertos_heap
   freertos_port
   thor_cfg_freertos_rel
   thor_cmn_cm4_rel
-  thor_hld_core_rel
-  thor_lld_intf_rel
+  thor_hld_core_dbg
+  thor_lld_intf_dbg
   thor_lld_stm32l4_dbg
 
   # Target Properties
