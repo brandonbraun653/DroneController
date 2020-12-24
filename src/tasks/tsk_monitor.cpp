@@ -24,8 +24,20 @@ namespace DC::Tasks::MON
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr size_t QUEUE_SIZE = 300;  /**< Number of queue events to hold */
-  static constexpr size_t TSK_PERIOD = 1000; /**< How often the MON task should run in ms */
+  static constexpr size_t QUEUE_SIZE       = 300; /**< Number of queue events to hold */
+  static constexpr size_t TSK_PERIOD       = 100; /**< How often the MON task should run in ms */
+  static constexpr size_t HW_WDG_TIMEOUT   = 500; /**< Max timeout before hardware reset */
+  static constexpr size_t HW_WDG_KICK_RATE = 150; /**< How often the hardware watchdog should be kicked */
+
+  static constexpr Chimera::Watchdog::IChannel WDG_CHANNEL = Chimera::Watchdog::IChannel::WATCHDOG0;
+
+  /*-------------------------------------------------
+  Verify timing assumptions
+  -------------------------------------------------*/
+  static_assert( HW_WDG_TIMEOUT > ( 2 * TSK_PERIOD ) );
+  static_assert( HW_WDG_TIMEOUT > ( 2 * HW_WDG_KICK_RATE ) );
+  static_assert( HW_WDG_KICK_RATE > TSK_PERIOD );
+
 
   /*-------------------------------------------------------------------------------
   Structures
@@ -46,8 +58,9 @@ namespace DC::Tasks::MON
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
-  static TaskId s_queue_buffer[ QUEUE_SIZE ];
-  static Chimera::Threading::Queue s_task_kicks;
+  static TaskId s_queue_buffer[ QUEUE_SIZE ];            /**< Buffer for the monitor thread queue */
+  static Chimera::Threading::Queue s_task_kicks;         /**< Event queue for tasks to push "kicks" to */
+  static Chimera::Watchdog::Independent_sPtr s_watchdog; /**< Hardware watchdog */
 
   /**
    *  Tracks runtime timing data for all tasks. Order must match
@@ -64,6 +77,11 @@ namespace DC::Tasks::MON
   static_assert( static_cast<size_t>( TaskId::MONITOR ) == 0 );
 
   /*-------------------------------------------------------------------------------
+  Private Functions
+  -------------------------------------------------------------------------------*/
+  static void initializeMonitor();
+
+  /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
   void MonitorThread( void *arg )
@@ -71,40 +89,11 @@ namespace DC::Tasks::MON
     using namespace Chimera::Threading;
 
     /*-------------------------------------------------
-    Initialize local memory
-    -------------------------------------------------*/
-    memset( s_queue_buffer, static_cast<size_t>( TaskId::UNKNOWN ), ARRAY_COUNT( s_queue_buffer ) );
-
-    if ( !s_task_kicks.create( ARRAY_COUNT( s_queue_buffer ), sizeof( TaskId ), s_queue_buffer ) )
-    {
-      Chimera::insert_debug_breakpoint();
-      Chimera::System::softwareReset();
-    }
-
-    for ( auto x = 0; x < ARRAY_COUNT( s_timing_stats ); x++ )
-    {
-      s_timing_stats[ x ].exact = 0;
-    }
-
-    /*-------------------------------------------------
-    Initialize the hardware watchdog
-    -------------------------------------------------*/
-    // TODO: Size the WD such that it's just outside the periodic interval of this task
-
-    /*-------------------------------------------------
-    Start up system threads. Monitor thread is always
-    the first task, so don't bother sending there.
-    -------------------------------------------------*/
-    for ( auto x = 1; x < ARRAY_COUNT( s_timing_stats ); x++ )
-    {
-      ThreadId threadId = getThreadId( s_timing_stats[ x ].id );
-      Chimera::Threading::sendTaskMsg( threadId, ITCMsg::ITC_WAKEUP, TIMEOUT_DONT_WAIT );
-    }
-
-    /*-------------------------------------------------
     Monitor system threads
     -------------------------------------------------*/
+    initializeMonitor();
     size_t laskTickWoken;
+    size_t lastKick = 0;
     Chimera::delayMilliseconds( TSK_PERIOD );
 
     while ( true )
@@ -145,9 +134,13 @@ namespace DC::Tasks::MON
       }
 
       /*-------------------------------------------------
-      Kick the hardware watchdog
+      Periodically kick the hardware watchdog
       -------------------------------------------------*/
-      // TODO
+      if ( ( laskTickWoken - lastKick ) > HW_WDG_KICK_RATE )
+      {
+        s_watchdog->kick();
+        lastKick = Chimera::millis();
+      }
 
       /*-------------------------------------------------
       Only wake up at the desired period
@@ -176,5 +169,53 @@ namespace DC::Tasks::MON
     -------------------------------------------------*/
     s_task_kicks.push( &task, Chimera::Threading::TIMEOUT_DONT_WAIT );
     s_task_kicks.unlock();
+  }
+
+
+  static void initializeMonitor()
+  {
+    using namespace Chimera::Threading;
+
+    /*-------------------------------------------------
+    Initialize local memory
+    -------------------------------------------------*/
+    memset( s_queue_buffer, static_cast<size_t>( TaskId::UNKNOWN ), ARRAY_COUNT( s_queue_buffer ) );
+
+    if ( !s_task_kicks.create( ARRAY_COUNT( s_queue_buffer ), sizeof( TaskId ), s_queue_buffer ) )
+    {
+      Chimera::insert_debug_breakpoint();
+      Chimera::System::softwareReset();
+    }
+
+    for ( auto x = 0; x < ARRAY_COUNT( s_timing_stats ); x++ )
+    {
+      s_timing_stats[ x ].exact = 0;
+    }
+
+    /*-------------------------------------------------
+    Initialize the hardware watchdog
+    -------------------------------------------------*/
+    s_watchdog = Chimera::Watchdog::getDriver( WDG_CHANNEL );
+
+    if ( s_watchdog->initialize( WDG_CHANNEL, HW_WDG_TIMEOUT ) == Chimera::Status::OK )
+    {
+      s_watchdog->pauseOnDebugHalt( true );
+      s_watchdog->start();
+    }
+    else
+    {
+      Chimera::insert_debug_breakpoint();
+      Chimera::System::softwareReset();
+    }
+
+    /*-------------------------------------------------
+    Start up system threads. Monitor thread is always
+    the first task, so don't bother sending there.
+    -------------------------------------------------*/
+    for ( auto x = 1; x < ARRAY_COUNT( s_timing_stats ); x++ )
+    {
+      ThreadId threadId = getThreadId( s_timing_stats[ x ].id );
+      Chimera::Threading::sendTaskMsg( threadId, ITCMsg::ITC_WAKEUP, TIMEOUT_DONT_WAIT );
+    }
   }
 }    // namespace DC::Tasks::MON
