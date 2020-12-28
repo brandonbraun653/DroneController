@@ -28,6 +28,7 @@ add_subdirectory("lib/Chimera")
 add_subdirectory("lib/CommonTools/cpputest")
 add_subdirectory("lib/CommonTools/googletest")
 add_subdirectory("lib/FreeRTOS")
+add_subdirectory("lib/Ripple")
 add_subdirectory("lib/Thor")
 add_subdirectory("lib/ugfx")
 

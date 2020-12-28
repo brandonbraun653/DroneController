@@ -30,7 +30,11 @@ target_link_libraries(DroneController PRIVATE
   ugfx_st7735_lib
   ugfx_prj_config
 
-  # Static Libraries
+  # Networking Libraries
+  ripple_inc
+  ripple_core
+
+  # Hardware Libraries
   aurora_core_rel
   aurora_logging_rel
   chimera_core_dbg
