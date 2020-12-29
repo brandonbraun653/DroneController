@@ -146,7 +146,7 @@ namespace DC::Tasks::RADIO
     devHandle.cfg.spi.validity           = true;
     devHandle.cfg.spi.externalCS         = true;
     devHandle.cfg.spi.HWInit.bitOrder    = BitOrder::MSB_FIRST;
-    devHandle.cfg.spi.HWInit.clockFreq   = 16000000;
+    devHandle.cfg.spi.HWInit.clockFreq   = 8000000;
     devHandle.cfg.spi.HWInit.clockMode   = ClockMode::MODE0;
     devHandle.cfg.spi.HWInit.controlMode = ControlMode::MASTER;
     devHandle.cfg.spi.HWInit.csMode      = CSMode::MANUAL;
