@@ -12,18 +12,13 @@
 #include <Chimera/gpio>
 
 /* Testing Includes */
+#include <src/config/board_map.hpp>
 #include <src/tasks/tsk_common.hpp>
 #include <src/tasks/tsk_heartbeat.hpp>
 #include <src/tasks/tsk_monitor.hpp>
 
 namespace DC::Tasks::HB
 {
-  /*-------------------------------------------------------------------------------
-  Constants
-  -------------------------------------------------------------------------------*/
-  static constexpr Chimera::GPIO::Pin pin   = 14;
-  static constexpr Chimera::GPIO::Port port = Chimera::GPIO::Port::PORTC;
-
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
@@ -46,8 +41,8 @@ namespace DC::Tasks::HB
     cfg.threaded  = true;
     cfg.alternate = Alternate::NONE;
     cfg.drive     = Drive::OUTPUT_PUSH_PULL;
-    cfg.pin       = pin;
-    cfg.port      = port;
+    cfg.pin       = DC::IO::LED::pinHeartbeat;
+    cfg.port      = DC::IO::LED::portHeartbeat;
     cfg.pull      = Pull::NO_PULL;
     cfg.state     = State::LOW;
 

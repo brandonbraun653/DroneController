@@ -32,6 +32,7 @@ namespace DC::Tasks
     MONITOR,    /**< Task monitor thread to ensure everything is running on time */
     HEART_BEAT, /**< Heartbeat thread indicates the system is alive */
     GRAPHICS,   /**< Graphics processing */
+    RADIO,      /**< NRF24L01 Radio processing */
 
     NUM_OPTIONS,
     UNKNOWN

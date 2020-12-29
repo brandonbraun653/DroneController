@@ -19,38 +19,41 @@
 #include "gfx.h"
 #include "board_ST7735.h"
 
+/* Project Includes */
+#include <src/config/board_map.hpp>
+
 /*-------------------------------------------------------------------------------
 Static Data
 -------------------------------------------------------------------------------*/
 /*-------------------------------------------------
 GPIO: Data/Command
 -------------------------------------------------*/
-static constexpr Chimera::GPIO::Pin pinDC_pin   = 1;
-static constexpr Chimera::GPIO::Port pinDC_port = Chimera::GPIO::Port::PORTB;
+static constexpr Chimera::GPIO::Pin pinDC_pin   = DC::IO::GFX::pinDC_pin;
+static constexpr Chimera::GPIO::Port pinDC_port = DC::IO::GFX::pinDC_port;
 static Chimera::GPIO::Driver_sPtr pinDC;
 
 /*-------------------------------------------------
 GPIO: LCD Reset
 -------------------------------------------------*/
-static constexpr Chimera::GPIO::Pin pinRES_pin   = 8;
-static constexpr Chimera::GPIO::Port pinRES_port = Chimera::GPIO::Port::PORTA;
+static constexpr Chimera::GPIO::Pin pinRES_pin   = DC::IO::GFX::pinRES_pin;
+static constexpr Chimera::GPIO::Port pinRES_port = DC::IO::GFX::pinRES_port;
 
 /*-------------------------------------------------
 GPIO: LCD Chip Select
 -------------------------------------------------*/
-static constexpr Chimera::GPIO::Pin pinCS_pin   = 15;
-static constexpr Chimera::GPIO::Port pinCS_port = Chimera::GPIO::Port::PORTA;
+static constexpr Chimera::GPIO::Pin pinCS_pin   = DC::IO::GFX::pinCS_pin;
+static constexpr Chimera::GPIO::Port pinCS_port = DC::IO::GFX::pinCS_port;
 static Chimera::GPIO::Driver_sPtr pinCS;
 
 /*-------------------------------------------------
 SPI
 -------------------------------------------------*/
-static constexpr Chimera::GPIO::Pin pinSCK              = 3;
-static constexpr Chimera::GPIO::Pin pinMOSI             = 5;
-static constexpr Chimera::GPIO::Pin pinMISO             = 4;
-static constexpr Chimera::GPIO::Port spiPort            = Chimera::GPIO::Port::PORTB;
-static constexpr Chimera::SPI::Channel spiChannel       = Chimera::SPI::Channel::SPI3;
-static constexpr Chimera::SPI::TransferMode spiTxfrMode = Chimera::SPI::TransferMode::BLOCKING;
+static constexpr Chimera::GPIO::Pin pinSCK              = DC::IO::GFX::pinSCK;
+static constexpr Chimera::GPIO::Pin pinMOSI             = DC::IO::GFX::pinMOSI;
+static constexpr Chimera::GPIO::Pin pinMISO             = DC::IO::GFX::pinMISO;
+static constexpr Chimera::GPIO::Port spiPort            = DC::IO::GFX::spiPort;
+static constexpr Chimera::SPI::Channel spiChannel       = DC::IO::GFX::spiChannel;
+static constexpr Chimera::SPI::TransferMode spiTxfrMode = DC::IO::GFX::spiTxfrMode;
 static Chimera::SPI::Driver_sPtr spi;
 
 

@@ -19,7 +19,8 @@
     "random": "cpp",
     "cfg": "cpp",
     "watchdog": "cpp",
-    "physical": "cpp"
+    "physical": "cpp",
+    "datalink": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

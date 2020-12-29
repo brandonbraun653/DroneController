@@ -43,7 +43,7 @@ target_link_libraries(DroneController PRIVATE
   freertos_heap
   freertos_port
   thor_cfg_freertos_rel
-  thor_cmn_cm4_rel
+  thor_cmn_cm4_dbg
   thor_hld_core_dbg
   thor_lld_intf_dbg
   thor_lld_stm32l4_dbg

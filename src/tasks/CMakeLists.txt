@@ -5,6 +5,7 @@ set(LINK_LIBS
   Boost::boost
   chimera_inc       # Chimera public headers
   aurora_inc        # Aurora public headers
+  ripple_inc
   ugfx_inc
   ulog_inc
   project_inc
@@ -20,6 +21,7 @@ add_library(${LIB} STATIC
   tsk_graphics.cpp
   tsk_heartbeat.cpp
   tsk_monitor.cpp
+  tsk_radio.cpp
 )
 
 target_link_libraries(${LIB} PRIVATE ${LINK_LIBS})
