@@ -29,6 +29,12 @@
 namespace DC::Tasks::RADIO
 {
   /*-------------------------------------------------------------------------------
+  Static Data
+  -------------------------------------------------------------------------------*/
+  static Ripple::NetStackHandle netHandle;    /* Network device object */
+  static Ripple::PHY::DeviceHandle hPhysical; /* Physical layer handle */
+
+  /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
   void RadioThread( void *arg )
@@ -46,10 +52,8 @@ namespace DC::Tasks::RADIO
     For now, build up a session object just for low
     level testing.
     -------------------------------------------------*/
-    Ripple::NetStackHandle netHandle;
-    Ripple::PHY::DeviceHandle devHandle;
 
-    netHandle.physical = &devHandle;
+    netHandle.physical = &hPhysical;
 
     /*-------------------------------------------------------------------------------
     Physical Layer Settings
@@ -57,26 +61,26 @@ namespace DC::Tasks::RADIO
     /*-------------------------------------------------
     Radio properties
     -------------------------------------------------*/
-    devHandle.cfg.hwAddressWidth   = Ripple::PHY::AddressWidth::AW_5Byte;
-    devHandle.cfg.hwCRCLength      = Ripple::PHY::CRCLength::CRC_16;
-    devHandle.cfg.hwDataRate       = Ripple::PHY::DataRate::DR_1MBPS;
-    devHandle.cfg.hwISRMask        = Ripple::PHY::bfISRMask::ISR_MSK_ALL;
-    devHandle.cfg.hwPowerAmplitude = Ripple::PHY::PowerAmplitude::PA_LOW;
-    devHandle.cfg.hwRFChannel      = 96;
-    devHandle.cfg.hwRTXDelay       = Ripple::PHY::ART_DELAY_500uS;
+    hPhysical.cfg.hwAddressWidth   = Ripple::PHY::AddressWidth::AW_5Byte;
+    hPhysical.cfg.hwCRCLength      = Ripple::PHY::CRCLength::CRC_16;
+    hPhysical.cfg.hwDataRate       = Ripple::PHY::DataRate::DR_1MBPS;
+    hPhysical.cfg.hwISRMask        = Ripple::PHY::bfISRMask::ISR_MSK_ALL;
+    hPhysical.cfg.hwPowerAmplitude = Ripple::PHY::PowerAmplitude::PA_LOW;
+    hPhysical.cfg.hwRFChannel      = 96;
+    hPhysical.cfg.hwRTXDelay       = Ripple::PHY::ART_DELAY_500uS;
 
     /*-------------------------------------------------
     GPIO: IRQ Input
     -------------------------------------------------*/
-    devHandle.cfg.irq.clear();
-    devHandle.cfg.irq.validity  = true;
-    devHandle.cfg.irq.threaded  = true;
-    devHandle.cfg.irq.alternate = Alternate::EXTERNAL_INTERRUPT;
-    devHandle.cfg.irq.drive     = Drive::INPUT;
-    devHandle.cfg.irq.pin       = DC::IO::Radio::pinIRQ_pin;
-    devHandle.cfg.irq.port      = DC::IO::Radio::pinIRQ_port;
-    devHandle.cfg.irq.pull      = Pull::PULL_DN;
-    devHandle.cfg.irq.state     = State::LOW;
+    hPhysical.cfg.irq.clear();
+    hPhysical.cfg.irq.validity  = true;
+    hPhysical.cfg.irq.threaded  = true;
+    hPhysical.cfg.irq.alternate = Alternate::EXTERNAL_INTERRUPT;
+    hPhysical.cfg.irq.drive     = Drive::INPUT;
+    hPhysical.cfg.irq.pin       = DC::IO::Radio::pinIRQ_pin;
+    hPhysical.cfg.irq.port      = DC::IO::Radio::pinIRQ_port;
+    hPhysical.cfg.irq.pull      = Pull::PULL_DN;
+    hPhysical.cfg.irq.state     = State::LOW;
 
     // TODO: Configure the EXTI driver
 
@@ -84,75 +88,75 @@ namespace DC::Tasks::RADIO
     /*-------------------------------------------------
     GPIO: CE Input
     -------------------------------------------------*/
-    devHandle.cfg.ce.clear();
-    devHandle.cfg.ce.validity  = true;
-    devHandle.cfg.ce.threaded  = true;
-    devHandle.cfg.ce.alternate = Alternate::NONE;
-    devHandle.cfg.ce.drive     = Drive::OUTPUT_PUSH_PULL;
-    devHandle.cfg.ce.pin       = DC::IO::Radio::pinCE_pin;
-    devHandle.cfg.ce.port      = DC::IO::Radio::pinCE_port;
-    devHandle.cfg.ce.pull      = Pull::PULL_DN;
-    devHandle.cfg.ce.state     = State::LOW;
+    hPhysical.cfg.ce.clear();
+    hPhysical.cfg.ce.validity  = true;
+    hPhysical.cfg.ce.threaded  = true;
+    hPhysical.cfg.ce.alternate = Alternate::NONE;
+    hPhysical.cfg.ce.drive     = Drive::OUTPUT_PUSH_PULL;
+    hPhysical.cfg.ce.pin       = DC::IO::Radio::pinCE_pin;
+    hPhysical.cfg.ce.port      = DC::IO::Radio::pinCE_port;
+    hPhysical.cfg.ce.pull      = Pull::PULL_DN;
+    hPhysical.cfg.ce.state     = State::LOW;
 
     /*-------------------------------------------------
     GPIO: CS Input
     -------------------------------------------------*/
-    devHandle.cfg.spi.CSInit.clear();
-    devHandle.cfg.spi.CSInit.validity  = true;
-    devHandle.cfg.spi.CSInit.threaded  = true;
-    devHandle.cfg.spi.CSInit.alternate = Alternate::NONE;
-    devHandle.cfg.spi.CSInit.drive     = Drive::OUTPUT_PUSH_PULL;
-    devHandle.cfg.spi.CSInit.pin       = DC::IO::Radio::pinCS_pin;
-    devHandle.cfg.spi.CSInit.port      = DC::IO::Radio::pinCS_port;
-    devHandle.cfg.spi.CSInit.pull      = Pull::PULL_UP;
-    devHandle.cfg.spi.CSInit.state     = State::HIGH;
+    hPhysical.cfg.spi.CSInit.clear();
+    hPhysical.cfg.spi.CSInit.validity  = true;
+    hPhysical.cfg.spi.CSInit.threaded  = true;
+    hPhysical.cfg.spi.CSInit.alternate = Alternate::NONE;
+    hPhysical.cfg.spi.CSInit.drive     = Drive::OUTPUT_PUSH_PULL;
+    hPhysical.cfg.spi.CSInit.pin       = DC::IO::Radio::pinCS_pin;
+    hPhysical.cfg.spi.CSInit.port      = DC::IO::Radio::pinCS_port;
+    hPhysical.cfg.spi.CSInit.pull      = Pull::PULL_UP;
+    hPhysical.cfg.spi.CSInit.state     = State::HIGH;
 
     /*-------------------------------------------------
     SPI
     -------------------------------------------------*/
     // SCK
-    devHandle.cfg.spi.SCKInit.alternate = Alternate::SPI3_SCK;
-    devHandle.cfg.spi.SCKInit.drive     = Drive::ALTERNATE_PUSH_PULL;
-    devHandle.cfg.spi.SCKInit.pin       = DC::IO::Radio::pinSCK;
-    devHandle.cfg.spi.SCKInit.port      = DC::IO::Radio::spiPort;
-    devHandle.cfg.spi.SCKInit.pull      = Pull::NO_PULL;
-    devHandle.cfg.spi.SCKInit.state     = State::LOW;
-    devHandle.cfg.spi.SCKInit.threaded  = true;
-    devHandle.cfg.spi.SCKInit.validity  = true;
+    hPhysical.cfg.spi.SCKInit.alternate = Alternate::SPI3_SCK;
+    hPhysical.cfg.spi.SCKInit.drive     = Drive::ALTERNATE_PUSH_PULL;
+    hPhysical.cfg.spi.SCKInit.pin       = DC::IO::Radio::pinSCK;
+    hPhysical.cfg.spi.SCKInit.port      = DC::IO::Radio::spiPort;
+    hPhysical.cfg.spi.SCKInit.pull      = Pull::NO_PULL;
+    hPhysical.cfg.spi.SCKInit.state     = State::LOW;
+    hPhysical.cfg.spi.SCKInit.threaded  = true;
+    hPhysical.cfg.spi.SCKInit.validity  = true;
 
     // MOSI
-    devHandle.cfg.spi.MOSIInit.alternate = Alternate::SPI3_MOSI;
-    devHandle.cfg.spi.MOSIInit.drive     = Drive::ALTERNATE_PUSH_PULL;
-    devHandle.cfg.spi.MOSIInit.pin       = DC::IO::Radio::pinMOSI;
-    devHandle.cfg.spi.MOSIInit.port      = DC::IO::Radio::spiPort;
-    devHandle.cfg.spi.MOSIInit.pull      = Pull::NO_PULL;
-    devHandle.cfg.spi.MOSIInit.state     = State::LOW;
-    devHandle.cfg.spi.MOSIInit.threaded  = true;
-    devHandle.cfg.spi.MOSIInit.validity  = true;
+    hPhysical.cfg.spi.MOSIInit.alternate = Alternate::SPI3_MOSI;
+    hPhysical.cfg.spi.MOSIInit.drive     = Drive::ALTERNATE_PUSH_PULL;
+    hPhysical.cfg.spi.MOSIInit.pin       = DC::IO::Radio::pinMOSI;
+    hPhysical.cfg.spi.MOSIInit.port      = DC::IO::Radio::spiPort;
+    hPhysical.cfg.spi.MOSIInit.pull      = Pull::NO_PULL;
+    hPhysical.cfg.spi.MOSIInit.state     = State::LOW;
+    hPhysical.cfg.spi.MOSIInit.threaded  = true;
+    hPhysical.cfg.spi.MOSIInit.validity  = true;
 
 
     // MISO
-    devHandle.cfg.spi.MISOInit.alternate = Alternate::SPI3_MISO;
-    devHandle.cfg.spi.MISOInit.drive     = Drive::ALTERNATE_PUSH_PULL;
-    devHandle.cfg.spi.MISOInit.pin       = DC::IO::Radio::pinMISO;
-    devHandle.cfg.spi.MISOInit.port      = DC::IO::Radio::spiPort;
-    devHandle.cfg.spi.MISOInit.pull      = Pull::NO_PULL;
-    devHandle.cfg.spi.MISOInit.state     = State::LOW;
-    devHandle.cfg.spi.MISOInit.threaded  = true;
-    devHandle.cfg.spi.MISOInit.validity  = true;
+    hPhysical.cfg.spi.MISOInit.alternate = Alternate::SPI3_MISO;
+    hPhysical.cfg.spi.MISOInit.drive     = Drive::ALTERNATE_PUSH_PULL;
+    hPhysical.cfg.spi.MISOInit.pin       = DC::IO::Radio::pinMISO;
+    hPhysical.cfg.spi.MISOInit.port      = DC::IO::Radio::spiPort;
+    hPhysical.cfg.spi.MISOInit.pull      = Pull::NO_PULL;
+    hPhysical.cfg.spi.MISOInit.state     = State::LOW;
+    hPhysical.cfg.spi.MISOInit.threaded  = true;
+    hPhysical.cfg.spi.MISOInit.validity  = true;
 
 
     // SPI Parameters
-    devHandle.cfg.spi.validity           = true;
-    devHandle.cfg.spi.externalCS         = true;
-    devHandle.cfg.spi.HWInit.bitOrder    = BitOrder::MSB_FIRST;
-    devHandle.cfg.spi.HWInit.clockFreq   = 8000000;
-    devHandle.cfg.spi.HWInit.clockMode   = ClockMode::MODE0;
-    devHandle.cfg.spi.HWInit.controlMode = ControlMode::MASTER;
-    devHandle.cfg.spi.HWInit.csMode      = CSMode::MANUAL;
-    devHandle.cfg.spi.HWInit.dataSize    = DataSize::SZ_8BIT;
-    devHandle.cfg.spi.HWInit.hwChannel   = DC::IO::Radio::spiChannel;
-    devHandle.cfg.spi.HWInit.txfrMode    = DC::IO::Radio::spiTxfrMode;
+    hPhysical.cfg.spi.validity           = true;
+    hPhysical.cfg.spi.externalCS         = true;
+    hPhysical.cfg.spi.HWInit.bitOrder    = BitOrder::MSB_FIRST;
+    hPhysical.cfg.spi.HWInit.clockFreq   = 8000000;
+    hPhysical.cfg.spi.HWInit.clockMode   = ClockMode::MODE0;
+    hPhysical.cfg.spi.HWInit.controlMode = ControlMode::MASTER;
+    hPhysical.cfg.spi.HWInit.csMode      = CSMode::MANUAL;
+    hPhysical.cfg.spi.HWInit.dataSize    = DataSize::SZ_8BIT;
+    hPhysical.cfg.spi.HWInit.hwChannel   = DC::IO::Radio::spiChannel;
+    hPhysical.cfg.spi.HWInit.txfrMode    = DC::IO::Radio::spiTxfrMode;
 
 
     /*-------------------------------------------------
