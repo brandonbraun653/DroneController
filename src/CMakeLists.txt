@@ -1,5 +1,6 @@
 add_subdirectory(config/ugfx)
 add_subdirectory(tasks)
+add_subdirectory(wireless)
 
 # -----------------------------------------------------------------------------
 # Test Suite: HLD ADC
@@ -23,6 +24,7 @@ target_link_libraries(DroneController PRIVATE
 
   # Project Libraries
   lib_tasks
+  lib_wireless
 
   # Graphics Libraries
   ugfx_inc

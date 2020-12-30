@@ -28,6 +28,9 @@
 
 namespace DC::RF
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
   /**
    *  Initializes the entire newtork stack and verifies communication
    *  with the underlying hardware. Upon exit, the network is at idle
@@ -82,7 +85,7 @@ namespace DC::RF
    *  @param[in]  handler   The handler function
    *  @return void
    */
-  void register_handler( const PacketId id, const PacketEvent event, PacketCB handler );
+  void register_handler( const PacketId id, const PacketEvent event, PacketHandler handler );
 
 }  // namespace DC::RF
 
