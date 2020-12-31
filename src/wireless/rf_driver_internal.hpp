@@ -44,7 +44,7 @@ namespace DC::RF
   Public Data
   -------------------------------------------------------------------------------*/
   extern Ripple::NetStackHandle netHandle;    /* Network device object */
-  extern Ripple::PHY::DeviceHandle hPhysical; /* Physical layer handle */
+  extern Ripple::PHY::Handle hPhysical; /* Physical layer handle */
 
   /* Identifiers for the network threads */
   extern Chimera::Threading::ThreadId netThreadId[ TSK_ID_NUM_TASKS ];
@@ -76,6 +76,15 @@ namespace DC::RF
    *  @return Chimera::Status_t
    */
   Chimera::Status_t initNetStack_PHY( const RadioConfig &cfg );
+
+  /**
+   *  Initializes the datalink layer for the project
+   *
+   *  @param[in]  cfg       User configuration
+   *  @return Chimera::Status_t
+   */
+  Chimera::Status_t initNetStack_DATALINK( const RadioConfig &cfg );
+
 }  // namespace DC::RF
 
 #endif  /* !DC_WIRELESS_DRIVER_INTERNAL_HPP */

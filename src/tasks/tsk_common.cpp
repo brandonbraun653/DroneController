@@ -72,10 +72,10 @@ namespace DC::Tasks
   {
     using namespace Chimera::Threading;
 
-    ThreadMsg msg = ITCMsg::ITC_NOP;
+    ThreadMsg msg = ITCMsg::TSK_MSG_NOP;
     while ( true )
     {
-      if ( this_thread::receiveTaskMsg( msg, TIMEOUT_BLOCK ) && ( msg == ITCMsg::ITC_WAKEUP ) )
+      if ( this_thread::receiveTaskMsg( msg, TIMEOUT_BLOCK ) && ( msg == ITCMsg::TSK_MSG_WAKEUP ) )
       {
         break;
       }

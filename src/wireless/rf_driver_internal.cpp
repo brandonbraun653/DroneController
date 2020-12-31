@@ -29,7 +29,8 @@ namespace DC::RF
   Public Data
   -------------------------------------------------------------------------------*/
   Ripple::NetStackHandle netHandle;
-  Ripple::PHY::DeviceHandle hPhysical;
+  Ripple::PHY::Handle hPhysical;
+  Ripple::DATALINK::Handle hDatalink;
 
   Chimera::Threading::ThreadId netThreadId[ TSK_ID_NUM_TASKS ];
 
@@ -60,7 +61,7 @@ namespace DC::RF
     dl.initialize( dlFunc, reinterpret_cast<void *>( &netHandle ), Priority::LEVEL_3, DATALINK::THREAD_STACK,
                    DATALINK::THREAD_NAME.cbegin() );
     netThreadId[ TSK_ID_DATALINK ] = dl.start();
-    sendTaskMsg( netThreadId[ TSK_ID_DATALINK ], ITCMsg::ITC_WAKEUP, TIMEOUT_DONT_WAIT );
+    sendTaskMsg( netThreadId[ TSK_ID_DATALINK ], ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
 
     /* Give the hardware time to boot */
     Chimera::delayMilliseconds( 100 );
@@ -101,6 +102,7 @@ namespace DC::RF
     -------------------------------------------------*/
     auto result = Chimera::Status::OK;
     result |= initNetStack_PHY( cfg );
+    result |= initNetStack_DATALINK( cfg );
 
     return result;
   }
@@ -134,6 +136,8 @@ namespace DC::RF
     /*-------------------------------------------------
     GPIO: IRQ Input
     -------------------------------------------------*/
+    hPhysical.cfg.irqEdge = DC::IO::Radio::pinIRQ_Trigger;
+
     hPhysical.cfg.irq.clear();
     hPhysical.cfg.irq.validity  = true;
     hPhysical.cfg.irq.threaded  = true;
@@ -258,4 +262,19 @@ namespace DC::RF
     return result;
   }
 
+
+  Chimera::Status_t initNetStack_DATALINK( const RadioConfig &cfg )
+  {
+    /*-------------------------------------------------
+    Initialize the config
+    -------------------------------------------------*/
+    hDatalink.clear();
+    hDatalink.hwIRQEventTimeout = Chimera::Threading::TIMEOUT_25MS;
+
+    /*-------------------------------------------------
+    Register config with the network
+    -------------------------------------------------*/
+    netHandle.datalink = &hDatalink;
+    return Chimera::Status::OK;
+  }
 }  // namespace DC::RF

@@ -13,6 +13,7 @@
 #define DC_BOARD_MAP_HPP
 
 /* Chimera Includes */
+#include <Chimera/exti>
 #include <Chimera/gpio>
 #include <Chimera/spi>
 
@@ -85,8 +86,9 @@ namespace DC::IO
     /*-------------------------------------------------
     GPIO: IRQ Input
     -------------------------------------------------*/
-    static constexpr Chimera::GPIO::Pin pinIRQ_pin   = 1;
-    static constexpr Chimera::GPIO::Port pinIRQ_port = Chimera::GPIO::Port::PORTA;
+    static constexpr Chimera::GPIO::Pin pinIRQ_pin             = 1;
+    static constexpr Chimera::GPIO::Port pinIRQ_port           = Chimera::GPIO::Port::PORTA;
+    static constexpr Chimera::EXTI::EdgeTrigger pinIRQ_Trigger = Chimera::EXTI::EdgeTrigger::FALLING_EDGE;
 
     /*-------------------------------------------------
     GPIO: Chip Enable
