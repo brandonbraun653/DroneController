@@ -39,7 +39,7 @@ target_link_libraries(DroneController PRIVATE
   # Hardware Libraries
   aurora_core_rel
   aurora_logging_rel
-  chimera_core_rel
+  chimera_core_rel_dbg
   freertos_cfg
   freertos_core_rel
   freertos_heap

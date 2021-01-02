@@ -26,8 +26,20 @@
 #include <src/wireless/rf_system_types.hpp>
 #include <src/wireless/rf_packet_types.hpp>
 
+
+/* DEVELOPMENT INCLUDES */
+#include <Ripple/datalink>
+
+
 namespace DC::RF
 {
+
+  /*-------------------------------------------------------------------------------
+  !!!!!!!DEVELOPMENT ONLY!!!!!!!
+  REMOVE IN THE REAL SOFTWARE
+  -------------------------------------------------------------------------------*/
+  extern Ripple::DATALINK::Service dataLinkService;
+
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/

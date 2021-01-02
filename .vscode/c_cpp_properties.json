@@ -10,6 +10,7 @@
                 "${workspaceFolder}/lib/CommonTools/cpputest/include",
                 "${workspaceFolder}/lib/Aurora/lib/embedded_template_library/etl/include",
                 "${workspaceFolder}/lib/Aurora/lib/uLog",
+                "${workspaceFolder}/lib/Aurora/lib/ctre/single-header",
                 "${workspaceFolder}/lib/Aurora/include",
                 "${workspaceFolder}/lib/Aurora/include/../",
                 "${workspaceFolder}/lib/Chimera/include",

@@ -14,6 +14,9 @@
 #include <Chimera/spi>
 #include <Chimera/thread>
 
+/* Ripple Includes */
+#include <Ripple/shared>
+
 /* Project Includes */
 #include <src/config/board_map.hpp>
 #include <src/tasks/tsk_common.hpp>
@@ -48,6 +51,20 @@ namespace DC::Tasks::RADIO
     cfg.networkBaud = 115200;
 
     RF::initialize( cfg );
+
+    /*-------------------------------------------------
+    Try and send a test frame
+    -------------------------------------------------*/
+    Ripple::DATALINK::Frame frame;
+    frame.clear();
+    frame.nextHop = Ripple::constructIP( 192, 168, 1, 0 );
+    frame.control |= Ripple::DATALINK::bfControlFlags::CTRL_PAYLOAD_ACK;
+    frame.length = 12;
+    memset( frame.payload, 0xA5, ARRAY_BYTES( frame.payload ) );
+
+
+    RF::dataLinkService.addARPEntry( frame.nextHop, 0 );
+    RF::dataLinkService.enqueueFrame( frame );
 
     while ( 1 )
     {
