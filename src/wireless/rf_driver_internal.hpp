@@ -43,7 +43,7 @@ namespace DC::RF
   /*-------------------------------------------------------------------------------
   Public Data
   -------------------------------------------------------------------------------*/
-  extern Ripple::NetStackHandle netHandle;    /* Network device object */
+  extern Ripple::Session::Handle netHandle;    /* Network device object */
   extern Ripple::PHY::Handle hPhysical; /* Physical layer handle */
 
   /* Identifiers for the network threads */
@@ -67,7 +67,7 @@ namespace DC::RF
    *  @param[in]  cfg       User configuration
    *  @return Chimera::Status_t
    */
-  Chimera::Status_t initNetStack( const RadioConfig &cfg );
+  Chimera::Status_t initNetStack( Ripple::Session::RadioConfig &cfg );
 
   /**
    *  Initializes the physical layer for the project
@@ -75,7 +75,7 @@ namespace DC::RF
    *  @param[in]  cfg       User configuration
    *  @return Chimera::Status_t
    */
-  Chimera::Status_t initNetStack_PHY( const RadioConfig &cfg );
+  Chimera::Status_t initNetStack_PHY( Ripple::Session::RadioConfig &cfg );
 
   /**
    *  Initializes the datalink layer for the project
@@ -83,7 +83,7 @@ namespace DC::RF
    *  @param[in]  cfg       User configuration
    *  @return Chimera::Status_t
    */
-  Chimera::Status_t initNetStack_DATALINK( const RadioConfig &cfg );
+  Chimera::Status_t initNetStack_DATALINK( const Ripple::Session::RadioConfig &cfg );
 
 }  // namespace DC::RF
 

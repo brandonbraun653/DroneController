@@ -15,7 +15,7 @@
 /* Logging Includes */
 #include <Aurora/logging>
 
-namespace Thor::Testing
+namespace DC::UTL
 {
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -28,6 +28,6 @@ namespace Thor::Testing
    */
   void initializeLogger( const uLog::Level lvl );
 
-}    // namespace Thor::Testing
+}    // namespace DC::UTL
 
 #endif /* !THOR_TESTING_LOGGER_HPP */

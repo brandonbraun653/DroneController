@@ -12,10 +12,10 @@
 #include <Aurora/logging>
 
 /* Testing Includes */
-#include <tests/hardware/harness/logger.hpp>
-#include <tests/hardware/harness/serial_output.hpp>
+#include <src/utility/logger.hpp>
+#include <src/utility/serial_output.hpp>
 
-namespace Thor::Testing
+namespace DC::UTL
 {
   /*-------------------------------------------------------------------------------
   Static Data
@@ -55,4 +55,4 @@ namespace Thor::Testing
     uLog::setRootSink( hSink );
   }
 
-}    // namespace Thor::Testing
+}    // namespace DC::UTL

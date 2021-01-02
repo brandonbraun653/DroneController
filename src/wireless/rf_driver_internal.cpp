@@ -28,7 +28,7 @@ namespace DC::RF
   /*-------------------------------------------------------------------------------
   Public Data
   -------------------------------------------------------------------------------*/
-  Ripple::NetStackHandle netHandle;
+  Ripple::Session::Handle netHandle;
   Ripple::PHY::Handle hPhysical;
   Ripple::DATALINK::Handle hDatalink;
 
@@ -85,7 +85,7 @@ namespace DC::RF
   }
 
 
-  Chimera::Status_t initNetStack( const RadioConfig &cfg )
+  Chimera::Status_t initNetStack( Ripple::Session::RadioConfig &cfg )
   {
     using namespace Chimera::Threading;
 
@@ -101,14 +101,20 @@ namespace DC::RF
     Initialize the layers in order
     -------------------------------------------------*/
     auto result = Chimera::Status::OK;
+
     result |= initNetStack_PHY( cfg );
     result |= initNetStack_DATALINK( cfg );
+
+    if( result == Chimera::Status::OK )
+    {
+      netHandle.radioConfig = cfg;
+    }
 
     return result;
   }
 
 
-  Chimera::Status_t initNetStack_PHY( const RadioConfig &cfg )
+  Chimera::Status_t initNetStack_PHY( Ripple::Session::RadioConfig &cfg )
   {
     using namespace Chimera::GPIO;
     using namespace Chimera::SPI;
@@ -125,12 +131,27 @@ namespace DC::RF
     /*-------------------------------------------------
     Radio properties
     -------------------------------------------------*/
-    hPhysical.cfg.hwAddressWidth   = Ripple::PHY::AddressWidth::AW_5Byte;
-    hPhysical.cfg.hwCRCLength      = Ripple::PHY::CRCLength::CRC_16;
-    hPhysical.cfg.hwDataRate       = Ripple::PHY::DataRate::DR_1MBPS;
-    hPhysical.cfg.hwISRMask        = Ripple::PHY::bfISRMask::ISR_MSK_ALL;
-    hPhysical.cfg.hwPowerAmplitude = Ripple::PHY::PowerAmplitude::PA_LOW;
+    if( cfg.advanced.macWidth == Ripple::PHY::AddressWidth::AW_INVALID )
+    {
+      cfg.advanced.macWidth = Ripple::PHY::AddressWidth::AW_5Byte;
+    }
+
+    if( cfg.advanced.dataRate == Ripple::PHY::DataRate::DR_INVALID )
+    {
+      cfg.advanced.dataRate = Ripple::PHY::DataRate::DR_1MBPS;
+    }
+
+    if( cfg.advanced.rfPower == Ripple::PHY::RFPower::PA_INVALID )
+    {
+      cfg.advanced.rfPower = Ripple::PHY::RFPower::PA_LOW;
+    }
+
     hPhysical.cfg.hwRFChannel      = cfg.channel;
+    hPhysical.cfg.hwAddressWidth   = cfg.advanced.macWidth;
+    hPhysical.cfg.hwDataRate       = cfg.advanced.dataRate;
+    hPhysical.cfg.hwPowerAmplitude = cfg.advanced.rfPower;
+    hPhysical.cfg.hwCRCLength      = Ripple::PHY::CRCLength::CRC_16;
+    hPhysical.cfg.hwISRMask        = Ripple::PHY::bfISRMask::ISR_MSK_ALL;
     hPhysical.cfg.hwRTXDelay       = Ripple::PHY::ART_DELAY_500uS;
 
     /*-------------------------------------------------
@@ -263,7 +284,7 @@ namespace DC::RF
   }
 
 
-  Chimera::Status_t initNetStack_DATALINK( const RadioConfig &cfg )
+  Chimera::Status_t initNetStack_DATALINK( const Ripple::Session::RadioConfig &cfg )
   {
     /*-------------------------------------------------
     Initialize the config

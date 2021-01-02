@@ -7,17 +7,16 @@ set(LINK_LIBS
   aurora_inc        # Aurora public headers
   ulog_inc
   project_inc
-  aurora_build_options
+  prj_device_target
 )
 
 # ====================================================
 # Driver Library
 # ====================================================
-set(LIB thor_test_harness)
+set(LIB lib_utility)
 add_library(${LIB} STATIC
-  blinky.cpp
   logger.cpp
   serial_output.cpp
 )
-target_link_libraries(${LIB} PRIVATE ${LINK_LIBS} aurora_logging)
-export(TARGETS ${LIB} FILE "${PROJECT_BINARY_DIR}/Aurora/${LIB}.cmake")
+target_link_libraries(${LIB} PRIVATE ${LINK_LIBS})
+export(TARGETS ${LIB} FILE "${PROJECT_BINARY_DIR}/DroneController/${LIB}.cmake")

@@ -17,7 +17,7 @@
 #include <Chimera/serial>
 
 
-namespace Thor::Testing
+namespace DC::UTL
 {
   /*-------------------------------------------------------------------------------
   Constants
@@ -33,6 +33,6 @@ namespace Thor::Testing
    */
   void initializeSerial();
 
-}    // namespace Thor::Testing
+}    // namespace DC::UTL
 
 #endif /* !THOR_TESTING_SERIAL_CONFIG_HPP */

@@ -21,7 +21,8 @@
     "watchdog": "cpp",
     "physical": "cpp",
     "datalink": "cpp",
-    "shared": "cpp"
+    "shared": "cpp",
+    "session": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

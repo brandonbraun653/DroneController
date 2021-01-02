@@ -17,7 +17,7 @@ namespace DC::RF
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  bool initialize( const RadioConfig &cfg )
+  bool initialize( Ripple::Session::RadioConfig &cfg )
   {
     Chimera::Status_t initResult = Chimera::Status::OK;
 

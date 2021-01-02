@@ -1,5 +1,9 @@
+# -----------------------------------------------------------------------------
+# Project Libraries
+# -----------------------------------------------------------------------------
 add_subdirectory(config/ugfx)
 add_subdirectory(tasks)
+add_subdirectory(utility)
 add_subdirectory(wireless)
 
 # -----------------------------------------------------------------------------
@@ -24,6 +28,7 @@ target_link_libraries(DroneController PRIVATE
 
   # Project Libraries
   lib_tasks
+  lib_utility
   lib_wireless
 
   # Graphics Libraries
@@ -38,6 +43,7 @@ target_link_libraries(DroneController PRIVATE
 
   # Hardware Libraries
   aurora_core_rel
+  aurora_hmi_rel
   aurora_logging_rel
   chimera_core_rel_dbg
   freertos_cfg

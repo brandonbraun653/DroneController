@@ -21,6 +21,7 @@
 
 /* Ripple Includes */
 #include <Ripple/session>
+#include <Ripple/network>
 
 /* Project Includes */
 #include <src/wireless/rf_system_types.hpp>
@@ -51,7 +52,7 @@ namespace DC::RF
    *  @param[in]  cfg       User configuration
    *  @return bool
    */
-  bool initialize( const RadioConfig &cfg );
+  bool initialize( Ripple::Session::RadioConfig &cfg );
 
   /**
    *  Attempts to make a connection to a device with the given address.
@@ -61,7 +62,7 @@ namespace DC::RF
    *  @param[in]  device    Address of the device to connect to
    *  @return bool
    */
-  bool connect( const Ripple::IPAddress device );
+  bool connect( const Ripple::NET::IPAddress device );
 
   /**
    *  Severs the connection with the remote device

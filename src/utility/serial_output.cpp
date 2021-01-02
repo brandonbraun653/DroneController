@@ -18,7 +18,7 @@
 #include <Chimera/thread>
 
 /* Testing Includes */
-#include <tests/hardware/harness/serial_output.hpp>
+#include <src/utility/serial_output.hpp>
 
 
 /*-------------------------------------------------
@@ -39,7 +39,7 @@ static std::array<uint8_t, HWBufferSize> sRXHWBuffer;
 static boost::circular_buffer<uint8_t> sRXCircularBuffer( CircularBufferSize );
 
 
-namespace Thor::Testing
+namespace DC::UTL
 {
   void initializeSerial()
   {
@@ -91,4 +91,4 @@ namespace Thor::Testing
     result |= Serial->enableBuffering( SubPeripheral::RX, &sRXCircularBuffer, sRXHWBuffer.data(), sRXHWBuffer.size() );
     result |= Serial->begin( PeripheralMode::INTERRUPT, PeripheralMode::INTERRUPT );
   }
-}    // namespace Thor::Testing
+}    // namespace DC::UTL

@@ -18,6 +18,7 @@
 
 /* Ripple Includes */
 #include <Ripple/session>
+#include <Ripple/physical>
 
 namespace DC::RF
 {
@@ -68,16 +69,6 @@ namespace DC::RF
   /*-------------------------------------------------------------------------------
   Structures
   -------------------------------------------------------------------------------*/
-  struct RadioConfig
-  {
-    uint8_t channel;           /**< Radio channel number in range [1, 255] */
-    size_t networkBaud;        /**< Desired effective link speed in kbps */
-    Ripple::IPAddress address; /**< Static address of this device */
-  };
-
-  struct EndpointConfig
-  {
-  };
 
 }    // namespace DC::RF
 

@@ -39,6 +39,14 @@ High Level Driver Support
 #define THOR_HLD_SYSTEM
 #endif
 
+#ifndef THOR_HLD_UART
+#define THOR_HLD_UART
+#endif
+
+#ifndef THOR_HLD_USART
+#define THOR_HLD_USART
+#endif
+
 #ifndef THOR_HLD_WWDG
 #define THOR_HLD_WWDG
 #endif
@@ -88,6 +96,14 @@ Low Level Driver Support
 
 #ifndef THOR_LLD_SYSCFG
 #define THOR_LLD_SYSCFG
+#endif
+
+// #ifndef THOR_LLD_UART
+// #define THOR_LLD_UART
+// #endif
+
+#ifndef THOR_LLD_USART
+#define THOR_LLD_USART
 #endif
 
 #ifndef THOR_LLD_WWDG
