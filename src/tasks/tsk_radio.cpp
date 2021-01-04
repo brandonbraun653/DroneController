@@ -19,6 +19,7 @@
 #include <Ripple/datalink>
 #include <Ripple/network>
 #include <Ripple/physical>
+#include <Ripple/shared>
 
 /* Project Includes */
 #include <src/config/board_map.hpp>
@@ -97,7 +98,6 @@ namespace DC::Tasks::RADIO
     button.enable();
 #endif
 
-
     /*-------------------------------------------------
     Start the network stack
     -------------------------------------------------*/
@@ -105,9 +105,14 @@ namespace DC::Tasks::RADIO
     Ripple::PHY::MACAddress macRX = 0xB3B4B5B6CD;
 
     Ripple::Session::RadioConfig cfg;
-    cfg.address     = 0;
-    cfg.channel     = 96;
-    cfg.networkBaud = 115200;
+    cfg.clear();
+
+    cfg.address                    = 0;
+    cfg.channel                    = 96;
+    cfg.networkBaud                = 115200;
+    cfg.advanced.staticPayloads    = false;
+    cfg.advanced.staticPayloadSize = Ripple::PHY::MAX_TX_PAYLOAD_SIZE;
+    cfg.advanced.verifyRegisters   = true;
 
 #if defined( TEST_DEVICE )
     cfg.advanced.mac = macTX;
@@ -125,17 +130,29 @@ namespace DC::Tasks::RADIO
     frame.clear();
     frame.nextHop = Ripple::constructIP( 192, 168, 1, 0 );
     frame.control |= Ripple::DATALINK::bfControlFlags::CTRL_PAYLOAD_ACK;
-    frame.length = 12;
     memset( frame.payload, 0xA5, ARRAY_BYTES( frame.payload ) );
+
+    if ( !cfg.advanced.staticPayloads )
+    {
+      frame.length = 12;
+    }
+    else
+    {
+      frame.length = cfg.advanced.staticPayloadSize;
+    }
 
     RF::dataLinkService.addARPEntry( frame.nextHop, macRX );
 
     size_t lastTx = Chimera::millis();
-    auto txFailCB = etl::delegate<void(size_t)>::create<TXFailCallback>();
-    auto txPassCB = etl::delegate<void(size_t)>::create<TXPassCallback>();
+    auto txFailCB = etl::delegate<void( size_t )>::create<TXFailCallback>();
+    auto txPassCB = etl::delegate<void( size_t )>::create<TXPassCallback>();
 
-    RF::dataLinkService.registerCallback( Ripple::DATALINK::CallbackId::CB_ERROR_TX_MAX_RETRY, txFailCB );
+    RF::dataLinkService.registerCallback( Ripple::DATALINK::CallbackId::CB_ERROR_TX_FAILURE, txFailCB );
     RF::dataLinkService.registerCallback( Ripple::DATALINK::CallbackId::CB_TX_SUCCESS, txPassCB );
+#else
+
+    RF::dataLinkService.setRootEndpointMAC( macRX );
+
 #endif
 
     while ( 1 )
