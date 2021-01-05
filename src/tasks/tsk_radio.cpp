@@ -30,7 +30,7 @@
 #include <src/wireless/rf_driver.hpp>
 
 
-//#define TEST_DEVICE
+#define TEST_DEVICE
 #include <Aurora/hmi>
 
 namespace DC::Tasks::RADIO
@@ -110,7 +110,7 @@ namespace DC::Tasks::RADIO
     cfg.address                    = 0;
     cfg.channel                    = 96;
     cfg.networkBaud                = 115200;
-    cfg.advanced.staticPayloads    = false;
+    cfg.advanced.staticPayloads    = true;
     cfg.advanced.staticPayloadSize = Ripple::PHY::MAX_TX_PAYLOAD_SIZE;
     cfg.advanced.verifyRegisters   = true;
 
