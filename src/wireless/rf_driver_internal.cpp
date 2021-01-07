@@ -9,6 +9,7 @@
  *******************************************************************************/
 
 /* Chimera Includes */
+#include <Chimera/assert>
 #include <Chimera/common>
 #include <Chimera/gpio>
 #include <Chimera/spi>
@@ -16,6 +17,7 @@
 
 /* Ripple Includes */
 #include <Ripple/session>
+#include <Ripple/transport>
 #include <Ripple/datalink>
 #include <Ripple/physical>
 
@@ -29,8 +31,9 @@ namespace DC::RF
   Public Data
   -------------------------------------------------------------------------------*/
   Ripple::Session::Handle netHandle;
-  Ripple::PHY::Handle hPhysical;
-  Ripple::DATALINK::Handle hDatalink;
+  Ripple::Transport::Handle hTransport;
+  Ripple::Physical::Handle hPhysical;
+  Ripple::DataLink::Handle hDataLink;
 
   Chimera::Threading::ThreadId netThreadId[ TSK_ID_NUM_TASKS ];
 
@@ -40,7 +43,9 @@ namespace DC::RF
   /*-------------------------------------------------
   Network Driver Thread Classes
   -------------------------------------------------*/
-  Ripple::DATALINK::Service dataLinkService;
+  Ripple::DataLink::Service datalinkService;
+  Ripple::Session::Service sessionService;
+  Ripple::Transport::Service transportService;
 
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -55,30 +60,45 @@ namespace DC::RF
     /*-------------------------------------------------
     Start the DataLink Service
     -------------------------------------------------*/
-    ThreadDelegate dlFunc = ThreadDelegate::create<DATALINK::Service, &DATALINK::Service::run>( dataLinkService );
+    ThreadDelegate dlFunc = ThreadDelegate::create<DataLink::Service, &DataLink::Service::run>( datalinkService );
 
-    Thread dl;
-    dl.initialize( dlFunc, reinterpret_cast<void *>( &netHandle ), Priority::LEVEL_3, DATALINK::THREAD_STACK,
-                   DATALINK::THREAD_NAME.cbegin() );
-    netThreadId[ TSK_ID_DATALINK ] = dl.start();
+    Thread datalink;
+    datalink.initialize( dlFunc, reinterpret_cast<void *>( &netHandle ), Priority::LEVEL_4, DataLink::THREAD_STACK,
+                   DataLink::THREAD_NAME.cbegin() );
+    netThreadId[ TSK_ID_DATALINK ] = datalink.start();
     sendTaskMsg( netThreadId[ TSK_ID_DATALINK ], ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
 
     /* Give the hardware time to boot */
     Chimera::delayMilliseconds( 100 );
 
     /*-------------------------------------------------
-    TBD?
+    Start the Transport Service
     -------------------------------------------------*/
+    ThreadDelegate tFunc = ThreadDelegate::create<Transport::Service, &Transport::Service::run>( transportService );
+
+    Thread transport;
+    transport.initialize( tFunc, reinterpret_cast<void *>( &netHandle ), Priority::LEVEL_3, Transport::THREAD_STACK,
+                          Transport::THREAD_NAME.cbegin() );
+    netThreadId[ TSK_ID_TRANSPORT ] = transport.start();
+    sendTaskMsg( netThreadId[ TSK_ID_DATALINK ], ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
+
+    /*-------------------------------------------------
+    Start the Session Manager Service
+    -------------------------------------------------*/
+    ThreadDelegate sFunc = ThreadDelegate::create<Session::Service, &Session::Service::run>( sessionService );
+
+    Thread session;
+    session.initialize( sFunc, reinterpret_cast<void*>( &netHandle ), Priority::LEVEL_3, Session::THREAD_STACK,
+                        Session::THREAD_NAME.cbegin() );
+    netThreadId[ TSK_ID_SESSION ] = session.start();
+    sendTaskMsg( netThreadId[ TSK_ID_SESSION ], ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
 
     /*-------------------------------------------------
     Verify all threads were started
     -------------------------------------------------*/
     for ( auto x = 0; x < ARRAY_COUNT( netThreadId ); x++ )
     {
-      if ( netThreadId[ x ] == THREAD_ID_INVALID )
-      {
-        return Chimera::Status::FAIL;
-      }
+      RT_HARD_ASSERT( netThreadId[ x ] != THREAD_ID_INVALID );
     }
 
     return result;
@@ -103,7 +123,7 @@ namespace DC::RF
     auto result = Chimera::Status::OK;
 
     result |= initNetStack_PHY( cfg );
-    result |= initNetStack_DATALINK( cfg );
+    result |= initNetStack_DataLink( cfg );
 
     if ( result == Chimera::Status::OK )
     {
@@ -136,19 +156,19 @@ namespace DC::RF
     /*-------------------------------------------------
     Radio properties
     -------------------------------------------------*/
-    if ( !( cfg.advanced.macWidth < Ripple::PHY::AddressWidth::AW_NUM_OPTIONS ) )
+    if ( !( cfg.advanced.macWidth < Ripple::Physical::AddressWidth::AW_NUM_OPTIONS ) )
     {
-      cfg.advanced.macWidth = Ripple::PHY::AddressWidth::AW_5Byte;
+      cfg.advanced.macWidth = Ripple::Physical::AddressWidth::AW_5Byte;
     }
 
-    if ( !( cfg.advanced.dataRate < Ripple::PHY::DataRate::DR_NUM_OPTIONS ) )
+    if ( !( cfg.advanced.dataRate < Ripple::Physical::DataRate::DR_NUM_OPTIONS ) )
     {
-      cfg.advanced.dataRate = Ripple::PHY::DataRate::DR_1MBPS;
+      cfg.advanced.dataRate = Ripple::Physical::DataRate::DR_1MBPS;
     }
 
-    if ( cfg.advanced.rfPower == Ripple::PHY::RFPower::PA_INVALID )
+    if ( cfg.advanced.rfPower == Ripple::Physical::RFPower::PA_INVALID )
     {
-      cfg.advanced.rfPower = Ripple::PHY::RFPower::PA_LVL_0;
+      cfg.advanced.rfPower = Ripple::Physical::RFPower::PA_LVL_0;
     }
 
     hPhysical.cfg.hwRFChannel          = cfg.channel;
@@ -156,9 +176,9 @@ namespace DC::RF
     hPhysical.cfg.hwDataRate           = cfg.advanced.dataRate;
     hPhysical.cfg.hwPowerAmplitude     = cfg.advanced.rfPower;
     hPhysical.cfg.hwStaticPayloadWidth = cfg.advanced.staticPayloadSize;
-    hPhysical.cfg.hwCRCLength          = Ripple::PHY::CRCLength::CRC_16;
-    hPhysical.cfg.hwISRMask            = Ripple::PHY::bfISRMask::ISR_MSK_ALL;
-    hPhysical.cfg.hwRTXDelay           = Ripple::PHY::ART_DELAY_500uS;
+    hPhysical.cfg.hwCRCLength          = Ripple::Physical::CRCLength::CRC_16;
+    hPhysical.cfg.hwISRMask            = Ripple::Physical::bfISRMask::ISR_MSK_ALL;
+    hPhysical.cfg.hwRTXDelay           = Ripple::Physical::ART_DELAY_500uS;
 
     /*-------------------------------------------------
     GPIO: IRQ Input
@@ -290,18 +310,18 @@ namespace DC::RF
   }
 
 
-  Chimera::Status_t initNetStack_DATALINK( const Ripple::Session::RadioConfig &cfg )
+  Chimera::Status_t initNetStack_DataLink( const Ripple::Session::RadioConfig &cfg )
   {
     /*-------------------------------------------------
     Initialize the config
     -------------------------------------------------*/
-    hDatalink.clear();
-    hDatalink.hwIRQEventTimeout = Chimera::Threading::TIMEOUT_25MS;
+    hDataLink.clear();
+    hDataLink.hwIRQEventTimeout = Chimera::Threading::TIMEOUT_25MS;
 
     /*-------------------------------------------------
     Register config with the network
     -------------------------------------------------*/
-    netHandle.datalink = &hDatalink;
+    netHandle.datalink = &hDataLink;
     return Chimera::Status::OK;
   }
 }    // namespace DC::RF

@@ -20,9 +20,12 @@
     "cfg": "cpp",
     "watchdog": "cpp",
     "physical": "cpp",
-    "datalink": "cpp",
+    "DataLink": "cpp",
     "shared": "cpp",
-    "session": "cpp"
+    "session": "cpp",
+    "function": "cpp",
+    "*.ipp": "cpp",
+    "transport": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

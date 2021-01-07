@@ -35,6 +35,8 @@ namespace DC::RF
   enum NetTaskId : uint8_t
   {
     TSK_ID_DATALINK,
+    TSK_ID_SESSION,
+    TSK_ID_TRANSPORT,
 
     TSK_ID_NUM_TASKS,
     TSK_ID_INVALID
@@ -44,7 +46,6 @@ namespace DC::RF
   Public Data
   -------------------------------------------------------------------------------*/
   extern Ripple::Session::Handle netHandle;    /* Network device object */
-  extern Ripple::PHY::Handle hPhysical; /* Physical layer handle */
 
   /* Identifiers for the network threads */
   extern Chimera::Threading::ThreadId netThreadId[ TSK_ID_NUM_TASKS ];
@@ -78,12 +79,12 @@ namespace DC::RF
   Chimera::Status_t initNetStack_PHY( Ripple::Session::RadioConfig &cfg );
 
   /**
-   *  Initializes the datalink layer for the project
+   *  Initializes the DataLink layer for the project
    *
    *  @param[in]  cfg       User configuration
    *  @return Chimera::Status_t
    */
-  Chimera::Status_t initNetStack_DATALINK( const Ripple::Session::RadioConfig &cfg );
+  Chimera::Status_t initNetStack_DataLink( const Ripple::Session::RadioConfig &cfg );
 
 }  // namespace DC::RF
 

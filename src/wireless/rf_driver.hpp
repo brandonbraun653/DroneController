@@ -39,7 +39,7 @@ namespace DC::RF
   !!!!!!!DEVELOPMENT ONLY!!!!!!!
   REMOVE IN THE REAL SOFTWARE
   -------------------------------------------------------------------------------*/
-  extern Ripple::DATALINK::Service dataLinkService;
+  extern Ripple::DataLink::Service datalinkService;
 
   /*-------------------------------------------------------------------------------
   Public Functions

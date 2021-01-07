@@ -101,8 +101,8 @@ namespace DC::Tasks::RADIO
     /*-------------------------------------------------
     Start the network stack
     -------------------------------------------------*/
-    Ripple::PHY::MACAddress macTX = 0xB3B4B5B605;
-    Ripple::PHY::MACAddress macRX = 0xB3B4B5B6CD;
+    Ripple::Physical::MACAddress macTX = 0xB3B4B5B605;
+    Ripple::Physical::MACAddress macRX = 0xB3B4B5B6CD;
 
     Ripple::Session::RadioConfig cfg;
     cfg.clear();
@@ -111,7 +111,7 @@ namespace DC::Tasks::RADIO
     cfg.channel                    = 96;
     cfg.networkBaud                = 115200;
     cfg.advanced.staticPayloads    = true;
-    cfg.advanced.staticPayloadSize = Ripple::PHY::MAX_TX_PAYLOAD_SIZE;
+    cfg.advanced.staticPayloadSize = Ripple::Physical::MAX_TX_PAYLOAD_SIZE;
     cfg.advanced.verifyRegisters   = true;
 
 #if defined( TEST_DEVICE )
@@ -126,10 +126,10 @@ namespace DC::Tasks::RADIO
     Try and send a test frame
     -------------------------------------------------*/
 #if defined( TEST_DEVICE )
-    Ripple::DATALINK::Frame frame;
+    Ripple::DataLink::Frame frame;
     frame.clear();
     frame.nextHop = Ripple::constructIP( 192, 168, 1, 0 );
-    frame.control |= Ripple::DATALINK::bfControlFlags::CTRL_PAYLOAD_ACK;
+    frame.control |= Ripple::DataLink::bfControlFlags::CTRL_PAYLOAD_ACK;
     memset( frame.payload, 0xA5, ARRAY_BYTES( frame.payload ) );
 
     if ( !cfg.advanced.staticPayloads )
@@ -141,17 +141,17 @@ namespace DC::Tasks::RADIO
       frame.length = cfg.advanced.staticPayloadSize;
     }
 
-    RF::dataLinkService.addARPEntry( frame.nextHop, macRX );
+    RF::datalinkService.addARPEntry( frame.nextHop, macRX );
 
     size_t lastTx = Chimera::millis();
     auto txFailCB = etl::delegate<void( size_t )>::create<TXFailCallback>();
     auto txPassCB = etl::delegate<void( size_t )>::create<TXPassCallback>();
 
-    RF::dataLinkService.registerCallback( Ripple::DATALINK::CallbackId::CB_ERROR_TX_FAILURE, txFailCB );
-    RF::dataLinkService.registerCallback( Ripple::DATALINK::CallbackId::CB_TX_SUCCESS, txPassCB );
+    RF::datalinkService.registerCallback( Ripple::DataLink::CallbackId::CB_ERROR_TX_FAILURE, txFailCB );
+    RF::datalinkService.registerCallback( Ripple::DataLink::CallbackId::CB_TX_SUCCESS, txPassCB );
 #else
 
-    RF::dataLinkService.setRootEndpointMAC( macRX );
+    RF::datalinkService.setRootEndpointMAC( macRX );
 
 #endif
 
@@ -162,7 +162,7 @@ namespace DC::Tasks::RADIO
       {
         lastTx      = Chimera::millis();
         sendMessage = false;
-        RF::dataLinkService.enqueueFrame( frame );
+        RF::datalinkService.enqueueFrame( frame );
         uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "%d: Transmit packet\r\n", Chimera::millis() );
       }
 #endif
