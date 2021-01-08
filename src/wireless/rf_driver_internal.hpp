@@ -23,6 +23,7 @@
 #include <Ripple/session>
 #include <Ripple/datalink>
 #include <Ripple/physical>
+#include <Ripple/transport>
 
 /* Project Includes */
 #include <src/wireless/rf_system_types.hpp>
@@ -49,6 +50,9 @@ namespace DC::RF
 
   /* Identifiers for the network threads */
   extern Chimera::Threading::ThreadId netThreadId[ TSK_ID_NUM_TASKS ];
+
+
+  extern Ripple::Transport::Service transportService;
 
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -85,6 +89,9 @@ namespace DC::RF
    *  @return Chimera::Status_t
    */
   Chimera::Status_t initNetStack_DataLink( const Ripple::Session::RadioConfig &cfg );
+
+
+  Chimera::Status_t initNetStack_Transport( const Ripple::Session::RadioConfig &cfg );
 
 }  // namespace DC::RF
 

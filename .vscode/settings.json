@@ -25,7 +25,8 @@
     "session": "cpp",
     "function": "cpp",
     "*.ipp": "cpp",
-    "transport": "cpp"
+    "transport": "cpp",
+    "network": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

@@ -19,6 +19,7 @@
 #include <Ripple/datalink>
 #include <Ripple/network>
 #include <Ripple/physical>
+#include <Ripple/transport>
 #include <Ripple/shared>
 
 /* Project Includes */
@@ -32,6 +33,7 @@
 
 #define TEST_DEVICE
 #include <Aurora/hmi>
+#include <src/wireless/rf_driver_internal.hpp>
 
 namespace DC::Tasks::RADIO
 {
@@ -126,29 +128,18 @@ namespace DC::Tasks::RADIO
     Try and send a test frame
     -------------------------------------------------*/
 #if defined( TEST_DEVICE )
-    Ripple::DataLink::Frame frame;
-    frame.clear();
-    frame.nextHop = Ripple::constructIP( 192, 168, 1, 0 );
-    frame.control |= Ripple::DataLink::bfControlFlags::CTRL_PAYLOAD_ACK;
-    memset( frame.payload, 0xA5, ARRAY_BYTES( frame.payload ) );
+    auto destDevice = Ripple::constructIP( 192, 168, 1, 0 );
+    RF::datalinkService.addARPEntry( destDevice, macRX );
 
-    if ( !cfg.advanced.staticPayloads )
-    {
-      frame.length = 12;
-    }
-    else
-    {
-      frame.length = cfg.advanced.staticPayloadSize;
-    }
 
-    RF::datalinkService.addARPEntry( frame.nextHop, macRX );
+    std::array<uint8_t, 128> randomData;
+    for( auto x=0; x<randomData.size(); x++)
+    {
+      randomData[ x ] = rand() % 255;
+    }
 
     size_t lastTx = Chimera::millis();
-    auto txFailCB = etl::delegate<void( size_t )>::create<TXFailCallback>();
-    auto txPassCB = etl::delegate<void( size_t )>::create<TXPassCallback>();
 
-    RF::datalinkService.registerCallback( Ripple::DataLink::CallbackId::CB_ERROR_TX_FAILURE, txFailCB );
-    RF::datalinkService.registerCallback( Ripple::DataLink::CallbackId::CB_TX_SUCCESS, txPassCB );
 #else
 
     RF::datalinkService.setRootEndpointMAC( macRX );
@@ -162,7 +153,7 @@ namespace DC::Tasks::RADIO
       {
         lastTx      = Chimera::millis();
         sendMessage = false;
-        RF::datalinkService.enqueueFrame( frame );
+        RF::transportService.writeEndpoint( Ripple::DataLink::Endpoint::EP_DEVICE_ROOT, randomData.data(), randomData.size() );
         uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "%d: Transmit packet\r\n", Chimera::millis() );
       }
 #endif

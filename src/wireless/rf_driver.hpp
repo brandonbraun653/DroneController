@@ -62,7 +62,7 @@ namespace DC::RF
    *  @param[in]  device    Address of the device to connect to
    *  @return bool
    */
-  bool connect( const Ripple::NET::IPAddress device );
+  bool connect( const Ripple::Network::IPAddress device );
 
   /**
    *  Severs the connection with the remote device

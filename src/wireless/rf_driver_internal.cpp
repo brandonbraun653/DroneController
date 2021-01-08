@@ -324,4 +324,10 @@ namespace DC::RF
     netHandle.datalink = &hDataLink;
     return Chimera::Status::OK;
   }
+
+
+  Chimera::Status_t initNetStack_Transport( const Ripple::Session::RadioConfig &cfg )
+  {
+
+  }
 }    // namespace DC::RF
