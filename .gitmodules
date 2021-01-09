@@ -19,3 +19,6 @@
 [submodule "lib/Ripple"]
 	path = lib/Ripple
 	url = https://github.com/brandonbraun653/Ripple.git
+[submodule "lib/yaffs2"]
+	path = lib/yaffs2
+	url = https://github.com/brandonbraun653/yaffs2.git
