@@ -153,7 +153,7 @@ namespace DC::Tasks::RADIO
       {
         lastTx      = Chimera::millis();
         sendMessage = false;
-        RF::transportService.writeEndpoint( Ripple::DataLink::Endpoint::EP_DEVICE_ROOT, randomData.data(), randomData.size() );
+        //RF::transportService.writeEndpoint( Ripple::DataLink::Endpoint::EP_DEVICE_ROOT, randomData.data(), randomData.size() );
         uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "%d: Transmit packet\r\n", Chimera::millis() );
       }
 #endif

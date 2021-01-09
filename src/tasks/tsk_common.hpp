@@ -29,10 +29,11 @@ namespace DC::Tasks
    */
   enum class TaskId : uint8_t
   {
-    MONITOR,    /**< Task monitor thread to ensure everything is running on time */
-    HEART_BEAT, /**< Heartbeat thread indicates the system is alive */
-    GRAPHICS,   /**< Graphics processing */
-    RADIO,      /**< NRF24L01 Radio processing */
+    MONITOR,     /**< Task monitor thread to ensure everything is running on time */
+    HEART_BEAT,  /**< Heartbeat thread indicates the system is alive */
+    GRAPHICS,    /**< Graphics processing */
+    RADIO,       /**< NRF24L01 Radio processing */
+    FILE_SYSTEM, /**< File system processing */
 
     NUM_OPTIONS,
     UNKNOWN

@@ -18,6 +18,7 @@
 #include <src/tasks/tsk_heartbeat.hpp>
 #include <src/tasks/tsk_monitor.hpp>
 #include <src/tasks/tsk_radio.hpp>
+#include <src/tasks/tsk_file_system.hpp>
 
 namespace DC::Tasks
 {
@@ -65,6 +66,13 @@ namespace DC::Tasks
     Thread radio;
     radio.initialize( RADIO::RadioThread, nullptr, RADIO::PRIORITY, RADIO::STACK, RADIO::NAME.cbegin() );
     s_thread_id[ static_cast<size_t>( TaskId::RADIO ) ] = radio.start();
+
+    /*-------------------------------------------------
+    System Thread: File System
+    -------------------------------------------------*/
+    Thread file;
+    file.initialize( FIL::FileSystemThread, nullptr, FIL::PRIORITY, FIL::STACK, FIL::NAME.cbegin() );
+    s_thread_id[ static_cast<size_t>( TaskId::FILE_SYSTEM ) ] = file.start();
   }
 
 
