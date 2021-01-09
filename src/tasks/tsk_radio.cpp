@@ -48,7 +48,7 @@ namespace DC::Tasks::RADIO
     uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "%d: Transmit FAILED\r\n", Chimera::millis() );
   }
 
-  static void TXPassCallback( size_t id )
+  static void TXPassCallback( Ripple::DataLink::Endpoint ep )
   {
     uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "%d: Transmit SUCCEEDED\r\n", Chimera::millis() );
   }
@@ -140,6 +140,8 @@ namespace DC::Tasks::RADIO
 
     size_t lastTx = Chimera::millis();
 
+    auto writeCB = Ripple::Transport::EPCallback::create<TXPassCallback>();
+
 #else
 
     RF::datalinkService.setRootEndpointMAC( macRX );
@@ -153,7 +155,7 @@ namespace DC::Tasks::RADIO
       {
         lastTx      = Chimera::millis();
         sendMessage = false;
-        RF::transportService.writeEndpoint( Ripple::DataLink::Endpoint::EP_DEVICE_ROOT, randomData.data(), randomData.size() );
+        RF::transportService.writeEndpoint( Ripple::DataLink::Endpoint::EP_DEVICE_ROOT, randomData.data(), randomData.size(), writeCB );
         uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "%d: Transmit packet\r\n", Chimera::millis() );
       }
 #endif
