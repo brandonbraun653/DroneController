@@ -32,20 +32,20 @@ target_link_libraries(DroneController PRIVATE
   lib_wireless
 
   # Graphics Libraries
-  ugfx_inc
-  ugfx_lib
-  ugfx_st7735_lib
-  ugfx_prj_config
+  ugfx_lib_rel
+  ugfx_st7735_lib_rel
 
   # Networking Libraries
-  ripple_inc
-  ripple_core
+  ripple_core_rel
+
+  # File System
+  yaffs_core_rel
 
   # Hardware Libraries
   aurora_core_rel
   aurora_hmi_rel
   aurora_logging_rel
-  chimera_core_rel_dbg
+  chimera_core_rel
   freertos_cfg
   freertos_core_rel
   freertos_heap

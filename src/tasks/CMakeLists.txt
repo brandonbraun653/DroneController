@@ -8,6 +8,7 @@ set(LINK_LIBS
   ripple_inc
   ugfx_inc
   ulog_inc
+  yaffs_inc
   project_inc
   prj_device_target
 )
@@ -22,6 +23,7 @@ add_library(${LIB} STATIC
   tsk_heartbeat.cpp
   tsk_monitor.cpp
   tsk_radio.cpp
+  tsk_file_system.cpp
 )
 
 target_link_libraries(${LIB} PRIVATE ${LINK_LIBS})

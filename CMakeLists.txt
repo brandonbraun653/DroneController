@@ -31,13 +31,14 @@ add_subdirectory("lib/FreeRTOS")
 add_subdirectory("lib/Ripple")
 add_subdirectory("lib/Thor")
 add_subdirectory("lib/ugfx")
+add_subdirectory("lib/yaffs2")
 
 # ====================================================
 # Project Exports
 # ====================================================
 # Public include location
 add_library(project_inc INTERFACE)
-target_include_directories(project_inc INTERFACE "${PROJECT_ROOT}")
+target_include_directories(project_inc INTERFACE "${PROJECT_ROOT}" "${PROJECT_ROOT}/src/config")
 export(TARGETS project_inc FILE "${PROJECT_BINARY_DIR}/Project/project_inc.cmake")
 
 # Adjust Thor build configuration to use this project's config
