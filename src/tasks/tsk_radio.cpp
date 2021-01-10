@@ -31,7 +31,7 @@
 #include <src/wireless/rf_driver.hpp>
 
 
-#define TEST_DEVICE
+//#define TEST_DEVICE
 #include <Aurora/hmi>
 #include <src/wireless/rf_driver_internal.hpp>
 
@@ -122,7 +122,7 @@ namespace DC::Tasks::RADIO
     cfg.advanced.mac = macRX;
 #endif
 
-    RF::initialize( cfg );
+    //RF::initialize( cfg );
 
     /*-------------------------------------------------
     Try and send a test frame
@@ -144,7 +144,7 @@ namespace DC::Tasks::RADIO
 
 #else
 
-    RF::datalinkService.setRootEndpointMAC( macRX );
+    //RF::datalinkService.setRootEndpointMAC( macRX );
 
 #endif
 

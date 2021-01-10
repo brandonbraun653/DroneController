@@ -73,10 +73,12 @@ namespace DC::Tasks::FIL
     Wait for initialization command
     -------------------------------------------------*/
     this_thread::pendTaskMsg( ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_BLOCK );
+    Chimera::delayMilliseconds(500);
 
     /*-------------------------------------------------
     Setup LFS
     -------------------------------------------------*/
+    initializeSPI();
     Aurora::Memory::LFS::attachDevice( Aurora::Flash::NOR::Chip::AT25SF081, spiChannel, cfg );
 
     for( auto x = 0; x < 500; x ++)

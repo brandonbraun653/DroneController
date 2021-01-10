@@ -24,7 +24,7 @@ namespace DC::Tasks::FIL
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr size_t STACK                          = STACK_BYTES( 1024 );
+  static constexpr size_t STACK                          = STACK_BYTES( 2048 );
   static constexpr std::string_view NAME                 = "filesystem";
   static constexpr Chimera::Threading::Priority PRIORITY = Chimera::Threading::Priority::LEVEL_3;
 

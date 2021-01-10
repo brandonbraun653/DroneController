@@ -30,7 +30,7 @@ GPIO: Data/Command
 -------------------------------------------------*/
 static constexpr Chimera::GPIO::Pin pinDC_pin   = DC::IO::GFX::pinDC_pin;
 static constexpr Chimera::GPIO::Port pinDC_port = DC::IO::GFX::pinDC_port;
-static Chimera::GPIO::Driver_sPtr pinDC;
+static Chimera::GPIO::Driver_rPtr pinDC;
 
 /*-------------------------------------------------
 GPIO: LCD Reset
@@ -43,7 +43,7 @@ GPIO: LCD Chip Select
 -------------------------------------------------*/
 static constexpr Chimera::GPIO::Pin pinCS_pin   = DC::IO::GFX::pinCS_pin;
 static constexpr Chimera::GPIO::Port pinCS_port = DC::IO::GFX::pinCS_port;
-static Chimera::GPIO::Driver_sPtr pinCS;
+static Chimera::GPIO::Driver_rPtr pinCS;
 
 /*-------------------------------------------------
 SPI
@@ -54,7 +54,7 @@ static constexpr Chimera::GPIO::Pin pinMISO             = DC::IO::GFX::pinMISO;
 static constexpr Chimera::GPIO::Port spiPort            = DC::IO::GFX::spiPort;
 static constexpr Chimera::SPI::Channel spiChannel       = DC::IO::GFX::spiChannel;
 static constexpr Chimera::SPI::TransferMode spiTxfrMode = DC::IO::GFX::spiTxfrMode;
-static Chimera::SPI::Driver_sPtr spi;
+static Chimera::SPI::Driver_rPtr spi;
 
 
 /*-------------------------------------------------------------------------------
