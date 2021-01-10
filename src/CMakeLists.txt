@@ -27,7 +27,7 @@ target_link_libraries(DroneController PRIVATE
   Boost::boost
   chimera_intf_inc
   freertos_inc
-  thor_inc
+  thor_intf_inc
   type_safe_inc
 
   # Project Libraries
