@@ -9,7 +9,11 @@ add_subdirectory(wireless)
 # -----------------------------------------------------------------------------
 # Test Suite: HLD ADC
 #
-# cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DDEVICE_TARGET=stm32l432kb -DCMAKE_BUILD_TYPE=Debug -DGENERATE_MAP_FILE=ON --configure ../
+# Without Map:
+# cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32l432kb -DCMAKE_BUILD_TYPE=Debug --configure ../
+#
+# With Map File:
+# cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32l432kb -DCMAKE_BUILD_TYPE=Debug -DGENERATE_MAP_FILE=ON --configure ../
 # -----------------------------------------------------------------------------
 add_executable(DroneController
   startup.cpp
@@ -27,9 +31,9 @@ target_link_libraries(DroneController PRIVATE
   type_safe_inc
 
   # Project Libraries
-  lib_tasks_rel
-  lib_utility_rel
-  lib_wireless_rel
+  lib_tasks
+  lib_utility
+  lib_wireless
 
   # Graphics Libraries
   ugfx_lib_rel
@@ -39,8 +43,8 @@ target_link_libraries(DroneController PRIVATE
   ripple_core_rel
 
   # File System
-  lfs_core_rel
-  memory_flash_littlefs_rel
+  lfs_core
+  memory_flash_littlefs
 
   # Hardware Libraries
   aurora_core_rel

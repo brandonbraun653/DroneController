@@ -27,7 +27,8 @@
     "*.ipp": "cpp",
     "transport": "cpp",
     "network": "cpp",
-    "allocator": "cpp"
+    "allocator": "cpp",
+    "mutex": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

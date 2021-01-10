@@ -12,27 +12,37 @@
 #ifndef DC_THOR_PERIPHERAL_CONFIGURATION_HPP
 #define DC_THOR_PERIPHERAL_CONFIGURATION_HPP
 
+/*-------------------------------------------------
+Peripheral Support
+-------------------------------------------------*/
+#define DC_NEED_ADC   0
+#define DC_NEED_GPIO  1
+#define DC_NEED_SPI   1
+
 /*----------------------------------------------
 High Level Driver Support
 ----------------------------------------------*/
-#ifndef THOR_HLD_ADC
+#if DC_NEED_ADC
 #define THOR_HLD_ADC
+#define THOR_LLD_ADC
+#endif
+
+#if DC_NEED_GPIO
+#define THOR_HLD_GPIO
+#define THOR_LLD_GPIO
+#endif
+
+#if DC_NEED_SPI
+#define THOR_HLD_SPI
+#define THOR_LLD_SPI
 #endif
 
 #ifndef THOR_HLD_CLK
 #define THOR_HLD_CLK
 #endif
 
-#ifndef THOR_HLD_GPIO
-#define THOR_HLD_GPIO
-#endif
-
 #ifndef THOR_HLD_IWDG
 #define THOR_HLD_IWDG
-#endif
-
-#ifndef THOR_HLD_SPI
-#define THOR_HLD_SPI
 #endif
 
 #ifndef THOR_HLD_SYSTEM
@@ -54,9 +64,7 @@ High Level Driver Support
 /*----------------------------------------------
 Low Level Driver Support
 ----------------------------------------------*/
-#ifndef THOR_LLD_ADC
-#define THOR_LLD_ADC
-#endif
+
 
 #ifndef THOR_LLD_DES
 #define THOR_LLD_DES
@@ -68,10 +76,6 @@ Low Level Driver Support
 
 #ifndef THOR_LLD_FLASH
 #define THOR_LLD_FLASH
-#endif
-
-#ifndef THOR_LLD_GPIO
-#define THOR_LLD_GPIO
 #endif
 
 #ifndef THOR_LLD_IT
@@ -88,10 +92,6 @@ Low Level Driver Support
 
 #ifndef THOR_LLD_RCC
 #define THOR_LLD_RCC
-#endif
-
-#ifndef THOR_LLD_SPI
-#define THOR_LLD_SPI
 #endif
 
 #ifndef THOR_LLD_SYSCFG

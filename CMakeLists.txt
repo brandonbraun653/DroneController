@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18.0)
-project(DroneController VERSION 0.1.0)
-enable_testing()
+project(DroneController NONE)
+enable_language(C CXX ASM)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -40,6 +40,11 @@ add_subdirectory("lib/yaffs2")
 add_library(project_inc INTERFACE)
 target_include_directories(project_inc INTERFACE "${PROJECT_ROOT}" "${PROJECT_ROOT}/src/config")
 export(TARGETS project_inc FILE "${PROJECT_BINARY_DIR}/Project/project_inc.cmake")
+
+
+add_library(freertos_cfg INTERFACE)
+target_include_directories(freertos_cfg INTERFACE "${PROJECT_ROOT}/src/config/freertos")
+export(TARGETS freertos_cfg FILE "${PROJECT_BINARY_DIR}/ProjectConfig/freertos-cfg.cmake")
 
 # Adjust Thor build configuration to use this project's config
 target_compile_definitions(thor_project_config INTERFACE "THOR_USER_CONFIG")

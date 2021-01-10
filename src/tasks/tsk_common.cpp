@@ -63,9 +63,9 @@ namespace DC::Tasks
     /*-------------------------------------------------
     System Thread: Radio
     -------------------------------------------------*/
-    Thread radio;
-    radio.initialize( RADIO::RadioThread, nullptr, RADIO::PRIORITY, RADIO::STACK, RADIO::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( TaskId::RADIO ) ] = radio.start();
+    // Thread radio;
+    // radio.initialize( RADIO::RadioThread, nullptr, RADIO::PRIORITY, RADIO::STACK, RADIO::NAME.cbegin() );
+    // s_thread_id[ static_cast<size_t>( TaskId::RADIO ) ] = radio.start();
 
     /*-------------------------------------------------
     System Thread: File System
