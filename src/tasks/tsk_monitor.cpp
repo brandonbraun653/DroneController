@@ -218,6 +218,7 @@ namespace DC::Tasks::MON
     {
       ThreadId threadId = getThreadId( s_timing_stats[ x ].id );
       Chimera::Threading::sendTaskMsg( threadId, ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
+      Chimera::delayMilliseconds( 3 );
     }
   }
 }    // namespace DC::Tasks::MON

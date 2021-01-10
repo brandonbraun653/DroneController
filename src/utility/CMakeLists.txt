@@ -1,3 +1,5 @@
+include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
+
 # ====================================================
 # Common
 # ====================================================
@@ -13,10 +15,14 @@ set(LINK_LIBS
 # ====================================================
 # Driver Library
 # ====================================================
-set(LIB lib_utility)
-add_library(${LIB} STATIC
-  logger.cpp
-  serial_output.cpp
-)
-target_link_libraries(${LIB} PRIVATE ${LINK_LIBS})
-export(TARGETS ${LIB} FILE "${PROJECT_BINARY_DIR}/DroneController/${LIB}.cmake")
+function(build_library_utility variant)
+  set(LIB lib_utility${variant})
+  add_library(${LIB} STATIC
+    logger.cpp
+    serial_output.cpp
+  )
+  target_link_libraries(${LIB} PRIVATE ${LINK_LIBS} prj_build_target${variant})
+  export(TARGETS ${LIB} FILE "${PROJECT_BINARY_DIR}/DroneController/${LIB}.cmake")
+endfunction()
+
+add_target_variants(build_library_utility)
