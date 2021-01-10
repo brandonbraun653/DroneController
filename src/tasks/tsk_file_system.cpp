@@ -3,7 +3,7 @@
  *    tsk_graphics.cpp
  *
  *  Description:
- *    Implementation of the graphics thread
+ *    Implementation of the file system thread
  *
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/

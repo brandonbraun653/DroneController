@@ -2,7 +2,7 @@
 # Common
 # ====================================================
 set(LINK_LIBS
-  chimera_inc
+  chimera_intf_inc
   ugfx_inc
   project_inc
   prj_device_target

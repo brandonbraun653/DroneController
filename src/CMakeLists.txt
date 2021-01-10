@@ -23,9 +23,9 @@ target_include_directories(DroneController PRIVATE "." )
 
 target_link_libraries(DroneController PRIVATE
   # Public Includes
-  aurora_inc
+  aurora_intf_inc
   Boost::boost
-  chimera_inc
+  chimera_intf_inc
   freertos_inc
   thor_inc
   type_safe_inc
@@ -43,6 +43,7 @@ target_link_libraries(DroneController PRIVATE
   ripple_core_rel
 
   # File System
+  aurora_memory_rel
   lfs_core
   memory_flash_littlefs
 

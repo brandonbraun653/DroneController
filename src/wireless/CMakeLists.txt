@@ -4,7 +4,7 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 # Common
 # ====================================================
 set(LINK_LIBS
-  chimera_inc
+  chimera_intf_inc
   project_inc
   prj_device_target
   ripple_inc
