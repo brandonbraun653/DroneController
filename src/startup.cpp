@@ -5,7 +5,7 @@
  *  Description:
  *    Drone Controller firmware entry point
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* Chimera Includes */
@@ -28,7 +28,7 @@ int main()
   /*-------------------------------------------------
   Project level task power up
   -------------------------------------------------*/
-  DC::Tasks::initialize();
+  //DC::Tasks::initialize();
 
   /*-------------------------------------------------
   Start the system threads. Never returns.

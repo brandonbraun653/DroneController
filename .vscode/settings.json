@@ -28,7 +28,9 @@
     "transport": "cpp",
     "network": "cpp",
     "allocator": "cpp",
-    "mutex": "cpp"
+    "mutex": "cpp",
+    "optional": "cpp",
+    "sstream": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

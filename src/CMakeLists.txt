@@ -11,9 +11,11 @@ add_subdirectory(wireless)
 #
 # Without Map:
 # cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32l432kb -DCMAKE_BUILD_TYPE=Debug --configure ../
+# cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32f446re -DCMAKE_BUILD_TYPE=Debug --configure ../
 #
 # With Map File:
 # cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32l432kb -DCMAKE_BUILD_TYPE=Debug -DGENERATE_MAP_FILE=ON --configure ../
+# cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32f446re -DCMAKE_BUILD_TYPE=Debug -DGENERATE_MAP_FILE=ON --configure ../
 # -----------------------------------------------------------------------------
 add_executable(DroneController
   startup.cpp
@@ -31,21 +33,21 @@ target_link_libraries(DroneController PRIVATE
   type_safe_inc
 
   # Project Libraries
-  lib_tasks
-  lib_utility
-  lib_wireless
+  # lib_tasks
+  # lib_utility
+  # lib_wireless
 
   # Graphics Libraries
-  ugfx_lib_rel
-  ugfx_st7735_lib_rel
+  # ugfx_lib_rel
+  # ugfx_st7735_lib_rel
 
   # Networking Libraries
-  ripple_core_rel
+  # ripple_core_rel
 
   # File System
-  aurora_memory_dbg
-  lfs_core_dbg
-  memory_flash_littlefs_dbg
+  # aurora_memory_dbg
+  # lfs_core_dbg
+  # memory_flash_littlefs_dbg
 
   # Hardware Libraries
   aurora_core_rel
@@ -60,7 +62,7 @@ target_link_libraries(DroneController PRIVATE
   thor_cmn_cm4_rel
   thor_hld_core_rel
   thor_lld_intf_rel
-  thor_lld_stm32l4_rel
+  thor_lld_stm32f4
 
   # Target Properties
   prj_device_target
