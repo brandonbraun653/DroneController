@@ -33,8 +33,8 @@ target_link_libraries(DroneController PRIVATE
   type_safe_inc
 
   # Project Libraries
-  # lib_tasks
-  # lib_utility
+  lib_tasks
+  lib_utility
   # lib_wireless
 
   # Graphics Libraries
@@ -45,9 +45,9 @@ target_link_libraries(DroneController PRIVATE
   # ripple_core_rel
 
   # File System
-  # aurora_memory_dbg
-  # lfs_core_dbg
-  # memory_flash_littlefs_dbg
+  aurora_memory_dbg
+  lfs_core_dbg
+  memory_flash_littlefs_dbg
 
   # Hardware Libraries
   aurora_core_rel
@@ -62,7 +62,7 @@ target_link_libraries(DroneController PRIVATE
   thor_cmn_cm4_rel
   thor_hld_core_rel
   thor_lld_intf_rel
-  thor_lld_stm32f4
+  thor_lld_stm32l4
 
   # Target Properties
   prj_device_target

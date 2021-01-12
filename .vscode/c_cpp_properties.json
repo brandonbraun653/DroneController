@@ -32,8 +32,8 @@
             "defines": [
                 "EMBEDDED",
                 "FREERTOS_CFG_PORT_ARM_CM4F=1",
-                "STM32F446xx",
-                "TARGET_STM32F4",
+                "STM32L432xx",
+                "TARGET_STM32L4",
                 "THOR_USER_CONFIG",
                 "UNICODE",
                 "USING_FREERTOS_THREADS",

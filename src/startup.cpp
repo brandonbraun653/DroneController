@@ -28,7 +28,7 @@ int main()
   /*-------------------------------------------------
   Project level task power up
   -------------------------------------------------*/
-  //DC::Tasks::initialize();
+  DC::Tasks::initialize();
 
   /*-------------------------------------------------
   Start the system threads. Never returns.
