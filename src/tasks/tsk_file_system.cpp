@@ -9,6 +9,9 @@
  *******************************************************************************/
 
 /* Chimera Includes */
+#include <Chimera/common>
+#include <Chimera/interrupt>
+#include <Chimera/serial>
 #include <Chimera/thread>
 
 /* Aurora Includes */
@@ -35,30 +38,48 @@ Forward Declarations
 static void initializeSPI();
 
 
+bool userCallbackInvoked              = false;
+static volatile size_t isrVar         = 0;
+static volatile size_t lastInvocation = 0;
+static Chimera::Interrupt::SignalCallback callbackRegistry;
+
+static void userCallback( const Chimera::Interrupt::SignalCallback * )
+{
+  if ( ( Chimera::millis() - lastInvocation ) > 5000 )
+  {
+    lastInvocation      = Chimera::millis();
+    userCallbackInvoked = true;
+  }
+}
+
+static void fastCallback()
+{
+  isrVar++;
+}
+
+
 /*-------------------------------------------------
 LFS Data
 -------------------------------------------------*/
 lfs_t lfs;
 static lfs_file_t file;
 
-lfs_config cfg = {
-  .context = nullptr,
+lfs_config cfg = { .context = nullptr,
 
-  // Block device operations
-  .read = lfs_safe_read,
-  .prog = lfs_safe_prog,
-  .erase = lfs_safe_erase,
-  .sync = lfs_safe_sync,
+                   // Block device operations
+                   .read  = lfs_safe_read,
+                   .prog  = lfs_safe_prog,
+                   .erase = lfs_safe_erase,
+                   .sync  = lfs_safe_sync,
 
-  // Block device configuration
-  .read_size = 16,
-  .prog_size = 16,
-  .block_size = 4096,
-  .block_count = 256,
-  .block_cycles = 500,
-  .cache_size = 16,
-  .lookahead_size = 16
-};
+                   // Block device configuration
+                   .read_size      = 16,
+                   .prog_size      = 16,
+                   .block_size     = 4096,
+                   .block_count    = 256,
+                   .block_cycles   = 500,
+                   .cache_size     = 16,
+                   .lookahead_size = 16 };
 
 namespace DC::Tasks::FIL
 {
@@ -68,12 +89,21 @@ namespace DC::Tasks::FIL
   void FileSystemThread( void *arg )
   {
     using namespace Chimera::Threading;
+    using namespace Chimera::Interrupt;
+    using namespace Chimera::Peripheral;
 
     /*-------------------------------------------------
     Wait for initialization command
     -------------------------------------------------*/
     this_thread::pendTaskMsg( ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_BLOCK );
-    Chimera::delayMilliseconds(500);
+    Chimera::delayMilliseconds( 500 );
+
+    /*-------------------------------------------------
+    Testing: Register some ISR handlers
+    -------------------------------------------------*/
+    callbackRegistry.isrCallback  = ISRCallback::create<fastCallback>();
+    callbackRegistry.userCallback = UserCallback::create<userCallback>();
+    registerISRHandler( Type::PERIPH_USART, Chimera::Serial::SIG_TX_COMPLETE, callbackRegistry );
 
     /*-------------------------------------------------
     Setup LFS
@@ -81,7 +111,7 @@ namespace DC::Tasks::FIL
     initializeSPI();
     Aurora::Memory::LFS::attachDevice( Aurora::Flash::NOR::Chip::AT25SF081, spiChannel, cfg );
 
-    for( auto x = 0; x < 500; x ++)
+    for ( auto x = 0; x < 500; x++ )
     {
       // mount the filesystem
       int err = lfs_mount( &lfs, &cfg );
@@ -96,8 +126,8 @@ namespace DC::Tasks::FIL
 
       // read current count
       uint32_t boot_count = 0;
-      err = lfs_file_open( &lfs, &file, "boot_count", LFS_O_RDWR | LFS_O_CREAT );
-      err = lfs_file_read( &lfs, &file, &boot_count, sizeof( boot_count ) );
+      err                 = lfs_file_open( &lfs, &file, "boot_count", LFS_O_RDWR | LFS_O_CREAT );
+      err                 = lfs_file_read( &lfs, &file, &boot_count, sizeof( boot_count ) );
 
       // update boot count
       boot_count += 1;
@@ -112,6 +142,11 @@ namespace DC::Tasks::FIL
 
       // print the boot count
       uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "boot count: %d\r\n", boot_count );
+      if( userCallbackInvoked )
+      {
+        userCallbackInvoked = false;
+        uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "User callback %d invoked!\n", isrVar );
+      }
     }
 
     size_t lastWoken;

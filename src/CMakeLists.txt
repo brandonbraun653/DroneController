@@ -60,9 +60,9 @@ target_link_libraries(DroneController PRIVATE
   freertos_port
   thor_cfg_freertos_rel
   thor_cmn_cm4_rel
-  thor_hld_core_rel
-  thor_lld_intf_rel
-  thor_lld_stm32l4
+  thor_hld_core_dbg
+  thor_lld_intf_dbg
+  thor_lld_stm32l4_dbg
 
   # Target Properties
   prj_device_target

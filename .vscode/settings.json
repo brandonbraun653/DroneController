@@ -30,7 +30,9 @@
     "allocator": "cpp",
     "mutex": "cpp",
     "optional": "cpp",
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "common": "cpp",
+    "interrupt": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",
