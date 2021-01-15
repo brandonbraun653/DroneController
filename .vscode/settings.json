@@ -32,7 +32,11 @@
     "optional": "cpp",
     "sstream": "cpp",
     "common": "cpp",
-    "interrupt": "cpp"
+    "interrupt": "cpp",
+    "flash": "cpp",
+    "timer": "cpp",
+    "sys": "cpp",
+    "power": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",
