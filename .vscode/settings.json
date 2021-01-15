@@ -36,7 +36,11 @@
     "flash": "cpp",
     "timer": "cpp",
     "sys": "cpp",
-    "power": "cpp"
+    "power": "cpp",
+    "usart": "cpp",
+    "uart": "cpp",
+    "gpio": "cpp",
+    "spi": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",
