@@ -16,9 +16,10 @@
 Peripheral Support
 -------------------------------------------------*/
 #define DC_NEED_ADC   0
-#define DC_NEED_GPIO  1
-#define DC_NEED_SPI   1
+#define DC_NEED_GPIO  0
+#define DC_NEED_SPI   0
 #define DC_NEED_INT   1
+#define DC_NEED_WDG   0
 
 /*----------------------------------------------
 High Level Driver Support
@@ -43,28 +44,17 @@ High Level Driver Support
 #define THOR_LLD_SPI
 #endif
 
+#if DC_NEED_WDG
+#define THOR_HLD_IWDG
+#define THOR_LLD_IWDG
+#endif
+
 #ifndef THOR_HLD_CLK
 #define THOR_HLD_CLK
 #endif
 
-#ifndef THOR_HLD_IWDG
-#define THOR_HLD_IWDG
-#endif
-
 #ifndef THOR_HLD_SYSTEM
 #define THOR_HLD_SYSTEM
-#endif
-
-#ifndef THOR_HLD_UART
-#define THOR_HLD_UART
-#endif
-
-#ifndef THOR_HLD_USART
-#define THOR_HLD_USART
-#endif
-
-#ifndef THOR_HLD_WWDG
-#define THOR_HLD_WWDG
 #endif
 
 /*----------------------------------------------
@@ -82,14 +72,6 @@ Low Level Driver Support
 #define THOR_LLD_FLASH
 #endif
 
-#ifndef THOR_LLD_IT
-#define THOR_LLD_IT
-#endif
-
-#ifndef THOR_LLD_IWDG
-#define THOR_LLD_IWDG
-#endif
-
 #ifndef THOR_LLD_PWR
 #define THOR_LLD_PWR
 #endif
@@ -100,18 +82,6 @@ Low Level Driver Support
 
 #ifndef THOR_LLD_SYSCFG
 #define THOR_LLD_SYSCFG
-#endif
-
-#ifndef THOR_LLD_UART
-#define THOR_LLD_UART
-#endif
-
-#ifndef THOR_LLD_USART
-#define THOR_LLD_USART
-#endif
-
-#ifndef THOR_LLD_WWDG
-#define THOR_LLD_WWDG
 #endif
 
 #endif /* !DC_THOR_PERIPHERAL_CONFIGURATION_HPP */

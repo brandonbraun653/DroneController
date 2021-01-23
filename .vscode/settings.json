@@ -1,5 +1,6 @@
 {
   "files.associations": {
+    "*.JLinkScript": "plaintext",
     "algorithm": "cpp",
     "strstream": "cpp",
     "*.tcc": "cpp",
@@ -40,7 +41,8 @@
     "usart": "cpp",
     "uart": "cpp",
     "gpio": "cpp",
-    "spi": "cpp"
+    "spi": "cpp",
+    "array": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",
