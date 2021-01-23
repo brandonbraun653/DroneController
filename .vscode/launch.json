@@ -2,9 +2,9 @@
   "version":"0.2.0",
   "configurations": [
     {
-      "name": "Last Built Version (L4-JLink)",
+      "name": "Last Built Version (Luminary-JLink)",
       "cwd": "${workspaceRoot}",
-      "executable": "./build/artifacts/bin/last_build_version/sys_image",
+      "executable": "./artifacts/last_build_version/sys_image",
       "request": "launch",
       "type": "cortex-debug",
       "servertype": "jlink",
@@ -14,9 +14,9 @@
       "armToolchainPath": "/home/braunbr/programs/gcc/gcc-arm-none-eabi-9-2020-q2-update/bin",
     },
     {
-      "name": "Last Built Version (F446-JLink)",
+      "name": "Last Built Version (NucleoF446-JLink)",
       "cwd": "${workspaceRoot}",
-      "executable": "./build/artifacts/bin/last_build_version/sys_image",
+      "executable": "./artifacts/last_build_version/sys_image",
       "request": "launch",
       "type": "cortex-debug",
       "servertype": "jlink",

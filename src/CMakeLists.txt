@@ -71,5 +71,5 @@ target_link_libraries(DroneController PRIVATE
 
 target_include_directories(DroneController PRIVATE ${PROJECT_ROOT})
 add_custom_command(TARGET DroneController POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DroneController> ${LAST_BUILT_VERSION_DIRECTORY}/sys_image
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DroneController> ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sys_image
 )
