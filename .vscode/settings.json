@@ -42,7 +42,8 @@
     "uart": "cpp",
     "gpio": "cpp",
     "spi": "cpp",
-    "array": "cpp"
+    "array": "cpp",
+    "exti": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",
