@@ -1,0 +1,83 @@
+Date : 2021-01-25 19:58:30
+Directory : /home/braunbr/git/Projects/DroneController/lib/Ripple
+Total : 46 files,  3654 codes, 2861 comments, 1184 blanks, all 7699 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C++      |         40 |      3,479 |      2,861 |      1,148 |      7,488 |
+| Markdown |          5 |        102 |          0 |         33 |        135 |
+| YAML     |          1 |         73 |          0 |          3 |         76 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                       | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                          |         46 |      3,654 |      2,861 |      1,184 |      7,699 |
+| doc                                                                                                        |          4 |         97 |          0 |         31 |        128 |
+| inc                                                                                                        |          5 |         32 |         45 |         20 |         97 |
+| inc/Ripple                                                                                                 |          5 |         32 |         45 |         20 |         97 |
+| src                                                                                                        |         35 |      3,447 |      2,816 |      1,128 |      7,391 |
+| src/datalink                                                                                               |          7 |        627 |        583 |        221 |      1,431 |
+| src/network                                                                                                |          2 |         31 |         44 |         18 |         93 |
+| src/physical                                                                                               |          9 |      2,022 |      1,407 |        580 |      4,009 |
+| src/session                                                                                                |          9 |        441 |        414 |        176 |      1,031 |
+| src/session/process                                                                                        |          4 |        131 |         53 |         65 |        249 |
+| src/shared                                                                                                 |          4 |         93 |        134 |         39 |        266 |
+| src/transport                                                                                              |          3 |        221 |        217 |         89 |        527 |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                   | language | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/.clang-format                                        | YAML     |         73 |          0 |          3 |         76 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/README.md                                            | Markdown |          5 |          0 |          2 |          7 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/doc/architecture.md                                  | Markdown |         47 |          0 |         14 |         61 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/doc/brainstorm.md                                    | Markdown |         16 |          0 |          7 |         23 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/doc/features_and_tasks.md                            | Markdown |          5 |          0 |          2 |          7 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/doc/pipe_allocation.md                               | Markdown |         29 |          0 |          8 |         37 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/inc/Ripple/network                                   | C++      |          5 |          9 |          4 |         18 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/inc/Ripple/physical                                  | C++      |          9 |          9 |          4 |         22 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/inc/Ripple/session                                   | C++      |          6 |          9 |          4 |         19 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/inc/Ripple/shared                                    | C++      |          6 |          9 |          4 |         19 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/inc/Ripple/transport                                 | C++      |          6 |          9 |          4 |         19 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/datalink/data_link_arp.cpp                       | C++      |         59 |         26 |         23 |        108 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/datalink/data_link_arp.hpp                       | C++      |         29 |         54 |         16 |         99 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/datalink/data_link_driver.cpp                    | C++      |         18 |         13 |          5 |         36 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/datalink/data_link_driver.hpp                    | C++      |         10 |         19 |          6 |         35 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/datalink/data_link_service.cpp                   | C++      |        359 |        240 |        111 |        710 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/datalink/data_link_service.hpp                   | C++      |         61 |        153 |         33 |        247 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/datalink/data_link_types.hpp                     | C++      |         91 |         78 |         27 |        196 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/network/network_thread.cpp                       | C++      |          0 |          0 |          1 |          1 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/network/network_types.hpp                        | C++      |         31 |         44 |         17 |         92 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/physical/phy_device_constants.hpp                | C++      |         21 |         20 |          9 |         50 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/physical/phy_device_driver.cpp                   | C++      |        976 |        482 |        277 |      1,735 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/physical/phy_device_driver.hpp                   | C++      |         62 |        411 |         61 |        534 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/physical/phy_device_internal.cpp                 | C++      |        164 |         75 |         48 |        287 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/physical/phy_device_internal.hpp                 | C++      |         25 |        130 |         20 |        175 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/physical/phy_device_register.hpp                 | C++      |        260 |         67 |         23 |        350 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/physical/phy_device_types.hpp                    | C++      |        214 |         71 |         40 |        325 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/physical/phy_fsm_controller.cpp                  | C++      |        202 |         64 |         66 |        332 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/physical/phy_fsm_controller.hpp                  | C++      |         98 |         87 |         36 |        221 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/session/process/process_establish_connection.cpp | C++      |         29 |         13 |         17 |         59 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/session/process/process_intf.hpp                 | C++      |         44 |         13 |         13 |         70 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/session/process/process_join_network.cpp         | C++      |         29 |         14 |         18 |         61 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/session/process/process_terminate_connection.cpp | C++      |         29 |         13 |         17 |         59 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/session/session_process.hpp                      | C++      |         46 |         61 |         19 |        126 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/session/session_service.cpp                      | C++      |        127 |         69 |         37 |        233 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/session/session_service.hpp                      | C++      |         40 |         89 |         22 |        151 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/session/session_types.hpp                        | C++      |         79 |         59 |         18 |        156 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/session/session_user.hpp                         | C++      |         18 |         83 |         15 |        116 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/shared/cmn_memory_config.hpp                     | C++      |         47 |         80 |         18 |        145 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/shared/cmn_types.hpp                             | C++      |          9 |         10 |          6 |         25 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/shared/cmn_utils.cpp                             | C++      |         24 |         15 |          7 |         46 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/shared/cmn_utils.hpp                             | C++      |         13 |         29 |          8 |         50 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/transport/transport_service.cpp                  | C++      |        127 |         78 |         45 |        250 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/transport/transport_service.hpp                  | C++      |         44 |        108 |         25 |        177 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/transport/transport_types.hpp                    | C++      |         50 |         31 |         19 |        100 |
+| /home/braunbr/git/Projects/DroneController/lib/Ripple/src/version.hpp                                      | C++      |         12 |         17 |          5 |         34 |
+| Total                                                                                                      |          |      3,654 |      2,861 |      1,184 |      7,699 |
++------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

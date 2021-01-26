@@ -19,7 +19,9 @@ Peripheral Support
 #define DC_NEED_GPIO  1
 #define DC_NEED_SPI   1
 #define DC_NEED_INT   1
-#define DC_NEED_WDG   0
+#define DC_NEED_UART  1
+#define DC_NEED_USART 1
+#define DC_NEED_WDG   1
 
 /*----------------------------------------------
 High Level Driver Support
@@ -44,9 +46,21 @@ High Level Driver Support
 #define THOR_LLD_SPI
 #endif
 
+#if DC_NEED_UART
+#define THOR_HLD_UART
+#define THOR_LLD_UART
+#endif
+
+#if DC_NEED_USART
+#define THOR_HLD_USART
+#define THOR_LLD_USART
+#endif
+
 #if DC_NEED_WDG
 #define THOR_HLD_IWDG
+#define THOR_HLD_WWDG
 #define THOR_LLD_IWDG
+#define THOR_LLD_WWDG
 #endif
 
 #ifndef THOR_HLD_CLK
