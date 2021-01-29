@@ -23,9 +23,9 @@
 #include <Ripple/shared>
 
 /* Project Includes */
-#include <src/config/board_map.hpp>
+#include <src/config/bsp/board_map.hpp>
 #include <src/tasks/tsk_common.hpp>
-#include <src/tasks/tsk_monitor.hpp>
+#include <src/tasks/tsk_background.hpp>
 #include <src/tasks/tsk_radio.hpp>
 #include <src/utility/logger.hpp>
 #include <src/wireless/rf_driver.hpp>
@@ -67,12 +67,6 @@ namespace DC::Tasks::RADIO
     Wait to be told to initialize by monitor thread
     -------------------------------------------------*/
     waitInit();
-
-    /*-------------------------------------------------
-    Initialize the logging utility
-    -------------------------------------------------*/
-    DC::UTL::initializeLogger( uLog::Level::LVL_DEBUG );
-    uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Power on device\r\n" );
 
     /*-------------------------------------------------
     Configure the HMI device for TX triggering
@@ -161,7 +155,7 @@ namespace DC::Tasks::RADIO
 #endif
 
       // Process the data pipes here?
-      MON::kickDog( TaskId::RADIO );
+      BKGD::kickDog( TaskId::RADIO );
       Chimera::delayMilliseconds( 10 );
     }
   }

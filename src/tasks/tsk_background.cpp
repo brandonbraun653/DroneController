@@ -3,10 +3,13 @@
  *    tsk_monitor.cpp
  *
  *  Description:
- *    Implements a watchdog task that monitors all other system tasks. Inspired
- *    by the excellent Jack Ganssle: http://www.ganssle.com/watchdogs.htm
+ *    Implements a watchdog task that monitors all other system tasks. Also used
+ *    as the background task if no other tasks can execute.
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *    Inspired by the excellent Jack Ganssle:
+ *    http://www.ganssle.com/watchdogs.htm
+ *
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* Chimera Includes */
@@ -17,15 +20,16 @@
 
 /* Project Includes */
 #include <src/tasks/tsk_common.hpp>
+#include <src/system/power_up.hpp>
 
 
-namespace DC::Tasks::MON
+namespace DC::Tasks::BKGD
 {
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
   static constexpr size_t QUEUE_SIZE       = 300;  /**< Number of queue events to hold */
-  static constexpr size_t TSK_PERIOD       = 100;  /**< How often the MON task should run in ms */
+  static constexpr size_t TSK_PERIOD       = 100;  /**< How often the BKGD task should run in ms */
   static constexpr size_t HW_WDG_TIMEOUT   = 5000; /**< Max timeout before hardware reset */
   static constexpr size_t HW_WDG_KICK_RATE = 150;  /**< How often the hardware watchdog should be kicked */
 
@@ -86,9 +90,14 @@ namespace DC::Tasks::MON
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  void MonitorThread( void *arg )
+  void BackgroundThread( void *arg )
   {
     using namespace Chimera::Threading;
+
+    /*-------------------------------------------------
+    Power up the various hardware modules
+    -------------------------------------------------*/
+    SYS::powerUpModules();
 
     /*-------------------------------------------------
     Monitor system threads
@@ -221,4 +230,4 @@ namespace DC::Tasks::MON
       Chimera::delayMilliseconds( 3 );
     }
   }
-}    // namespace DC::Tasks::MON
+}    // namespace DC::Tasks::BKGD

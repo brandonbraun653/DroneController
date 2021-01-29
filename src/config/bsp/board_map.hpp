@@ -16,6 +16,7 @@
 #include <Chimera/exti>
 #include <Chimera/gpio>
 #include <Chimera/spi>
+#include <Chimera/serial>
 
 // Until the full PCB is made, the dev board is a Nucleo-F446RE
 #include <Chimera/bsp/nucleo/nucleo_f446re.hpp>
@@ -60,11 +61,11 @@ namespace DC::IO
     static constexpr Chimera::SPI::Channel spiChannel       = Chimera::SPI::Channel::SPI1;
     static constexpr Chimera::SPI::TransferMode spiTxfrMode = Chimera::SPI::TransferMode::INTERRUPT;
     static constexpr Chimera::SPI::BitOrder spiBitOrder     = Chimera::SPI::BitOrder::MSB_FIRST;
-    static constexpr Chimera::SPI::ClockFreq spiClockFreq   = 32000000;
+    static constexpr Chimera::SPI::ClockFreq spiClockFreq   = 8 * 1000000;
     static constexpr Chimera::SPI::ClockMode spiClockMode   = Chimera::SPI::ClockMode::MODE0;
     static constexpr Chimera::SPI::CSMode spiChipSelectMode = Chimera::SPI::CSMode::MANUAL;
     static constexpr Chimera::SPI::DataSize spiDataSize     = Chimera::SPI::DataSize::SZ_8BIT;
-  }
+  }    // namespace NOR
 
   /*-------------------------------------------------------------------------------
   Graphics Hardware - SPI2
@@ -112,7 +113,6 @@ namespace DC::IO
     static constexpr Chimera::SPI::DataSize spiDataSize     = Chimera::SPI::DataSize::SZ_8BIT;
   }    // namespace GFX
 
-
   /*-------------------------------------------------------------------------------
   Radio Hardware - SPI3
   -------------------------------------------------------------------------------*/
@@ -159,6 +159,20 @@ namespace DC::IO
     static constexpr Chimera::SPI::DataSize spiDataSize     = GFX::spiDataSize;
   }    // namespace Radio
 
+  /*-------------------------------------------------------------------------------
+  Debug Port
+  -------------------------------------------------------------------------------*/
+  namespace DBG
+  {
+    /*-------------------------------------------------
+    USART serial output
+    -------------------------------------------------*/
+    static constexpr Chimera::Serial::Channel serialChannel = Chimera::Serial::Channel::SERIAL2;
+
+    extern const Chimera::Serial::Config comConfig;
+    extern const Chimera::GPIO::PinInit txPinInit;
+    extern const Chimera::GPIO::PinInit rxPinInit;
+  }    // namespace DBG
 }    // namespace DC::IO
 
 #endif /* !DC_BOARD_MAP_HPP */

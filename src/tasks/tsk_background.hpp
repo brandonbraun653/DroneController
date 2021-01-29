@@ -19,7 +19,7 @@
 #include <src/tasks/tsk_common.hpp>
 
 
-namespace DC::Tasks::MON
+namespace DC::Tasks::BKGD
 {
   /*-------------------------------------------------------------------------------
   Constants
@@ -31,7 +31,7 @@ namespace DC::Tasks::MON
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  void MonitorThread( void *arg );
+  void BackgroundThread( void *arg );
 
   /**
    *  Kicks the software watchdog for the given task
@@ -41,6 +41,6 @@ namespace DC::Tasks::MON
    */
   void kickDog( const TaskId task );
 
-}    // namespace DC::Tasks::MON
+}    // namespace DC::Tasks::BKGD
 
 #endif /* !DC_TASK_MONITOR_HPP */

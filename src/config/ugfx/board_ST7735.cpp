@@ -21,7 +21,7 @@
 #include "board_ST7735.h"
 
 /* Project Includes */
-#include <src/config/board_map.hpp>
+#include <src/config/bsp/board_map.hpp>
 
 /*-------------------------------------------------------------------------------
 Static Variables

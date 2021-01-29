@@ -16,7 +16,7 @@
 #include <src/tasks/tsk_common.hpp>
 #include <src/tasks/tsk_graphics.hpp>
 #include <src/tasks/tsk_heartbeat.hpp>
-#include <src/tasks/tsk_monitor.hpp>
+#include <src/tasks/tsk_background.hpp>
 #include <src/tasks/tsk_radio.hpp>
 #include <src/tasks/tsk_file_system.hpp>
 
@@ -50,7 +50,7 @@ namespace DC::Tasks
     System Thread: Watchdog
     -------------------------------------------------*/
     Thread watchdog;
-    watchdog.initialize( MON::MonitorThread, nullptr, MON::PRIORITY, MON::STACK, MON::NAME.cbegin() );
+    watchdog.initialize( BKGD::BackgroundThread, nullptr, BKGD::PRIORITY, BKGD::STACK, BKGD::NAME.cbegin() );
     s_thread_id[ static_cast<size_t>( TaskId::MONITOR ) ] = watchdog.start();
 
     /*-------------------------------------------------

@@ -2,10 +2,9 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 
 gen_static_lib_variants(
   TARGET
-    lib_utility
+    lib_config
   SOURCES
-    logger.cpp
-    serial_output.cpp
+    board_map.cpp
   PRV_LIBRARIES
     Boost::boost
     chimera_intf_inc

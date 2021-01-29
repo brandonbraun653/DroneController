@@ -12,6 +12,7 @@
 #include <Aurora/logging>
 
 /* Testing Includes */
+#include <src/config/bsp/board_map.hpp>
 #include <src/utility/logger.hpp>
 #include <src/utility/serial_output.hpp>
 
@@ -29,14 +30,9 @@ namespace DC::UTL
   void initializeLogger( const uLog::Level lvl )
   {
     /*-------------------------------------------------
-    Initialize the serial hardware
-    -------------------------------------------------*/
-    initializeSerial();
-
-    /*-------------------------------------------------
     Initialize the logger sink
     -------------------------------------------------*/
-    sink.assignChannel( serialChannel );
+    sink.assignChannel( DC::IO::DBG::serialChannel );
     sink.setLogLevel( lvl );
     sink.enable();
     sink.setName( "HWLogger" );

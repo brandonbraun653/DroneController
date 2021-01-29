@@ -12,10 +12,10 @@
 #include <Chimera/gpio>
 
 /* Testing Includes */
-#include <src/config/board_map.hpp>
+#include <src/config/bsp/board_map.hpp>
 #include <src/tasks/tsk_common.hpp>
 #include <src/tasks/tsk_heartbeat.hpp>
-#include <src/tasks/tsk_monitor.hpp>
+#include <src/tasks/tsk_background.hpp>
 
 namespace DC::Tasks::HB
 {
@@ -57,12 +57,12 @@ namespace DC::Tasks::HB
     {
       pin->toggle();
       Chimera::delayMilliseconds( 35 );
-      MON::kickDog( TaskId::HEART_BEAT );
+      BKGD::kickDog( TaskId::HEART_BEAT );
     }
 
-    MON::kickDog( TaskId::HEART_BEAT );
+    BKGD::kickDog( TaskId::HEART_BEAT );
     Chimera::delayMilliseconds( 500 );
-    MON::kickDog( TaskId::HEART_BEAT );
+    BKGD::kickDog( TaskId::HEART_BEAT );
 
     /*-------------------------------------------------
     Run the heartbeat animation
@@ -76,7 +76,7 @@ namespace DC::Tasks::HB
       Chimera::delayMilliseconds( 100 );
       pin->setState( State::LOW );
       Chimera::delayMilliseconds( 100 );
-      MON::kickDog( TaskId::HEART_BEAT );
+      BKGD::kickDog( TaskId::HEART_BEAT );
 
       /*-------------------------------------------------
       High pulse #2
@@ -85,13 +85,13 @@ namespace DC::Tasks::HB
       Chimera::delayMilliseconds( 100 );
       pin->setState( State::LOW );
       Chimera::delayMilliseconds( 100 );
-      MON::kickDog( TaskId::HEART_BEAT );
+      BKGD::kickDog( TaskId::HEART_BEAT );
 
       /*-------------------------------------------------
       Hold longer time in off state
       -------------------------------------------------*/
       Chimera::delayMilliseconds( 450 );
-      MON::kickDog( TaskId::HEART_BEAT );
+      BKGD::kickDog( TaskId::HEART_BEAT );
     }
   }
 }    // namespace DC::Tasks::HB

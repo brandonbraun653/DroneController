@@ -22,7 +22,7 @@
 #include <Ripple/physical>
 
 /* Project Includes */
-#include <src/config/board_map.hpp>
+#include <src/config/bsp/board_map.hpp>
 #include <src/wireless/rf_driver_internal.hpp>
 
 namespace DC::RF

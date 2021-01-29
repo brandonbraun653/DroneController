@@ -1,7 +1,10 @@
 # -----------------------------------------------------------------------------
 # Project Libraries
 # -----------------------------------------------------------------------------
+add_subdirectory(config/bsp)
 add_subdirectory(config/ugfx)
+add_subdirectory(registry)
+add_subdirectory(system)
 add_subdirectory(tasks)
 add_subdirectory(utility)
 add_subdirectory(wireless)
@@ -33,9 +36,15 @@ target_link_libraries(DroneController PRIVATE
   type_safe_inc
 
   # Project Libraries
+  lib_config
+  lib_registry
+  lib_system
   lib_tasks
   lib_utility
   # lib_wireless
+
+  # Board Support Libraries
+  bsp_nucleo_f446re
 
   # Graphics Libraries
   ugfx_lib_dbg

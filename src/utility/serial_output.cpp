@@ -19,6 +19,7 @@
 
 /* Testing Includes */
 #include <src/utility/serial_output.hpp>
+#include <src/config/bsp/board_map.hpp>
 
 
 /*-------------------------------------------------
@@ -50,42 +51,23 @@ namespace DC::UTL
     Configuration info for the serial object
     ------------------------------------------------*/
     IOPins pins;
-    pins.tx.alternate = Chimera::GPIO::Alternate::USART1_TX;
-    pins.tx.drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL;
-    pins.tx.pin       = 9;
-    pins.tx.port      = Chimera::GPIO::Port::PORTA;
-    pins.tx.pull      = Chimera::GPIO::Pull::NO_PULL;
-    pins.tx.threaded  = true;
-    pins.tx.validity  = true;
+    pins.tx = DC::IO::DBG::txPinInit;
+    pins.rx = DC::IO::DBG::rxPinInit;
 
-    pins.rx.alternate = Chimera::GPIO::Alternate::USART1_RX;
-    pins.rx.drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL;
-    pins.rx.pin       = 10;
-    pins.rx.port      = Chimera::GPIO::Port::PORTA;
-    pins.rx.pull      = Chimera::GPIO::Pull::NO_PULL;
-    pins.rx.threaded  = true;
-    pins.rx.validity  = true;
-
-
-    Config cfg;
-    cfg.baud     = 115200;
-    cfg.flow     = FlowControl::FCTRL_NONE;
-    cfg.parity   = Parity::PAR_NONE;
-    cfg.stopBits = StopBits::SBITS_ONE;
-    cfg.width    = CharWid::CW_8BIT;
+    Config cfg = DC::IO::DBG::comConfig;
 
     /*------------------------------------------------
     Create the serial object and initialize it
     ------------------------------------------------*/
     auto result = Chimera::Status::OK;
-    auto Serial = Chimera::Serial::getDriver( serialChannel );
+    auto Serial = Chimera::Serial::getDriver( DC::IO::DBG::serialChannel );
 
     if ( !Serial )
     {
       Chimera::insert_debug_breakpoint();
     }
 
-    result |= Serial->assignHW( serialChannel, pins );
+    result |= Serial->assignHW( DC::IO::DBG::serialChannel, pins );
     result |= Serial->configure( cfg );
     result |= Serial->enableBuffering( SubPeripheral::TX, &sTXCircularBuffer, sTXHWBuffer.data(), sTXHWBuffer.size() );
     result |= Serial->enableBuffering( SubPeripheral::RX, &sRXCircularBuffer, sRXHWBuffer.data(), sRXHWBuffer.size() );
