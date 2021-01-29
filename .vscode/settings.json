@@ -43,7 +43,8 @@
     "gpio": "cpp",
     "spi": "cpp",
     "array": "cpp",
-    "exti": "cpp"
+    "exti": "cpp",
+    "serial": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

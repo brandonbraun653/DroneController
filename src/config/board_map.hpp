@@ -17,6 +17,9 @@
 #include <Chimera/gpio>
 #include <Chimera/spi>
 
+// Until the full PCB is made, the dev board is a Nucleo-F446RE
+#include <Chimera/bsp/nucleo/nucleo_f446re.hpp>
+
 namespace DC::IO
 {
   /*-------------------------------------------------------------------------------
@@ -27,12 +30,44 @@ namespace DC::IO
     /*-------------------------------------------------
     Heartbeat
     -------------------------------------------------*/
-    static constexpr Chimera::GPIO::Pin pinHeartbeat   = 14;
-    static constexpr Chimera::GPIO::Port portHeartbeat = Chimera::GPIO::Port::PORTC;
+    static constexpr Chimera::GPIO::Pin pinHeartbeat   = 8;
+    static constexpr Chimera::GPIO::Port portHeartbeat = Chimera::GPIO::Port::PORTA;
   }    // namespace LED
 
   /*-------------------------------------------------------------------------------
-  Graphics Hardware
+  NOR Flash - SPI1
+  -------------------------------------------------------------------------------*/
+  namespace NOR
+  {
+    /*-------------------------------------------------
+    GPIO
+    -------------------------------------------------*/
+    static constexpr Chimera::GPIO::Pin sckPin        = BSP::Nucleo::F446RE::SPI::SPI1::sckPin;
+    static constexpr Chimera::GPIO::Port sckPort      = BSP::Nucleo::F446RE::SPI::SPI1::sckPort;
+    static constexpr Chimera::GPIO::Alternate sckAlt  = Chimera::GPIO::Alternate::SPI1_SCK;
+    static constexpr Chimera::GPIO::Pin mosiPin       = BSP::Nucleo::F446RE::SPI::SPI1::mosiPin;
+    static constexpr Chimera::GPIO::Port mosiPort     = BSP::Nucleo::F446RE::SPI::SPI1::mosiPort;
+    static constexpr Chimera::GPIO::Alternate mosiAlt = Chimera::GPIO::Alternate::SPI1_MOSI;
+    static constexpr Chimera::GPIO::Pin misoPin       = BSP::Nucleo::F446RE::SPI::SPI1::misoPin;
+    static constexpr Chimera::GPIO::Port misoPort     = BSP::Nucleo::F446RE::SPI::SPI1::misoPort;
+    static constexpr Chimera::GPIO::Alternate misoAlt = Chimera::GPIO::Alternate::SPI1_MISO;
+    static constexpr Chimera::GPIO::Pin csPin         = BSP::Nucleo::F446RE::SPI::SPI1::csPin;
+    static constexpr Chimera::GPIO::Port csPort       = BSP::Nucleo::F446RE::SPI::SPI1::csPort;
+
+    /*-------------------------------------------------
+    SPI
+    -------------------------------------------------*/
+    static constexpr Chimera::SPI::Channel spiChannel       = Chimera::SPI::Channel::SPI1;
+    static constexpr Chimera::SPI::TransferMode spiTxfrMode = Chimera::SPI::TransferMode::INTERRUPT;
+    static constexpr Chimera::SPI::BitOrder spiBitOrder     = Chimera::SPI::BitOrder::MSB_FIRST;
+    static constexpr Chimera::SPI::ClockFreq spiClockFreq   = 32000000;
+    static constexpr Chimera::SPI::ClockMode spiClockMode   = Chimera::SPI::ClockMode::MODE0;
+    static constexpr Chimera::SPI::CSMode spiChipSelectMode = Chimera::SPI::CSMode::MANUAL;
+    static constexpr Chimera::SPI::DataSize spiDataSize     = Chimera::SPI::DataSize::SZ_8BIT;
+  }
+
+  /*-------------------------------------------------------------------------------
+  Graphics Hardware - SPI2
   -------------------------------------------------------------------------------*/
   namespace GFX
   {
@@ -79,7 +114,7 @@ namespace DC::IO
 
 
   /*-------------------------------------------------------------------------------
-  Radio Hardware
+  Radio Hardware - SPI3
   -------------------------------------------------------------------------------*/
   namespace Radio
   {

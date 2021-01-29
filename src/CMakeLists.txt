@@ -55,19 +55,26 @@ target_link_libraries(DroneController PRIVATE
   aurora_logging_rel
   chimera_core_dbg
   freertos_cfg
-  freertos_core_rel
+  freertos_core_dbg
   freertos_heap
   freertos_port
   thor_cfg_freertos_rel
-  thor_cmn_cm4_rel
+  thor_cmn_cm4_dbg
   thor_hld_core_dbg
   thor_lld_intf_dbg
-  thor_lld_stm32f4_dbg
 
   # Target Properties
   prj_device_target
   prj_build_target
 )
+
+if(${DEVICE_TARGET} MATCHES "^stm32l4")
+  target_link_libraries(DroneController PRIVATE thor_lld_stm32l4_dbg )
+elseif(${DEVICE_TARGET} MATCHES "^stm32f4")
+  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_dbg)
+else()
+  message(FATAL_ERROR "Unsupported device target")
+endif()
 
 target_include_directories(DroneController PRIVATE ${PROJECT_ROOT})
 add_custom_command(TARGET DroneController POST_BUILD

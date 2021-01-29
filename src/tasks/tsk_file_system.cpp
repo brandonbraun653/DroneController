@@ -25,12 +25,8 @@
 #include <uLog/ulog.hpp>
 
 /* Project Includes */
+#include <src/config/board_map.hpp>
 #include <src/tasks/tsk_file_system.hpp>
-
-/*-------------------------------------------------------------------------------
-Constants
--------------------------------------------------------------------------------*/
-static constexpr Chimera::SPI::Channel spiChannel = Chimera::SPI::Channel::SPI1;
 
 /*-------------------------------------------------------------------------------
 Forward Declarations
@@ -101,29 +97,29 @@ namespace DC::Tasks::FIL
     /*-------------------------------------------------
     Testing: Register some ISR handlers
     -------------------------------------------------*/
-    callbackRegistry.isrCallback  = ISRCallback::create<fastCallback>();
-    callbackRegistry.userCallback = UserCallback::create<userCallback>();
-    registerISRHandler( Type::PERIPH_USART, Chimera::Serial::SIG_TX_COMPLETE, callbackRegistry );
+    // callbackRegistry.isrCallback  = ISRCallback::create<fastCallback>();
+    // callbackRegistry.userCallback = UserCallback::create<userCallback>();
+    // registerISRHandler( Type::PERIPH_USART, Chimera::Serial::SIG_TX_COMPLETE, callbackRegistry );
 
     /*-------------------------------------------------
     Setup LFS
     -------------------------------------------------*/
     initializeSPI();
-    Aurora::Memory::LFS::attachDevice( Aurora::Flash::NOR::Chip::AT25SF081, spiChannel, cfg );
+    Aurora::Memory::LFS::attachDevice( Aurora::Flash::NOR::Chip::AT25SF081, DC::IO::NOR::spiChannel, cfg );
+
+    // mount the filesystem
+    int err = lfs_mount( &lfs, &cfg );
+
+    // reformat if we can't mount the filesystem
+    // this should only happen on the first boot
+    if ( err )
+    {
+      err = lfs_format( &lfs, &cfg );
+      err = lfs_mount( &lfs, &cfg );
+    }
 
     for ( auto x = 0; x < 500; x++ )
     {
-      // mount the filesystem
-      int err = lfs_mount( &lfs, &cfg );
-
-      // reformat if we can't mount the filesystem
-      // this should only happen on the first boot
-      if ( err )
-      {
-        err = lfs_format( &lfs, &cfg );
-        err = lfs_mount( &lfs, &cfg );
-      }
-
       // read current count
       uint32_t boot_count = 0;
       err                 = lfs_file_open( &lfs, &file, "boot_count", LFS_O_RDWR | LFS_O_CREAT );
@@ -137,17 +133,17 @@ namespace DC::Tasks::FIL
       // remember the storage is not updated until the file is closed successfully
       err = lfs_file_close( &lfs, &file );
 
-      // release any resources we were using
-      err = lfs_unmount( &lfs );
-
       // print the boot count
-      uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "boot count: %d\r\n", boot_count );
-      if( userCallbackInvoked )
-      {
-        userCallbackInvoked = false;
-        uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "User callback %d invoked!\n", isrVar );
-      }
+      // uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "boot count: %d\r\n", boot_count );
+      // if( userCallbackInvoked )
+      // {
+      //   userCallbackInvoked = false;
+      //   uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "User callback %d invoked!\n", isrVar );
+      // }
     }
+
+    // release any resources we were using
+    err = lfs_unmount( &lfs );
 
     size_t lastWoken;
     while ( true )
@@ -172,12 +168,12 @@ static void initializeSPI()
   cfg.clear();
   cfg.validity = true;
 
-  cfg.HWInit.bitOrder    = Chimera::SPI::BitOrder::MSB_FIRST;
-  cfg.HWInit.clockFreq   = 32000000;
-  cfg.HWInit.clockMode   = Chimera::SPI::ClockMode::MODE0;
-  cfg.HWInit.dataSize    = Chimera::SPI::DataSize::SZ_8BIT;
-  cfg.HWInit.hwChannel   = spiChannel;
-  cfg.HWInit.txfrMode    = Chimera::SPI::TransferMode::INTERRUPT;
+  cfg.HWInit.bitOrder    = DC::IO::NOR::spiBitOrder;
+  cfg.HWInit.clockFreq   = DC::IO::NOR::spiClockFreq;
+  cfg.HWInit.clockMode   = DC::IO::NOR::spiClockMode;
+  cfg.HWInit.dataSize    = DC::IO::NOR::spiDataSize;
+  cfg.HWInit.hwChannel   = DC::IO::NOR::spiChannel;
+  cfg.HWInit.txfrMode    = Chimera::SPI::TransferMode::BLOCKING;
   cfg.HWInit.controlMode = Chimera::SPI::ControlMode::MASTER;
   cfg.HWInit.csMode      = Chimera::SPI::CSMode::MANUAL;
   cfg.HWInit.validity    = true;
@@ -186,37 +182,37 @@ static void initializeSPI()
   cfg.externalCS       = false;
   cfg.CSInit.alternate = Chimera::GPIO::Alternate::NONE;
   cfg.CSInit.drive     = Chimera::GPIO::Drive::OUTPUT_PUSH_PULL;
-  cfg.CSInit.pin       = 15;
-  cfg.CSInit.port      = Chimera::GPIO::Port::PORTC;
+  cfg.CSInit.pin       = DC::IO::NOR::csPin;
+  cfg.CSInit.port      = DC::IO::NOR::csPort;
   cfg.CSInit.pull      = Chimera::GPIO::Pull::PULL_UP;
   cfg.CSInit.state     = Chimera::GPIO::State::HIGH;
   cfg.CSInit.threaded  = false;
   cfg.CSInit.validity  = true;
 
   // SCK
-  cfg.SCKInit.alternate = Chimera::GPIO::Alternate::SPI1_SCK;
+  cfg.SCKInit.alternate = DC::IO::NOR::sckAlt;
   cfg.SCKInit.drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL;
-  cfg.SCKInit.pin       = 5;
-  cfg.SCKInit.port      = Chimera::GPIO::Port::PORTA;
+  cfg.SCKInit.pin       = DC::IO::NOR::sckPin;
+  cfg.SCKInit.port      = DC::IO::NOR::sckPort;
   cfg.SCKInit.threaded  = false;
   cfg.SCKInit.validity  = true;
 
   // MISO
-  cfg.MISOInit.alternate = Chimera::GPIO::Alternate::SPI1_MISO;
+  cfg.MISOInit.alternate = DC::IO::NOR::misoAlt;
   cfg.MISOInit.drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL;
-  cfg.MISOInit.pin       = 6;
-  cfg.MISOInit.port      = Chimera::GPIO::Port::PORTA;
+  cfg.MISOInit.pin       = DC::IO::NOR::misoPin;
+  cfg.MISOInit.port      = DC::IO::NOR::misoPort;
   cfg.MISOInit.threaded  = false;
   cfg.MISOInit.validity  = true;
 
   // MOSI
-  cfg.MOSIInit.alternate = Chimera::GPIO::Alternate::SPI1_MOSI;
+  cfg.MOSIInit.alternate = DC::IO::NOR::mosiAlt;
   cfg.MOSIInit.drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL;
-  cfg.MOSIInit.pin       = 7;
-  cfg.MOSIInit.port      = Chimera::GPIO::Port::PORTA;
+  cfg.MOSIInit.pin       = DC::IO::NOR::mosiPin;
+  cfg.MOSIInit.port      = DC::IO::NOR::mosiPort;
   cfg.MOSIInit.threaded  = false;
   cfg.MOSIInit.validity  = true;
 
-  auto spi = Chimera::SPI::getDriver( spiChannel );
+  auto spi = Chimera::SPI::getDriver( DC::IO::NOR::spiChannel );
   spi->init( cfg );
 }
