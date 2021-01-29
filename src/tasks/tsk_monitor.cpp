@@ -26,7 +26,7 @@ namespace DC::Tasks::MON
   -------------------------------------------------------------------------------*/
   static constexpr size_t QUEUE_SIZE       = 300;  /**< Number of queue events to hold */
   static constexpr size_t TSK_PERIOD       = 100;  /**< How often the MON task should run in ms */
-  static constexpr size_t HW_WDG_TIMEOUT   = 1000; /**< Max timeout before hardware reset */
+  static constexpr size_t HW_WDG_TIMEOUT   = 5000; /**< Max timeout before hardware reset */
   static constexpr size_t HW_WDG_KICK_RATE = 150;  /**< How often the hardware watchdog should be kicked */
 
   static constexpr Chimera::Watchdog::IChannel WDG_CHANNEL = Chimera::Watchdog::IChannel::WATCHDOG0;

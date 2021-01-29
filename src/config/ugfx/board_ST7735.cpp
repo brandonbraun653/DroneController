@@ -5,10 +5,11 @@
  *  Description:
  *    Implements hooks for the uGFX ST7735 low level driver.
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* Chimera Includes */
+#include <Chimera/assert>
 #include <Chimera/common>
 #include <Chimera/event>
 #include <Chimera/gpio>
@@ -23,37 +24,10 @@
 #include <src/config/board_map.hpp>
 
 /*-------------------------------------------------------------------------------
-Static Data
+Static Variables
 -------------------------------------------------------------------------------*/
-/*-------------------------------------------------
-GPIO: Data/Command
--------------------------------------------------*/
-static constexpr Chimera::GPIO::Pin pinDC_pin   = DC::IO::GFX::pinDC_pin;
-static constexpr Chimera::GPIO::Port pinDC_port = DC::IO::GFX::pinDC_port;
 static Chimera::GPIO::Driver_rPtr pinDC;
-
-/*-------------------------------------------------
-GPIO: LCD Reset
--------------------------------------------------*/
-static constexpr Chimera::GPIO::Pin pinRES_pin   = DC::IO::GFX::pinRES_pin;
-static constexpr Chimera::GPIO::Port pinRES_port = DC::IO::GFX::pinRES_port;
-
-/*-------------------------------------------------
-GPIO: LCD Chip Select
--------------------------------------------------*/
-static constexpr Chimera::GPIO::Pin pinCS_pin   = DC::IO::GFX::pinCS_pin;
-static constexpr Chimera::GPIO::Port pinCS_port = DC::IO::GFX::pinCS_port;
 static Chimera::GPIO::Driver_rPtr pinCS;
-
-/*-------------------------------------------------
-SPI
--------------------------------------------------*/
-static constexpr Chimera::GPIO::Pin pinSCK              = DC::IO::GFX::pinSCK;
-static constexpr Chimera::GPIO::Pin pinMOSI             = DC::IO::GFX::pinMOSI;
-static constexpr Chimera::GPIO::Pin pinMISO             = DC::IO::GFX::pinMISO;
-static constexpr Chimera::GPIO::Port spiPort            = DC::IO::GFX::spiPort;
-static constexpr Chimera::SPI::Channel spiChannel       = DC::IO::GFX::spiChannel;
-static constexpr Chimera::SPI::TransferMode spiTxfrMode = DC::IO::GFX::spiTxfrMode;
 static Chimera::SPI::Driver_rPtr spi;
 
 
@@ -65,6 +39,7 @@ void init_board( GDisplay *g )
   using namespace Chimera;
   using namespace Chimera::GPIO;
   using namespace Chimera::SPI;
+  using namespace DC::IO::GFX;
 
   /*-------------------------------------------------
   Initialize the various GPIO pins
@@ -76,8 +51,8 @@ void init_board( GDisplay *g )
   tmp.clear();
   tmp.alternate = Alternate::NONE;
   tmp.drive     = Drive::OUTPUT_PUSH_PULL;
-  tmp.pin       = pinDC_pin;
-  tmp.port      = pinDC_port;
+  tmp.pin       = DC::IO::GFX::pinDC_pin;
+  tmp.port      = DC::IO::GFX::pinDC_port;
   tmp.pull      = Pull::NO_PULL;
   tmp.state     = State::LOW;
   tmp.threaded  = false;
@@ -90,8 +65,8 @@ void init_board( GDisplay *g )
   tmp.clear();
   tmp.alternate = Alternate::NONE;
   tmp.drive     = Drive::OUTPUT_PUSH_PULL;
-  tmp.pin       = pinRES_pin;
-  tmp.port      = pinRES_port;
+  tmp.pin       = DC::IO::GFX::pinRES_pin;
+  tmp.port      = DC::IO::GFX::pinRES_port;
   tmp.pull      = Pull::NO_PULL;
   tmp.state     = State::LOW;
   tmp.threaded  = false;
@@ -103,8 +78,8 @@ void init_board( GDisplay *g )
   tmp.clear();
   tmp.alternate = Alternate::NONE;
   tmp.drive     = Drive::OUTPUT_PUSH_PULL;
-  tmp.pin       = pinCS_pin;
-  tmp.port      = pinCS_port;
+  tmp.pin       = DC::IO::GFX::pinCS_pin;
+  tmp.port      = DC::IO::GFX::pinCS_port;
   tmp.pull      = Pull::NO_PULL;
   tmp.state     = State::LOW;
   tmp.threaded  = false;
@@ -120,7 +95,7 @@ void init_board( GDisplay *g )
   cfg.clear();
 
   // SCK
-  cfg.SCKInit.alternate = Alternate::SPI3_SCK;
+  cfg.SCKInit.alternate = DC::IO::GFX::altSCK;
   cfg.SCKInit.drive     = Drive::ALTERNATE_PUSH_PULL;
   cfg.SCKInit.pin       = pinSCK;
   cfg.SCKInit.port      = spiPort;
@@ -130,7 +105,7 @@ void init_board( GDisplay *g )
   cfg.SCKInit.validity  = true;
 
   // MOSI
-  cfg.MOSIInit.alternate = Alternate::SPI3_MOSI;
+  cfg.MOSIInit.alternate = DC::IO::GFX::altMOSI;
   cfg.MOSIInit.drive     = Drive::ALTERNATE_PUSH_PULL;
   cfg.MOSIInit.pin       = pinMOSI;
   cfg.MOSIInit.port      = spiPort;
@@ -141,7 +116,7 @@ void init_board( GDisplay *g )
 
 
   // MISO
-  cfg.MISOInit.alternate = Alternate::SPI3_MISO;
+  cfg.MISOInit.alternate = DC::IO::GFX::altMISO;
   cfg.MISOInit.drive     = Drive::ALTERNATE_PUSH_PULL;
   cfg.MISOInit.pin       = pinMISO;
   cfg.MISOInit.port      = spiPort;
@@ -154,14 +129,14 @@ void init_board( GDisplay *g )
   // SPI Parameters
   cfg.validity           = true;
   cfg.externalCS         = true;
-  cfg.HWInit.bitOrder    = BitOrder::MSB_FIRST;
-  cfg.HWInit.clockFreq   = 16000000;
-  cfg.HWInit.clockMode   = ClockMode::MODE0;
+  cfg.HWInit.bitOrder    = DC::IO::GFX::spiBitOrder;
+  cfg.HWInit.clockFreq   = DC::IO::GFX::spiClockFreq;
+  cfg.HWInit.clockMode   = DC::IO::GFX::spiClockMode;
   cfg.HWInit.controlMode = ControlMode::MASTER;
-  cfg.HWInit.csMode      = CSMode::MANUAL;
-  cfg.HWInit.dataSize    = DataSize::SZ_8BIT;
-  cfg.HWInit.hwChannel   = spiChannel;
-  cfg.HWInit.txfrMode    = spiTxfrMode;
+  cfg.HWInit.csMode      = DC::IO::GFX::spiChipSelectMode;
+  cfg.HWInit.dataSize    = DC::IO::GFX::spiDataSize;
+  cfg.HWInit.hwChannel   = DC::IO::GFX::spiChannel;
+  cfg.HWInit.txfrMode    = DC::IO::GFX::spiTxfrMode;
 
   spi = Chimera::SPI::getDriver( cfg.HWInit.hwChannel );
   initResult |= spi->init( cfg );
@@ -169,14 +144,7 @@ void init_board( GDisplay *g )
   /*-------------------------------------------------
   Trap configuration issues
   -------------------------------------------------*/
-  if ( initResult != Chimera::Status::OK )
-  {
-    Chimera::insert_debug_breakpoint();
-    while ( 1 )
-    {
-      continue;
-    }
-  }
+  RT_HARD_ASSERT( initResult == Chimera::Status::OK );
 
   /*-------------------------------------------------
   Set GPIO to their default states
@@ -193,6 +161,8 @@ void post_init_board( GDisplay *g )
 
 void setpin_reset( GDisplay *g, gBool state )
 {
+  using namespace DC::IO::GFX;
+
   /*-------------------------------------------------
   Reset is active high
   -------------------------------------------------*/
@@ -225,6 +195,7 @@ void release_bus( GDisplay *g )
 void write_cmd( GDisplay *g, gU8 cmd )
 {
   using namespace Chimera;
+  using namespace DC::IO::GFX;
 
   /*-------------------------------------------------
   Command transactions have this pin low
@@ -245,6 +216,7 @@ void write_cmd( GDisplay *g, gU8 cmd )
 void write_data( GDisplay *g, gU16 data )
 {
   using namespace Chimera;
+  using namespace DC::IO::GFX;
 
   /*-------------------------------------------------
   Data transactions have this pin high
@@ -268,6 +240,7 @@ void write_data( GDisplay *g, gU16 data )
 void write_data_byte( GDisplay *g, gU8 data )
 {
   using namespace Chimera;
+  using namespace DC::IO::GFX;
 
   /*-------------------------------------------------
   Data transactions have this pin high

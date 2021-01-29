@@ -28,11 +28,11 @@ namespace DC::Tasks::GFX
     This function never returns and runs all the needed
     graphics functionality, provided by uGFX.
     -------------------------------------------------*/
-    // gfxInit();
+    gfxInit();
 
-    // coord_t width  = gdispGetWidth();
-    // coord_t height = gdispGetHeight();
-    //gdispFillArea( 0, 0, width, height, GFX_BLUE );
+    coord_t width  = gdispGetWidth();
+    coord_t height = gdispGetHeight();
+    gdispFillArea( 0, 0, width, height, GFX_BLUE );
 
     size_t lastWoken;
     while ( true )

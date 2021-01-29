@@ -118,32 +118,32 @@ namespace DC::Tasks::FIL
       err = lfs_mount( &lfs, &cfg );
     }
 
-    for ( auto x = 0; x < 500; x++ )
-    {
-      // read current count
-      uint32_t boot_count = 0;
-      err                 = lfs_file_open( &lfs, &file, "boot_count", LFS_O_RDWR | LFS_O_CREAT );
-      err                 = lfs_file_read( &lfs, &file, &boot_count, sizeof( boot_count ) );
+    // for ( auto x = 0; x < 500; x++ )
+    // {
+    //   // read current count
+    //   uint32_t boot_count = 0;
+    //   err                 = lfs_file_open( &lfs, &file, "boot_count", LFS_O_RDWR | LFS_O_CREAT );
+    //   err                 = lfs_file_read( &lfs, &file, &boot_count, sizeof( boot_count ) );
 
-      // update boot count
-      boot_count += 1;
-      err = lfs_file_rewind( &lfs, &file );
-      err = lfs_file_write( &lfs, &file, &boot_count, sizeof( boot_count ) );
+    //   // update boot count
+    //   boot_count += 1;
+    //   err = lfs_file_rewind( &lfs, &file );
+    //   err = lfs_file_write( &lfs, &file, &boot_count, sizeof( boot_count ) );
 
-      // remember the storage is not updated until the file is closed successfully
-      err = lfs_file_close( &lfs, &file );
+    //   // remember the storage is not updated until the file is closed successfully
+    //   err = lfs_file_close( &lfs, &file );
 
-      // print the boot count
-      // uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "boot count: %d\r\n", boot_count );
-      // if( userCallbackInvoked )
-      // {
-      //   userCallbackInvoked = false;
-      //   uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "User callback %d invoked!\n", isrVar );
-      // }
-    }
+    //   // print the boot count
+    //   // uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "boot count: %d\r\n", boot_count );
+    //   // if( userCallbackInvoked )
+    //   // {
+    //   //   userCallbackInvoked = false;
+    //   //   uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "User callback %d invoked!\n", isrVar );
+    //   // }
+    // }
 
     // release any resources we were using
-    err = lfs_unmount( &lfs );
+    //err = lfs_unmount( &lfs );
 
     size_t lastWoken;
     while ( true )

@@ -38,8 +38,9 @@ target_link_libraries(DroneController PRIVATE
   # lib_wireless
 
   # Graphics Libraries
-  # ugfx_lib_rel
-  # ugfx_st7735_lib_rel
+  ugfx_lib_dbg
+  ugfx_st7735_lib_dbg
+  ugfx_prj_config
 
   # Networking Libraries
   # ripple_core_rel
@@ -50,15 +51,15 @@ target_link_libraries(DroneController PRIVATE
   memory_flash_littlefs_dbg
 
   # Hardware Libraries
-  aurora_core_rel
-  aurora_hmi_rel
-  aurora_logging_rel
+  aurora_core_dbg
+  aurora_hmi_dbg
+  aurora_logging_dbg
   chimera_core_dbg
   freertos_cfg
   freertos_core_dbg
   freertos_heap
   freertos_port
-  thor_cfg_freertos_rel
+  thor_cfg_freertos_dbg
   thor_cmn_cm4_dbg
   thor_hld_core_dbg
   thor_lld_intf_dbg
