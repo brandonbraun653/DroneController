@@ -74,6 +74,11 @@ namespace DC::REG
   bool mount()
   {
     /*-------------------------------------------------
+    Development only
+    -------------------------------------------------*/
+    //Aurora::Memory::LFS::fullChipErase( 10000 );
+
+    /*-------------------------------------------------
     Try mounting. It's possible to get a clean chip,
     which will need some formatting before mounting.
     -------------------------------------------------*/

@@ -55,14 +55,17 @@ target_link_libraries(DroneController PRIVATE
   # ripple_core_rel
 
   # File System
-  aurora_memory_dbg
   lfs_core_dbg
   memory_flash_littlefs_dbg
 
-  # Hardware Libraries
+  # Utility Libraries
   aurora_core_dbg
   aurora_hmi_dbg
   aurora_logging_dbg
+  aurora_memory_dbg
+  aurora_database_dbg
+
+  # Hardware Libraries
   chimera_core_dbg
   freertos_cfg
   freertos_core_dbg

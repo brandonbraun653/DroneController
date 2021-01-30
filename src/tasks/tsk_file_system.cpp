@@ -18,6 +18,14 @@
 #include <src/tasks/tsk_file_system.hpp>
 
 
+// TEMPORARY FOR TESTING
+#include <Aurora/database>
+
+static Aurora::Database::RAMDB db;
+static Aurora::Database::EntryStore<15> dbEntryStore;
+static std::array<uint8_t, 1024> dbRAM;
+
+
 namespace DC::Tasks::FIL
 {
   /*-------------------------------------------------------------------------------
@@ -34,6 +42,10 @@ namespace DC::Tasks::FIL
     -------------------------------------------------*/
     this_thread::pendTaskMsg( ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_BLOCK );
     Chimera::delayMilliseconds( 500 );
+
+    db.assignCoreMemory( dbEntryStore, dbRAM.data(), dbRAM.size() );
+    db.reset();
+
 
     size_t lastWoken;
     while ( true )
