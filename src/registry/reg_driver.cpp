@@ -10,11 +10,14 @@
 
 /* Aurora Includes */
 #include <Aurora/memory>
+#include <Aurora/database>
+#include <Aurora/datastore>
 #include <Aurora/source/memory/flash/littlefs/lfs_hooks.hpp>
 
 /* Chimera Includes */
 #include <Chimera/assert>
 #include <Chimera/spi>
+#include <Chimera/system>
 
 /* Little FS Includes */
 #include "lfs.h"
@@ -25,6 +28,7 @@
 /* Project Includes */
 #include <src/config/bsp/board_map.hpp>
 #include <src/registry/reg_intf.hpp>
+#include <src/registry/reg_data.hpp>
 
 namespace DC::REG
 {
@@ -32,10 +36,14 @@ namespace DC::REG
   Forward Declarations
   -------------------------------------------------------------------------------*/
   static bool initializeSPI();
+  static void datastoreRegisterFail( const size_t id );
 
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
+  /*-------------------------------------------------
+  File System
+  -------------------------------------------------*/
   static lfs_t lfs;
   static const lfs_config lfs_cfg = { .context = nullptr,
 
@@ -54,6 +62,21 @@ namespace DC::REG
                                       .cache_size     = 16,
                                       .lookahead_size = 16 };
 
+  /*-------------------------------------------------
+  Database
+  -------------------------------------------------*/
+  Aurora::Database::RAM Database;
+  static Aurora::Database::EntryStore<NUM_DATABASE_KEYS> dbEntryStore;
+  static std::array<uint8_t, 1024> dbRAM;
+
+  /*-------------------------------------------------
+  Datastore
+  -------------------------------------------------*/
+  static constexpr size_t ObservableRange = KEY_OBSERVABLE_END - KEY_OBSERVABLE_START;
+
+  Aurora::Datastore::Manager Datastore;
+  static Aurora::Datastore::ObservableMapStorage<ObservableRange> dsMemory;
+
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
@@ -61,11 +84,36 @@ namespace DC::REG
   {
     using namespace Aurora::Memory::LFS;
     using namespace Aurora::Flash::NOR;
+    using namespace Aurora::Datastore;
 
+    /*-------------------------------------------------
+    Initialize the file system
+    -------------------------------------------------*/
     if ( !initializeSPI() || !attachDevice( Chip::AT25SF081, DC::IO::NOR::spiChannel, lfs_cfg ) )
     {
       return false;
     }
+
+    /*-------------------------------------------------
+    Initialize the database
+    -------------------------------------------------*/
+    Database.assignCoreMemory( dbEntryStore, dbRAM.data(), dbRAM.size() );
+    Database.reset();
+
+    /*-------------------------------------------------
+    Initialize the datastore
+    -------------------------------------------------*/
+    auto registerCallback = etl::delegate<void(size_t)>::create<datastoreRegisterFail>();
+
+    Datastore.assignCoreMemory( &dsMemory );
+    Datastore.resetRegistry();
+    Datastore.registerCallback( CB_REGISTER_FAIL, registerCallback );
+
+    for( size_t x=0; x<ARRAY_COUNT( ObservableList ); x++)
+    {
+      RT_HARD_ASSERT( Datastore.registerObservable( *ObservableList[ x ] ) );
+    }
+
 
     return true;
   }
@@ -73,11 +121,6 @@ namespace DC::REG
 
   bool mount()
   {
-    /*-------------------------------------------------
-    Development only
-    -------------------------------------------------*/
-    //Aurora::Memory::LFS::fullChipErase( 10000 );
-
     /*-------------------------------------------------
     Try mounting. It's possible to get a clean chip,
     which will need some formatting before mounting.
@@ -100,6 +143,12 @@ namespace DC::REG
     else
     {
       uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Mount failed with code %d\r\n", err );
+
+      // uint32_t eraseTimeout = 10000;
+      // uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Memory corrupted, performing full chip erase. Timeout of %d ms.\r\n", eraseTimeout );
+      // Aurora::Memory::LFS::fullChipErase( eraseTimeout );
+      // uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Chip erased, rebooting.\r\n\r\n" );
+      // Chimera::System::softwareReset();
     }
 
     return err == 0;
@@ -175,4 +224,9 @@ namespace DC::REG
     return spi->init( cfg ) == Chimera::Status::OK;
   }
 
+
+  static void datastoreRegisterFail( const size_t id )
+  {
+    uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Failed to register observable" );
+  }
 }    // namespace DC::REG

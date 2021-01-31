@@ -64,6 +64,7 @@ target_link_libraries(DroneController PRIVATE
   aurora_logging_dbg
   aurora_memory_dbg
   aurora_database_dbg
+  aurora_datastore_dbg
 
   # Hardware Libraries
   chimera_core_dbg

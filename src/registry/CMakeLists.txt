@@ -5,6 +5,7 @@ gen_static_lib_variants(
     lib_registry
   SOURCES
     reg_driver.cpp
+    data/reg_data_button_up.cpp
   PRV_LIBRARIES
     aurora_intf_inc
     chimera_intf_inc

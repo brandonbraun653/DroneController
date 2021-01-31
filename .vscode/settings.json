@@ -44,7 +44,8 @@
     "spi": "cpp",
     "array": "cpp",
     "exti": "cpp",
-    "serial": "cpp"
+    "serial": "cpp",
+    "datastore": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",
@@ -62,5 +63,14 @@
     "titleBar.inactiveBackground": "#1857a499",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#1857a4"
+  "peacock.color": "#1857a4",
+  "cSpell.words": [
+    "crtp",
+    "flat",
+    "gpio",
+    "intf",
+    "ireference",
+    "map",
+    "mosi"
+  ]
 }
