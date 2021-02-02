@@ -205,11 +205,14 @@ void write_cmd( GDisplay *g, gU8 cmd )
   /*-------------------------------------------------
   Pump out the data
   -------------------------------------------------*/
-  spi->readWriteBytes( &cmd, nullptr, sizeof( cmd ) );
+  auto result = Chimera::Status::OK;
+  result |= spi->readWriteBytes( &cmd, nullptr, sizeof( cmd ) );
   if constexpr ( spiTxfrMode != SPI::TransferMode::BLOCKING )
   {
-    spi->await( Event::Trigger::TRIGGER_WRITE_COMPLETE, Threading::TIMEOUT_BLOCK );
+    result |= spi->await( Event::Trigger::TRIGGER_WRITE_COMPLETE, Threading::TIMEOUT_BLOCK );
   }
+
+  RT_HARD_ASSERT( result == Chimera::Status::OK );
 }
 
 
@@ -227,13 +230,16 @@ void write_data( GDisplay *g, gU16 data )
   Pump out the data. Data has to be swapped so that
   it comes out in the correct order for the chip.
   -------------------------------------------------*/
+  auto result  = Chimera::Status::OK;
   gU16 swapped = ( ( data << 8 ) & 0xFF00 ) | ( ( data >> 8 ) & 0x00FF );
 
-  spi->readWriteBytes( &swapped, nullptr, sizeof( swapped ) );
+  result |= spi->readWriteBytes( &swapped, nullptr, sizeof( swapped ) );
   if constexpr ( spiTxfrMode != SPI::TransferMode::BLOCKING )
   {
-    spi->await( Event::Trigger::TRIGGER_WRITE_COMPLETE, Threading::TIMEOUT_BLOCK );
+    result |= spi->await( Event::Trigger::TRIGGER_WRITE_COMPLETE, Threading::TIMEOUT_BLOCK );
   }
+
+  RT_HARD_ASSERT( result == Chimera::Status::OK );
 }
 
 
@@ -250,11 +256,14 @@ void write_data_byte( GDisplay *g, gU8 data )
   /*-------------------------------------------------
   Pump out the data
   -------------------------------------------------*/
-  spi->readWriteBytes( &data, nullptr, sizeof( data ) );
+  auto result = Chimera::Status::OK;
+  result |= spi->readWriteBytes( &data, nullptr, sizeof( data ) );
   if constexpr ( spiTxfrMode != SPI::TransferMode::BLOCKING )
   {
-    spi->await( Event::Trigger::TRIGGER_WRITE_COMPLETE, Threading::TIMEOUT_BLOCK );
+    result |= spi->await( Event::Trigger::TRIGGER_WRITE_COMPLETE, Threading::TIMEOUT_BLOCK );
   }
+
+  RT_HARD_ASSERT( result == Chimera::Status::OK );
 }
 
 void set_backlight( GDisplay *g, gU8 percent )

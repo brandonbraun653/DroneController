@@ -66,8 +66,13 @@
   "peacock.color": "#1857a4",
   "cSpell.words": [
     "crtp",
+    "exti",
     "flat",
+    "gdisp",
+    "gfxoff",
+    "gfxon",
     "gpio",
+    "gwin",
     "intf",
     "ireference",
     "map",

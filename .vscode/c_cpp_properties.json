@@ -3,6 +3,7 @@
         "defaultIncludePaths":[
             "${workspaceFolder}",
             "${workspaceFolder}/src/config",
+            "${workspaceFolder}/src/config/ugfx",
             "${workspaceFolder}/lib",
             "${workspaceFolder}/lib/CommonTools/googletest",
             "${workspaceFolder}/lib/CommonTools/cpputest/include",
@@ -22,7 +23,7 @@
             "${workspaceFolder}/lib/Ripple/inc",
             "${workspaceFolder}/lib/Thor/include",
             "${workspaceFolder}/lib/Thor/config/freertos",
-            "${workspaceFolder}/lib/ugfx/ugfx_2.9",
+            "${workspaceFolder}/lib/ugfx/ugfx_2.9/**",
             "${workspaceFolder}/lib/yaffs2/direct",
             "${workspaceFolder}/lib/yaffs2/include",
             "${workspaceFolder}/lib/yaffs2/integration",

@@ -180,7 +180,7 @@ namespace DC::REG
     cfg.HWInit.clockMode   = DC::IO::NOR::spiClockMode;
     cfg.HWInit.dataSize    = DC::IO::NOR::spiDataSize;
     cfg.HWInit.hwChannel   = DC::IO::NOR::spiChannel;
-    cfg.HWInit.txfrMode    = Chimera::SPI::TransferMode::BLOCKING;
+    cfg.HWInit.txfrMode    = DC::IO::NOR::spiTxfrMode;
     cfg.HWInit.controlMode = Chimera::SPI::ControlMode::MASTER;
     cfg.HWInit.csMode      = Chimera::SPI::CSMode::MANUAL;
     cfg.HWInit.validity    = true;
@@ -201,6 +201,7 @@ namespace DC::REG
     cfg.SCKInit.drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL;
     cfg.SCKInit.pin       = DC::IO::NOR::sckPin;
     cfg.SCKInit.port      = DC::IO::NOR::sckPort;
+    cfg.SCKInit.pull      = Chimera::GPIO::Pull::PULL_DN;
     cfg.SCKInit.threaded  = false;
     cfg.SCKInit.validity  = true;
 
@@ -209,6 +210,7 @@ namespace DC::REG
     cfg.MISOInit.drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL;
     cfg.MISOInit.pin       = DC::IO::NOR::misoPin;
     cfg.MISOInit.port      = DC::IO::NOR::misoPort;
+    cfg.MISOInit.pull      = Chimera::GPIO::Pull::PULL_UP;
     cfg.MISOInit.threaded  = false;
     cfg.MISOInit.validity  = true;
 
@@ -217,6 +219,7 @@ namespace DC::REG
     cfg.MOSIInit.drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL;
     cfg.MOSIInit.pin       = DC::IO::NOR::mosiPin;
     cfg.MOSIInit.port      = DC::IO::NOR::mosiPort;
+    cfg.MOSIInit.pull      = Chimera::GPIO::Pull::PULL_UP;
     cfg.MOSIInit.threaded  = false;
     cfg.MOSIInit.validity  = true;
 

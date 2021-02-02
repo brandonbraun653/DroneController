@@ -70,9 +70,9 @@ namespace DC::Tasks
     /*-------------------------------------------------
     System Thread: File System
     -------------------------------------------------*/
-    Thread file;
-    file.initialize( FIL::FileSystemThread, nullptr, FIL::PRIORITY, FIL::STACK, FIL::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( TaskId::FILE_SYSTEM ) ] = file.start();
+    // Thread file;
+    // file.initialize( FIL::FileSystemThread, nullptr, FIL::PRIORITY, FIL::STACK, FIL::NAME.cbegin() );
+    // s_thread_id[ static_cast<size_t>( TaskId::FILE_SYSTEM ) ] = file.start();
   }
 
 
