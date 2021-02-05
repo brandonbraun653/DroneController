@@ -5,7 +5,7 @@
  *  Description:
  *    Common header shared among task files. Mostly contains descriptive info.
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
@@ -29,11 +29,15 @@ namespace DC::Tasks
    */
   enum class TaskId : uint8_t
   {
+    /* System Thread (Must be first) */
     MONITOR,     /**< Task monitor thread to ensure everything is running on time */
-    HEART_BEAT,  /**< Heartbeat thread indicates the system is alive */
-    GRAPHICS,    /**< Graphics processing */
-    RADIO,       /**< NRF24L01 Radio processing */
+
+    /* User Threads */
     FILE_SYSTEM, /**< File system processing */
+    GRAPHICS,    /**< Graphics processing */
+    HEART_BEAT,  /**< Heartbeat thread indicates the system is alive */
+    HMI,         /**< Human machine interface processing */
+    RADIO,       /**< NRF24L01 Radio processing */
 
     NUM_OPTIONS,
     UNKNOWN
@@ -64,7 +68,6 @@ namespace DC::Tasks
    *  @return Chimera::Threading::ThreadId
    */
   Chimera::Threading::ThreadId getThreadId( const TaskId task );
-
 
 }    // namespace DC::Tasks
 

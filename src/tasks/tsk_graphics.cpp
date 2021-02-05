@@ -84,12 +84,14 @@ namespace DC::Tasks::GFX
     Basic setup
     -------------------------------------------------*/
     display = gdispGetDisplay( 0 );
-    font    = gdispOpenFont( "fixed_5x8" );
+    font    = gdispOpenFont( "DejaVuSans12" );
     gwinSetDefaultFont( font );
-    gwinSetDefaultStyle( &WhiteWidgetStyle, FALSE );
+    gwinSetDefaultStyle( &WhiteWidgetStyle, TRUE );
     gdispGClear( GDISP, White );
     gdispSetOrientation( GDISP_ROTATE_90 );
 
+    auto x = ScrWidth;
+    auto y = ScrHeight;
 
     GWidgetInit wi;
     gCoord border, pagewidth;
@@ -108,8 +110,10 @@ namespace DC::Tasks::GFX
     ghTabset       = gwinTabsetCreate( 0, &wi, GWIN_TABSET_BORDER );
     this_thread::yield();
 
-    ghPgButtons    = gwinTabsetAddTab( ghTabset, "Buttons", gFalse );
+    ghPgButtons    = gwinTabsetAddTab( ghTabset, "BTN", gFalse );
     this_thread::yield();
+
+    gwinDrawString( ghTabset, 15, 30, "Hello" );
 
     // ghPgSliders    = gwinTabsetAddTab( ghTabset, "Sliders", gFalse );
     // this_thread::yield();

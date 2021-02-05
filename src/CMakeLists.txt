@@ -3,6 +3,7 @@
 # -----------------------------------------------------------------------------
 add_subdirectory(config/bsp)
 add_subdirectory(config/ugfx)
+add_subdirectory(hmi)
 add_subdirectory(registry)
 add_subdirectory(system)
 add_subdirectory(tasks)
@@ -37,6 +38,7 @@ target_link_libraries(DroneController PRIVATE
 
   # Project Libraries
   lib_config
+  lib_human_interface
   lib_registry
   lib_system
   lib_tasks

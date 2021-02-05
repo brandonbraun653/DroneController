@@ -45,7 +45,14 @@
     "array": "cpp",
     "exti": "cpp",
     "serial": "cpp",
-    "datastore": "cpp"
+    "datastore": "cpp",
+    "dejavusans20_aa.c": "cpp",
+    "dejavusans32.c": "cpp",
+    "fixed_7x14.c": "cpp",
+    "small_lcd_sign_12.c": "cpp",
+    "small_lcd_sign_5.c": "cpp",
+    "dejavusans12.c": "cpp",
+    "limits": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",
@@ -66,6 +73,7 @@
   "peacock.color": "#1857a4",
   "cSpell.words": [
     "crtp",
+    "debouncer",
     "exti",
     "flat",
     "gdisp",
@@ -75,7 +83,12 @@
     "gwin",
     "intf",
     "ireference",
+    "iwdg",
     "map",
-    "mosi"
+    "mosi",
+    "nvic",
+    "sdio",
+    "usart",
+    "wwdg"
   ]
 }

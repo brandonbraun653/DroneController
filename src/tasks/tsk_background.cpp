@@ -73,10 +73,11 @@ namespace DC::Tasks::BKGD
   static TaskTiming s_timing_stats[] = {
     /* clang-format off */
     { .id = TaskId::MONITOR,      .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
-    { .id = TaskId::HEART_BEAT,   .lower = 0, .upper = 12,  .exact = 0 },
-    { .id = TaskId::GRAPHICS,     .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
-    { .id = TaskId::RADIO,        .lower = 0, .upper = 50,  .exact = 0 },
     { .id = TaskId::FILE_SYSTEM,  .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
+    { .id = TaskId::GRAPHICS,     .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
+    { .id = TaskId::HEART_BEAT,   .lower = 0, .upper = 12,  .exact = 0 },
+    { .id = TaskId::HMI,          .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
+    { .id = TaskId::RADIO,        .lower = 0, .upper = 50,  .exact = 0 },
     /* clang-format on */
   };
   static_assert( ARRAY_COUNT( s_timing_stats ) == static_cast<size_t>( TaskId::NUM_OPTIONS ) );

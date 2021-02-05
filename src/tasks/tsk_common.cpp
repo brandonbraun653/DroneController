@@ -13,12 +13,13 @@
 #include <Chimera/thread>
 
 /* Project Includes */
+#include <src/tasks/tsk_background.hpp>
 #include <src/tasks/tsk_common.hpp>
+#include <src/tasks/tsk_file_system.hpp>
 #include <src/tasks/tsk_graphics.hpp>
 #include <src/tasks/tsk_heartbeat.hpp>
-#include <src/tasks/tsk_background.hpp>
+#include <src/tasks/tsk_hmi.hpp>
 #include <src/tasks/tsk_radio.hpp>
-#include <src/tasks/tsk_file_system.hpp>
 
 namespace DC::Tasks
 {
@@ -54,11 +55,18 @@ namespace DC::Tasks
     s_thread_id[ static_cast<size_t>( TaskId::MONITOR ) ] = watchdog.start();
 
     /*-------------------------------------------------
+    System Thread: Human Interface
+    -------------------------------------------------*/
+    Thread hmi;
+    hmi.initialize( HMI::HumanInterfaceThread, nullptr, HMI::PRIORITY, HMI::STACK, HMI::NAME.cbegin() );
+    s_thread_id[ static_cast<size_t>( TaskId::HMI ) ] = hmi.start();
+
+    /*-------------------------------------------------
     System Thread: Graphics
     -------------------------------------------------*/
-    Thread graphics;
-    graphics.initialize( GFX::GraphicsThread, nullptr, GFX::PRIORITY, GFX::STACK, GFX::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( TaskId::GRAPHICS ) ] = graphics.start();
+    // Thread graphics;
+    // graphics.initialize( GFX::GraphicsThread, nullptr, GFX::PRIORITY, GFX::STACK, GFX::NAME.cbegin() );
+    // s_thread_id[ static_cast<size_t>( TaskId::GRAPHICS ) ] = graphics.start();
 
     // /*-------------------------------------------------
     // System Thread: Radio

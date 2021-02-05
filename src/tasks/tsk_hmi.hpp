@@ -1,16 +1,16 @@
 /********************************************************************************
  *  File Name:
- *    tsk_graphics.hpp
+ *    tsk_hmi.hpp
  *
  *  Description:
- *    Interface for the graphics task
+ *    Human machine interface threads
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
-#ifndef DC_GRAPHICS_THREAD_HPP
-#define DC_GRAPHICS_THREAD_HPP
+#ifndef DC_HUMAN_INTERFACE_HPP
+#define DC_HUMAN_INTERFACE_HPP
 
 /* STL Includes */
 #include <cstddef>
@@ -19,20 +19,20 @@
 /* Chimera Includes */
 #include <Chimera/thread>
 
-namespace DC::Tasks::GFX
+namespace DC::Tasks::HMI
 {
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr size_t STACK                          = STACK_BYTES( 5024 );
-  static constexpr std::string_view NAME                 = "graphics";
+  static constexpr size_t STACK                          = STACK_BYTES( 4096 );
+  static constexpr std::string_view NAME                 = "hmi";
   static constexpr Chimera::Threading::Priority PRIORITY = Chimera::Threading::Priority::LEVEL_3;
 
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  void GraphicsThread( void *arg );
+  void HumanInterfaceThread( void *arg );
 
-}    // namespace DC::Tasks::GFX
+}    // namespace DC::Tasks::FIL
 
-#endif /* !DC_GRAPHICS_THREAD_HPP */
+#endif /* !DC_HUMAN_INTERFACE_HPP */

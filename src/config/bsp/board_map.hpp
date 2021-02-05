@@ -35,6 +35,28 @@ namespace DC::IO
     static constexpr Chimera::GPIO::Port portHeartbeat = Chimera::GPIO::Port::PORTA;
   }    // namespace LED
 
+  namespace HMI
+  {
+    /*-------------------------------------------------
+    Common input configuration structure. This needs to
+    have the pin, port, and validity flags overriden.
+    -------------------------------------------------*/
+    static constexpr Chimera::GPIO::PinInit CommonInputCfg = { .alternate = Chimera::GPIO::Alternate::NONE,
+                                                               .drive     = Chimera::GPIO::Drive::INPUT,
+                                                               .pin       = 0,
+                                                               .port      = Chimera::GPIO::Port::UNKNOWN_PORT,
+                                                               .pull      = Chimera::GPIO::Pull::PULL_UP,
+                                                               .state     = Chimera::GPIO::State::HIGH,
+                                                               .threaded  = true,
+                                                               .validity  = false };
+
+    /*-------------------------------------------------
+    Button/Key Input 0
+    -------------------------------------------------*/
+    static constexpr Chimera::GPIO::Pin pinKeyIn0   = 3;
+    static constexpr Chimera::GPIO::Port portKeyIn0 = Chimera::GPIO::Port::PORTC;
+  }    // namespace HMI
+
   /*-------------------------------------------------------------------------------
   NOR Flash - SPI1
   -------------------------------------------------------------------------------*/
@@ -107,7 +129,7 @@ namespace DC::IO
     static constexpr Chimera::GPIO::Port spiPort            = Chimera::GPIO::Port::PORTB;
     static constexpr Chimera::SPI::TransferMode spiTxfrMode = Chimera::SPI::TransferMode::BLOCKING;
     static constexpr Chimera::SPI::BitOrder spiBitOrder     = Chimera::SPI::BitOrder::MSB_FIRST;
-    static constexpr Chimera::SPI::ClockFreq spiClockFreq   = 45 * 1000000;
+    static constexpr Chimera::SPI::ClockFreq spiClockFreq   = 8 * 1000000;
     static constexpr Chimera::SPI::ClockMode spiClockMode   = Chimera::SPI::ClockMode::MODE0;
     static constexpr Chimera::SPI::CSMode spiChipSelectMode = Chimera::SPI::CSMode::MANUAL;
     static constexpr Chimera::SPI::DataSize spiDataSize     = Chimera::SPI::DataSize::SZ_8BIT;
