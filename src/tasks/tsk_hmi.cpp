@@ -27,7 +27,7 @@
 namespace DC::Tasks::HMI
 {
   volatile int currentPosition = 0;
-  volatile bool updated = false;
+  volatile bool updated        = false;
 
   void keyPress( Aurora::HMI::Button::ActiveEdge key )
   {
@@ -42,7 +42,6 @@ namespace DC::Tasks::HMI
   void rotate( Aurora::HMI::Encoder::State &state )
   {
     currentPosition = state.absolutePosition;
-
     updated = true;
   }
 
@@ -65,7 +64,7 @@ namespace DC::Tasks::HMI
     -------------------------------------------------*/
     auto pressCB    = Aurora::HMI::Button::EdgeCallback::create<keyPress>();
     auto releaseCB  = Aurora::HMI::Button::EdgeCallback::create<keyRelease>();
-    auto rotateCB = Aurora::HMI::Encoder::RotationCallback::create<rotate>();
+    auto rotateCB   = Aurora::HMI::Encoder::RotationCallback::create<rotate>();
     bool initResult = DC::HMI::Encoder::initialize();
     RT_HARD_ASSERT( initResult );
 
@@ -80,7 +79,7 @@ namespace DC::Tasks::HMI
     {
       lastWoken = Chimera::millis();
 
-      if( updated )
+      if ( updated )
       {
         int pos = currentPosition;
         updated = false;

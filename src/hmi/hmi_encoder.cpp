@@ -45,7 +45,6 @@ namespace DC::HMI::Encoder
       onCenterRelease = {};
       onRotate        = {};
       btnActiveState  = Chimera::GPIO::State::LOW;
-      encoder.reset();
     }
 
 

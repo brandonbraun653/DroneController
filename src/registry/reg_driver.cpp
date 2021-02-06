@@ -114,7 +114,6 @@ namespace DC::REG
       RT_HARD_ASSERT( Datastore.registerObservable( *ObservableList[ x ] ) );
     }
 
-
     return true;
   }
 
@@ -130,28 +129,30 @@ namespace DC::REG
     {
       uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "First mount attempt failed with code %d. Formatting...\r\n", err );
       err = lfs_format( &lfs, &lfs_cfg );
-      err = lfs_mount( &lfs, &lfs_cfg );
+      // err = lfs_mount( &lfs, &lfs_cfg );
     }
 
-    /*-------------------------------------------------
-    Log the mount status for posterity
-    -------------------------------------------------*/
-    if ( !err )
-    {
-      uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Mount success\r\n" );
-    }
-    else
-    {
-      uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Mount failed with code %d\r\n", err );
+    // /*-------------------------------------------------
+    // Log the mount status for posterity
+    // -------------------------------------------------*/
+    // if ( !err )
+    // {
+    //   uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Mount success\r\n" );
+    // }
+    // else
+    // {
+    //   uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Mount failed with code %d\r\n", err );
 
-      // uint32_t eraseTimeout = 10000;
-      // uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Memory corrupted, performing full chip erase. Timeout of %d ms.\r\n", eraseTimeout );
-      // Aurora::Memory::LFS::fullChipErase( eraseTimeout );
-      // uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Chip erased, rebooting.\r\n\r\n" );
-      // Chimera::System::softwareReset();
-    }
+    //   // uint32_t eraseTimeout = 10000;
+    //   // uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Memory corrupted, performing full chip erase. Timeout of %d ms.\r\n",
+    //   //                            eraseTimeout );
+    //   // Aurora::Memory::LFS::fullChipErase( eraseTimeout );
+    //   // uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Chip erased, rebooting.\r\n\r\n" );
+    //   // Chimera::System::softwareReset();
+    // }
 
-    return err == 0;
+    // return err == 0;
+    return false;
   }
 
 

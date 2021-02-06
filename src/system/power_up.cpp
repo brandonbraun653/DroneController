@@ -30,7 +30,7 @@ namespace DC::SYS
     Attempt to mount the file system, which allows the
     registry to initialize properly.
     -------------------------------------------------*/
-    //powerUpFileSystem();
+    powerUpFileSystem();
   }
 
 

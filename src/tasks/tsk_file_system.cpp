@@ -41,7 +41,6 @@ namespace DC::Tasks::FIL
     while ( true )
     {
       lastWoken = Chimera::millis();
-
       Chimera::delayMilliseconds( lastWoken, 100 );
     }
   }

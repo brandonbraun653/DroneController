@@ -68,9 +68,9 @@ namespace DC::Tasks
     // graphics.initialize( GFX::GraphicsThread, nullptr, GFX::PRIORITY, GFX::STACK, GFX::NAME.cbegin() );
     // s_thread_id[ static_cast<size_t>( TaskId::GRAPHICS ) ] = graphics.start();
 
-    // /*-------------------------------------------------
-    // System Thread: Radio
-    // -------------------------------------------------*/
+    /*-------------------------------------------------
+    System Thread: Radio
+    -------------------------------------------------*/
     // Thread radio;
     // radio.initialize( RADIO::RadioThread, nullptr, RADIO::PRIORITY, RADIO::STACK, RADIO::NAME.cbegin() );
     // s_thread_id[ static_cast<size_t>( TaskId::RADIO ) ] = radio.start();
