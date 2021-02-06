@@ -5,6 +5,7 @@ gen_static_lib_variants(
     lib_human_interface
   SOURCES
     hmi_button.cpp
+    hmi_encoder.cpp
   PRV_LIBRARIES
     aurora_intf_inc
     chimera_intf_inc

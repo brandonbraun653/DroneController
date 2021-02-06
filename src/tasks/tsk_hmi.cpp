@@ -20,19 +20,30 @@
 
 /* Project Includes */
 #include <src/hmi/hmi_button.hpp>
+#include <src/hmi/hmi_encoder.hpp>
 #include <src/tasks/tsk_common.hpp>
 
 
 namespace DC::Tasks::HMI
 {
-  void keyPress( DC::HMI::Button::Key key )
+  volatile int currentPosition = 0;
+  volatile bool updated = false;
+
+  void keyPress( Aurora::HMI::Button::ActiveEdge key )
   {
     uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Key pressed! \r\n" );
   }
 
-  void keyRelease( DC::HMI::Button::Key key )
+  void keyRelease( Aurora::HMI::Button::ActiveEdge key )
   {
     uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Key release! \r\n" );
+  }
+
+  void rotate( Aurora::HMI::Encoder::State &state )
+  {
+    currentPosition = state.absolutePosition;
+
+    updated = true;
   }
 
   /*-------------------------------------------------------------------------------
@@ -52,21 +63,31 @@ namespace DC::Tasks::HMI
     /*-------------------------------------------------
     Initialize the HMI drivers
     -------------------------------------------------*/
-    auto pressCB    = Button::EventCallback::create<keyPress>();
-    auto releaseCB  = Button::EventCallback::create<keyRelease>();
-    bool initResult = DC::HMI::Button::initialize();
+    auto pressCB    = Aurora::HMI::Button::EdgeCallback::create<keyPress>();
+    auto releaseCB  = Aurora::HMI::Button::EdgeCallback::create<keyRelease>();
+    auto rotateCB = Aurora::HMI::Encoder::RotationCallback::create<rotate>();
+    bool initResult = DC::HMI::Encoder::initialize();
     RT_HARD_ASSERT( initResult );
 
-    Button::onPress( Button::Key::TOUCH_KEY_1, pressCB );
-    Button::onRelease( Button::Key::TOUCH_KEY_1, releaseCB );
-    Button::enable( Button::Key::TOUCH_KEY_1 );
+    Encoder::onCenterPress( Encoder::Key::ENCODER_1, pressCB );
+    Encoder::onCenterRelease( Encoder::Key::ENCODER_1, releaseCB );
+    Encoder::onRotate( Encoder::Key::ENCODER_1, rotateCB );
+
+    Encoder::enable( Encoder::Key::ENCODER_1 );
 
     size_t lastWoken;
     while ( true )
     {
       lastWoken = Chimera::millis();
 
-      Chimera::delayMilliseconds( lastWoken, 100 );
+      if( updated )
+      {
+        int pos = currentPosition;
+        updated = false;
+        uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Position %d\r\n", pos );
+      }
+
+      Chimera::delayMilliseconds( lastWoken, 10 );
     }
   }
 }    // namespace DC::Tasks::HMI

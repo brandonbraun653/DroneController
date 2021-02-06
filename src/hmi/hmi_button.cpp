@@ -29,21 +29,19 @@ namespace DC::HMI::Button
   -------------------------------------------------------------------------------*/
   struct ControlBlock
   {
-    bool enabled;                               /**< Key processing enabled */
-    Key thisKey;                                /**< Which key this is */
-    EventCallback onPress;                      /**< Callback when key is pressed */
-    EventCallback onRelease;                    /**< Callback when key is released */
-    EventCallback onHold;                       /**< Callback when key is held */
-    Chimera::GPIO::State activeState;           /**< GPIO state that is considered as active */
-    Chimera::Threading::RecursiveMutex mutex;   /**< Resource lock */
-    Aurora::HMI::Button::EdgeTrigger debouncer; /**< GPIO debouncer */
+    bool enabled;                                /**< Key processing enabled */
+    Key thisKey;                                 /**< Which key this is */
+    Aurora::HMI::Button::EdgeCallback onPress;   /**< Callback when key is pressed */
+    Aurora::HMI::Button::EdgeCallback onRelease; /**< Callback when key is released */
+    Chimera::GPIO::State activeState;            /**< GPIO state that is considered as active */
+    Chimera::Threading::RecursiveMutex mutex;    /**< Resource lock */
+    Aurora::HMI::Button::EdgeTrigger debouncer;  /**< GPIO debouncer */
 
     void clear()
     {
-      enabled   = false;
-      onPress   = {};
-      onRelease = {};
-      onHold    = {};
+      enabled     = false;
+      onPress     = {};
+      onRelease   = {};
       activeState = Chimera::GPIO::State::LOW;
       debouncer.reset();
     }
@@ -53,28 +51,28 @@ namespace DC::HMI::Button
       using namespace Aurora::HMI::Button;
       using namespace Chimera::GPIO;
 
-      switch( edge )
+      switch ( edge )
       {
         case ActiveEdge::RISING_EDGE:
-          if( ( activeState == State::HIGH ) && onPress )
+          if ( ( activeState == State::HIGH ) && onPress )
           {
-            onPress( thisKey );
+            onPress( edge );
           }
-          else if( onRelease ) // activeState == LOW
+          else if ( onRelease )    // activeState == LOW
           {
-            onRelease( thisKey );
+            onRelease( edge );
           }
           // else no registered callbacks
           break;
 
         case ActiveEdge::FALLING_EDGE:
-          if( ( activeState == State::LOW ) && onPress )
+          if ( ( activeState == State::LOW ) && onPress )
           {
-            onPress( thisKey );
+            onPress( edge );
           }
-          else if( onRelease ) // activeState == HIGH
+          else if ( onRelease )    // activeState == HIGH
           {
-            onRelease( thisKey );
+            onRelease( edge );
           }
           // else no registered callbacks
           break;
@@ -85,10 +83,12 @@ namespace DC::HMI::Button
     }
   };
 
+
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
-  static ControlBlock s_key_ctrl[ static_cast<size_t>( Key::NUM_OPTIONS ) ];
+  static ControlBlock s_btn_ctrl[ static_cast<size_t>( Key::NUM_OPTIONS ) ];
+
 
   /*-------------------------------------------------------------------------------
   Static Functions
@@ -97,6 +97,7 @@ namespace DC::HMI::Button
   {
     return button < Key::NUM_OPTIONS;
   }
+
 
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -109,15 +110,15 @@ namespace DC::HMI::Button
     /*-------------------------------------------------
     Reset and then initialize the GPIO for each block
     -------------------------------------------------*/
-    for ( auto x = 0; x < ARRAY_COUNT( s_key_ctrl ); x++ )
+    for ( auto x = 0; x < ARRAY_COUNT( s_btn_ctrl ); x++ )
     {
       Chimera::Status_t result = Chimera::Status::OK;
 
       /*-------------------------------------------------
       Control block reset
       -------------------------------------------------*/
-      s_key_ctrl[ x ].clear();
-      s_key_ctrl[ x ].thisKey = static_cast<Key>( x );
+      s_btn_ctrl[ x ].clear();
+      s_btn_ctrl[ x ].thisKey = static_cast<Key>( x );
 
       /*-------------------------------------------------
       Prepare the input configuration
@@ -130,10 +131,10 @@ namespace DC::HMI::Button
       it very obvious at runtime if a key was added but
       not initialized in this function.
       -------------------------------------------------*/
-      switch ( s_key_ctrl[ x ].thisKey )
+      switch ( s_btn_ctrl[ x ].thisKey )
       {
         case Key::TOUCH_KEY_1:
-          s_key_ctrl[ x ].activeState = State::LOW;
+          s_btn_ctrl[ x ].activeState = State::LOW;
           config.gpioConfig.pin       = DC::IO::HMI::pinKeyIn0;
           config.gpioConfig.port      = DC::IO::HMI::portKeyIn0;
           config.gpioConfig.validity  = true;
@@ -151,12 +152,12 @@ namespace DC::HMI::Button
       /*-------------------------------------------------
       Initialize the GPIO debouncer
       -------------------------------------------------*/
-      EdgeCallback cb = EdgeCallback::create<ControlBlock, &ControlBlock::edgeCallback>( s_key_ctrl[ x ] );
+      EdgeCallback cb = EdgeCallback::create<ControlBlock, &ControlBlock::edgeCallback>( s_btn_ctrl[ x ] );
 
-      if( s_key_ctrl[ x ].debouncer.initialize( config ) )
+      if ( s_btn_ctrl[ x ].debouncer.initialize( config ) )
       {
-        s_key_ctrl[ x ].debouncer.disable();
-        s_key_ctrl[ x ].debouncer.onActiveEdge( cb );
+        s_btn_ctrl[ x ].debouncer.disable();
+        s_btn_ctrl[ x ].debouncer.onActiveEdge( cb );
       }
       else
       {
@@ -168,14 +169,14 @@ namespace DC::HMI::Button
   }
 
 
-  bool onPress( const Key button, EventCallback &cb )
+  bool onPress( const Key button, Aurora::HMI::Button::EdgeCallback &cb )
   {
     if ( keyIsValid( button ) )
     {
       auto k = static_cast<size_t>( button );
-      s_key_ctrl[ k ].mutex.lock();
-      s_key_ctrl[ k ].onPress = cb;
-      s_key_ctrl[ k ].mutex.unlock();
+      s_btn_ctrl[ k ].mutex.lock();
+      s_btn_ctrl[ k ].onPress = cb;
+      s_btn_ctrl[ k ].mutex.unlock();
       return true;
     }
     else
@@ -185,14 +186,14 @@ namespace DC::HMI::Button
   }
 
 
-  bool onRelease( const Key button, EventCallback &cb )
+  bool onRelease( const Key button, Aurora::HMI::Button::EdgeCallback &cb )
   {
     if ( keyIsValid( button ) )
     {
       auto k = static_cast<size_t>( button );
-      s_key_ctrl[ k ].mutex.lock();
-      s_key_ctrl[ k ].onRelease = cb;
-      s_key_ctrl[ k ].mutex.unlock();
+      s_btn_ctrl[ k ].mutex.lock();
+      s_btn_ctrl[ k ].onRelease = cb;
+      s_btn_ctrl[ k ].mutex.unlock();
       return true;
     }
     else
@@ -207,8 +208,8 @@ namespace DC::HMI::Button
     auto k = static_cast<size_t>( button );
     if ( keyIsValid( button ) )
     {
-      s_key_ctrl[ k ].enabled = true;
-      s_key_ctrl[ k ].debouncer.enable();
+      s_btn_ctrl[ k ].enabled = true;
+      s_btn_ctrl[ k ].debouncer.enable();
       return true;
     }
     else
@@ -224,8 +225,8 @@ namespace DC::HMI::Button
 
     if ( keyIsValid( button ) )
     {
-      s_key_ctrl[ k ].debouncer.disable();
-      s_key_ctrl[ k ].enabled = false;
+      s_btn_ctrl[ k ].debouncer.disable();
+      s_btn_ctrl[ k ].enabled = false;
     }
   }
 

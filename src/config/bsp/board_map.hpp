@@ -55,6 +55,21 @@ namespace DC::IO
     -------------------------------------------------*/
     static constexpr Chimera::GPIO::Pin pinKeyIn0   = 3;
     static constexpr Chimera::GPIO::Port portKeyIn0 = Chimera::GPIO::Port::PORTC;
+
+    namespace Encoder
+    {
+      /*-------------------------------------------------
+      Rotary Encoder 0
+      -------------------------------------------------*/
+      static constexpr Chimera::GPIO::Pin pinBtnIn0   = 0;
+      static constexpr Chimera::GPIO::Port portBtnIn0 = Chimera::GPIO::Port::PORTC;
+
+      static constexpr Chimera::GPIO::Pin pinA   = 1;
+      static constexpr Chimera::GPIO::Port portA = Chimera::GPIO::Port::PORTC;
+
+      static constexpr Chimera::GPIO::Pin pinB   = 2;
+      static constexpr Chimera::GPIO::Port portB = Chimera::GPIO::Port::PORTC;
+    }
   }    // namespace HMI
 
   /*-------------------------------------------------------------------------------
