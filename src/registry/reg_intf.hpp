@@ -22,6 +22,8 @@ namespace DC::REG
   bool mount();
 
   bool unmount();
+
+  void format();
 }  // namespace DC::REG
 
 #endif  /* !DC_REGISTRY_INTF_HPP */

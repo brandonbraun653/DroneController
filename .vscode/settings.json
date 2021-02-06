@@ -73,6 +73,7 @@
   "peacock.color": "#1857a4",
   "cSpell.words": [
     "crtp",
+    "dcmi",
     "debouncer",
     "debouncing",
     "exti",
@@ -81,6 +82,14 @@
     "gfxoff",
     "gfxon",
     "gpio",
+    "gpioa",
+    "gpiob",
+    "gpioc",
+    "gpiod",
+    "gpioe",
+    "gpiof",
+    "gpiog",
+    "gpioh",
     "gwin",
     "intf",
     "ireference",
@@ -88,7 +97,9 @@
     "map",
     "mosi",
     "nvic",
+    "periphs",
     "sdio",
+    "sdmmc",
     "usart",
     "wwdg"
   ]
