@@ -8,6 +8,9 @@
  *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
+/* Aurora Includes */
+#include <Aurora/filesystem>
+
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/interrupt>
@@ -36,6 +39,10 @@ namespace DC::Tasks::FIL
     this_thread::pendTaskMsg( ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_BLOCK );
     Chimera::delayMilliseconds( 500 );
 
+    /*-------------------------------------------------
+    Mount the filesystem
+    -------------------------------------------------*/
+    Aurora::FileSystem::mount();
 
     size_t lastWoken;
     while ( true )

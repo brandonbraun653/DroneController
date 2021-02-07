@@ -54,7 +54,7 @@ namespace DC::SYS
     /*-------------------------------------------------
     Mount the file system
     -------------------------------------------------*/
-    if( !REG::initialize() || !REG::mount() )
+    if( !REG::initialize() )
     {
       uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Failed to mount registry\r\n" );
     }

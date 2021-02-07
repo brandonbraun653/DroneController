@@ -16,7 +16,7 @@ gen_static_lib_variants(
     chimera_intf_inc
     thor_intf_inc
     Boost::boost
-    lfs_inc
+    lfs_intf_inc
     ripple_inc
     ugfx_inc
     ulog_inc

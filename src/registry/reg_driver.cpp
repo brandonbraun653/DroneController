@@ -12,15 +12,12 @@
 #include <Aurora/memory>
 #include <Aurora/database>
 #include <Aurora/datastore>
-#include <Aurora/source/memory/flash/littlefs/lfs_hooks.hpp>
+#include <Aurora/filesystem_lfs>
 
 /* Chimera Includes */
 #include <Chimera/assert>
 #include <Chimera/spi>
 #include <Chimera/system>
-
-/* Little FS Includes */
-#include "lfs.h"
 
 /* Logger Includes */
 #include <uLog/ulog.hpp>
@@ -63,14 +60,14 @@ namespace DC::REG
                                       .lookahead_size = 16 };
 
   /*-------------------------------------------------
-  Database
+  Database Memory Allocation
   -------------------------------------------------*/
   Aurora::Database::RAM Database;
   static Aurora::Database::EntryStore<NUM_DATABASE_KEYS> dbEntryStore;
   static std::array<uint8_t, 1024> dbRAM;
 
   /*-------------------------------------------------
-  Datastore
+  Datastore Memory Allocation
   -------------------------------------------------*/
   static constexpr size_t ObservableRange = KEY_OBSERVABLE_END - KEY_OBSERVABLE_START;
 
@@ -82,20 +79,28 @@ namespace DC::REG
   -------------------------------------------------------------------------------*/
   bool initialize()
   {
-    using namespace Aurora::Memory::LFS;
     using namespace Aurora::Flash::NOR;
     using namespace Aurora::Datastore;
 
     /*-------------------------------------------------
-    Initialize the file system
+    Prepare the FileSystem driver
     -------------------------------------------------*/
-    if ( !initializeSPI() || !attachDevice( Chip::AT25SF081, DC::IO::NOR::spiChannel, lfs_cfg ) )
-    {
-      return false;
-    }
+    bool result = true;
+
+    result |= initializeSPI();
+    result |= Aurora::FileSystem::Driver::LFS::attachFS( &lfs, &lfs_cfg );
+    result |= Aurora::FileSystem::Driver::LFS::attachDevice( Chip::AT25SF081, DC::IO::NOR::spiChannel, lfs_cfg );
+    RT_HARD_ASSERT( result );
 
     /*-------------------------------------------------
-    Initialize the database
+    Now actually initialize the FileSystem
+    -------------------------------------------------*/
+    result = Aurora::FileSystem::configureDriver( Aurora::FileSystem::DRIVER_LITTLE_FS );
+    RT_HARD_ASSERT( result );
+
+    /*-------------------------------------------------
+    Initialize the database, which forms the back-end
+    of the datastore.
     -------------------------------------------------*/
     Database.assignCoreMemory( dbEntryStore, dbRAM.data(), dbRAM.size() );
     Database.reset();
@@ -114,61 +119,28 @@ namespace DC::REG
       RT_HARD_ASSERT( Datastore.registerObservable( *ObservableList[ x ] ) );
     }
 
+    uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Registry initialized\r\n" );
     return true;
   }
 
-
-  bool mount()
-  {
-    /*-------------------------------------------------
-    Try mounting. It's possible to get a clean chip,
-    which will need some formatting before mounting.
-    -------------------------------------------------*/
-    int err = lfs_mount( &lfs, &lfs_cfg );
-    if ( err )
-    {
-      uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "First mount attempt failed with code %d. Formatting...\r\n", err );
-      err = lfs_format( &lfs, &lfs_cfg );
-      err = lfs_mount( &lfs, &lfs_cfg );
-    }
-
-    /*-------------------------------------------------
-    Log the mount status for posterity
-    -------------------------------------------------*/
-    if ( !err )
-    {
-      uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Mount success\r\n" );
-    }
-    else
-    {
-      uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Mount failed with code %d\r\n", err );
-      format();
-    }
-
-    return err == 0;
-  }
-
-
-  bool unmount()
-  {
-    // err = lfs_unmount( &lfs );
-    RT_HARD_ASSERT( false );
-    return false;
-  }
-
-
   void format()
   {
-    uint32_t eraseTimeout = 10000;
-    uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Performing full chip erase. Timeout of %d ms.\r\n", eraseTimeout );
-    Aurora::Memory::LFS::fullChipErase( eraseTimeout );
-    uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Chip erased\r\n" );
+    // uint32_t eraseTimeout = 10000;
+    // uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Performing full chip erase. Timeout of %d ms.\r\n", eraseTimeout );
+    // Aurora::Memory::LFS::fullChipErase( eraseTimeout );
+    // uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Chip erased\r\n" );
   }
 
 
   /*-------------------------------------------------------------------------------
   Static Functions
   -------------------------------------------------------------------------------*/
+  /**
+   *  Configures the SPI controller for the NOR flash chip that
+   *  hosts the project's FileSystem.
+   *
+   *  @return bool
+   */
   static bool initializeSPI()
   {
     /*-------------------------------------------------
@@ -231,6 +203,13 @@ namespace DC::REG
   }
 
 
+  /**
+   *  Callback for logging when an observable parameter fails
+   *  to register with the system
+   *
+   *  @param[in]  id      Which ID failed
+   *  @return void
+   */
   static void datastoreRegisterFail( const size_t id )
   {
     uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Failed to register observable" );

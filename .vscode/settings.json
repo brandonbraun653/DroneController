@@ -52,7 +52,9 @@
     "small_lcd_sign_12.c": "cpp",
     "small_lcd_sign_5.c": "cpp",
     "dejavusans12.c": "cpp",
-    "limits": "cpp"
+    "limits": "cpp",
+    "filesystem": "cpp",
+    "filesystem_lfs": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",
@@ -101,6 +103,7 @@
     "sdio",
     "sdmmc",
     "usart",
-    "wwdg"
+    "wwdg",
+    "yaffs"
   ]
 }
