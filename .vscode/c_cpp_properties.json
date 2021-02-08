@@ -29,16 +29,23 @@
             "${workspaceFolder}/lib/yaffs2/integration",
             "${BOOST_ROOT}/boost_1_70_0"
         ],
-        "defaultEmbeddedDefines":[
-            "EMBEDDED",
-            "FREERTOS_CFG_PORT_ARM_CM4F=1",
-            "UNICODE",
-            "USING_FREERTOS_THREADS",
+        "defaultDefines":[
             "DEBUG",
+            "UNICODE",
             "_DEBUG",
             "_UNICODE",
             "__GNUC__"
-
+        ],
+        "defaultEmbeddedDefines":[
+            "EMBEDDED",
+            "FREERTOS_CFG_PORT_ARM_CM4F=1",
+            "USING_FREERTOS_THREADS",
+            "${defaultDefines}"
+        ],
+        "defaultSimDefines":[
+            "CHIMERA_SIMULATOR",
+            "USING_NATIVE_THREADS",
+            "${defaultDefines}"
         ],
         "defaultEmbeddedCStandard": "gnu17",
         "defaultEmbeddedCppStandard": "gnu++20"
@@ -66,6 +73,16 @@
                 "STM32F446xx",
                 "TARGET_STM32F4",
                 "THOR_USER_CONFIG"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++20"
+        },
+        {
+            "name": "Simulator Development",
+            "includePath": ["${defaultIncludePaths}"],
+            "defines": [
+                "${defaultSimDefines}"
             ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "gnu17",

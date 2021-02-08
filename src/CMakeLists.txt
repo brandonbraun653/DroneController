@@ -1,3 +1,5 @@
+include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
+
 # -----------------------------------------------------------------------------
 # Project Libraries
 # -----------------------------------------------------------------------------
@@ -10,29 +12,46 @@ add_subdirectory(tasks)
 add_subdirectory(utility)
 add_subdirectory(wireless)
 
+
 # -----------------------------------------------------------------------------
-# Test Suite: HLD ADC
-#
-# Without Map:
+# Project Libraries
+# -----------------------------------------------------------------------------
+gen_intf_lib_variants(
+  TARGET
+    embedded_core_libs
+  LIBRARIES
+    freertos_inc
+    freertos_cfg
+    freertos_core
+    freertos_heap
+    freertos_port
+    thor_cfg_freertos
+    thor_cmn_cm4
+    thor_hld_core
+    thor_lld_intf
+  EXPORT_DIR
+    ${PROJECT_BINARY_DIR}/DroneController
+)
+
+# -----------------------------------------------------------------------------
+# Hardware Config:
 # cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32l432kb -DCMAKE_BUILD_TYPE=Debug --configure ../
 # cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32f446re -DCMAKE_BUILD_TYPE=Debug --configure ../
 #
-# With Map File:
-# cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32l432kb -DCMAKE_BUILD_TYPE=Debug -DGENERATE_MAP_FILE=ON --configure ../
-# cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32f446re -DCMAKE_BUILD_TYPE=Debug -DGENERATE_MAP_FILE=ON --configure ../
+# Simulator Config:
+# cmake -DTOOLCHAIN=gcc -DNATIVE_THREADS=ON -DDEVICE_TARGET=sim -DCMAKE_BUILD_TYPE=Debug --configure ../
 # -----------------------------------------------------------------------------
-add_executable(DroneController
-  startup.cpp
-)
+add_executable(DroneController startup.cpp)
 
-target_include_directories(DroneController PRIVATE "." )
+# Include Directories
+target_include_directories(DroneController PRIVATE ".")
 
+# Dependent Modules
 target_link_libraries(DroneController PRIVATE
   # Public Includes
   aurora_intf_inc
   Boost::boost
   chimera_intf_inc
-  freertos_inc
   thor_intf_inc
   type_safe_inc
 
@@ -49,9 +68,9 @@ target_link_libraries(DroneController PRIVATE
   bsp_nucleo_f446re
 
   # Graphics Libraries
-  ugfx_lib_dbg
-  ugfx_st7735_lib_dbg
-  ugfx_prj_config
+  # ugfx_lib_dbg
+  # ugfx_st7735_lib_dbg
+  # ugfx_prj_config
 
   # Networking Libraries
   # ripple_core_rel
@@ -67,24 +86,19 @@ target_link_libraries(DroneController PRIVATE
 
   # Hardware Libraries
   chimera_core_dbg
-  freertos_cfg
-  freertos_core_dbg
-  freertos_heap
-  freertos_port
-  thor_cfg_freertos_dbg
-  thor_cmn_cm4_dbg
-  thor_hld_core_dbg
-  thor_lld_intf_dbg
 
   # Target Properties
   prj_device_target
   prj_build_target
 )
 
+# Hardware Driver Model
 if(${DEVICE_TARGET} MATCHES "^stm32l4")
-  target_link_libraries(DroneController PRIVATE thor_lld_stm32l4_dbg )
+  target_link_libraries(DroneController PRIVATE thor_lld_stm32l4_dbg embedded_core_libs_dbg)
 elseif(${DEVICE_TARGET} MATCHES "^stm32f4")
-  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_dbg)
+  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_dbg embedded_core_libs_dbg)
+elseif(${DEVICE_TARGET} MATCHES "^sim")
+  target_link_libraries(DroneController PRIVATE chimera_sim_core)
 else()
   message(FATAL_ERROR "Unsupported device target")
 endif()

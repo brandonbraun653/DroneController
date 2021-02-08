@@ -15,10 +15,11 @@
 #include <src/tasks/tsk_common.hpp>
 #include <src/tasks/tsk_graphics.hpp>
 
+#if 0
 /* uGFX Includes */
-#include "gfx.h"
-#include <src/gwin/gwin.h>
-#include <src/gdisp/gdisp.h>
+//#include "gfx.h"
+// #include <src/gwin/gwin.h>
+// #include <src/gdisp/gdisp.h>
 
 namespace DC::Tasks::GFX
 {
@@ -151,3 +152,5 @@ namespace DC::Tasks::GFX
     }
   }
 }    // namespace DC::Tasks::GFX
+
+#endif /* 0 */

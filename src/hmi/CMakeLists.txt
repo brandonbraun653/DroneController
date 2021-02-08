@@ -12,5 +12,5 @@ gen_static_lib_variants(
     ulog_inc
     project_inc
   EXPORT_DIR
-    "${PROJECT_BINARY_DIR}/DroneController"
+    "${PROJECT_BINARY_DIR}/DroneController/hmi"
 )

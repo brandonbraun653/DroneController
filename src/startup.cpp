@@ -21,7 +21,7 @@ Public Functions
 int main()
 {
   /*-------------------------------------------------
-  Perform peripheral driver system initalization
+  Perform peripheral driver system initialization
   -------------------------------------------------*/
   ChimeraInit();
 

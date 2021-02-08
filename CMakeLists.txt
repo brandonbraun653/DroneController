@@ -15,7 +15,7 @@ set(CPP_PLATFORM "freertos")
 include("lib/CommonTools/cmake/options/common.cmake")
 
 # Override the linker command
-if(Toolchain::HAS_GCC_ARM_NONE_EABI)
+if(Toolchain::HAS_GCC_ARM_NONE_EABI OR Toolchain::HAS_GCC)
   include("lib/CommonTools/cmake/toolchains/linker_whole_archive.cmake")
 endif()
 
@@ -25,6 +25,7 @@ endif()
 find_package(Boost REQUIRED)
 add_subdirectory("lib/Aurora")
 add_subdirectory("lib/Chimera")
+add_subdirectory("lib/ChimeraSim")
 add_subdirectory("lib/CommonTools/cpputest")
 add_subdirectory("lib/CommonTools/googletest")
 add_subdirectory("lib/FreeRTOS")
@@ -54,10 +55,10 @@ target_include_directories(thor_project_config INTERFACE "${PROJECT_ROOT}/src/co
 add_library(project_ugfx_inc INTERFACE)
 target_include_directories(project_ugfx_inc INTERFACE "${PROJECT_ROOT}/src/config/ugfx")
 target_link_libraries(project_ugfx_inc INTERFACE
-  freertos_inc
-  freertos_inc_legacy
-  freertos_cfg
-  freertos_port
+  # freertos_inc
+  # freertos_inc_legacy
+  # freertos_cfg
+  # freertos_port
   ugfx_st7735_inc
 )
 export(TARGETS project_ugfx_inc FILE "${PROJECT_BINARY_DIR}/project/project_ugfx_inc.cmake")
