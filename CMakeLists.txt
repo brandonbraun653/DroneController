@@ -54,13 +54,16 @@ target_include_directories(thor_project_config INTERFACE "${PROJECT_ROOT}/src/co
 # uGFX Configuration file
 add_library(project_ugfx_inc INTERFACE)
 target_include_directories(project_ugfx_inc INTERFACE "${PROJECT_ROOT}/src/config/ugfx")
-target_link_libraries(project_ugfx_inc INTERFACE
-  # freertos_inc
-  # freertos_inc_legacy
-  # freertos_cfg
-  # freertos_port
-  ugfx_st7735_inc
-)
+target_link_libraries(project_ugfx_inc INTERFACE ugfx_st7735_inc)
+if(Toolchain::REQUIRES_FREERTOS_THREADS)
+  target_link_libraries(project_ugfx_inc INTERFACE
+    freertos_inc
+    freertos_inc_legacy
+    freertos_cfg
+    freertos_port
+  )
+endif()
+
 export(TARGETS project_ugfx_inc FILE "${PROJECT_BINARY_DIR}/project/project_ugfx_inc.cmake")
 
 # ====================================================

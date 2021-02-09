@@ -20,11 +20,7 @@ gen_intf_lib_variants(
   TARGET
     embedded_core_libs
   LIBRARIES
-    freertos_inc
-    freertos_cfg
     freertos_core
-    freertos_heap
-    freertos_port
     thor_cfg_freertos
     thor_cmn_cm4
     thor_hld_core
@@ -101,6 +97,16 @@ elseif(${DEVICE_TARGET} MATCHES "^sim")
   target_link_libraries(DroneController PRIVATE chimera_sim_core)
 else()
   message(FATAL_ERROR "Unsupported device target")
+endif()
+
+if(Toolchain::REQUIRES_FREERTOS_THREADS)
+  target_link_libraries(DroneController PRIVATE
+    freertos_inc
+    freertos_inc_legacy
+    freertos_cfg
+    freertos_port
+    freertos_heap
+  )
 endif()
 
 target_include_directories(DroneController PRIVATE ${PROJECT_ROOT})
