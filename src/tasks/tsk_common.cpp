@@ -38,7 +38,10 @@ namespace DC::Tasks
     /*-------------------------------------------------
     Initialize local memory
     -------------------------------------------------*/
-    memset( s_thread_id, THREAD_ID_INVALID, ARRAY_COUNT( s_thread_id ) );
+    for ( size_t x = 0; x < ARRAY_COUNT( s_thread_id ); x++ )
+    {
+      s_thread_id[ x ] = THREAD_ID_INVALID;
+    }
 
     /*-------------------------------------------------
     System Thread: Heartbeat
@@ -64,16 +67,16 @@ namespace DC::Tasks
     /*-------------------------------------------------
     System Thread: Graphics
     -------------------------------------------------*/
-    // Thread graphics;
-    // graphics.initialize( GFX::GraphicsThread, nullptr, GFX::PRIORITY, GFX::STACK, GFX::NAME.cbegin() );
-    // s_thread_id[ static_cast<size_t>( TaskId::GRAPHICS ) ] = graphics.start();
+    Thread graphics;
+    graphics.initialize( GFX::GraphicsThread, nullptr, GFX::PRIORITY, GFX::STACK, GFX::NAME.cbegin() );
+    s_thread_id[ static_cast<size_t>( TaskId::GRAPHICS ) ] = graphics.start();
 
     /*-------------------------------------------------
     System Thread: Radio
     -------------------------------------------------*/
-    // Thread radio;
-    // radio.initialize( RADIO::RadioThread, nullptr, RADIO::PRIORITY, RADIO::STACK, RADIO::NAME.cbegin() );
-    // s_thread_id[ static_cast<size_t>( TaskId::RADIO ) ] = radio.start();
+    Thread radio;
+    radio.initialize( RADIO::RadioThread, nullptr, RADIO::PRIORITY, RADIO::STACK, RADIO::NAME.cbegin() );
+    s_thread_id[ static_cast<size_t>( TaskId::RADIO ) ] = radio.start();
 
     /*-------------------------------------------------
     System Thread: File System

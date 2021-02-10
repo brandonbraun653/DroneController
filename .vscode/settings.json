@@ -54,7 +54,8 @@
     "dejavusans12.c": "cpp",
     "limits": "cpp",
     "filesystem": "cpp",
-    "filesystem_lfs": "cpp"
+    "filesystem_lfs": "cpp",
+    "thread": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

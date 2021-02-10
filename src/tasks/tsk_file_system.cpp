@@ -18,6 +18,7 @@
 #include <Chimera/thread>
 
 /* Project Includes */
+#include <src/tasks/tsk_common.hpp>
 #include <src/tasks/tsk_file_system.hpp>
 #include <src/registry/reg_intf.hpp>
 
@@ -36,7 +37,7 @@ namespace DC::Tasks::FIL
     /*-------------------------------------------------
     Wait for initialization command
     -------------------------------------------------*/
-    this_thread::pendTaskMsg( ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_BLOCK );
+    waitInit();
     Chimera::delayMilliseconds( 500 );
 
     /*-------------------------------------------------

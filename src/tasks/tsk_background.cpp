@@ -104,13 +104,13 @@ namespace DC::Tasks::BKGD
     Monitor system threads
     -------------------------------------------------*/
     initializeMonitor();
-    size_t laskTickWoken;
+    size_t lastTickWoken;
     size_t lastKick = 0;
     Chimera::delayMilliseconds( TSK_PERIOD );
 
     while ( true )
     {
-      laskTickWoken = Chimera::millis();
+      lastTickWoken = Chimera::millis();
 
       /*-------------------------------------------------
       Process the task hits
@@ -148,7 +148,7 @@ namespace DC::Tasks::BKGD
       /*-------------------------------------------------
       Periodically kick the hardware watchdog
       -------------------------------------------------*/
-      if ( ( laskTickWoken - lastKick ) > HW_WDG_KICK_RATE )
+      if ( ( lastTickWoken - lastKick ) > HW_WDG_KICK_RATE )
       {
         s_watchdog->kick();
         lastKick = Chimera::millis();
@@ -157,7 +157,7 @@ namespace DC::Tasks::BKGD
       /*-------------------------------------------------
       Only wake up at the desired period
       -------------------------------------------------*/
-      Chimera::delayMilliseconds( laskTickWoken, TSK_PERIOD );
+      Chimera::delayMilliseconds( lastTickWoken, TSK_PERIOD );
     }
   }
 
@@ -219,6 +219,31 @@ namespace DC::Tasks::BKGD
       Chimera::insert_debug_breakpoint();
       Chimera::System::softwareReset();
     }
+
+    /*-------------------------------------------------
+    Wait for all the threads to register themselves
+    -------------------------------------------------*/
+    #if defined( CHIMERA_SIMULATOR )
+    while( true )
+    {
+      bool allRegistered = true;
+
+      for ( auto x = 1; x < ARRAY_COUNT( s_timing_stats ); x++ )
+      {
+        if( getThreadId( s_timing_stats[ x ].id ) == THREAD_ID_INVALID )
+        {
+          allRegistered = false;
+        }
+
+        Chimera::delayMilliseconds( 25 );
+      }
+
+      if( allRegistered )
+      {
+        break;
+      }
+    }
+    #endif /* CHIMERA_SIMULATOR */
 
     /*-------------------------------------------------
     Start up system threads. Monitor thread is always

@@ -67,6 +67,11 @@ namespace DC::Tasks::RADIO
     Wait to be told to initialize by monitor thread
     -------------------------------------------------*/
     waitInit();
+    while ( true )
+    {
+      // Temp while the radio sim is in progress
+      Chimera::delayMilliseconds( 100 );
+    }
 
     /*-------------------------------------------------
     Configure the HMI device for TX triggering
