@@ -34,7 +34,7 @@ namespace DC::HMI::Button
     Aurora::HMI::Button::EdgeCallback onPress;   /**< Callback when key is pressed */
     Aurora::HMI::Button::EdgeCallback onRelease; /**< Callback when key is released */
     Chimera::GPIO::State activeState;            /**< GPIO state that is considered as active */
-    Chimera::Threading::RecursiveMutex mutex;    /**< Resource lock */
+    Chimera::Thread::RecursiveMutex mutex;    /**< Resource lock */
     Aurora::HMI::Button::EdgeTrigger debouncer;  /**< GPIO debouncer */
 
     void clear()

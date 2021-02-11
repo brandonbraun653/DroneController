@@ -26,7 +26,7 @@ namespace DC::Tasks::HB
   -------------------------------------------------------------------------------*/
   static constexpr size_t STACK                          = STACK_BYTES( 250 );
   static constexpr std::string_view NAME                 = "heartbeat";
-  static constexpr Chimera::Threading::Priority PRIORITY = Chimera::Threading::Priority::LEVEL_1;
+  static constexpr Chimera::Thread::Priority PRIORITY = Chimera::Thread::Priority::LEVEL_1;
 
   /*-------------------------------------------------------------------------------
   Public Functions

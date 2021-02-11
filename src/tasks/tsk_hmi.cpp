@@ -50,7 +50,7 @@ namespace DC::Tasks::HMI
   -------------------------------------------------------------------------------*/
   void HumanInterfaceThread( void *arg )
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
     using namespace DC::HMI;
 
     /*-------------------------------------------------

@@ -61,7 +61,7 @@ namespace DC::Tasks::RADIO
     using namespace Aurora::HMI::Button;
     using namespace Chimera::GPIO;
     using namespace Chimera::SPI;
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     /*-------------------------------------------------
     Wait to be told to initialize by monitor thread
@@ -160,7 +160,7 @@ namespace DC::Tasks::RADIO
 #endif
 
       // Process the data pipes here?
-      BKGD::kickDog( TaskId::RADIO );
+      BKGD::kickDog( PrjTaskId::RADIO );
       Chimera::delayMilliseconds( 10 );
     }
   }

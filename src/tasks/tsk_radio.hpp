@@ -26,7 +26,7 @@ namespace DC::Tasks::RADIO
   -------------------------------------------------------------------------------*/
   static constexpr size_t STACK                          = STACK_BYTES( 2048 );
   static constexpr std::string_view NAME                 = "radio";
-  static constexpr Chimera::Threading::Priority PRIORITY = Chimera::Threading::Priority::LEVEL_3;
+  static constexpr Chimera::Thread::Priority PRIORITY = Chimera::Thread::Priority::LEVEL_3;
 
   /*-------------------------------------------------------------------------------
   Public Functions

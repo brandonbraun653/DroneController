@@ -30,7 +30,7 @@ namespace DC::Tasks::FIL
   -------------------------------------------------------------------------------*/
   void FileSystemThread( void *arg )
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
     using namespace Chimera::Interrupt;
     using namespace Chimera::Peripheral;
 

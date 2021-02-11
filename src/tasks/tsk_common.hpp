@@ -27,7 +27,7 @@ namespace DC::Tasks
    *  List of threads that are running on the system. Can be used to
    *  index into various thread resources as well.
    */
-  enum class TaskId : uint8_t
+  enum class PrjTaskId : uint8_t
   {
     /* System Thread (Must be first) */
     MONITOR,     /**< Task monitor thread to ensure everything is running on time */
@@ -65,9 +65,9 @@ namespace DC::Tasks
    *  Gets the system thread identifier, assigned during boot.
    *
    *  @param[in]  task        Which task to look up
-   *  @return Chimera::Threading::ThreadId
+   *  @return Chimera::Thread::TaskId
    */
-  Chimera::Threading::ThreadId getThreadId( const TaskId task );
+  Chimera::Thread::TaskId getTaskId( const PrjTaskId task );
 
 }    // namespace DC::Tasks
 

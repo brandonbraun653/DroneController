@@ -35,7 +35,7 @@ namespace DC::RF
   Ripple::Physical::Handle hPhysical;
   Ripple::DataLink::Handle hDataLink;
 
-  Chimera::Threading::ThreadId netThreadId[ TSK_ID_NUM_TASKS ];
+  Chimera::Thread::TaskId netTaskId[ TSK_ID_NUM_TASKS ];
 
   /*-------------------------------------------------------------------------------
   Static Data
@@ -52,7 +52,7 @@ namespace DC::RF
   -------------------------------------------------------------------------------*/
   Chimera::Status_t runNetThreads()
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
     using namespace Ripple;
 
     auto result = Chimera::Status::OK;
@@ -60,13 +60,13 @@ namespace DC::RF
     /*-------------------------------------------------
     Start the DataLink Service
     -------------------------------------------------*/
-    ThreadDelegate dlFunc = ThreadDelegate::create<DataLink::Service, &DataLink::Service::run>( datalinkService );
+    TaskDelegate dlFunc = TaskDelegate::create<DataLink::Service, &DataLink::Service::run>( datalinkService );
 
-    Thread datalink;
+    Task datalink;
     datalink.initialize( dlFunc, reinterpret_cast<void *>( &netHandle ), Priority::LEVEL_4, DataLink::THREAD_STACK,
                    DataLink::THREAD_NAME.cbegin() );
-    netThreadId[ TSK_ID_DATALINK ] = datalink.start();
-    sendTaskMsg( netThreadId[ TSK_ID_DATALINK ], ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
+    netTaskId[ TSK_ID_DATALINK ] = datalink.start();
+    sendTaskMsg( netTaskId[ TSK_ID_DATALINK ], ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
 
     /* Give the hardware time to boot */
     Chimera::delayMilliseconds( 100 );
@@ -74,31 +74,31 @@ namespace DC::RF
     /*-------------------------------------------------
     Start the Transport Service
     -------------------------------------------------*/
-    ThreadDelegate tFunc = ThreadDelegate::create<Transport::Service, &Transport::Service::run>( transportService );
+    TaskDelegate tFunc = TaskDelegate::create<Transport::Service, &Transport::Service::run>( transportService );
 
-    Thread transport;
+    Task transport;
     transport.initialize( tFunc, reinterpret_cast<void *>( &netHandle ), Priority::LEVEL_3, Transport::THREAD_STACK,
                           Transport::THREAD_NAME.cbegin() );
-    netThreadId[ TSK_ID_TRANSPORT ] = transport.start();
-    sendTaskMsg( netThreadId[ TSK_ID_DATALINK ], ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
+    netTaskId[ TSK_ID_TRANSPORT ] = transport.start();
+    sendTaskMsg( netTaskId[ TSK_ID_DATALINK ], ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
 
     /*-------------------------------------------------
     Start the Session Manager Service
     -------------------------------------------------*/
-    ThreadDelegate sFunc = ThreadDelegate::create<Session::Service, &Session::Service::run>( sessionService );
+    TaskDelegate sFunc = TaskDelegate::create<Session::Service, &Session::Service::run>( sessionService );
 
-    Thread session;
+    Task session;
     session.initialize( sFunc, reinterpret_cast<void*>( &netHandle ), Priority::LEVEL_3, Session::THREAD_STACK,
                         Session::THREAD_NAME.cbegin() );
-    netThreadId[ TSK_ID_SESSION ] = session.start();
-    sendTaskMsg( netThreadId[ TSK_ID_SESSION ], ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
+    netTaskId[ TSK_ID_SESSION ] = session.start();
+    sendTaskMsg( netTaskId[ TSK_ID_SESSION ], ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
 
     /*-------------------------------------------------
     Verify all threads were started
     -------------------------------------------------*/
-    for ( auto x = 0; x < ARRAY_COUNT( netThreadId ); x++ )
+    for ( auto x = 0; x < ARRAY_COUNT( netTaskId ); x++ )
     {
-      RT_HARD_ASSERT( netThreadId[ x ] != THREAD_ID_INVALID );
+      RT_HARD_ASSERT( netTaskId[ x ] != THREAD_ID_INVALID );
     }
 
     return result;
@@ -107,14 +107,14 @@ namespace DC::RF
 
   Chimera::Status_t initNetStack( Ripple::Session::RadioConfig &cfg )
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     /*-------------------------------------------------
     Clear local memory
     -------------------------------------------------*/
-    for ( auto x = 0; x < ARRAY_COUNT( netThreadId ); x++ )
+    for ( auto x = 0; x < ARRAY_COUNT( netTaskId ); x++ )
     {
-      netThreadId[ x ] = THREAD_ID_INVALID;
+      netTaskId[ x ] = THREAD_ID_INVALID;
     }
 
     /*-------------------------------------------------
@@ -138,7 +138,7 @@ namespace DC::RF
   {
     using namespace Chimera::GPIO;
     using namespace Chimera::SPI;
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     /*-------------------------------------------------------------------------------
     Hardware Configuration
@@ -316,7 +316,7 @@ namespace DC::RF
     Initialize the config
     -------------------------------------------------*/
     hDataLink.clear();
-    hDataLink.hwIRQEventTimeout = Chimera::Threading::TIMEOUT_25MS;
+    hDataLink.hwIRQEventTimeout = Chimera::Thread::TIMEOUT_25MS;
 
     /*-------------------------------------------------
     Register config with the network

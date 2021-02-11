@@ -55,7 +55,8 @@
     "limits": "cpp",
     "filesystem": "cpp",
     "filesystem_lfs": "cpp",
-    "thread": "cpp"
+    "thread": "cpp",
+    "memory_resource": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",
@@ -96,11 +97,13 @@
     "gwin",
     "intf",
     "ireference",
+    "isrs",
     "iwdg",
     "map",
     "mosi",
     "nvic",
     "periphs",
+    "rtos",
     "sdio",
     "sdmmc",
     "usart",

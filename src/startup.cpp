@@ -33,6 +33,6 @@ int main()
   /*-------------------------------------------------
   Start the system threads. Never returns.
   -------------------------------------------------*/
-  Chimera::Threading::startScheduler();
+  Chimera::Thread::startScheduler();
   return 0;
 }

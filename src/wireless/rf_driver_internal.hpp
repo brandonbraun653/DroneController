@@ -49,7 +49,7 @@ namespace DC::RF
   extern Ripple::Session::Handle netHandle;    /* Network device object */
 
   /* Identifiers for the network threads */
-  extern Chimera::Threading::ThreadId netThreadId[ TSK_ID_NUM_TASKS ];
+  extern Chimera::Thread::TaskId netTaskId[ TSK_ID_NUM_TASKS ];
 
 
   extern Ripple::Transport::Service transportService;

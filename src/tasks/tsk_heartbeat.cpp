@@ -25,7 +25,7 @@ namespace DC::Tasks::HB
   void HeartBeatThread( void *arg )
   {
     using namespace Chimera::GPIO;
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     /*-------------------------------------------------
     Wait to be told to initialize by monitor thread
@@ -57,12 +57,12 @@ namespace DC::Tasks::HB
     {
       pin->toggle();
       Chimera::delayMilliseconds( 35 );
-      BKGD::kickDog( TaskId::HEART_BEAT );
+      BKGD::kickDog( PrjTaskId::HEART_BEAT );
     }
 
-    BKGD::kickDog( TaskId::HEART_BEAT );
+    BKGD::kickDog( PrjTaskId::HEART_BEAT );
     Chimera::delayMilliseconds( 500 );
-    BKGD::kickDog( TaskId::HEART_BEAT );
+    BKGD::kickDog( PrjTaskId::HEART_BEAT );
 
     /*-------------------------------------------------
     Run the heartbeat animation
@@ -76,7 +76,7 @@ namespace DC::Tasks::HB
       Chimera::delayMilliseconds( 100 );
       pin->setState( State::LOW );
       Chimera::delayMilliseconds( 100 );
-      BKGD::kickDog( TaskId::HEART_BEAT );
+      BKGD::kickDog( PrjTaskId::HEART_BEAT );
 
       /*-------------------------------------------------
       High pulse #2
@@ -85,13 +85,13 @@ namespace DC::Tasks::HB
       Chimera::delayMilliseconds( 100 );
       pin->setState( State::LOW );
       Chimera::delayMilliseconds( 100 );
-      BKGD::kickDog( TaskId::HEART_BEAT );
+      BKGD::kickDog( PrjTaskId::HEART_BEAT );
 
       /*-------------------------------------------------
       Hold longer time in off state
       -------------------------------------------------*/
       Chimera::delayMilliseconds( 450 );
-      BKGD::kickDog( TaskId::HEART_BEAT );
+      BKGD::kickDog( PrjTaskId::HEART_BEAT );
     }
   }
 }    // namespace DC::Tasks::HB

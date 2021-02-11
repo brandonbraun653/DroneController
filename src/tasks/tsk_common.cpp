@@ -26,14 +26,14 @@ namespace DC::Tasks
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
-  static Chimera::Threading::ThreadId s_thread_id[ static_cast<size_t>( TaskId::NUM_OPTIONS ) ];
+  static Chimera::Thread::TaskId s_thread_id[ static_cast<size_t>( PrjTaskId::NUM_OPTIONS ) ];
 
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
   void initialize()
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     /*-------------------------------------------------
     Initialize local memory
@@ -46,52 +46,52 @@ namespace DC::Tasks
     /*-------------------------------------------------
     System Thread: Heartbeat
     -------------------------------------------------*/
-    Thread heartbeat;
+    Task heartbeat;
     heartbeat.initialize( HB::HeartBeatThread, nullptr, HB::PRIORITY, HB::STACK, HB::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( TaskId::HEART_BEAT ) ] = heartbeat.start();
+    s_thread_id[ static_cast<size_t>( PrjTaskId::HEART_BEAT ) ] = heartbeat.start();
 
     /*-------------------------------------------------
     System Thread: Watchdog
     -------------------------------------------------*/
-    Thread watchdog;
+    Task watchdog;
     watchdog.initialize( BKGD::BackgroundThread, nullptr, BKGD::PRIORITY, BKGD::STACK, BKGD::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( TaskId::MONITOR ) ] = watchdog.start();
+    s_thread_id[ static_cast<size_t>( PrjTaskId::MONITOR ) ] = watchdog.start();
 
     /*-------------------------------------------------
     System Thread: Human Interface
     -------------------------------------------------*/
-    Thread hmi;
+    Task hmi;
     hmi.initialize( HMI::HumanInterfaceThread, nullptr, HMI::PRIORITY, HMI::STACK, HMI::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( TaskId::HMI ) ] = hmi.start();
+    s_thread_id[ static_cast<size_t>( PrjTaskId::HMI ) ] = hmi.start();
 
     /*-------------------------------------------------
     System Thread: Graphics
     -------------------------------------------------*/
-    Thread graphics;
+    Task graphics;
     graphics.initialize( GFX::GraphicsThread, nullptr, GFX::PRIORITY, GFX::STACK, GFX::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( TaskId::GRAPHICS ) ] = graphics.start();
+    s_thread_id[ static_cast<size_t>( PrjTaskId::GRAPHICS ) ] = graphics.start();
 
     /*-------------------------------------------------
     System Thread: Radio
     -------------------------------------------------*/
-    Thread radio;
+    Task radio;
     radio.initialize( RADIO::RadioThread, nullptr, RADIO::PRIORITY, RADIO::STACK, RADIO::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( TaskId::RADIO ) ] = radio.start();
+    s_thread_id[ static_cast<size_t>( PrjTaskId::RADIO ) ] = radio.start();
 
     /*-------------------------------------------------
     System Thread: File System
     -------------------------------------------------*/
-    Thread file;
+    Task file;
     file.initialize( FIL::FileSystemThread, nullptr, FIL::PRIORITY, FIL::STACK, FIL::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( TaskId::FILE_SYSTEM ) ] = file.start();
+    s_thread_id[ static_cast<size_t>( PrjTaskId::FILE_SYSTEM ) ] = file.start();
   }
 
 
   void waitInit()
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
-    ThreadMsg msg = ITCMsg::TSK_MSG_NOP;
+    TaskMsg msg = ITCMsg::TSK_MSG_NOP;
     while ( true )
     {
       if ( this_thread::receiveTaskMsg( msg, TIMEOUT_BLOCK ) && ( msg == ITCMsg::TSK_MSG_WAKEUP ) )
@@ -106,11 +106,11 @@ namespace DC::Tasks
   }
 
 
-  Chimera::Threading::ThreadId getThreadId( const TaskId task )
+  Chimera::Thread::TaskId getTaskId( const PrjTaskId task )
   {
-    if ( !( task < TaskId::NUM_OPTIONS ) )
+    if ( !( task < PrjTaskId::NUM_OPTIONS ) )
     {
-      return Chimera::Threading::THREAD_ID_INVALID;
+      return Chimera::Thread::THREAD_ID_INVALID;
     }
 
     return s_thread_id[ static_cast<size_t>( task ) ];

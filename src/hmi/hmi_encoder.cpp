@@ -35,7 +35,7 @@ namespace DC::HMI::Encoder
     Aurora::HMI::Button::EdgeCallback onCenterRelease; /**< Callback when key is released */
     Aurora::HMI::Encoder::RotationCallback onRotate;   /**< Callback when a rotation occurs */
     Chimera::GPIO::State btnActiveState;               /**< GPIO state that is considered as active */
-    Chimera::Threading::RecursiveMutex mutex;          /**< Resource lock */
+    Chimera::Thread::RecursiveMutex mutex;          /**< Resource lock */
     Aurora::HMI::Encoder::Encoder encoder;
 
     void clear()

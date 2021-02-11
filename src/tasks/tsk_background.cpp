@@ -53,7 +53,7 @@ namespace DC::Tasks::BKGD
    */
   struct TaskTiming
   {
-    const TaskId id;    /**< Task being measured */
+    const PrjTaskId id; /**< Task being measured */
     const size_t lower; /**< Minimum number of expected task kick events */
     const size_t upper; /**< Maximum number of expected task kick events */
     size_t exact;       /**< Last measured # kick events */
@@ -62,8 +62,8 @@ namespace DC::Tasks::BKGD
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
-  static TaskId s_queue_buffer[ QUEUE_SIZE ];            /**< Buffer for the monitor thread queue */
-  static Chimera::Threading::Queue s_task_kicks;         /**< Event queue for tasks to push "kicks" to */
+  static PrjTaskId s_queue_buffer[ QUEUE_SIZE ];         /**< Buffer for the monitor thread queue */
+  static Chimera::Thread::Queue s_task_kicks;            /**< Event queue for tasks to push "kicks" to */
   static Chimera::Watchdog::Independent_sPtr s_watchdog; /**< Hardware watchdog */
 
   /**
@@ -72,16 +72,16 @@ namespace DC::Tasks::BKGD
    */
   static TaskTiming s_timing_stats[] = {
     /* clang-format off */
-    { .id = TaskId::MONITOR,      .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
-    { .id = TaskId::FILE_SYSTEM,  .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
-    { .id = TaskId::GRAPHICS,     .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
-    { .id = TaskId::HEART_BEAT,   .lower = 0, .upper = 12,  .exact = 0 },
-    { .id = TaskId::HMI,          .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
-    { .id = TaskId::RADIO,        .lower = 0, .upper = 50,  .exact = 0 },
+    { .id = PrjTaskId::MONITOR,      .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
+    { .id = PrjTaskId::FILE_SYSTEM,  .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
+    { .id = PrjTaskId::GRAPHICS,     .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
+    { .id = PrjTaskId::HEART_BEAT,   .lower = 0, .upper = 12,  .exact = 0 },
+    { .id = PrjTaskId::HMI,          .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
+    { .id = PrjTaskId::RADIO,        .lower = 0, .upper = 50,  .exact = 0 },
     /* clang-format on */
   };
-  static_assert( ARRAY_COUNT( s_timing_stats ) == static_cast<size_t>( TaskId::NUM_OPTIONS ) );
-  static_assert( static_cast<size_t>( TaskId::MONITOR ) == 0 );
+  static_assert( ARRAY_COUNT( s_timing_stats ) == static_cast<size_t>( PrjTaskId::NUM_OPTIONS ) );
+  static_assert( static_cast<size_t>( PrjTaskId::MONITOR ) == 0 );
 
   /*-------------------------------------------------------------------------------
   Private Functions
@@ -93,7 +93,7 @@ namespace DC::Tasks::BKGD
   -------------------------------------------------------------------------------*/
   void BackgroundThread( void *arg )
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     /*-------------------------------------------------
     Power up the various hardware modules
@@ -118,10 +118,10 @@ namespace DC::Tasks::BKGD
       s_task_kicks.lock();
       while ( s_task_kicks.size() )
       {
-        TaskId tmp;
+        PrjTaskId tmp;
         s_task_kicks.pop( &tmp, TIMEOUT_DONT_WAIT );
 
-        if ( tmp < TaskId::NUM_OPTIONS )
+        if ( tmp < PrjTaskId::NUM_OPTIONS )
         {
           s_timing_stats[ static_cast<size_t>( tmp ) ].exact++;
         }
@@ -162,7 +162,7 @@ namespace DC::Tasks::BKGD
   }
 
 
-  void kickDog( const TaskId task )
+  void kickDog( const PrjTaskId task )
   {
     s_task_kicks.lock();
 
@@ -179,19 +179,19 @@ namespace DC::Tasks::BKGD
     /*-------------------------------------------------
     Otherwise push the task event and continue on
     -------------------------------------------------*/
-    s_task_kicks.push( &task, Chimera::Threading::TIMEOUT_DONT_WAIT );
+    s_task_kicks.push( &task, Chimera::Thread::TIMEOUT_DONT_WAIT );
     s_task_kicks.unlock();
   }
 
 
   static void initializeMonitor()
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     /*-------------------------------------------------
     Initialize local memory
     -------------------------------------------------*/
-    memset( s_queue_buffer, static_cast<size_t>( TaskId::UNKNOWN ), ARRAY_COUNT( s_queue_buffer ) );
+    memset( s_queue_buffer, static_cast<size_t>( PrjTaskId::UNKNOWN ), ARRAY_COUNT( s_queue_buffer ) );
 
     if ( !s_task_kicks.create( ARRAY_COUNT( s_queue_buffer ), sizeof( TaskId ), s_queue_buffer ) )
     {
@@ -220,17 +220,17 @@ namespace DC::Tasks::BKGD
       Chimera::System::softwareReset();
     }
 
-    /*-------------------------------------------------
-    Wait for all the threads to register themselves
-    -------------------------------------------------*/
-    #if defined( CHIMERA_SIMULATOR )
-    while( true )
+/*-------------------------------------------------
+Wait for all the threads to register themselves
+-------------------------------------------------*/
+#if defined( CHIMERA_SIMULATOR )
+    while ( true )
     {
       bool allRegistered = true;
 
       for ( auto x = 1; x < ARRAY_COUNT( s_timing_stats ); x++ )
       {
-        if( getThreadId( s_timing_stats[ x ].id ) == THREAD_ID_INVALID )
+        if ( getTaskId( s_timing_stats[ x ].id ) == THREAD_ID_INVALID )
         {
           allRegistered = false;
         }
@@ -238,12 +238,12 @@ namespace DC::Tasks::BKGD
         Chimera::delayMilliseconds( 25 );
       }
 
-      if( allRegistered )
+      if ( allRegistered )
       {
         break;
       }
     }
-    #endif /* CHIMERA_SIMULATOR */
+#endif /* CHIMERA_SIMULATOR */
 
     /*-------------------------------------------------
     Start up system threads. Monitor thread is always
@@ -251,8 +251,8 @@ namespace DC::Tasks::BKGD
     -------------------------------------------------*/
     for ( auto x = 1; x < ARRAY_COUNT( s_timing_stats ); x++ )
     {
-      ThreadId threadId = getThreadId( s_timing_stats[ x ].id );
-      Chimera::Threading::sendTaskMsg( threadId, ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
+      TaskId threadId = getTaskId( s_timing_stats[ x ].id );
+      Chimera::Thread::sendTaskMsg( threadId, ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
       Chimera::delayMilliseconds( 3 );
     }
   }

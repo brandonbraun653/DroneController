@@ -26,7 +26,7 @@ namespace DC::Tasks::GFX
   -------------------------------------------------------------------------------*/
   static constexpr size_t STACK                          = STACK_BYTES( 5024 );
   static constexpr std::string_view NAME                 = "graphics";
-  static constexpr Chimera::Threading::Priority PRIORITY = Chimera::Threading::Priority::LEVEL_3;
+  static constexpr Chimera::Thread::Priority PRIORITY = Chimera::Thread::Priority::LEVEL_3;
 
   /*-------------------------------------------------------------------------------
   Public Functions

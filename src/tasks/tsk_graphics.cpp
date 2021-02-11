@@ -22,7 +22,7 @@ namespace DC::Tasks::GFX
   -------------------------------------------------------------------------------*/
   void GraphicsThread( void *arg )
   {
-    using namespace Chimera::Threading;
+    using namespace Chimera::Thread;
 
     /*-------------------------------------------------
     Wait for the background thread to wake us

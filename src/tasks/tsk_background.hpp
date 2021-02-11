@@ -26,7 +26,7 @@ namespace DC::Tasks::BKGD
   -------------------------------------------------------------------------------*/
   static constexpr size_t STACK                          = STACK_BYTES( 2048 );
   static constexpr std::string_view NAME                 = "watchdog";
-  static constexpr Chimera::Threading::Priority PRIORITY = Chimera::Threading::Priority::LEVEL_0;
+  static constexpr Chimera::Thread::Priority PRIORITY = Chimera::Thread::Priority::LEVEL_0;
 
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -39,7 +39,7 @@ namespace DC::Tasks::BKGD
    *  @param[in]  task        Which task to kick
    *  @return void
    */
-  void kickDog( const TaskId task );
+  void kickDog( const PrjTaskId task );
 
 }    // namespace DC::Tasks::BKGD
 
