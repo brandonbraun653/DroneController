@@ -1,11 +1,13 @@
 {
     "env": {
-        "defaultIncludePaths":[
+        "defaultIncludePaths": [
             "${workspaceFolder}",
             "${workspaceFolder}/src/config",
             "${workspaceFolder}/src/config/ugfx",
             "${workspaceFolder}/lib",
             "${workspaceFolder}/lib/CommonTools/googletest",
+            "${workspaceFolder}/lib/CommonTools/googletest/googletest/googlemock/include",
+            "${workspaceFolder}/lib/CommonTools/googletest/googletest/googletest/include",
             "${workspaceFolder}/lib/CommonTools/cpputest/include",
             "${workspaceFolder}/lib/Aurora/lib/embedded_template_library/etl/include",
             "${workspaceFolder}/lib/Aurora/lib/uLog",
@@ -29,20 +31,20 @@
             "${workspaceFolder}/lib/yaffs2/integration",
             "${BOOST_ROOT}/boost_1_70_0"
         ],
-        "defaultDefines":[
+        "defaultDefines": [
             "DEBUG",
             "UNICODE",
             "_DEBUG",
             "_UNICODE",
             "__GNUC__"
         ],
-        "defaultEmbeddedDefines":[
+        "defaultEmbeddedDefines": [
             "EMBEDDED",
             "FREERTOS_CFG_PORT_ARM_CM4F=1",
             "USING_FREERTOS_THREADS",
             "${defaultDefines}"
         ],
-        "defaultSimDefines":[
+        "defaultSimDefines": [
             "CHIMERA_SIMULATOR",
             "USING_NATIVE_THREADS",
             "${defaultDefines}"
@@ -50,11 +52,12 @@
         "defaultEmbeddedCStandard": "gnu17",
         "defaultEmbeddedCppStandard": "gnu++20"
     },
-
     "configurations": [
         {
             "name": "STM32L432 Development",
-            "includePath": ["${defaultIncludePaths}"],
+            "includePath": [
+                "${defaultIncludePaths}"
+            ],
             "defines": [
                 "${defaultEmbeddedDefines}",
                 "STM32L432xx",
@@ -67,7 +70,9 @@
         },
         {
             "name": "STM32F446 Development",
-            "includePath": ["${defaultIncludePaths}"],
+            "includePath": [
+                "${defaultIncludePaths}"
+            ],
             "defines": [
                 "${defaultEmbeddedDefines}",
                 "STM32F446xx",
@@ -80,7 +85,11 @@
         },
         {
             "name": "Simulator Development",
-            "includePath": ["${defaultIncludePaths}"],
+            "includePath": [
+                "${defaultIncludePaths}",
+                "${workspaceFolder}/lib/ChimeraSim",
+                "${workspaceFolder}/lib/ChimeraSim/include"
+            ],
             "defines": [
                 "${defaultSimDefines}"
             ],

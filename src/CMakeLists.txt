@@ -83,6 +83,10 @@ target_link_libraries(DroneController PRIVATE
   # Hardware Libraries
   chimera_core_dbg
 
+  # Testing & Mock Libraries
+  gmock_src
+  gtest_src
+
   # Target Properties
   prj_device_target
   prj_build_target
