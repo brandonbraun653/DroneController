@@ -44,18 +44,18 @@ namespace DC::Tasks
     }
 
     /*-------------------------------------------------
+    System Thread: Background
+    -------------------------------------------------*/
+    Task background;
+    background.initialize( BKGD::BackgroundThread, nullptr, BKGD::PRIORITY, BKGD::STACK, BKGD::NAME.cbegin() );
+    s_thread_id[ static_cast<size_t>( PrjTaskId::MONITOR ) ] = background.start();
+
+    /*-------------------------------------------------
     System Thread: Heartbeat
     -------------------------------------------------*/
     Task heartbeat;
     heartbeat.initialize( HB::HeartBeatThread, nullptr, HB::PRIORITY, HB::STACK, HB::NAME.cbegin() );
     s_thread_id[ static_cast<size_t>( PrjTaskId::HEART_BEAT ) ] = heartbeat.start();
-
-    /*-------------------------------------------------
-    System Thread: Watchdog
-    -------------------------------------------------*/
-    Task watchdog;
-    watchdog.initialize( BKGD::BackgroundThread, nullptr, BKGD::PRIORITY, BKGD::STACK, BKGD::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( PrjTaskId::MONITOR ) ] = watchdog.start();
 
     /*-------------------------------------------------
     System Thread: Human Interface
@@ -91,6 +91,19 @@ namespace DC::Tasks
   {
     using namespace Chimera::Thread;
 
+    /*-------------------------------------------------
+    Wait for task registration to complete. On the sim
+    this happens so fast that trying to receive a task
+    message will cause a fault. This is due to tasks
+    starting at creation on PCs, but not on embedded.
+    -------------------------------------------------*/
+#if defined( CHIMERA_SIMULATOR )
+    Chimera::delayMilliseconds( 10 );
+#endif
+
+    /*-------------------------------------------------
+    Wait for the expected task message to arrive
+    -------------------------------------------------*/
     TaskMsg msg = ITCMsg::TSK_MSG_NOP;
     while ( true )
     {

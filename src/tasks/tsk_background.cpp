@@ -13,10 +13,14 @@
  *******************************************************************************/
 
 /* Chimera Includes */
+#include <Chimera/assert>
 #include <Chimera/common>
 #include <Chimera/system>
 #include <Chimera/thread>
 #include <Chimera/watchdog>
+
+/* ETL Includes */
+#include <etl/queue.h>
 
 /* Project Includes */
 #include <src/tasks/tsk_common.hpp>
@@ -62,8 +66,8 @@ namespace DC::Tasks::BKGD
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
-  static PrjTaskId s_queue_buffer[ QUEUE_SIZE ];         /**< Buffer for the monitor thread queue */
-  static Chimera::Thread::Queue s_task_kicks;            /**< Event queue for tasks to push "kicks" to */
+  static Chimera::Thread::Mutex s_task_lock;
+  static etl::queue<PrjTaskId, QUEUE_SIZE> s_task_kicks; /**< Event queue for tasks to push "kicks" to */
   static Chimera::Watchdog::Independent_sPtr s_watchdog; /**< Hardware watchdog */
 
   /**
@@ -115,18 +119,18 @@ namespace DC::Tasks::BKGD
       /*-------------------------------------------------
       Process the task hits
       -------------------------------------------------*/
-      s_task_kicks.lock();
+      s_task_lock.lock();
       while ( s_task_kicks.size() )
       {
-        PrjTaskId tmp;
-        s_task_kicks.pop( &tmp, TIMEOUT_DONT_WAIT );
+        PrjTaskId tmp = s_task_kicks.front();
+        s_task_kicks.pop();
 
         if ( tmp < PrjTaskId::NUM_OPTIONS )
         {
           s_timing_stats[ static_cast<size_t>( tmp ) ].exact++;
         }
       }
-      s_task_kicks.unlock();
+      s_task_lock.unlock();
 
       /*-------------------------------------------------
       Are the number of hits out of bounds?
@@ -164,23 +168,19 @@ namespace DC::Tasks::BKGD
 
   void kickDog( const PrjTaskId task )
   {
-    s_task_kicks.lock();
+    s_task_lock.lock();
 
     /*-------------------------------------------------
     The monitor thread must always be able to process
     through the queue, otherwise there is a problem.
     -------------------------------------------------*/
-    if ( s_task_kicks.full() )
-    {
-      Chimera::insert_debug_breakpoint();
-      Chimera::System::softwareReset();
-    }
+    RT_HARD_ASSERT( !s_task_kicks.full() );
 
     /*-------------------------------------------------
     Otherwise push the task event and continue on
     -------------------------------------------------*/
-    s_task_kicks.push( &task, Chimera::Thread::TIMEOUT_DONT_WAIT );
-    s_task_kicks.unlock();
+    s_task_kicks.push( task );
+    s_task_lock.unlock();
   }
 
 
@@ -191,14 +191,6 @@ namespace DC::Tasks::BKGD
     /*-------------------------------------------------
     Initialize local memory
     -------------------------------------------------*/
-    memset( s_queue_buffer, static_cast<size_t>( PrjTaskId::UNKNOWN ), ARRAY_COUNT( s_queue_buffer ) );
-
-    if ( !s_task_kicks.create( ARRAY_COUNT( s_queue_buffer ), sizeof( TaskId ), s_queue_buffer ) )
-    {
-      Chimera::insert_debug_breakpoint();
-      Chimera::System::softwareReset();
-    }
-
     for ( auto x = 0; x < ARRAY_COUNT( s_timing_stats ); x++ )
     {
       s_timing_stats[ x ].exact = 0;
@@ -216,33 +208,17 @@ namespace DC::Tasks::BKGD
     }
     else
     {
+    #if !defined( CHIMERA_SIMULATOR )
       Chimera::insert_debug_breakpoint();
       Chimera::System::softwareReset();
+    #endif
     }
 
-/*-------------------------------------------------
-Wait for all the threads to register themselves
--------------------------------------------------*/
 #if defined( CHIMERA_SIMULATOR )
-    while ( true )
-    {
-      bool allRegistered = true;
-
-      for ( auto x = 1; x < ARRAY_COUNT( s_timing_stats ); x++ )
-      {
-        if ( getTaskId( s_timing_stats[ x ].id ) == THREAD_ID_INVALID )
-        {
-          allRegistered = false;
-        }
-
-        Chimera::delayMilliseconds( 25 );
-      }
-
-      if ( allRegistered )
-      {
-        break;
-      }
-    }
+    /*-------------------------------------------------
+    Wait for all the threads to register themselves.
+    -------------------------------------------------*/
+    Chimera::delayMilliseconds( 150 );
 #endif /* CHIMERA_SIMULATOR */
 
     /*-------------------------------------------------
@@ -252,8 +228,13 @@ Wait for all the threads to register themselves
     for ( auto x = 1; x < ARRAY_COUNT( s_timing_stats ); x++ )
     {
       TaskId threadId = getTaskId( s_timing_stats[ x ].id );
+      if( threadId == THREAD_ID_INVALID )
+      {
+        continue;
+      }
+
       Chimera::Thread::sendTaskMsg( threadId, ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
-      Chimera::delayMilliseconds( 3 );
+      Chimera::delayMilliseconds( 53 );
     }
   }
 }    // namespace DC::Tasks::BKGD
