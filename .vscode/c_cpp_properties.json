@@ -10,7 +10,6 @@
             "${workspaceFolder}/lib/CommonTools/googletest/googletest/googletest/include",
             "${workspaceFolder}/lib/CommonTools/cpputest/include",
             "${workspaceFolder}/lib/Aurora/lib/embedded_template_library/etl/include",
-            "${workspaceFolder}/lib/Aurora/lib/uLog",
             "${workspaceFolder}/lib/Aurora/lib/ctre/single-header",
             "${workspaceFolder}/lib/Aurora/include",
             "${workspaceFolder}/lib/Aurora/include/../",
@@ -28,8 +27,7 @@
             "${workspaceFolder}/lib/ugfx/ugfx_2.9/**",
             "${workspaceFolder}/lib/yaffs2/direct",
             "${workspaceFolder}/lib/yaffs2/include",
-            "${workspaceFolder}/lib/yaffs2/integration",
-            "${BOOST_ROOT}/boost_1_70_0"
+            "${workspaceFolder}/lib/yaffs2/integration"
         ],
         "defaultDefines": [
             "DEBUG",
@@ -45,6 +43,7 @@
             "${defaultDefines}"
         ],
         "defaultSimDefines": [
+            "SIMULATOR",
             "CHIMERA_SIMULATOR",
             "USING_NATIVE_THREADS",
             "${defaultDefines}"

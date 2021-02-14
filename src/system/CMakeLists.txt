@@ -5,10 +5,11 @@ gen_static_lib_variants(
     lib_system
   SOURCES
     power_up.cpp
+    sys_config.cpp
+    sys_boot_count.cpp
   PRV_LIBRARIES
     aurora_intf_inc
     chimera_intf_inc
-
     project_inc
   EXPORT_DIR
     "${PROJECT_BINARY_DIR}/DroneController"

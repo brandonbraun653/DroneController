@@ -19,6 +19,13 @@ if(Toolchain::HAS_GCC_ARM_NONE_EABI OR Toolchain::HAS_GCC)
   include("lib/CommonTools/cmake/toolchains/linker_whole_archive.cmake")
 endif()
 
+# Select a global target flag
+if(Toolchain::HAS_GCC_ARM_NONE_EABI)
+  add_compile_definitions(EMBEDDED)
+elseif(Toolchain::HAS_GCC)
+  add_compile_definitions(SIMULATOR)
+endif()
+
 # ====================================================
 # Import common packages and projects
 # ====================================================

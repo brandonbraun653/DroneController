@@ -15,15 +15,23 @@
 /* STL Includes */
 #include <cstdint>
 
+/* Project Includes */
+#include <src/registry/reg_data.hpp>
+
 namespace DC::REG
 {
+  /*-------------------------------------------------------------------------------
+  Public Functions
+  -------------------------------------------------------------------------------*/
+
   bool initialize();
 
-  bool mount();
-
-  bool unmount();
-
   void format();
+
+  bool readSafe( const DatabaseKeys key, void *const data, const size_t size );
+
+  bool writeSafe( const DatabaseKeys key, const void *const data, const size_t size );
+
 }  // namespace DC::REG
 
 #endif  /* !DC_REGISTRY_INTF_HPP */

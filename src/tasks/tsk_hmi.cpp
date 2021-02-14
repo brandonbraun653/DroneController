@@ -68,14 +68,14 @@ namespace DC::Tasks::HMI
     auto pressCB    = Aurora::HMI::Button::EdgeCallback::create<keyPress>();
     auto releaseCB  = Aurora::HMI::Button::EdgeCallback::create<keyRelease>();
     auto rotateCB   = Aurora::HMI::Encoder::RotationCallback::create<rotate>();
-    bool initResult = DC::HMI::Encoder::initialize();
-    RT_HARD_ASSERT( initResult );
+    // bool initResult = DC::HMI::Encoder::initialize();
+    // RT_HARD_ASSERT( initResult );
 
-    Encoder::onCenterPress( Encoder::Key::ENCODER_1, pressCB );
-    Encoder::onCenterRelease( Encoder::Key::ENCODER_1, releaseCB );
-    Encoder::onRotate( Encoder::Key::ENCODER_1, rotateCB );
+    // Encoder::onCenterPress( Encoder::Key::ENCODER_1, pressCB );
+    // Encoder::onCenterRelease( Encoder::Key::ENCODER_1, releaseCB );
+    // Encoder::onRotate( Encoder::Key::ENCODER_1, rotateCB );
 
-    Encoder::enable( Encoder::Key::ENCODER_1 );
+    // Encoder::enable( Encoder::Key::ENCODER_1 );
 
     size_t lastWoken;
     while ( true )

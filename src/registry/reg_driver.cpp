@@ -31,6 +31,8 @@ namespace DC::REG
   Forward Declarations
   -------------------------------------------------------------------------------*/
   static bool initializeSPI();
+  static void registerDatabaseKeys();
+  static void registerObservables();
   static void datastoreRegisterFail( const size_t id );
 
   /*-------------------------------------------------------------------------------
@@ -87,7 +89,7 @@ namespace DC::REG
     /*-------------------------------------------------
     Prepare the FileSystem driver
     -------------------------------------------------*/
-    if constexpr( DEFAULT_FILESYSTEM == BackendType::DRIVER_LITTLE_FS )
+    if constexpr ( DEFAULT_FILESYSTEM == BackendType::DRIVER_LITTLE_FS )
     {
       result |= initializeSPI();
       result |= Aurora::FileSystem::LFS::attachFS( &lfs, &lfs_cfg );
@@ -107,24 +109,22 @@ namespace DC::REG
     -------------------------------------------------*/
     Database.assignCoreMemory( dbEntryStore, dbRAM.data(), dbRAM.size() );
     Database.reset();
+    registerDatabaseKeys();
 
     /*-------------------------------------------------
     Initialize the datastore
     -------------------------------------------------*/
-    auto registerCallback = etl::delegate<void(size_t)>::create<datastoreRegisterFail>();
+    auto registerCallback = etl::delegate<void( size_t )>::create<datastoreRegisterFail>();
 
     Datastore.assignCoreMemory( &dsMemory );
     Datastore.resetRegistry();
     Datastore.registerCallback( CB_REGISTER_FAIL, registerCallback );
-
-    for( size_t x=0; x<ARRAY_COUNT( ObservableList ); x++)
-    {
-      RT_HARD_ASSERT( Datastore.registerObservable( *ObservableList[ x ] ) );
-    }
+    registerObservables();
 
     getRootSink()->flog( Level::LVL_DEBUG, "Registry initialized\r\n" );
     return true;
   }
+
 
   void format()
   {
@@ -132,6 +132,59 @@ namespace DC::REG
     // getRootSink()->flog( Level::LVL_ERROR, "Performing full chip erase. Timeout of %d ms.\r\n", eraseTimeout );
     // Aurora::Memory::LFS::fullChipErase( eraseTimeout );
     // getRootSink()->flog( Level::LVL_ERROR, "Chip erased\r\n" );
+  }
+
+
+  bool readSafe( const DatabaseKeys key, void *const data, const size_t size )
+  {
+    /*-------------------------------------------------
+    Input protection
+    -------------------------------------------------*/
+    if ( !data || !size || !( key < NUM_DATABASE_KEYS ) )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Select the proper interface to read from
+    -------------------------------------------------*/
+    if ( ( KEY_SIMPLE_START <= key ) && ( key < KEY_SIMPLE_END ) && ( size == Database.size( key ) ) )
+    {
+      return Database.read( key, data );
+    }
+    else if ( ( KEY_OBSERVABLE_START <= key ) && ( key < KEY_OBSERVABLE_END ) )
+    {
+      return Datastore.readDataSafe( key, data, size );
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+
+  bool writeSafe( const DatabaseKeys key, const void *const data, const size_t size )
+  {
+    /*-------------------------------------------------
+    Input protection
+    -------------------------------------------------*/
+    if ( !data || !size || !( key < NUM_DATABASE_KEYS ) )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Select the proper interface to write. Observable
+    registry key types cannot be directly written to.
+    -------------------------------------------------*/
+    if ( ( KEY_SIMPLE_START <= key ) && ( key < KEY_SIMPLE_END ) && ( size == Database.size( key ) ) )
+    {
+      return Database.write( key, data );
+    }
+    else
+    {
+      return false;
+    }
   }
 
 
@@ -203,6 +256,59 @@ namespace DC::REG
 
     auto spi = Chimera::SPI::getDriver( DC::IO::NOR::spiChannel );
     return spi->init( cfg ) == Chimera::Status::OK;
+  }
+
+
+  /**
+   *  Allocates memory in the database for all system parameters
+   *  @return void
+   */
+  static void registerDatabaseKeys()
+  {
+    using namespace Aurora::Database;
+
+    /*-------------------------------------------------
+    Parameter sizing information
+    -------------------------------------------------*/
+    union ParamData
+    {
+      uint32_t boot_count;
+    } pData;
+
+    /*-------------------------------------------------
+    Register all known parameters
+    -------------------------------------------------*/
+    for ( size_t x = KEY_SIMPLE_START; x < KEY_SIMPLE_END; x++ )
+    {
+      Chimera::Status_t result = Chimera::Status::OK;
+      switch ( x )
+      {
+        case KEY_BOOT_COUNT:
+          pData.boot_count = 0;
+          result           = Database.insert( x, &pData.boot_count, sizeof( ParamData::boot_count ), MemAccess::MEM_RW );
+          break;
+
+        default:
+          // A parameter was forgotten to be registered
+          RT_HARD_ASSERT( false );
+          break;
+      }
+
+      RT_HARD_ASSERT( result == Chimera::Status::OK );
+    }
+  }
+
+
+  /**
+   *  Allocates memory in the datastore for all system observables
+   *  @return void
+   */
+  static void registerObservables()
+  {
+    for ( size_t x = 0; x < ARRAY_COUNT( ObservableList ); x++ )
+    {
+      RT_HARD_ASSERT( Datastore.registerObservable( *ObservableList[ x ] ) );
+    }
   }
 
 
