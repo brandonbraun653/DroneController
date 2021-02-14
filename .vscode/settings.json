@@ -153,6 +153,7 @@
     "igpio",
     "intf",
     "ireference",
+    "ispi",
     "isrs",
     "iwdg",
     "map",
