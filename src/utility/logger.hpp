@@ -5,7 +5,7 @@
  *  Description:
  *    Interface for logging messages with the system during runtime
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
@@ -26,7 +26,7 @@ namespace DC::UTL
    *  @param[in]  lvl     Log level for the test run
    *  @return void
    */
-  void initializeLogger( const uLog::Level lvl );
+  void initializeLogger( const Aurora::Logging::Level lvl );
 
 }    // namespace DC::UTL
 

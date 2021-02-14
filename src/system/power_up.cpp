@@ -8,6 +8,9 @@
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
+/* Aurora Includes */
+#include <Aurora/logging>
+
 /* Project Includes */
 #include <src/registry/reg_intf.hpp>
 #include <src/system/power_up.hpp>
@@ -36,6 +39,8 @@ namespace DC::SYS
 
   void powerUpSerial()
   {
+    using namespace Aurora::Logging;
+
     /*-------------------------------------------------
     Initialize the serial hardware channel
     -------------------------------------------------*/
@@ -44,19 +49,21 @@ namespace DC::SYS
     /*-------------------------------------------------
     Turn on logger functionality (depends on serial)
     -------------------------------------------------*/
-    UTL::initializeLogger( uLog::Level::LVL_DEBUG );
-    uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Power on device\r\n" );
+    UTL::initializeLogger( Level::LVL_DEBUG );
+    getRootSink()->flog( Level::LVL_DEBUG, "Power on device\r\n" );
   }
 
 
   void powerUpFileSystem()
   {
+    using namespace Aurora::Logging;
+
     /*-------------------------------------------------
     Mount the file system
     -------------------------------------------------*/
     if( !REG::initialize() )
     {
-      uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Failed to mount registry\r\n" );
+      getRootSink()->flog( Level::LVL_ERROR, "Failed to mount registry\r\n" );
     }
   }
 }    // namespace DC::SYS

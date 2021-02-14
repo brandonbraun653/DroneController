@@ -5,8 +5,11 @@
  *  Description:
  *    Implements the radio threading functions
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
+
+/* Aurora Includes */
+#include <Aurora/logging>
 
 /* Chimera Includes */
 #include <Chimera/common>
@@ -45,12 +48,14 @@ namespace DC::Tasks::RADIO
 
   static void TXFailCallback( size_t id )
   {
-    uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "%d: Transmit FAILED\r\n", Chimera::millis() );
+    using namespace Aurora::Logging;
+    getRootSink()->flog( Level::LVL_DEBUG, "%d: Transmit FAILED\r\n", Chimera::millis() );
   }
 
   static void TXPassCallback( Ripple::DataLink::Endpoint ep )
   {
-    uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "%d: Transmit SUCCEEDED\r\n", Chimera::millis() );
+    using namespace Aurora::Logging;
+    getRootSink()->flog( Level::LVL_DEBUG, "%d: Transmit SUCCEEDED\r\n", Chimera::millis() );
   }
 
   /*-------------------------------------------------------------------------------
@@ -155,7 +160,7 @@ namespace DC::Tasks::RADIO
         lastTx      = Chimera::millis();
         sendMessage = false;
         RF::transportService.writeEndpoint( Ripple::DataLink::Endpoint::EP_DEVICE_ROOT, randomData.data(), randomData.size(), writeCB );
-        uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "%d: Transmit packet\r\n", Chimera::millis() );
+        getRootSink()->flog( Level::LVL_DEBUG, "%d: Transmit packet\r\n", Chimera::millis() );
       }
 #endif
 

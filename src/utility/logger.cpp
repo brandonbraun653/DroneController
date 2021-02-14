@@ -5,7 +5,7 @@
  *  Description:
  *    Logger interface for Thor testing
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* Logging Includes */
@@ -21,34 +21,64 @@ namespace DC::UTL
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
-  static Aurora::Logging::SerialSink sink;
-  static uLog::SinkHandle hSink;
+  static Aurora::Logging::SerialSink s_serial_sink;
+  static Aurora::Logging::SinkHandle s_serial_handle;
+
+#if defined( CHIMERA_SIMULATOR )
+  static Aurora::Logging::CoutSink s_console_sink;
+  static Aurora::Logging::SinkHandle s_console_handle;
+#endif
 
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  void initializeLogger( const uLog::Level lvl )
+  void initializeLogger( const Aurora::Logging::Level lvl )
   {
-    /*-------------------------------------------------
-    Initialize the logger sink
-    -------------------------------------------------*/
-    sink.assignChannel( DC::IO::DBG::serialChannel );
-    sink.setLogLevel( lvl );
-    sink.enable();
-    sink.setName( "HWLogger" );
+    using namespace Aurora::Logging;
 
-    if ( !hSink )
+    /*-------------------------------------------------
+    Initialize the framework
+    -------------------------------------------------*/
+    initialize();
+    setGlobalLogLevel( lvl );
+
+    /*-------------------------------------------------
+    Initialize the serial sink
+    -------------------------------------------------*/
+    s_serial_sink.assignChannel( DC::IO::DBG::serialChannel );
+    s_serial_sink.setLogLevel( lvl );
+    s_serial_sink.enable();
+    s_serial_sink.setName( "HWLogger" );
+
+    if ( !s_serial_handle )
     {
-      hSink = uLog::SinkHandle( &sink );
+      s_serial_handle = SinkHandle( &s_serial_sink );
+      registerSink( s_serial_handle );
     }
 
     /*-------------------------------------------------
-    Register the sink with the log framework
+    Initialize the console sink
     -------------------------------------------------*/
-    uLog::initialize();
-    uLog::setGlobalLogLevel( lvl );
-    uLog::registerSink( hSink );
-    uLog::setRootSink( hSink );
+#if defined( CHIMERA_SIMULATOR )
+    s_console_sink.setLogLevel( lvl );
+    s_console_sink.enable();
+    s_console_sink.setName( "ConsoleLogger" );
+
+    if ( !s_console_handle )
+    {
+      s_console_handle = SinkHandle( &s_console_sink );
+      registerSink( s_console_handle );
+    }
+#endif
+
+    /*-------------------------------------------------
+    Set the default sink to use
+    -------------------------------------------------*/
+#if defined( CHIMERA_SIMULATOR )
+    setRootSink( s_console_handle );
+#else
+    setRootSink( s_serial_handle );
+#endif
   }
 
 }    // namespace DC::UTL

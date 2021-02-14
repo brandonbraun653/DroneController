@@ -9,7 +9,7 @@ gen_static_lib_variants(
     aurora_intf_inc
     chimera_intf_inc
     lfs_intf_inc
-    ulog_inc
+
     ugfx_inc
     project_inc
   EXPORT_DIR

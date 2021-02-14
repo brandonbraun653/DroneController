@@ -9,18 +9,16 @@
  *******************************************************************************/
 
 /* Aurora Includes */
-#include <Aurora/memory>
 #include <Aurora/database>
 #include <Aurora/datastore>
 #include <Aurora/filesystem_lfs>
+#include <Aurora/logging>
+#include <Aurora/memory>
 
 /* Chimera Includes */
 #include <Chimera/assert>
 #include <Chimera/spi>
 #include <Chimera/system>
-
-/* Logger Includes */
-#include <uLog/ulog.hpp>
 
 /* Project Includes */
 #include <src/config/bsp/board_map.hpp>
@@ -81,21 +79,26 @@ namespace DC::REG
   {
     using namespace Aurora::Flash::NOR;
     using namespace Aurora::Datastore;
+    using namespace Aurora::FileSystem;
+    using namespace Aurora::Logging;
+
+    bool result = true;
 
     /*-------------------------------------------------
     Prepare the FileSystem driver
     -------------------------------------------------*/
-    bool result = true;
-
-    result |= initializeSPI();
-    result |= Aurora::FileSystem::Driver::LFS::attachFS( &lfs, &lfs_cfg );
-    result |= Aurora::FileSystem::Driver::LFS::attachDevice( Chip::AT25SF081, DC::IO::NOR::spiChannel, lfs_cfg );
-    RT_HARD_ASSERT( result );
+    if constexpr( DEFAULT_FILESYSTEM == BackendType::DRIVER_LITTLE_FS )
+    {
+      result |= initializeSPI();
+      result |= Aurora::FileSystem::LFS::attachFS( &lfs, &lfs_cfg );
+      result |= Aurora::FileSystem::LFS::attachDevice( Chip::AT25SF081, DC::IO::NOR::spiChannel, lfs_cfg );
+      RT_HARD_ASSERT( result );
+    }
 
     /*-------------------------------------------------
     Now actually initialize the FileSystem
     -------------------------------------------------*/
-    result = Aurora::FileSystem::configureDriver( Aurora::FileSystem::DRIVER_LITTLE_FS );
+    result = Aurora::FileSystem::configureDriver( DEFAULT_FILESYSTEM );
     RT_HARD_ASSERT( result );
 
     /*-------------------------------------------------
@@ -119,16 +122,16 @@ namespace DC::REG
       RT_HARD_ASSERT( Datastore.registerObservable( *ObservableList[ x ] ) );
     }
 
-    uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Registry initialized\r\n" );
+    getRootSink()->flog( Level::LVL_DEBUG, "Registry initialized\r\n" );
     return true;
   }
 
   void format()
   {
     // uint32_t eraseTimeout = 10000;
-    // uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Performing full chip erase. Timeout of %d ms.\r\n", eraseTimeout );
+    // getRootSink()->flog( Level::LVL_ERROR, "Performing full chip erase. Timeout of %d ms.\r\n", eraseTimeout );
     // Aurora::Memory::LFS::fullChipErase( eraseTimeout );
-    // uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Chip erased\r\n" );
+    // getRootSink()->flog( Level::LVL_ERROR, "Chip erased\r\n" );
   }
 
 
@@ -212,6 +215,7 @@ namespace DC::REG
    */
   static void datastoreRegisterFail( const size_t id )
   {
-    uLog::getRootSink()->flog( uLog::Level::LVL_ERROR, "Failed to register observable" );
+    using namespace Aurora::Logging;
+    getRootSink()->flog( Level::LVL_ERROR, "Failed to register observable" );
   }
 }    // namespace DC::REG

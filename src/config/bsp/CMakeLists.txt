@@ -9,7 +9,7 @@ gen_static_lib_variants(
     Boost::boost
     chimera_intf_inc
     aurora_intf_inc
-    ulog_inc
+
     project_inc
   EXPORT_DIR
     "${PROJECT_BINARY_DIR}/DroneController"

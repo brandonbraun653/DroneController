@@ -19,7 +19,7 @@ gen_static_lib_variants(
     lfs_intf_inc
     ripple_inc
     ugfx_inc
-    ulog_inc
+
     project_inc
   EXPORT_DIR
     "${PROJECT_BINARY_DIR}/DroneController"

@@ -99,7 +99,10 @@
     "cinttypes": "cpp",
     "typeinfo": "cpp",
     "variant": "cpp",
-    "shared_mutex": "cpp"
+    "shared_mutex": "cpp",
+    "regex": "cpp",
+    "valarray": "cpp",
+    "logging": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",
@@ -125,6 +128,7 @@
     "debouncing",
     "exti",
     "flat",
+    "frewind",
     "gdisp",
     "gfxoff",
     "gfxon",
@@ -159,6 +163,7 @@
     "sdio",
     "sdmmc",
     "usart",
+    "vgdb",
     "wwdg",
     "yaffs"
   ]

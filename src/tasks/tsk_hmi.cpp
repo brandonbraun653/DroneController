@@ -31,12 +31,14 @@ namespace DC::Tasks::HMI
 
   void keyPress( Aurora::HMI::Button::ActiveEdge key )
   {
-    uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Key pressed! \r\n" );
+    using namespace Aurora::Logging;
+    getRootSink()->flog( Level::LVL_DEBUG, "Key pressed! \r\n" );
   }
 
   void keyRelease( Aurora::HMI::Button::ActiveEdge key )
   {
-    uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Key release! \r\n" );
+    using namespace Aurora::Logging;
+    getRootSink()->flog( Level::LVL_DEBUG, "Key release! \r\n" );
   }
 
   void rotate( Aurora::HMI::Encoder::State &state )
@@ -50,6 +52,7 @@ namespace DC::Tasks::HMI
   -------------------------------------------------------------------------------*/
   void HumanInterfaceThread( void *arg )
   {
+    using namespace Aurora::Logging;
     using namespace Chimera::Thread;
     using namespace DC::HMI;
 
@@ -83,7 +86,7 @@ namespace DC::Tasks::HMI
       {
         int pos = currentPosition;
         updated = false;
-        uLog::getRootSink()->flog( uLog::Level::LVL_DEBUG, "Position %d\r\n", pos );
+        getRootSink()->flog( Level::LVL_DEBUG, "Position %d\r\n", pos );
       }
 
       Chimera::delayMilliseconds( lastWoken, 10 );
