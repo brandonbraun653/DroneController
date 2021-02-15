@@ -87,7 +87,9 @@
             "includePath": [
                 "${defaultIncludePaths}",
                 "${workspaceFolder}/lib/ChimeraSim",
-                "${workspaceFolder}/lib/ChimeraSim/include"
+                "${workspaceFolder}/lib/ChimeraSim/include",
+                "${workspaceFolder}/lib/ChimeraSim/lib/json/include",
+                "${workspaceFolder}/lib/ChimeraSim/lib/zeromq"
             ],
             "defines": [
                 "${defaultSimDefines}"
