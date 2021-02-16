@@ -158,6 +158,7 @@
     "iwdg",
     "map",
     "mosi",
+    "nlohmann",
     "nvic",
     "periphs",
     "rtos",

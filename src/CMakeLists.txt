@@ -51,6 +51,9 @@ target_link_libraries(DroneController PRIVATE
   thor_intf_inc
   type_safe_inc
 
+  # 3rd Part Libraries
+  zmq
+
   # Project Libraries
   lib_config
   lib_human_interface

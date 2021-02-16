@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/Aurora" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/Aurora/lib/CRCpp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/Aurora/lib/ctre" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/Aurora/lib/embedded_template_library/etl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/Aurora/lib/littlefs/lfs" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/Aurora/lib/type_safe" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/Aurora/lib/type_safe/external/debug_assert" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/Chimera" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/ChimeraSim" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/ChimeraSim/lib/json" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/ChimeraSim/lib/zeromq" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/CommonTools" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/CommonTools/cmake/modules" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/CommonTools/cpputest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/CommonTools/googletest/googletest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/CommonTools/swqa" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/FreeRTOS" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/Ripple" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/Thor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/ugfx" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/yaffs2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/yaffs2/src" vcs="Git" />
+  </component>
+</project>

@@ -57,7 +57,7 @@ namespace DC::Tasks::FIL
     Read out the boot information
     -------------------------------------------------*/
     SYS::updateBootCount();
-    getRootSink()->flog( Level::LVL_DEBUG, "Boot Count: %d", SYS::getBootCount() );
+    getRootSink()->flog( Level::LVL_DEBUG, "Boot Count: %d\r\n", SYS::getBootCount() );
 
 
     size_t lastWoken;
