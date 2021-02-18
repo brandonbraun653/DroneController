@@ -22,7 +22,9 @@
 
 // TESTING ONLY
 #include <filesystem>
+#include <ChimeraSim/control>
 #include <ChimeraSim/transport>
+#include <Chimera/spi>
 
 namespace DC::Tasks::GFX
 {
@@ -38,14 +40,21 @@ namespace DC::Tasks::GFX
     Wait for the background thread to wake us
     -------------------------------------------------*/
     waitInit();
+    Chimera::delayMilliseconds( 100 );
 
-    std::filesystem::path cfgFile = "./lib/ChimeraSim/source/peripherals/spi/spi_config.json";
+    Chimera::SIM::setDriverType( Chimera::Peripheral::Type::PERIPH_SPI, Chimera::SIM::Driver_t::NETWORKED_CONTROL );
+
+    std::array<uint8_t, 10> txBuffer= { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    std::array<uint8_t, 10> rxBuffer;
+    rxBuffer.fill( 0 );
 
 
-    Chimera::SIM::Transport::SynchMasterSlave server;
-    server.bootServer( cfgFile.string(), 0 );
-    getRootSink()->flog( Level::LVL_DEBUG, "Server initialized\r\n" );
+    Chimera::SPI::DriverConfig cfg;
+    cfg.HWInit.hwChannel = Chimera::SPI::Channel::SPI1;
 
+    auto driver = Chimera::SPI::getDriver( Chimera::SPI::Channel::SPI1 );
+    driver->init( cfg );
+    driver->readWriteBytes( txBuffer.data(), rxBuffer.data(), rxBuffer.size() );
 
     size_t lastWoken;
     while ( true )
