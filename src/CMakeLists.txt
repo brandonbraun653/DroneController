@@ -51,9 +51,6 @@ target_link_libraries(DroneController PRIVATE
   thor_intf_inc
   type_safe_inc
 
-  # 3rd Part Libraries
-  zmq
-
   # Project Libraries
   lib_config
   lib_human_interface
@@ -86,9 +83,6 @@ target_link_libraries(DroneController PRIVATE
   # Hardware Libraries
   chimera_core_dbg
 
-  # Testing & Mock Libraries
-  gmock_src
-  gtest_src
 
   # Target Properties
   prj_device_target
@@ -113,6 +107,17 @@ if(Toolchain::REQUIRES_FREERTOS_THREADS)
     freertos_cfg
     freertos_port
     freertos_heap
+  )
+endif()
+
+if(Toolchain::HAS_GCC)
+  target_link_libraries(DroneController PRIVATE
+    # Testing & Mock Libraries
+    gmock_src
+    gtest_src
+
+    # Simulator networking
+    zmq
   )
 endif()
 
