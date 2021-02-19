@@ -5,7 +5,7 @@
  *  Description:
  *    Implementation of common task functionality
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* Chimera Includes */

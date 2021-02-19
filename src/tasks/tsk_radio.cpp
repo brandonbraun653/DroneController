@@ -34,7 +34,7 @@
 #include <src/wireless/rf_driver.hpp>
 
 
-//#define TEST_DEVICE
+#define TEST_DEVICE
 #include <Aurora/hmi>
 #include <src/wireless/rf_driver_internal.hpp>
 
@@ -64,6 +64,7 @@ namespace DC::Tasks::RADIO
   void RadioThread( void *arg )
   {
     using namespace Aurora::HMI::Button;
+    using namespace Aurora::Logging;
     using namespace Chimera::GPIO;
     using namespace Chimera::SPI;
     using namespace Chimera::Thread;
@@ -72,11 +73,6 @@ namespace DC::Tasks::RADIO
     Wait to be told to initialize by monitor thread
     -------------------------------------------------*/
     waitInit();
-    while ( true )
-    {
-      // Temp while the radio sim is in progress
-      Chimera::delayMilliseconds( 100 );
-    }
 
     /*-------------------------------------------------
     Configure the HMI device for TX triggering
@@ -126,7 +122,7 @@ namespace DC::Tasks::RADIO
     cfg.advanced.mac = macRX;
 #endif
 
-    //RF::initialize( cfg );
+    RF::initialize( cfg );
 
     /*-------------------------------------------------
     Try and send a test frame
@@ -148,7 +144,7 @@ namespace DC::Tasks::RADIO
 
 #else
 
-    //RF::datalinkService.setRootEndpointMAC( macRX );
+    RF::datalinkService.setRootEndpointMAC( macRX );
 
 #endif
 

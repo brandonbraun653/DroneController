@@ -155,45 +155,45 @@ namespace DC::IO
   -------------------------------------------------------------------------------*/
   namespace Radio
   {
-    // /*-------------------------------------------------
-    // GPIO: IRQ Input
-    // -------------------------------------------------*/
-    // static constexpr Chimera::GPIO::Pin pinIRQ_pin             = 1;
-    // static constexpr Chimera::GPIO::Port pinIRQ_port           = Chimera::GPIO::Port::PORTA;
-    // static constexpr Chimera::EXTI::EdgeTrigger pinIRQ_Trigger = Chimera::EXTI::EdgeTrigger::FALLING_EDGE;
+    /*-------------------------------------------------
+    GPIO: IRQ Input
+    -------------------------------------------------*/
+    static constexpr Chimera::GPIO::Pin pinIRQ_pin             = 1;
+    static constexpr Chimera::GPIO::Port pinIRQ_port           = Chimera::GPIO::Port::PORTA;
+    static constexpr Chimera::EXTI::EdgeTrigger pinIRQ_Trigger = Chimera::EXTI::EdgeTrigger::FALLING_EDGE;
 
-    // /*-------------------------------------------------
-    // GPIO: Chip Enable
-    // -------------------------------------------------*/
-    // static constexpr Chimera::GPIO::Pin pinCE_pin   = 7;
-    // static constexpr Chimera::GPIO::Port pinCE_port = Chimera::GPIO::Port::PORTB;
+    /*-------------------------------------------------
+    GPIO: Chip Enable
+    -------------------------------------------------*/
+    static constexpr Chimera::GPIO::Pin pinCE_pin   = 7;
+    static constexpr Chimera::GPIO::Port pinCE_port = Chimera::GPIO::Port::PORTB;
 
-    // /*-------------------------------------------------
-    // GPIO: Chip Select
-    // -------------------------------------------------*/
-    // static constexpr Chimera::GPIO::Pin pinCS_pin   = 6;
-    // static constexpr Chimera::GPIO::Port pinCS_port = Chimera::GPIO::Port::PORTB;
+    /*-------------------------------------------------
+    GPIO: Chip Select
+    -------------------------------------------------*/
+    static constexpr Chimera::GPIO::Pin pinCS_pin   = 6;
+    static constexpr Chimera::GPIO::Port pinCS_port = Chimera::GPIO::Port::PORTB;
 
-    // /*-------------------------------------------------
-    // SPI
-    // -------------------------------------------------*/
-    // static constexpr bool pinThreadMode = GFX::pinThreadMode;
+    /*-------------------------------------------------
+    SPI
+    -------------------------------------------------*/
+    static constexpr bool pinThreadMode = GFX::pinThreadMode;
 
-    // static constexpr Chimera::GPIO::Pin pinSCK        = GFX::pinSCK;
-    // static constexpr Chimera::GPIO::Alternate altSCK  = GFX::altSCK;
-    // static constexpr Chimera::GPIO::Pin pinMOSI       = GFX::pinMOSI;
-    // static constexpr Chimera::GPIO::Alternate altMOSI = GFX::altMOSI;
-    // static constexpr Chimera::GPIO::Pin pinMISO       = GFX::pinMISO;
-    // static constexpr Chimera::GPIO::Alternate altMISO = GFX::altMISO;
-    // static constexpr Chimera::GPIO::Port spiPort      = GFX::spiPort;
+    static constexpr Chimera::GPIO::Pin pinSCK        = GFX::pinSCK;
+    static constexpr Chimera::GPIO::Alternate altSCK  = GFX::altSCK;
+    static constexpr Chimera::GPIO::Pin pinMOSI       = GFX::pinMOSI;
+    static constexpr Chimera::GPIO::Alternate altMOSI = GFX::altMOSI;
+    static constexpr Chimera::GPIO::Pin pinMISO       = GFX::pinMISO;
+    static constexpr Chimera::GPIO::Alternate altMISO = GFX::altMISO;
+    static constexpr Chimera::GPIO::Port spiPort      = GFX::spiPort;
 
-    // static constexpr Chimera::SPI::Channel spiChannel       = GFX::spiChannel;
-    // static constexpr Chimera::SPI::TransferMode spiTxfrMode = GFX::spiTxfrMode;
-    // static constexpr Chimera::SPI::BitOrder spiBitOrder     = GFX::spiBitOrder;
-    // static constexpr Chimera::SPI::ClockFreq spiClockFreq   = GFX::spiClockFreq;
-    // static constexpr Chimera::SPI::ClockMode spiClockMode   = GFX::spiClockMode;
-    // static constexpr Chimera::SPI::CSMode spiChipSelectMode = GFX::spiChipSelectMode;
-    // static constexpr Chimera::SPI::DataSize spiDataSize     = GFX::spiDataSize;
+    static constexpr Chimera::SPI::Channel spiChannel       = GFX::spiChannel;
+    static constexpr Chimera::SPI::TransferMode spiTxfrMode = GFX::spiTxfrMode;
+    static constexpr Chimera::SPI::BitOrder spiBitOrder     = GFX::spiBitOrder;
+    static constexpr Chimera::SPI::ClockFreq spiClockFreq   = GFX::spiClockFreq;
+    static constexpr Chimera::SPI::ClockMode spiClockMode   = GFX::spiClockMode;
+    static constexpr Chimera::SPI::CSMode spiChipSelectMode = GFX::spiChipSelectMode;
+    static constexpr Chimera::SPI::DataSize spiDataSize     = GFX::spiDataSize;
   }    // namespace Radio
 
   /*-------------------------------------------------------------------------------

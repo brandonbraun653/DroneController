@@ -58,7 +58,7 @@ target_link_libraries(DroneController PRIVATE
   lib_system
   lib_tasks
   lib_utility
-  # lib_wireless
+  lib_wireless
 
   # Board Support Libraries
   bsp_nucleo_f446re
@@ -69,7 +69,7 @@ target_link_libraries(DroneController PRIVATE
   # ugfx_prj_config
 
   # Networking Libraries
-  # ripple_core_rel
+  ripple_core_dbg
 
   # Utility Libraries
   aurora_core_dbg
@@ -82,7 +82,6 @@ target_link_libraries(DroneController PRIVATE
 
   # Hardware Libraries
   chimera_core_dbg
-
 
   # Target Properties
   prj_device_target
