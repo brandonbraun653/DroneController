@@ -151,7 +151,7 @@ namespace DC::Tasks::RADIO
     while ( 1 )
     {
 #if defined( TEST_DEVICE )
-      if ( sendMessage && ( ( Chimera::millis() - lastTx ) > 500 ) )
+      if ( ( ( Chimera::millis() - lastTx ) > 500 ) )
       {
         lastTx      = Chimera::millis();
         sendMessage = false;
