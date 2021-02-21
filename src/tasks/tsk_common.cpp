@@ -98,7 +98,7 @@ namespace DC::Tasks
     starting at creation on PCs, but not on embedded.
     -------------------------------------------------*/
 #if defined( CHIMERA_SIMULATOR )
-    Chimera::delayMilliseconds( 10 );
+    Chimera::delayMilliseconds( 50 );
 #endif
 
     /*-------------------------------------------------
