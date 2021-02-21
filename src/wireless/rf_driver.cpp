@@ -28,6 +28,10 @@ namespace DC::RF
     Handle config;
     config.clear();
 
+    #if defined( SIMULATOR )
+    config.netCfg = new ZMQConfig();
+    #endif
+
     config.cfg.verifyRegisters      = true;
     config.cfg.hwRFChannel          = 96;
     config.cfg.hwAddressWidth       = AddressWidth::AW_5Byte;
