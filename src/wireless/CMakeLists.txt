@@ -4,6 +4,7 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 # Common
 # ====================================================
 set(LINK_LIBS
+  aurora_intf_inc
   chimera_intf_inc
   project_inc
   prj_device_target
@@ -16,7 +17,6 @@ set(LINK_LIBS
 function(build_library_wireless variant)
   set(LIB lib_wireless${variant})
   add_library(${LIB} STATIC
-    rf_driver_internal.cpp
     rf_driver.cpp
     rf_packet_types.cpp
   )

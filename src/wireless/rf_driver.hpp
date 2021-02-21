@@ -10,49 +10,33 @@
  *    The driver is written with thread safety in mind so that any thread can
  *    transmit or recieve data without fear.
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
 #ifndef DC_WIRELESS_DRIVER_HPP
 #define DC_WIRELESS_DRIVER_HPP
 
-/* STL Includes */
-
 /* Ripple Includes */
-#include <Ripple/session>
-#include <Ripple/network>
+#include <Ripple/netif/nrf24l01>
 
 /* Project Includes */
 #include <src/wireless/rf_system_types.hpp>
 #include <src/wireless/rf_packet_types.hpp>
 
 
-/* DEVELOPMENT INCLUDES */
-#include <Ripple/datalink>
-
-
 namespace DC::RF
 {
-
-  /*-------------------------------------------------------------------------------
-  !!!!!!!DEVELOPMENT ONLY!!!!!!!
-  REMOVE IN THE REAL SOFTWARE
-  -------------------------------------------------------------------------------*/
-  extern Ripple::DataLink::Service datalinkService;
-
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
   /**
-   *  Initializes the entire newtork stack and verifies communication
-   *  with the underlying hardware. Upon exit, the network is at idle
-   *  and is ready to make a connection.
+   *  Generates the project's radio configuration structure
    *
    *  @param[in]  cfg       User configuration
    *  @return bool
    */
-  bool initialize( Ripple::Session::RadioConfig &cfg );
+  Ripple::NetIf::NRF24::Physical::Handle genRadioCfg();
 
   /**
    *  Attempts to make a connection to a device with the given address.
@@ -62,7 +46,7 @@ namespace DC::RF
    *  @param[in]  device    Address of the device to connect to
    *  @return bool
    */
-  bool connect( const Ripple::Network::IPAddress device );
+  bool connect( const Ripple::IPAddress device );
 
   /**
    *  Severs the connection with the remote device

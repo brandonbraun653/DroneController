@@ -5,7 +5,7 @@
  *  Description:
  *    Data resources associated with the RF driver
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
@@ -17,8 +17,6 @@
 #include <cstddef>
 
 /* Ripple Includes */
-#include <Ripple/session>
-#include <Ripple/physical>
 
 namespace DC::RF
 {

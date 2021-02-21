@@ -50,6 +50,8 @@ namespace DC::IO
                                                                .threaded  = true,
                                                                .validity  = false };
 
+    // TODO: Need to redo these. Currently conflict with Radio.
+
     /*-------------------------------------------------
     Button/Key Input 0
     -------------------------------------------------*/
@@ -158,21 +160,21 @@ namespace DC::IO
     /*-------------------------------------------------
     GPIO: IRQ Input
     -------------------------------------------------*/
-    static constexpr Chimera::GPIO::Pin pinIRQ_pin             = 1;
-    static constexpr Chimera::GPIO::Port pinIRQ_port           = Chimera::GPIO::Port::PORTA;
+    static constexpr Chimera::GPIO::Pin pinIRQ_pin             = 13;
+    static constexpr Chimera::GPIO::Port pinIRQ_port           = Chimera::GPIO::Port::PORTB;
     static constexpr Chimera::EXTI::EdgeTrigger pinIRQ_Trigger = Chimera::EXTI::EdgeTrigger::FALLING_EDGE;
 
     /*-------------------------------------------------
     GPIO: Chip Enable
     -------------------------------------------------*/
-    static constexpr Chimera::GPIO::Pin pinCE_pin   = 7;
+    static constexpr Chimera::GPIO::Pin pinCE_pin   = 5;
     static constexpr Chimera::GPIO::Port pinCE_port = Chimera::GPIO::Port::PORTB;
 
     /*-------------------------------------------------
     GPIO: Chip Select
     -------------------------------------------------*/
-    static constexpr Chimera::GPIO::Pin pinCS_pin   = 6;
-    static constexpr Chimera::GPIO::Port pinCS_port = Chimera::GPIO::Port::PORTB;
+    static constexpr Chimera::GPIO::Pin pinCS_pin   = BSP::Nucleo::F446RE::SPI::SPI2::csPin;
+    static constexpr Chimera::GPIO::Port pinCS_port = BSP::Nucleo::F446RE::SPI::SPI2::csPort;
 
     /*-------------------------------------------------
     SPI

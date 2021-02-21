@@ -103,7 +103,8 @@
     "regex": "cpp",
     "valarray": "cpp",
     "logging": "cpp",
-    "control": "cpp"
+    "control": "cpp",
+    "nrf24l01": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",
@@ -128,6 +129,7 @@
     "debouncer",
     "debouncing",
     "exti",
+    "fifo",
     "flat",
     "frewind",
     "gdisp",
@@ -151,6 +153,7 @@
     "gpioo",
     "gpiop",
     "gwin",
+    "iarp",
     "igpio",
     "intf",
     "ireference",
@@ -160,6 +163,7 @@
     "kbps",
     "map",
     "mosi",
+    "netif",
     "nlohmann",
     "nvic",
     "periphs",

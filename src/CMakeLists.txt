@@ -69,7 +69,12 @@ target_link_libraries(DroneController PRIVATE
   # ugfx_prj_config
 
   # Networking Libraries
-  ripple_core_dbg
+  #ripple_core_dbg
+  ripple_shared
+  ripple_user_intf
+  ripple_network_stack
+  ripple_netif_nrf24_physical
+  ripple_netif_nrf24_datalink
 
   # Utility Libraries
   aurora_core_dbg
