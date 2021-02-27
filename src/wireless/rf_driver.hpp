@@ -33,10 +33,10 @@ namespace DC::RF
   /**
    *  Generates the project's radio configuration structure
    *
-   *  @param[in]  cfg       User configuration
-   *  @return bool
+   *  @param[in]  config    Object to be configured
+   *  @return void
    */
-  Ripple::NetIf::NRF24::Physical::Handle genRadioCfg();
+  void genRadioCfg( Ripple::NetIf::NRF24::Physical::Handle &config );
 
   /**
    *  Attempts to make a connection to a device with the given address.

@@ -17,7 +17,7 @@ namespace DC::RF
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  Ripple::NetIf::NRF24::Physical::Handle genRadioCfg()
+  void genRadioCfg( Ripple::NetIf::NRF24::Physical::Handle &config )
   {
     using namespace Chimera::GPIO;
     using namespace Chimera::SPI;
@@ -25,7 +25,6 @@ namespace DC::RF
 
     using namespace Ripple::NetIf::NRF24::Physical;
 
-    Handle config;
     config.clear();
 
     #if defined( SIMULATOR )
@@ -129,7 +128,5 @@ namespace DC::RF
     config.cfg.spi.HWInit.dataSize    = DC::IO::Radio::spiDataSize;
     config.cfg.spi.HWInit.hwChannel   = DC::IO::Radio::spiChannel;
     config.cfg.spi.HWInit.txfrMode    = DC::IO::Radio::spiTxfrMode;
-
-    return config;
   }
 }  // namespace DC::RF

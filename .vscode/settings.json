@@ -104,7 +104,10 @@
     "valarray": "cpp",
     "logging": "cpp",
     "control": "cpp",
-    "nrf24l01": "cpp"
+    "nrf24l01": "cpp",
+    "codecvt": "cpp",
+    "future": "cpp",
+    "nrf24l01_types": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

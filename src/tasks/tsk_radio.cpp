@@ -19,6 +19,7 @@
 
 /* Ripple Includes */
 #include <Ripple/netstack>
+#include <Ripple/shared>
 #include <Ripple/netif/nrf24l01>
 
 /* Project Includes */
@@ -47,35 +48,62 @@ namespace DC::Tasks::RADIO
     -------------------------------------------------*/
     waitInit();
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------------
     Network testing
+    -------------------------------------------------------------------------------*/
+    /*-------------------------------------------------
+    Create the interface driver
     -------------------------------------------------*/
     auto network = Ripple::create( netMemoryPool.data(), netMemoryPool.size() );
     auto netintf = Ripple::NetIf::NRF24::DataLink::createNetIf( network );
 
-    /* Create the netif */
-    auto cfg = DC::RF::genRadioCfg();
+    Ripple::NetIf::NRF24::Physical::Handle cfg;
+    DC::RF::genRadioCfg( cfg );
+
     netintf->assignConfig( cfg );
     netintf->powerUp( network );
 
+    /*-------------------------------------------------
+    Bind this node's address and some static RX address
+    -------------------------------------------------*/
+    IPAddress thisNode = constructIP( 127, 0, 0, 1 );
+    uint64_t thisMAC = 0xB4B5B6B7B5;
+
+    IPAddress destNode = constructIP( 192, 168, 1, 0 );
+    uint64_t destMAC = 0xA4A5A6A7A0;
+
+    netintf->addARPEntry( thisNode, &thisMAC, sizeof( thisMAC ) );
+    netintf->addARPEntry( destNode, &destMAC, sizeof( destMAC ) );
+
+    netintf->setRootMAC( thisMAC );
+
+    /*-------------------------------------------------
+    Allocate some some_data memory to try and transfer
+    -------------------------------------------------*/
+    std::array<uint8_t, 10> some_data = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+    MsgFrag txMsg;
+    txMsg.fragmentData   = network->malloc( some_data.size() );
+    txMsg.fragmentLength = some_data.size();
+    txMsg.nextFragment   = nullptr;
+    txMsg.totalLength    = some_data.size();
+    txMsg.fragmentNumber = 0;
+
+    memcpy( txMsg.fragmentData, some_data.data(), txMsg.fragmentLength );
+
+    /*-------------------------------------------------
+    Allocate memory for the reception
+    -------------------------------------------------*/
+    MsgFrag rxMsg;
+
+    /*-------------------------------------------------
+    Initialize some local data for the transfers
+    -------------------------------------------------*/
+    Chimera::Status_t result;
 
     size_t lastTx    = Chimera::millis();
     size_t lastRx    = Chimera::millis();
     bool transmitted = false;
-
-    std::array<uint8_t, 10> packet = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
-    /* Allocate a packet as if it were the real thing */
-    MsgFrag txMsg;
-    txMsg.fragmentData   = network->malloc( packet.size() );
-    txMsg.fragmentLength = packet.size();
-    txMsg.nextFragment   = nullptr;
-    txMsg.totalLength    = packet.size();
-
-    memcpy( txMsg.fragmentData, packet.data(), txMsg.fragmentLength );
-
-    MsgFrag rxMsg;
-    Chimera::Status_t result;
 
     while ( 1 )
     {
@@ -85,7 +113,7 @@ namespace DC::Tasks::RADIO
       -------------------------------------------------*/
       if ( ( ( Chimera::millis() - lastTx ) > 1000 ) && !transmitted )
       {
-        result = netintf->send( txMsg, 0 );
+        result = netintf->send( txMsg, destNode );
 
         if ( result == Chimera::Status::READY )
         {
@@ -99,18 +127,19 @@ namespace DC::Tasks::RADIO
       Try and sample data. Expects to receive an echo of
       the transmit.
       -------------------------------------------------*/
-      if ( transmitted && ( ( Chimera::millis() - lastRx ) > 100 ) )
+      if ( transmitted && ( ( Chimera::millis() - lastRx ) > 1000 ) )
       {
         result = netintf->recv( rxMsg );
+        lastRx = Chimera::millis();
+
         if ( ( result == Chimera::Status::READY ) && rxMsg.fragmentData && rxMsg.fragmentLength )
         {
           transmitted = false;
-          lastRx      = Chimera::millis();
           getRootSink()->flog( Level::LVL_DEBUG, "Got data\r\n" );
         }
         else
         {
-          getRootSink()->flog( Level::LVL_DEBUG, "Didn't receive data\r\n" );
+          getRootSink()->flog( Level::LVL_DEBUG, "Didn't receive data: %d\r\n", Chimera::millis() );
         }
       }
 
