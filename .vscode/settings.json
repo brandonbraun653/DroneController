@@ -107,7 +107,8 @@
     "nrf24l01": "cpp",
     "codecvt": "cpp",
     "future": "cpp",
-    "nrf24l01_types": "cpp"
+    "nrf24l01_types": "cpp",
+    "netstack": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

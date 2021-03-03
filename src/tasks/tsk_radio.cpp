@@ -30,9 +30,16 @@
 #include <src/utility/logger.hpp>
 #include <src/wireless/rf_driver.hpp>
 
+
+// Testing only
+#include <algorithm>
+#include <etl/random.h>
+
+static etl::random_xorshift rng;
+
 namespace DC::Tasks::RADIO
 {
-  std::array<uint8_t, 4096> netMemoryPool;
+  std::array<uint8_t, 10 * 1024> netMemoryPool;
 
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -52,49 +59,53 @@ namespace DC::Tasks::RADIO
     Network testing
     -------------------------------------------------------------------------------*/
     /*-------------------------------------------------
+    Create the network context
+    -------------------------------------------------*/
+    auto context = Ripple::create( netMemoryPool.data(), netMemoryPool.size() );
+
+    /*-------------------------------------------------
     Create the interface driver
     -------------------------------------------------*/
-    auto network = Ripple::create( netMemoryPool.data(), netMemoryPool.size() );
-    auto netintf = Ripple::NetIf::NRF24::DataLink::createNetIf( network );
+    auto netif = Ripple::NetIf::NRF24::DataLink::createNetIf( context );
 
     Ripple::NetIf::NRF24::Physical::Handle cfg;
     DC::RF::genRadioCfg( cfg );
 
-    netintf->assignConfig( cfg );
-    netintf->powerUp( network );
+    netif->assignConfig( cfg );
+    netif->powerUp( context );
+
+    context->attachNetif( netif );
 
     /*-------------------------------------------------
-    Bind this node's address and some static RX address
+    Inform the NRF ARP how to resolve addresses
     -------------------------------------------------*/
-    IPAddress thisNode = constructIP( 127, 0, 0, 1 );
+    std::string thisNode = "device123";
     uint64_t thisMAC = 0xB4B5B6B7B5;
 
-    IPAddress destNode = constructIP( 192, 168, 1, 0 );
+    std::string destNode = "device321";
     uint64_t destMAC = 0xA4A5A6A7A0;
 
-    netintf->addARPEntry( thisNode, &thisMAC, sizeof( thisMAC ) );
-    netintf->addARPEntry( destNode, &destMAC, sizeof( destMAC ) );
-
-    netintf->setRootMAC( thisMAC );
-
-    /*-------------------------------------------------
-    Allocate some some_data memory to try and transfer
-    -------------------------------------------------*/
-    std::array<uint8_t, 10> some_data = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
-    MsgFrag txMsg;
-    txMsg.fragmentData   = network->malloc( some_data.size() );
-    txMsg.fragmentLength = some_data.size();
-    txMsg.nextFragment   = nullptr;
-    txMsg.totalLength    = some_data.size();
-    txMsg.fragmentNumber = 0;
-
-    memcpy( txMsg.fragmentData, some_data.data(), txMsg.fragmentLength );
+    netif->addARPEntry( thisNode, &thisMAC, sizeof( thisMAC ) );
+    netif->addARPEntry( destNode, &destMAC, sizeof( destMAC ) );
+    netif->setRootMAC( thisMAC );
 
     /*-------------------------------------------------
-    Allocate memory for the reception
+    Create two sockets for a full duplex pipe
     -------------------------------------------------*/
-    MsgFrag rxMsg;
+    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 256 );
+    txSocket->open( thisNode );
+    txSocket->connect( destNode );
+
+    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 256 );
+    rxSocket->open( thisNode );
+    rxSocket->connect( destNode );
+
+    /*-------------------------------------------------
+    Create some random data to try and transfer
+    -------------------------------------------------*/
+    rng.initialise( Chimera::micros() );
+    std::array<uint8_t, 100> some_data;
+    std::generate( some_data.begin(), some_data.end(), rng );
 
     /*-------------------------------------------------
     Initialize some local data for the transfers
@@ -113,14 +124,10 @@ namespace DC::Tasks::RADIO
       -------------------------------------------------*/
       if ( ( ( Chimera::millis() - lastTx ) > 1000 ) && !transmitted )
       {
-        result = netintf->send( txMsg, destNode );
-
-        if ( result == Chimera::Status::READY )
-        {
-          lastTx      = Chimera::millis();
-          lastRx      = Chimera::millis();
-          transmitted = true;
-        }
+        txSocket->write( some_data.data(), some_data.size() );
+        lastTx      = Chimera::millis();
+        lastRx      = Chimera::millis();
+        transmitted = true;
       }
 
       /*-------------------------------------------------
@@ -129,21 +136,24 @@ namespace DC::Tasks::RADIO
       -------------------------------------------------*/
       if ( transmitted && ( ( Chimera::millis() - lastRx ) > 1000 ) )
       {
-        result = netintf->recv( rxMsg );
+        auto bytesAvailable = rxSocket->available();
         lastRx = Chimera::millis();
 
-        if ( ( result == Chimera::Status::READY ) && rxMsg.fragmentData && rxMsg.fragmentLength )
-        {
-          transmitted = false;
-          getRootSink()->flog( Level::LVL_DEBUG, "Got data\r\n" );
-        }
-        else
+        if( !bytesAvailable )
         {
           getRootSink()->flog( Level::LVL_DEBUG, "Didn't receive data: %d\r\n", Chimera::millis() );
+          continue;
         }
+
+        auto mem = context->malloc( bytesAvailable );
+
+        result = rxSocket->read( mem, bytesAvailable );
+
+        transmitted = false;
+        getRootSink()->flog( Level::LVL_DEBUG, "Got %d bytes\r\n", bytesAvailable );
+        context->free( mem );
       }
 
-      // Process the data pipes here?
       BKGD::kickDog( PrjTaskId::RADIO );
       Chimera::delayMilliseconds( 10 );
     }
