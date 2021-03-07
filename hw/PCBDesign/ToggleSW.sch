@@ -1,0 +1,124 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 4 11
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Switch:SW_SPDT_MSM SW?
+U 1 1 60455283
+P 4300 2150
+AR Path="/60445E97/60455283" Ref="SW?"  Part="1" 
+AR Path="/60445E97/60452796/60455283" Ref="SW?"  Part="1" 
+F 0 "SW?" H 4300 2435 50  0000 C CNN
+F 1 "Trim_Roll" H 4300 2344 50  0000 C CNN
+F 2 "" H 4300 2150 50  0001 C CNN
+F 3 "~" H 4300 2150 50  0001 C CNN
+	1    4300 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT_MSM SW?
+U 1 1 60455289
+P 5300 2150
+AR Path="/60445E97/60455289" Ref="SW?"  Part="1" 
+AR Path="/60445E97/60452796/60455289" Ref="SW?"  Part="1" 
+F 0 "SW?" H 5300 2435 50  0000 C CNN
+F 1 "Trim_Pitch" H 5300 2344 50  0000 C CNN
+F 2 "" H 5300 2150 50  0001 C CNN
+F 3 "~" H 5300 2150 50  0001 C CNN
+	1    5300 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT_MSM SW?
+U 1 1 6045528F
+P 6250 2150
+AR Path="/60445E97/6045528F" Ref="SW?"  Part="1" 
+AR Path="/60445E97/60452796/6045528F" Ref="SW?"  Part="1" 
+F 0 "SW?" H 6250 2435 50  0000 C CNN
+F 1 "Trim_Yaw" H 6250 2344 50  0000 C CNN
+F 2 "" H 6250 2150 50  0001 C CNN
+F 3 "~" H 6250 2150 50  0001 C CNN
+	1    6250 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT_MSM SW?
+U 1 1 60455295
+P 7050 2150
+AR Path="/60445E97/60455295" Ref="SW?"  Part="1" 
+AR Path="/60445E97/60452796/60455295" Ref="SW?"  Part="1" 
+F 0 "SW?" H 7050 2435 50  0000 C CNN
+F 1 "Trim_Throttle" H 7050 2344 50  0000 C CNN
+F 2 "" H 7050 2150 50  0001 C CNN
+F 3 "~" H 7050 2150 50  0001 C CNN
+	1    7050 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT SW?
+U 1 1 6045529B
+P 4500 3250
+AR Path="/60445E97/6045529B" Ref="SW?"  Part="1" 
+AR Path="/60445E97/60452796/6045529B" Ref="SW?"  Part="1" 
+F 0 "SW?" H 4500 3535 50  0000 C CNN
+F 1 "SW_SPDT" H 4500 3444 50  0000 C CNN
+F 2 "" H 4500 3250 50  0001 C CNN
+F 3 "~" H 4500 3250 50  0001 C CNN
+	1    4500 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT SW?
+U 1 1 604552A1
+P 5150 3250
+AR Path="/60445E97/604552A1" Ref="SW?"  Part="1" 
+AR Path="/60445E97/60452796/604552A1" Ref="SW?"  Part="1" 
+F 0 "SW?" H 5150 3535 50  0000 C CNN
+F 1 "SW_SPDT" H 5150 3444 50  0000 C CNN
+F 2 "" H 5150 3250 50  0001 C CNN
+F 3 "~" H 5150 3250 50  0001 C CNN
+	1    5150 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT SW?
+U 1 1 604552A7
+P 5800 3250
+AR Path="/60445E97/604552A7" Ref="SW?"  Part="1" 
+AR Path="/60445E97/60452796/604552A7" Ref="SW?"  Part="1" 
+F 0 "SW?" H 5800 3535 50  0000 C CNN
+F 1 "SW_SPDT" H 5800 3444 50  0000 C CNN
+F 2 "" H 5800 3250 50  0001 C CNN
+F 3 "~" H 5800 3250 50  0001 C CNN
+	1    5800 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT SW?
+U 1 1 604552AD
+P 6450 3250
+AR Path="/60445E97/604552AD" Ref="SW?"  Part="1" 
+AR Path="/60445E97/60452796/604552AD" Ref="SW?"  Part="1" 
+F 0 "SW?" H 6450 3535 50  0000 C CNN
+F 1 "SW_SPDT" H 6450 3444 50  0000 C CNN
+F 2 "" H 6450 3250 50  0001 C CNN
+F 3 "~" H 6450 3250 50  0001 C CNN
+	1    6450 3250
+	1    0    0    -1  
+$EndComp
+Text HLabel 7800 2900 2    50   Input ~ 0
+V+
+Text HLabel 7800 3050 2    50   Output ~ 0
+Trim_Pitch+
+$EndSCHEMATC

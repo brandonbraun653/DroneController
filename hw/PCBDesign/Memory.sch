@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 5
+Sheet 8 11
 Title ""
 Date ""
 Rev ""
@@ -16,23 +16,305 @@ $EndDescr
 $Comp
 L Memory_EEPROM:AT24CS64-SSHM U?
 U 1 1 6046D99A
-P 3100 2350
-F 0 "U?" H 3100 2831 50  0000 C CNN
-F 1 "AT24CS64" H 3100 2740 50  0000 C CNN
-F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 3100 2350 50  0001 C CNN
-F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-8870-SEEPROM-AT24CS64-Datasheet.pdf" H 3100 2350 50  0001 C CNN
-	1    3100 2350
+P 5950 4300
+F 0 "U?" H 6200 4650 50  0000 C CNN
+F 1 "AT24C256" H 6200 4550 50  0000 C CNN
+F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 5950 4300 50  0001 C CNN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-8870-SEEPROM-AT24CS64-Datasheet.pdf" H 5950 4300 50  0001 C CNN
+F 4 "C6482" H 5950 4300 50  0001 C CNN "LCSC"
+	1    5950 4300
 	1    0    0    -1  
 $EndComp
 $Comp
 L Memory_Flash:AT25SF081-SSHD-X U?
 U 1 1 6046ED84
 P 5950 2800
-F 0 "U?" H 6594 2846 50  0000 L CNN
-F 1 "AT25SF081" H 6594 2755 50  0000 L CNN
+F 0 "U?" H 6200 3300 50  0000 L CNN
+F 1 "AT25SF081" H 6050 3200 50  0000 L CNN
 F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 5950 2200 50  0001 C CNN
 F 3 "https://www.adestotech.com/wp-content/uploads/DS-AT25SF081_045.pdf" H 5950 2800 50  0001 C CNN
 	1    5950 2800
 	1    0    0    -1  
 $EndComp
+Text HLabel 5950 2300 1    50   Input ~ 0
+V+
+$Comp
+L power:GND #PWR?
+U 1 1 60638B7F
+P 5950 3300
+F 0 "#PWR?" H 5950 3050 50  0001 C CNN
+F 1 "GND" H 5955 3127 50  0000 C CNN
+F 2 "" H 5950 3300 50  0001 C CNN
+F 3 "" H 5950 3300 50  0001 C CNN
+	1    5950 3300
+	1    0    0    -1  
+$EndComp
+Text HLabel 6700 2600 2    50   Output ~ 0
+NOR_MISO
+Wire Wire Line
+	6700 2600 6550 2600
+Text HLabel 4800 2600 0    50   Input ~ 0
+NOR_MOSI
+Text HLabel 4800 2700 0    50   Input ~ 0
+NOR_SCK
+Text HLabel 4800 2800 0    50   Input ~ 0
+NOR_nCS
+$Comp
+L Device:R_US R?
+U 1 1 60639F64
+P 4700 3950
+F 0 "R?" H 4768 3996 50  0000 L CNN
+F 1 "10k" H 4768 3905 50  0000 L CNN
+F 2 "" V 4740 3940 50  0001 C CNN
+F 3 "~" H 4700 3950 50  0001 C CNN
+	1    4700 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 6063A22F
+P 5050 3950
+F 0 "R?" H 5118 3996 50  0000 L CNN
+F 1 "10k" H 5118 3905 50  0000 L CNN
+F 2 "" V 5090 3940 50  0001 C CNN
+F 3 "~" H 5050 3950 50  0001 C CNN
+	1    5050 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 6063A4AF
+P 4350 3950
+F 0 "R?" H 4418 3996 50  0000 L CNN
+F 1 "10k" H 4418 3905 50  0000 L CNN
+F 2 "" V 4390 3940 50  0001 C CNN
+F 3 "~" H 4350 3950 50  0001 C CNN
+	1    4350 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 6063AB62
+P 5050 4650
+F 0 "R?" H 5118 4696 50  0000 L CNN
+F 1 "10k" H 5118 4605 50  0000 L CNN
+F 2 "" V 5090 4640 50  0001 C CNN
+F 3 "~" H 5050 4650 50  0001 C CNN
+	1    5050 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 6063B6D5
+P 4700 4650
+F 0 "R?" H 4768 4696 50  0000 L CNN
+F 1 "10k" H 4768 4605 50  0000 L CNN
+F 2 "" V 4740 4640 50  0001 C CNN
+F 3 "~" H 4700 4650 50  0001 C CNN
+	1    4700 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 6063BCD1
+P 4350 4650
+F 0 "R?" H 4418 4696 50  0000 L CNN
+F 1 "10k" H 4418 4605 50  0000 L CNN
+F 2 "" V 4390 4640 50  0001 C CNN
+F 3 "~" H 4350 4650 50  0001 C CNN
+	1    4350 4650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5550 4200 5050 4200
+Wire Wire Line
+	5050 4200 5050 4100
+Wire Wire Line
+	5550 4300 4700 4300
+Wire Wire Line
+	4700 4300 4700 4100
+Wire Wire Line
+	5550 4400 4350 4400
+Wire Wire Line
+	4350 4400 4350 4100
+Wire Wire Line
+	4350 4500 4350 4400
+Connection ~ 4350 4400
+Wire Wire Line
+	4700 4500 4700 4300
+Connection ~ 4700 4300
+Wire Wire Line
+	5050 4500 5050 4200
+Connection ~ 5050 4200
+$Comp
+L power:GND #PWR?
+U 1 1 6063CB47
+P 4700 4900
+F 0 "#PWR?" H 4700 4650 50  0001 C CNN
+F 1 "GND" H 4705 4727 50  0000 C CNN
+F 2 "" H 4700 4900 50  0001 C CNN
+F 3 "" H 4700 4900 50  0001 C CNN
+	1    4700 4900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 6063CF26
+P 5950 4600
+F 0 "#PWR?" H 5950 4350 50  0001 C CNN
+F 1 "GND" H 5955 4427 50  0000 C CNN
+F 2 "" H 5950 4600 50  0001 C CNN
+F 3 "" H 5950 4600 50  0001 C CNN
+	1    5950 4600
+	1    0    0    -1  
+$EndComp
+Text HLabel 5950 4000 1    50   Input ~ 0
+V+
+Text HLabel 4700 3700 1    50   Input ~ 0
+V+
+Wire Wire Line
+	4700 3700 4700 3750
+Wire Wire Line
+	4700 3750 5050 3750
+Wire Wire Line
+	5050 3750 5050 3800
+Connection ~ 4700 3750
+Wire Wire Line
+	4700 3750 4700 3800
+Wire Wire Line
+	4350 3800 4350 3750
+Wire Wire Line
+	4350 3750 4700 3750
+Wire Wire Line
+	4700 4800 4700 4850
+Wire Wire Line
+	4350 4800 4350 4850
+Wire Wire Line
+	4350 4850 4700 4850
+Connection ~ 4700 4850
+Wire Wire Line
+	4700 4850 4700 4900
+Wire Wire Line
+	5050 4850 5050 4800
+Wire Wire Line
+	4700 4850 5050 4850
+Text Notes 6200 5000 2    50   ~ 0
+Manually configure address on PCB
+$Comp
+L power:GND #PWR?
+U 1 1 6063E8A1
+P 6400 4450
+F 0 "#PWR?" H 6400 4200 50  0001 C CNN
+F 1 "GND" H 6405 4277 50  0000 C CNN
+F 2 "" H 6400 4450 50  0001 C CNN
+F 3 "" H 6400 4450 50  0001 C CNN
+	1    6400 4450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6350 4400 6400 4400
+Wire Wire Line
+	6400 4400 6400 4450
+$Comp
+L Device:R_US R?
+U 1 1 6063F01A
+P 6450 3950
+F 0 "R?" H 6518 3996 50  0000 L CNN
+F 1 "1.5k" H 6518 3905 50  0000 L CNN
+F 2 "" V 6490 3940 50  0001 C CNN
+F 3 "~" H 6450 3950 50  0001 C CNN
+	1    6450 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 6063F7EE
+P 6750 3950
+F 0 "R?" H 6818 3996 50  0000 L CNN
+F 1 "1.5k" H 6818 3905 50  0000 L CNN
+F 2 "" V 6790 3940 50  0001 C CNN
+F 3 "~" H 6750 3950 50  0001 C CNN
+	1    6750 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6450 4100 6450 4200
+Wire Wire Line
+	6450 4200 6350 4200
+Wire Wire Line
+	6350 4300 6750 4300
+Wire Wire Line
+	6750 4300 6750 4100
+Text HLabel 6600 3600 1    50   Input ~ 0
+V+
+Wire Wire Line
+	6600 3700 6750 3700
+Wire Wire Line
+	6750 3700 6750 3800
+Wire Wire Line
+	6600 3700 6450 3700
+Wire Wire Line
+	6450 3700 6450 3800
+Connection ~ 6600 3700
+Wire Wire Line
+	6600 3600 6600 3700
+Text HLabel 7000 4200 2    50   BiDi ~ 0
+EEPROM_SDA
+Text HLabel 7000 4300 2    50   Input ~ 0
+EEPROM_SCL
+Wire Wire Line
+	7000 4300 6750 4300
+Connection ~ 6750 4300
+Wire Wire Line
+	7000 4200 6450 4200
+Connection ~ 6450 4200
+$Comp
+L Device:R_US R?
+U 1 1 6064232C
+P 5300 2200
+F 0 "R?" H 5368 2246 50  0000 L CNN
+F 1 "10k" H 5368 2155 50  0000 L CNN
+F 2 "" V 5340 2190 50  0001 C CNN
+F 3 "~" H 5300 2200 50  0001 C CNN
+	1    5300 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 60642966
+P 5000 2200
+F 0 "R?" H 5068 2246 50  0000 L CNN
+F 1 "10k" H 5068 2155 50  0000 L CNN
+F 2 "" V 5040 2190 50  0001 C CNN
+F 3 "~" H 5000 2200 50  0001 C CNN
+	1    5000 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5000 2350 5000 3000
+Wire Wire Line
+	5000 3000 5350 3000
+Wire Wire Line
+	5350 2900 5300 2900
+Wire Wire Line
+	5300 2900 5300 2350
+Wire Wire Line
+	4800 2600 5350 2600
+Wire Wire Line
+	4800 2700 5350 2700
+Wire Wire Line
+	4800 2800 5350 2800
+Text HLabel 5150 1850 1    50   Input ~ 0
+V+
+Wire Wire Line
+	5000 2050 5000 1950
+Wire Wire Line
+	5000 1950 5150 1950
+Wire Wire Line
+	5150 1950 5150 1850
+Wire Wire Line
+	5150 1950 5300 1950
+Wire Wire Line
+	5300 1950 5300 2050
+Connection ~ 5150 1950
 $EndSCHEMATC
