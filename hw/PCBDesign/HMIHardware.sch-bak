@@ -1,0 +1,285 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 2 5
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:Rotary_Encoder_Switch SW?
+U 1 1 6044652E
+P 1800 1650
+F 0 "SW?" H 1800 2017 50  0000 C CNN
+F 1 "RotaryA" H 1800 1926 50  0000 C CNN
+F 2 "" H 1650 1810 50  0001 C CNN
+F 3 "~" H 1800 1910 50  0001 C CNN
+	1    1800 1650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Rotary_Encoder_Switch SW?
+U 1 1 604482E3
+P 3000 1650
+F 0 "SW?" H 3000 2017 50  0000 C CNN
+F 1 "RotaryB" H 3000 1926 50  0000 C CNN
+F 2 "" H 2850 1810 50  0001 C CNN
+F 3 "~" H 3000 1910 50  0001 C CNN
+	1    3000 1650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT_MSM SW?
+U 1 1 6044A242
+P 1850 2950
+F 0 "SW?" H 1850 3235 50  0000 C CNN
+F 1 "Trim_Roll" H 1850 3144 50  0000 C CNN
+F 2 "" H 1850 2950 50  0001 C CNN
+F 3 "~" H 1850 2950 50  0001 C CNN
+	1    1850 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT_MSM SW?
+U 1 1 6044A892
+P 2850 2950
+F 0 "SW?" H 2850 3235 50  0000 C CNN
+F 1 "Trim_Pitch" H 2850 3144 50  0000 C CNN
+F 2 "" H 2850 2950 50  0001 C CNN
+F 3 "~" H 2850 2950 50  0001 C CNN
+	1    2850 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT_MSM SW?
+U 1 1 6044B4AB
+P 3800 2950
+F 0 "SW?" H 3800 3235 50  0000 C CNN
+F 1 "Trim_Yaw" H 3800 3144 50  0000 C CNN
+F 2 "" H 3800 2950 50  0001 C CNN
+F 3 "~" H 3800 2950 50  0001 C CNN
+	1    3800 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT_MSM SW?
+U 1 1 6044B9EE
+P 4600 2950
+F 0 "SW?" H 4600 3235 50  0000 C CNN
+F 1 "Trim_Throttle" H 4600 3144 50  0000 C CNN
+F 2 "" H 4600 2950 50  0001 C CNN
+F 3 "~" H 4600 2950 50  0001 C CNN
+	1    4600 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 6044E144
+P 4350 1850
+F 0 "SW?" V 4304 1998 50  0000 L CNN
+F 1 "Key_Left" V 4395 1998 50  0000 L CNN
+F 2 "" H 4350 2050 50  0001 C CNN
+F 3 "~" H 4350 2050 50  0001 C CNN
+	1    4350 1850
+	0    1    1    0   
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 6044ED6F
+P 5000 1850
+F 0 "SW?" V 4954 1998 50  0000 L CNN
+F 1 "Key_Right" V 5045 1998 50  0000 L CNN
+F 2 "" H 5000 2050 50  0001 C CNN
+F 3 "~" H 5000 2050 50  0001 C CNN
+	1    5000 1850
+	0    1    1    0   
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 60451D3A
+P 5650 1850
+F 0 "SW?" V 5604 1998 50  0000 L CNN
+F 1 "Key_Up" V 5695 1998 50  0000 L CNN
+F 2 "" H 5650 2050 50  0001 C CNN
+F 3 "~" H 5650 2050 50  0001 C CNN
+	1    5650 1850
+	0    1    1    0   
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 60453DD9
+P 6250 1850
+F 0 "SW?" V 6204 1998 50  0000 L CNN
+F 1 "Key_Down" V 6295 1998 50  0000 L CNN
+F 2 "" H 6250 2050 50  0001 C CNN
+F 3 "~" H 6250 2050 50  0001 C CNN
+	1    6250 1850
+	0    1    1    0   
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 60454F2A
+P 6900 1850
+F 0 "SW?" V 6854 1998 50  0000 L CNN
+F 1 "Key_Enter" V 6945 1998 50  0000 L CNN
+F 2 "" H 6900 2050 50  0001 C CNN
+F 3 "~" H 6900 2050 50  0001 C CNN
+	1    6900 1850
+	0    1    1    0   
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 6045545B
+P 7550 1850
+F 0 "SW?" V 7504 1998 50  0000 L CNN
+F 1 "Key_Esc" V 7595 1998 50  0000 L CNN
+F 2 "" H 7550 2050 50  0001 C CNN
+F 3 "~" H 7550 2050 50  0001 C CNN
+	1    7550 1850
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_POT_US RV?
+U 1 1 6045B6FD
+P 7700 2950
+F 0 "RV?" H 7633 2996 50  0000 R CNN
+F 1 "R_POT_US" H 7633 2905 50  0000 R CNN
+F 2 "" H 7700 2950 50  0001 C CNN
+F 3 "~" H 7700 2950 50  0001 C CNN
+	1    7700 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_POT_US RV?
+U 1 1 6045BD8A
+P 8950 2950
+F 0 "RV?" H 8883 2996 50  0000 R CNN
+F 1 "R_POT_US" H 8883 2905 50  0000 R CNN
+F 2 "" H 8950 2950 50  0001 C CNN
+F 3 "~" H 8950 2950 50  0001 C CNN
+	1    8950 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_POT_US RV?
+U 1 1 6045C863
+P 7800 3250
+F 0 "RV?" H 7733 3296 50  0000 R CNN
+F 1 "R_POT_US" H 7733 3205 50  0000 R CNN
+F 2 "" H 7800 3250 50  0001 C CNN
+F 3 "~" H 7800 3250 50  0001 C CNN
+	1    7800 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_POT_US RV?
+U 1 1 6045D23A
+P 9050 3250
+F 0 "RV?" H 8983 3296 50  0000 R CNN
+F 1 "R_POT_US" H 8983 3205 50  0000 R CNN
+F 2 "" H 9050 3250 50  0001 C CNN
+F 3 "~" H 9050 3250 50  0001 C CNN
+	1    9050 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT SW?
+U 1 1 6045E62A
+P 2050 4050
+F 0 "SW?" H 2050 4335 50  0000 C CNN
+F 1 "SW_SPDT" H 2050 4244 50  0000 C CNN
+F 2 "" H 2050 4050 50  0001 C CNN
+F 3 "~" H 2050 4050 50  0001 C CNN
+	1    2050 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT SW?
+U 1 1 6045ECF5
+P 2700 4050
+F 0 "SW?" H 2700 4335 50  0000 C CNN
+F 1 "SW_SPDT" H 2700 4244 50  0000 C CNN
+F 2 "" H 2700 4050 50  0001 C CNN
+F 3 "~" H 2700 4050 50  0001 C CNN
+	1    2700 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT SW?
+U 1 1 6045F8ED
+P 3350 4050
+F 0 "SW?" H 3350 4335 50  0000 C CNN
+F 1 "SW_SPDT" H 3350 4244 50  0000 C CNN
+F 2 "" H 3350 4050 50  0001 C CNN
+F 3 "~" H 3350 4050 50  0001 C CNN
+	1    3350 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPDT SW?
+U 1 1 6045FE2C
+P 4000 4050
+F 0 "SW?" H 4000 4335 50  0000 C CNN
+F 1 "SW_SPDT" H 4000 4244 50  0000 C CNN
+F 2 "" H 4000 4050 50  0001 C CNN
+F 3 "~" H 4000 4050 50  0001 C CNN
+	1    4000 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74HC165 U?
+U 1 1 60465132
+P 5650 4650
+F 0 "U?" H 5650 5731 50  0000 C CNN
+F 1 "74HC165" H 5650 5640 50  0000 C CNN
+F 2 "" H 5650 4650 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT165.pdf" H 5650 4650 50  0001 C CNN
+	1    5650 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74HC165 U?
+U 1 1 6046592A
+P 6950 4650
+F 0 "U?" H 6950 5731 50  0000 C CNN
+F 1 "74HC165" H 6950 5640 50  0000 C CNN
+F 2 "" H 6950 4650 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/74HC_HCT165.pdf" H 6950 4650 50  0001 C CNN
+	1    6950 4650
+	1    0    0    -1  
+$EndComp
+Text Notes 8000 2700 0    50   ~ 0
+Need an analog voltage reference shared with the processor.
+$Comp
+L Device:Buzzer BZ?
+U 1 1 60467C54
+P 9850 1300
+F 0 "BZ?" H 10002 1329 50  0000 L CNN
+F 1 "Buzzer" H 10002 1238 50  0000 L CNN
+F 2 "" V 9825 1400 50  0001 C CNN
+F 3 "~" V 9825 1400 50  0001 C CNN
+	1    9850 1300
+	1    0    0    -1  
+$EndComp
+Text Notes 9250 1100 0    50   ~ 0
+Can probably drive this with PWM\n
+$Comp
+L Connector:USB_B_Micro J?
+U 1 1 60474DAC
+P 1700 5600
+F 0 "J?" H 1757 6067 50  0000 C CNN
+F 1 "USB_B_Micro" H 1757 5976 50  0000 C CNN
+F 2 "" H 1850 5550 50  0001 C CNN
+F 3 "~" H 1850 5550 50  0001 C CNN
+F 4 "609-4616-2-ND" H 1700 5600 50  0001 C CNN "DigiKey"
+	1    1700 5600
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC
