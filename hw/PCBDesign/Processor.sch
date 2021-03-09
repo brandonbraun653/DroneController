@@ -16,315 +16,337 @@ $EndDescr
 $Comp
 L MCU_ST_STM32F4:STM32F446RETx U?
 U 1 1 6047114C
-P 5450 3350
-F 0 "U?" H 5450 4050 50  0000 C CNN
-F 1 "STM32F446RETx" H 5450 3900 50  0000 C CNN
-F 2 "Package_QFP:LQFP-64_10x10mm_P0.5mm" H 4850 1650 50  0001 R CNN
-F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/DM00141306.pdf" H 5450 3350 50  0001 C CNN
-F 4 "C69336" H 5450 3350 50  0001 C CNN "LCSC"
-	1    5450 3350
+P 8100 2900
+F 0 "U?" H 8100 3600 50  0000 C CNN
+F 1 "STM32F446RETx" H 8100 3450 50  0000 C CNN
+F 2 "Package_QFP:LQFP-64_10x10mm_P0.5mm" H 7500 1200 50  0001 R CNN
+F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/DM00141306.pdf" H 8100 2900 50  0001 C CNN
+F 4 "C69336" H 8100 2900 50  0001 C CNN "LCSC"
+	1    8100 2900
 	1    0    0    -1  
 $EndComp
 $Comp
 L Connector:Conn_ARM_JTAG_SWD_10 J?
 U 1 1 6047637A
-P 8400 1750
-F 0 "J?" H 7957 1796 50  0000 R CNN
-F 1 "Conn_ARM_JTAG_SWD_10" H 7957 1705 50  0000 R CNN
-F 2 "" H 8400 1750 50  0001 C CNN
-F 3 "http://infocenter.arm.com/help/topic/com.arm.doc.ddi0314h/DDI0314H_coresight_components_trm.pdf" V 8050 500 50  0001 C CNN
-	1    8400 1750
+P 10200 5650
+F 0 "J?" H 9900 6250 50  0000 R CNN
+F 1 "Conn_ARM_JTAG_SWD_10" V 9750 6100 50  0000 R CNN
+F 2 "" H 10200 5650 50  0001 C CNN
+F 3 "http://infocenter.arm.com/help/topic/com.arm.doc.ddi0314h/DDI0314H_coresight_components_trm.pdf" V 9850 4400 50  0001 C CNN
+	1    10200 5650
 	1    0    0    -1  
 $EndComp
-Text HLabel 2650 2050 2    50   BiDi ~ 0
+Text HLabel 4050 4650 2    50   BiDi ~ 0
 USB_D+
-Text HLabel 2650 2200 2    50   BiDi ~ 0
+Text HLabel 4050 4750 2    50   BiDi ~ 0
 USB_D-
-Text HLabel 2650 2550 2    50   Input ~ 0
+Text HLabel 3350 3700 2    50   Input ~ 0
 nBatt_Pwr_Good
-Text HLabel 2650 2700 2    50   Input ~ 0
+Text HLabel 3350 3800 2    50   Input ~ 0
 nBatt_Chg_Good
-Text HLabel 2650 2800 2    50   Input ~ 0
+Text HLabel 4400 3100 2    50   Input ~ 0
 vBatt_Sense
-Text HLabel 2650 3050 2    50   Output ~ 0
+Text HLabel 2250 3700 2    50   Output ~ 0
 nBattChgEn
-Text HLabel 2650 3150 2    50   Output ~ 0
+Text HLabel 2250 3500 2    50   Output ~ 0
 BattChgCfg0
-Text HLabel 2650 3250 2    50   Output ~ 0
+Text HLabel 2250 3600 2    50   Output ~ 0
 BattChgCfg1
-Text HLabel 2600 4000 2    50   Input ~ 0
+Text HLabel 1900 4650 2    50   Input ~ 0
 BT_UART_RX
-Text HLabel 2600 4150 2    50   Output ~ 0
+Text HLabel 1900 4750 2    50   Output ~ 0
 BT_UART_TX
-Text HLabel 2600 4350 2    50   Output ~ 0
+Text HLabel 2250 3400 2    50   Output ~ 0
 BT_nWakeup
-Text HLabel 2600 4450 2    50   Output ~ 0
+Text HLabel 2250 3300 2    50   Output ~ 0
 BT_nPowerUp
-Text HLabel 2600 4550 2    50   Input ~ 0
+Text HLabel 3350 3600 2    50   Input ~ 0
 BT_IRQ
-Text HLabel 2600 5050 2    50   Output ~ 0
+Text HLabel 3400 4650 2    50   Output ~ 0
 RF24_MOSI
-Text HLabel 2600 5150 2    50   Input ~ 0
+Text HLabel 3400 4750 2    50   Input ~ 0
 RF24_MISO
-Text HLabel 2600 5250 2    50   Output ~ 0
+Text HLabel 3400 4850 2    50   Output ~ 0
 RF24_SCK
-Text HLabel 2600 5350 2    50   Output ~ 0
+Text HLabel 2250 3200 2    50   Output ~ 0
 RF24_nCS
-Text HLabel 2600 5450 2    50   Output ~ 0
+Text HLabel 2250 3100 2    50   Output ~ 0
 RF24_CE
-Text HLabel 2600 5550 2    50   Input ~ 0
+Text HLabel 3350 3500 2    50   Input ~ 0
 RF24_nIRQ
-Text HLabel 7050 3150 2    50   Output ~ 0
+Text HLabel 3400 5100 2    50   Output ~ 0
 NOR_MOSI
-Text HLabel 7050 3250 2    50   Input ~ 0
+Text HLabel 3400 5200 2    50   Input ~ 0
 NOR_MISO
-Text HLabel 7050 3400 2    50   Output ~ 0
+Text HLabel 3400 5300 2    50   Output ~ 0
 NOR_SCK
-Text HLabel 7050 3500 2    50   Output ~ 0
+Text HLabel 2250 4000 2    50   Output ~ 0
 NOR_nCS
-Text HLabel 7000 3900 2    50   BiDi ~ 0
+Text HLabel 2600 4650 2    50   BiDi ~ 0
 EEPROM_SDA
-Text HLabel 7000 4050 2    50   Output ~ 0
+Text HLabel 2600 4750 2    50   Output ~ 0
 EEPROM_SCL
-Text HLabel 7450 4600 2    50   Input ~ 0
-VSense_USB
-Text HLabel 7450 4750 2    50   Input ~ 0
+Text HLabel 4400 3600 2    50   Input ~ 0
 VSense_Digital
-Text HLabel 7450 4900 2    50   Input ~ 0
+Text HLabel 4400 3700 2    50   Input ~ 0
 VSense_Radio
-Text HLabel 7450 5050 2    50   Input ~ 0
+Text HLabel 4400 3800 2    50   Input ~ 0
 VSense_Analog
-Text HLabel 5450 1550 1    50   Input ~ 0
+Text HLabel 8100 1100 1    50   Input ~ 0
 V+
-Text HLabel 4550 1850 0    50   Input ~ 0
+Text HLabel 7200 1400 0    50   Input ~ 0
 nRESET
-Text HLabel 8600 2950 2    50   Input ~ 0
-nBOOT
-Text HLabel 9700 2750 2    50   Output ~ 0
+Text HLabel 4700 4650 2    50   Output ~ 0
 PWM_Buzzer
-Text HLabel 9700 3150 2    50   Output ~ 0
+Text HLabel 3400 5500 2    50   Output ~ 0
 KEY_MOSI
-Text HLabel 9700 3250 2    50   Input ~ 0
+Text HLabel 3400 5600 2    50   Input ~ 0
 KEY_MISO
-Text HLabel 9700 3350 2    50   Output ~ 0
+Text HLabel 3400 5700 2    50   Output ~ 0
 KEY_SCK
-Text HLabel 9700 3450 2    50   Output ~ 0
+Text HLabel 2250 3800 2    50   Output ~ 0
 KEY_nCS
-Text HLabel 9700 3550 2    50   Output ~ 0
+Text HLabel 2250 3900 2    50   Output ~ 0
 KEY_nSAMPLE
-Text HLabel 9700 3750 2    50   Input ~ 0
+Text HLabel 3350 3100 2    50   Input ~ 0
 ENCODER0_A
-Text HLabel 9700 3850 2    50   Input ~ 0
+Text HLabel 3350 3200 2    50   Input ~ 0
 ENCODER0_B
-Text HLabel 9700 3950 2    50   Input ~ 0
+Text HLabel 3350 3300 2    50   Input ~ 0
 ENCODER1_A
-Text HLabel 9700 4050 2    50   Input ~ 0
+Text HLabel 3350 3400 2    50   Input ~ 0
 ENCODER1_B
-Text HLabel 9700 4250 2    50   Input ~ 0
+Text HLabel 4400 3200 2    50   Input ~ 0
 ANALOG_IN_VPITCH
-Text HLabel 9700 4350 2    50   Input ~ 0
+Text HLabel 4400 3300 2    50   Input ~ 0
 ANALOG_IN_VROLL
-Text HLabel 9700 4450 2    50   Input ~ 0
+Text HLabel 4400 3400 2    50   Input ~ 0
 ANALOG_IN_VYAW
-Text HLabel 9700 4550 2    50   Input ~ 0
+Text HLabel 4400 3500 2    50   Input ~ 0
 ANALOG_IN_VTHROTTLE
 Wire Wire Line
-	8900 1450 9250 1450
+	10700 5350 11050 5350
 Wire Wire Line
-	8900 1650 9250 1650
+	10700 5550 11050 5550
 Wire Wire Line
-	8900 1750 9250 1750
+	10700 5650 11050 5650
 Wire Wire Line
-	8900 1850 9250 1850
+	10700 5750 11050 5750
 Wire Wire Line
-	8900 1950 9250 1950
-Text HLabel 8400 1150 1    50   Input ~ 0
+	10700 5850 11050 5850
+Text HLabel 10200 5050 1    50   Input ~ 0
 V+
 $Comp
 L power:GND #PWR?
 U 1 1 605AD389
-P 8400 2450
-F 0 "#PWR?" H 8400 2200 50  0001 C CNN
-F 1 "GND" H 8405 2277 50  0000 C CNN
-F 2 "" H 8400 2450 50  0001 C CNN
-F 3 "" H 8400 2450 50  0001 C CNN
-	1    8400 2450
+P 10200 6350
+F 0 "#PWR?" H 10200 6100 50  0001 C CNN
+F 1 "GND" H 10205 6177 50  0000 C CNN
+F 2 "" H 10200 6350 50  0001 C CNN
+F 3 "" H 10200 6350 50  0001 C CNN
+	1    10200 6350
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8400 2350 8400 2400
+	10200 6250 10200 6300
 Wire Wire Line
-	8300 2350 8300 2400
+	10100 6250 10100 6300
 Wire Wire Line
-	8300 2400 8400 2400
-Connection ~ 8400 2400
+	10100 6300 10200 6300
+Connection ~ 10200 6300
 Wire Wire Line
-	8400 2400 8400 2450
+	10200 6300 10200 6350
 $Comp
 L power:GND #PWR?
 U 1 1 605ADCEE
-P 5450 5250
-F 0 "#PWR?" H 5450 5000 50  0001 C CNN
-F 1 "GND" H 5455 5077 50  0000 C CNN
-F 2 "" H 5450 5250 50  0001 C CNN
-F 3 "" H 5450 5250 50  0001 C CNN
-	1    5450 5250
+P 8100 4800
+F 0 "#PWR?" H 8100 4550 50  0001 C CNN
+F 1 "GND" H 8105 4627 50  0000 C CNN
+F 2 "" H 8100 4800 50  0001 C CNN
+F 3 "" H 8100 4800 50  0001 C CNN
+	1    8100 4800
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5450 5150 5450 5200
+	8100 4700 8100 4750
 Wire Wire Line
-	5450 5200 5550 5200
+	8100 4750 8200 4750
 Wire Wire Line
-	5550 5200 5550 5150
-Connection ~ 5450 5200
+	8200 4750 8200 4700
+Connection ~ 8100 4750
 Wire Wire Line
-	5450 5200 5450 5250
+	8100 4750 8100 4800
 Wire Wire Line
-	5550 5200 5650 5200
+	8200 4750 8300 4750
 Wire Wire Line
-	5650 5200 5650 5150
-Connection ~ 5550 5200
+	8300 4750 8300 4700
+Connection ~ 8200 4750
 Wire Wire Line
-	5450 5200 5350 5200
+	8100 4750 8000 4750
 Wire Wire Line
-	5350 5200 5350 5150
+	8000 4750 8000 4700
 Wire Wire Line
-	5350 5200 5250 5200
+	8000 4750 7900 4750
 Wire Wire Line
-	5250 5200 5250 5150
-Connection ~ 5350 5200
-Text Label 8950 1450 0    50   ~ 0
+	7900 4750 7900 4700
+Connection ~ 8000 4750
+Text Label 10750 5350 0    50   ~ 0
 JT_nRST
-Text Label 8950 1650 0    50   ~ 0
+Text Label 10750 5550 0    50   ~ 0
 JT_TCK
-Text Label 8950 1750 0    50   ~ 0
+Text Label 10750 5650 0    50   ~ 0
 JT_TMS
-Text Label 8950 1850 0    50   ~ 0
+Text Label 10750 5750 0    50   ~ 0
 JT_TDO
-Text Label 8950 1950 0    50   ~ 0
+Text Label 10750 5850 0    50   ~ 0
 JT_TDI
-Text Label 6200 3950 0    50   ~ 0
+Text Label 8850 3500 0    50   ~ 0
 JT_nRST
 Wire Wire Line
-	5450 1550 5450 1600
+	8100 1100 8100 1150
 Wire Wire Line
-	5550 1650 5550 1600
+	8200 1200 8200 1150
 Wire Wire Line
-	5550 1600 5450 1600
-Connection ~ 5450 1600
+	8200 1150 8100 1150
+Connection ~ 8100 1150
 Wire Wire Line
-	5450 1600 5450 1650
+	8100 1150 8100 1200
 Wire Wire Line
-	5650 1650 5650 1600
+	8300 1200 8300 1150
 Wire Wire Line
-	5650 1600 5550 1600
-Connection ~ 5550 1600
+	8300 1150 8200 1150
+Connection ~ 8200 1150
 Wire Wire Line
-	5350 1650 5350 1600
+	8000 1200 8000 1150
 Wire Wire Line
-	5350 1600 5450 1600
+	8000 1150 8100 1150
 Wire Wire Line
-	5250 1650 5250 1600
+	7900 1200 7900 1150
 Wire Wire Line
-	5250 1600 5350 1600
-Connection ~ 5350 1600
-Text HLabel 5750 1550 1    50   Input ~ 0
+	7900 1150 8000 1150
+Connection ~ 8000 1150
+Text HLabel 8400 1100 1    50   Input ~ 0
 VDDA
 Wire Wire Line
-	5750 1550 5750 1650
+	8400 1100 8400 1200
 $Comp
 L Device:R_US R?
 U 1 1 605B24E0
-P 4550 2050
-F 0 "R?" V 4450 2050 50  0000 C CNN
-F 1 "10k" V 4650 2050 50  0000 C CNN
-F 2 "" V 4590 2040 50  0001 C CNN
-F 3 "~" H 4550 2050 50  0001 C CNN
-	1    4550 2050
+P 7200 1600
+F 0 "R?" V 7100 1600 50  0000 C CNN
+F 1 "10k" V 7300 1600 50  0000 C CNN
+F 2 "" V 7240 1590 50  0001 C CNN
+F 3 "~" H 7200 1600 50  0001 C CNN
+	1    7200 1600
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	4700 2050 4750 2050
+	7350 1600 7400 1600
 $Comp
 L power:GND #PWR?
 U 1 1 605B3866
-P 4400 2050
-F 0 "#PWR?" H 4400 1800 50  0001 C CNN
-F 1 "GND" V 4405 1922 50  0000 R CNN
-F 2 "" H 4400 2050 50  0001 C CNN
-F 3 "" H 4400 2050 50  0001 C CNN
-	1    4400 2050
+P 7050 1600
+F 0 "#PWR?" H 7050 1350 50  0001 C CNN
+F 1 "GND" V 7055 1472 50  0000 R CNN
+F 2 "" H 7050 1600 50  0001 C CNN
+F 3 "" H 7050 1600 50  0001 C CNN
+	1    7050 1600
 	0    1    1    0   
 $EndComp
 $Comp
 L Device:C C?
 U 1 1 605B4044
-P 4650 2450
-F 0 "C?" H 4536 2404 50  0000 R CNN
-F 1 "2.2uF" H 4536 2495 50  0000 R CNN
-F 2 "" H 4688 2300 50  0001 C CNN
-F 3 "~" H 4650 2450 50  0001 C CNN
-	1    4650 2450
+P 7300 2000
+F 0 "C?" H 7186 1954 50  0000 R CNN
+F 1 "2.2uF" H 7186 2045 50  0000 R CNN
+F 2 "" H 7338 1850 50  0001 C CNN
+F 3 "~" H 7300 2000 50  0001 C CNN
+	1    7300 2000
 	1    0    0    1   
 $EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 605B4752
-P 4650 2600
-F 0 "#PWR?" H 4650 2350 50  0001 C CNN
-F 1 "GND" H 4655 2427 50  0000 C CNN
-F 2 "" H 4650 2600 50  0001 C CNN
-F 3 "" H 4650 2600 50  0001 C CNN
-	1    4650 2600
+P 7300 2150
+F 0 "#PWR?" H 7300 1900 50  0001 C CNN
+F 1 "GND" H 7305 1977 50  0000 C CNN
+F 2 "" H 7300 2150 50  0001 C CNN
+F 3 "" H 7300 2150 50  0001 C CNN
+	1    7300 2150
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4650 2300 4650 2250
+	7300 1850 7300 1800
 Wire Wire Line
-	4650 2250 4750 2250
-Text Notes 3900 2600 0    50   ~ 0
+	7300 1800 7400 1800
+Text Notes 6550 2150 0    50   ~ 0
 Ceramic Low-ESR
 $Comp
 L Device:R_US R?
 U 1 1 605B572A
-P 4650 1600
-F 0 "R?" V 4550 1600 50  0000 C CNN
-F 1 "10k" V 4750 1600 50  0000 C CNN
-F 2 "" V 4690 1590 50  0001 C CNN
-F 3 "~" H 4650 1600 50  0001 C CNN
-	1    4650 1600
+P 7300 1150
+F 0 "R?" V 7200 1150 50  0000 C CNN
+F 1 "10k" V 7400 1150 50  0000 C CNN
+F 2 "" V 7340 1140 50  0001 C CNN
+F 3 "~" H 7300 1150 50  0001 C CNN
+	1    7300 1150
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	4650 1750 4650 1850
-Text HLabel 4650 1350 1    50   Input ~ 0
+	7300 1300 7300 1400
+Text HLabel 7300 900  1    50   Input ~ 0
 V+
 Wire Wire Line
-	4650 1350 4650 1450
+	7300 900  7300 1000
 Wire Wire Line
-	6150 3850 6450 3850
-Text Label 6200 3850 0    50   ~ 0
+	8800 3400 9100 3400
+Text Label 8850 3400 0    50   ~ 0
 JT_TDO
 Wire Wire Line
-	6150 3950 6450 3950
+	8800 3500 9100 3500
 Wire Wire Line
-	4650 1850 4750 1850
+	7300 1400 7400 1400
 Wire Wire Line
-	4550 1850 4650 1850
-Connection ~ 4650 1850
+	7200 1400 7300 1400
+Connection ~ 7300 1400
 Wire Wire Line
-	6150 3350 6450 3350
-Text Label 6200 3350 0    50   ~ 0
+	8800 2900 9100 2900
+Text Label 8850 2900 0    50   ~ 0
 JT_TDI
 Wire Wire Line
-	6150 3250 6450 3250
-Text Label 6200 3250 0    50   ~ 0
+	8800 2800 9100 2800
+Text Label 8850 2800 0    50   ~ 0
 JT_TCK
 Wire Wire Line
-	6150 3150 6450 3150
-Text Label 6200 3150 0    50   ~ 0
+	8800 2700 9100 2700
+Text Label 8850 2700 0    50   ~ 0
 JT_TMS
-Text Notes 3250 3050 0    50   ~ 0
+Text Notes 5900 2600 0    50   ~ 0
 If not hurting for pins, use resonator
+Text Notes 4400 3000 0    50   ~ 0
+ADC Inputs (8)
+Text Notes 3200 3000 0    50   ~ 0
+Discrete Interrupts (8)
+Text Notes 2100 3000 0    50   ~ 0
+Discrete Outputs (10)
+Text Notes 2050 4550 0    50   ~ 0
+Serial (2)
+Text Notes 2800 4550 0    50   ~ 0
+I2C (1)
+Text Notes 3550 4550 0    50   ~ 0
+SPI (3)
+Text Notes 4150 4550 0    50   ~ 0
+USB (1)
+Text Notes 4850 4550 0    50   ~ 0
+PWM (1)
+Text HLabel 1900 5000 2    50   Output ~ 0
+DBG_UART_TX
+Text HLabel 1900 4900 2    50   Input ~ 0
+DBG_UART_RX
+Text Notes 1450 1950 0    50   ~ 0
+Place the discrete outputs on the same SPI bus as the discrete inputs.
+Text Notes 1450 1550 0    50   ~ 0
+Have the discrete interrupt inputs be AND-ed together. Need to invert to the same logic.\nHonestly it might be good to have them sampled along with the keys.\nAre any of the interrupts super short such that a sample couldn't be made?
+Text Notes 1450 2150 0    50   ~ 0
+Might need to use BT paired with a phone app instead of a screen.
 $EndSCHEMATC
