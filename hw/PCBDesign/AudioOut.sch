@@ -24,6 +24,80 @@ F 3 "~" V 5925 3000 50  0001 C CNN
 	1    5950 2900
 	1    0    0    -1  
 $EndComp
-Text Notes 5350 2700 0    50   ~ 0
-Can probably drive this with PWM\n
+$Comp
+L Transistor_BJT:MMBT3904 Q?
+U 1 1 604D69BF
+P 5450 3350
+F 0 "Q?" H 5641 3396 50  0000 L CNN
+F 1 "MMBT3904" H 5641 3305 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 5650 3275 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/2N3903-D.PDF" H 5450 3350 50  0001 L CNN
+	1    5450 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 604D79F0
+P 5000 3350
+F 0 "R?" V 4795 3350 50  0000 C CNN
+F 1 "100" V 4886 3350 50  0000 C CNN
+F 2 "" V 5040 3340 50  0001 C CNN
+F 3 "~" H 5000 3350 50  0001 C CNN
+	1    5000 3350
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 604D8132
+P 5550 2900
+F 0 "R?" H 5482 2854 50  0000 R CNN
+F 1 "1k" H 5482 2945 50  0000 R CNN
+F 2 "" V 5590 2890 50  0001 C CNN
+F 3 "~" H 5550 2900 50  0001 C CNN
+	1    5550 2900
+	-1   0    0    1   
+$EndComp
+Text HLabel 5550 2650 1    50   Input ~ 0
+V+
+Wire Wire Line
+	5550 2650 5550 2700
+Wire Wire Line
+	5550 3050 5550 3100
+Wire Wire Line
+	5150 3350 5250 3350
+Wire Wire Line
+	5850 2800 5700 2800
+Wire Wire Line
+	5700 2800 5700 2700
+Wire Wire Line
+	5700 2700 5550 2700
+Connection ~ 5550 2700
+Wire Wire Line
+	5550 2700 5550 2750
+Wire Wire Line
+	5850 3000 5700 3000
+Wire Wire Line
+	5700 3000 5700 3100
+Wire Wire Line
+	5700 3100 5550 3100
+Connection ~ 5550 3100
+Wire Wire Line
+	5550 3100 5550 3150
+$Comp
+L power:GND #PWR?
+U 1 1 604DA05E
+P 5550 3600
+F 0 "#PWR?" H 5550 3350 50  0001 C CNN
+F 1 "GND" H 5555 3427 50  0000 C CNN
+F 2 "" H 5550 3600 50  0001 C CNN
+F 3 "" H 5550 3600 50  0001 C CNN
+	1    5550 3600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5550 3550 5550 3600
+Text HLabel 4750 3350 0    50   Input ~ 0
+PWM_In
+Wire Wire Line
+	4750 3350 4850 3350
 $EndSCHEMATC
