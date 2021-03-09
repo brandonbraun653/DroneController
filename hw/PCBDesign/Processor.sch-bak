@@ -17,8 +17,8 @@ $Comp
 L MCU_ST_STM32F4:STM32F446RETx U?
 U 1 1 6047114C
 P 5450 3350
-F 0 "U?" H 5450 1461 50  0000 C CNN
-F 1 "STM32F446RETx" H 5450 1370 50  0000 C CNN
+F 0 "U?" H 5450 4050 50  0000 C CNN
+F 1 "STM32F446RETx" H 5450 3900 50  0000 C CNN
 F 2 "Package_QFP:LQFP-64_10x10mm_P0.5mm" H 4850 1650 50  0001 R CNN
 F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/DM00141306.pdf" H 5450 3350 50  0001 C CNN
 F 4 "C69336" H 5450 3350 50  0001 C CNN "LCSC"
@@ -94,9 +94,9 @@ Text HLabel 7450 4900 2    50   Input ~ 0
 VSense_Radio
 Text HLabel 7450 5050 2    50   Input ~ 0
 VSense_Analog
-Text HLabel 8600 3250 2    50   Input ~ 0
+Text HLabel 5450 1550 1    50   Input ~ 0
 V+
-Text HLabel 8600 3100 2    50   Input ~ 0
+Text HLabel 4550 1850 0    50   Input ~ 0
 nRESET
 Text HLabel 8600 2950 2    50   Input ~ 0
 nBOOT
@@ -128,4 +128,201 @@ Text HLabel 9700 4450 2    50   Input ~ 0
 ANALOG_IN_VYAW
 Text HLabel 9700 4550 2    50   Input ~ 0
 ANALOG_IN_VTHROTTLE
+Wire Wire Line
+	8900 1450 9250 1450
+Wire Wire Line
+	8900 1650 9250 1650
+Wire Wire Line
+	8900 1750 9250 1750
+Wire Wire Line
+	8900 1850 9250 1850
+Wire Wire Line
+	8900 1950 9250 1950
+Text HLabel 8400 1150 1    50   Input ~ 0
+V+
+$Comp
+L power:GND #PWR?
+U 1 1 605AD389
+P 8400 2450
+F 0 "#PWR?" H 8400 2200 50  0001 C CNN
+F 1 "GND" H 8405 2277 50  0000 C CNN
+F 2 "" H 8400 2450 50  0001 C CNN
+F 3 "" H 8400 2450 50  0001 C CNN
+	1    8400 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8400 2350 8400 2400
+Wire Wire Line
+	8300 2350 8300 2400
+Wire Wire Line
+	8300 2400 8400 2400
+Connection ~ 8400 2400
+Wire Wire Line
+	8400 2400 8400 2450
+$Comp
+L power:GND #PWR?
+U 1 1 605ADCEE
+P 5450 5250
+F 0 "#PWR?" H 5450 5000 50  0001 C CNN
+F 1 "GND" H 5455 5077 50  0000 C CNN
+F 2 "" H 5450 5250 50  0001 C CNN
+F 3 "" H 5450 5250 50  0001 C CNN
+	1    5450 5250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5450 5150 5450 5200
+Wire Wire Line
+	5450 5200 5550 5200
+Wire Wire Line
+	5550 5200 5550 5150
+Connection ~ 5450 5200
+Wire Wire Line
+	5450 5200 5450 5250
+Wire Wire Line
+	5550 5200 5650 5200
+Wire Wire Line
+	5650 5200 5650 5150
+Connection ~ 5550 5200
+Wire Wire Line
+	5450 5200 5350 5200
+Wire Wire Line
+	5350 5200 5350 5150
+Wire Wire Line
+	5350 5200 5250 5200
+Wire Wire Line
+	5250 5200 5250 5150
+Connection ~ 5350 5200
+Text Label 8950 1450 0    50   ~ 0
+JT_nRST
+Text Label 8950 1650 0    50   ~ 0
+JT_TCK
+Text Label 8950 1750 0    50   ~ 0
+JT_TMS
+Text Label 8950 1850 0    50   ~ 0
+JT_TDO
+Text Label 8950 1950 0    50   ~ 0
+JT_TDI
+Text Label 6200 3950 0    50   ~ 0
+JT_nRST
+Wire Wire Line
+	5450 1550 5450 1600
+Wire Wire Line
+	5550 1650 5550 1600
+Wire Wire Line
+	5550 1600 5450 1600
+Connection ~ 5450 1600
+Wire Wire Line
+	5450 1600 5450 1650
+Wire Wire Line
+	5650 1650 5650 1600
+Wire Wire Line
+	5650 1600 5550 1600
+Connection ~ 5550 1600
+Wire Wire Line
+	5350 1650 5350 1600
+Wire Wire Line
+	5350 1600 5450 1600
+Wire Wire Line
+	5250 1650 5250 1600
+Wire Wire Line
+	5250 1600 5350 1600
+Connection ~ 5350 1600
+Text HLabel 5750 1550 1    50   Input ~ 0
+VDDA
+Wire Wire Line
+	5750 1550 5750 1650
+$Comp
+L Device:R_US R?
+U 1 1 605B24E0
+P 4550 2050
+F 0 "R?" V 4450 2050 50  0000 C CNN
+F 1 "10k" V 4650 2050 50  0000 C CNN
+F 2 "" V 4590 2040 50  0001 C CNN
+F 3 "~" H 4550 2050 50  0001 C CNN
+	1    4550 2050
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	4700 2050 4750 2050
+$Comp
+L power:GND #PWR?
+U 1 1 605B3866
+P 4400 2050
+F 0 "#PWR?" H 4400 1800 50  0001 C CNN
+F 1 "GND" V 4405 1922 50  0000 R CNN
+F 2 "" H 4400 2050 50  0001 C CNN
+F 3 "" H 4400 2050 50  0001 C CNN
+	1    4400 2050
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 605B4044
+P 4650 2450
+F 0 "C?" H 4536 2404 50  0000 R CNN
+F 1 "2.2uF" H 4536 2495 50  0000 R CNN
+F 2 "" H 4688 2300 50  0001 C CNN
+F 3 "~" H 4650 2450 50  0001 C CNN
+	1    4650 2450
+	1    0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 605B4752
+P 4650 2600
+F 0 "#PWR?" H 4650 2350 50  0001 C CNN
+F 1 "GND" H 4655 2427 50  0000 C CNN
+F 2 "" H 4650 2600 50  0001 C CNN
+F 3 "" H 4650 2600 50  0001 C CNN
+	1    4650 2600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4650 2300 4650 2250
+Wire Wire Line
+	4650 2250 4750 2250
+Text Notes 3900 2600 0    50   ~ 0
+Ceramic Low-ESR
+$Comp
+L Device:R_US R?
+U 1 1 605B572A
+P 4650 1600
+F 0 "R?" V 4550 1600 50  0000 C CNN
+F 1 "10k" V 4750 1600 50  0000 C CNN
+F 2 "" V 4690 1590 50  0001 C CNN
+F 3 "~" H 4650 1600 50  0001 C CNN
+	1    4650 1600
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4650 1750 4650 1850
+Text HLabel 4650 1350 1    50   Input ~ 0
+V+
+Wire Wire Line
+	4650 1350 4650 1450
+Wire Wire Line
+	6150 3850 6450 3850
+Text Label 6200 3850 0    50   ~ 0
+JT_TDO
+Wire Wire Line
+	6150 3950 6450 3950
+Wire Wire Line
+	4650 1850 4750 1850
+Wire Wire Line
+	4550 1850 4650 1850
+Connection ~ 4650 1850
+Wire Wire Line
+	6150 3350 6450 3350
+Text Label 6200 3350 0    50   ~ 0
+JT_TDI
+Wire Wire Line
+	6150 3250 6450 3250
+Text Label 6200 3250 0    50   ~ 0
+JT_TCK
+Wire Wire Line
+	6150 3150 6450 3150
+Text Label 6200 3150 0    50   ~ 0
+JT_TMS
 $EndSCHEMATC
