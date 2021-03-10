@@ -36,93 +36,93 @@ F 3 "http://infocenter.arm.com/help/topic/com.arm.doc.ddi0314h/DDI0314H_coresigh
 	1    10200 5650
 	1    0    0    -1  
 $EndComp
-Text HLabel 4050 4650 2    50   BiDi ~ 0
+Text HLabel 8800 2600 2    50   BiDi ~ 0
 USB_D+
-Text HLabel 4050 4750 2    50   BiDi ~ 0
+Text HLabel 8800 2500 2    50   BiDi ~ 0
 USB_D-
-Text HLabel 3350 3700 2    50   Input ~ 0
+Text HLabel 550  3300 2    50   Input ~ 0
 nBatt_Pwr_Good
-Text HLabel 3350 3800 2    50   Input ~ 0
+Text HLabel 550  3400 2    50   Input ~ 0
 nBatt_Chg_Good
-Text HLabel 4400 3100 2    50   Input ~ 0
+Text HLabel 8800 1400 2    50   Input ~ 0
 vBatt_Sense
-Text HLabel 2250 3700 2    50   Output ~ 0
+Text HLabel 1350 3300 2    50   Output ~ 0
 nBattChgEn
-Text HLabel 2250 3500 2    50   Output ~ 0
+Text HLabel 1350 3100 2    50   Output ~ 0
 BattChgCfg0
-Text HLabel 2250 3600 2    50   Output ~ 0
+Text HLabel 1350 3200 2    50   Output ~ 0
 BattChgCfg1
-Text HLabel 1900 4650 2    50   Input ~ 0
+Text HLabel 7400 3700 0    50   Input ~ 0
 BT_UART_RX
-Text HLabel 1900 4750 2    50   Output ~ 0
+Text HLabel 7400 3600 0    50   Output ~ 0
 BT_UART_TX
-Text HLabel 2250 3400 2    50   Output ~ 0
+Text HLabel 1350 3400 2    50   Output ~ 0
 BT_nWakeup
-Text HLabel 2250 3300 2    50   Output ~ 0
+Text HLabel 1350 3500 2    50   Output ~ 0
 BT_nPowerUp
-Text HLabel 3350 3600 2    50   Input ~ 0
+Text HLabel 7400 3800 0    50   Input ~ 0
 BT_IRQ
-Text HLabel 3400 4650 2    50   Output ~ 0
+Text HLabel 8800 2100 2    50   Output ~ 0
 RF24_MOSI
-Text HLabel 3400 4750 2    50   Input ~ 0
+Text HLabel 8800 2000 2    50   Input ~ 0
 RF24_MISO
-Text HLabel 3400 4850 2    50   Output ~ 0
+Text HLabel 8800 1900 2    50   Output ~ 0
 RF24_SCK
-Text HLabel 2250 3200 2    50   Output ~ 0
+Text HLabel 7400 3400 0    50   Output ~ 0
 RF24_nCS
-Text HLabel 2250 3100 2    50   Output ~ 0
+Text HLabel 8800 1800 2    50   Output ~ 0
 RF24_CE
-Text HLabel 3350 3500 2    50   Input ~ 0
+Text HLabel 8800 3200 2    50   Input ~ 0
 RF24_nIRQ
-Text HLabel 3400 5100 2    50   Output ~ 0
+Text HLabel 8800 4500 2    50   Output ~ 0
 NOR_MOSI
-Text HLabel 3400 5200 2    50   Input ~ 0
+Text HLabel 8800 4400 2    50   Input ~ 0
 NOR_MISO
-Text HLabel 3400 5300 2    50   Output ~ 0
+Text HLabel 8800 4300 2    50   Output ~ 0
 NOR_SCK
-Text HLabel 2250 4000 2    50   Output ~ 0
+Text HLabel 8800 4200 2    50   Output ~ 0
 NOR_nCS
-Text HLabel 2600 4650 2    50   BiDi ~ 0
+Text HLabel 7400 3900 0    50   BiDi ~ 0
 EEPROM_SDA
-Text HLabel 2600 4750 2    50   Output ~ 0
+Text HLabel 8800 2200 2    50   Output ~ 0
 EEPROM_SCL
-Text HLabel 4400 3600 2    50   Input ~ 0
+Text HLabel 8800 1500 2    50   Input ~ 0
 VSense_Digital
-Text HLabel 4400 3700 2    50   Input ~ 0
+Text HLabel 8800 1600 2    50   Input ~ 0
 VSense_Radio
-Text HLabel 4400 3800 2    50   Input ~ 0
+Text HLabel 8800 1700 2    50   Input ~ 0
 VSense_Analog
 Text HLabel 8100 1100 1    50   Input ~ 0
 V+
 Text HLabel 7200 1400 0    50   Input ~ 0
 nRESET
-Text HLabel 4700 4650 2    50   Output ~ 0
+Text HLabel 8800 3700 2    50   Output ~ 0
 PWM_Buzzer
-Text HLabel 3400 5500 2    50   Output ~ 0
+Text HLabel 8800 3100 2    50   Output ~ 0
 KEY_MOSI
-Text HLabel 3400 5600 2    50   Input ~ 0
+Text HLabel 7400 4100 0    50   Input ~ 0
 KEY_MISO
-Text HLabel 3400 5700 2    50   Output ~ 0
+Text HLabel 7400 4000 0    50   Output ~ 0
 KEY_SCK
-Text HLabel 2250 3800 2    50   Output ~ 0
+Text HLabel 2250 3400 2    50   Output ~ 0
 KEY_nCS
-Text HLabel 2250 3900 2    50   Output ~ 0
+Text HLabel 2250 3500 2    50   Output ~ 0
 KEY_nSAMPLE
-Text HLabel 3350 3100 2    50   Input ~ 0
+Text HLabel 7400 2800 0    50   Input ~ 0
 ENCODER0_A
-Text HLabel 3350 3200 2    50   Input ~ 0
+Text HLabel 7400 4200 0    50   Input ~ 0
 ENCODER0_B
-Text HLabel 3350 3300 2    50   Input ~ 0
+Text HLabel 8800 2400 2    50   Input ~ 0
 ENCODER1_A
-Text HLabel 3350 3400 2    50   Input ~ 0
+Text HLabel 8800 2300 2    50   Input ~ 0
 ENCODER1_B
-Text HLabel 4400 3200 2    50   Input ~ 0
+Text HLabel 7400 3000 0    50   Input ~ 0
 ANALOG_IN_VPITCH
-Text HLabel 4400 3300 2    50   Input ~ 0
+Text HLabel 7400 3100 0    50   Input ~ 0
 ANALOG_IN_VROLL
-Text HLabel 4400 3400 2    50   Input ~ 0
+Text HLabel 7400 3200 0    50   Input ~ 0
 ANALOG_IN_VYAW
-Text HLabel 4400 3500 2    50   Input ~ 0
+Text HLabel 7400 3300 0    50   Input ~ 0
 ANALOG_IN_VTHROTTLE
 Wire Wire Line
 	10700 5350 11050 5350
@@ -323,25 +323,13 @@ Text Label 8850 2700 0    50   ~ 0
 JT_TMS
 Text Notes 5900 2600 0    50   ~ 0
 If not hurting for pins, use resonator
-Text Notes 4400 3000 0    50   ~ 0
-ADC Inputs (8)
 Text Notes 3200 3000 0    50   ~ 0
-Discrete Interrupts (8)
+Input Interrupts (4)
 Text Notes 2100 3000 0    50   ~ 0
-Discrete Outputs (10)
-Text Notes 2050 4550 0    50   ~ 0
-Serial (2)
-Text Notes 2800 4550 0    50   ~ 0
-I2C (1)
-Text Notes 3550 4550 0    50   ~ 0
-SPI (3)
-Text Notes 4150 4550 0    50   ~ 0
-USB (1)
-Text Notes 4850 4550 0    50   ~ 0
-PWM (1)
-Text HLabel 1900 5000 2    50   Output ~ 0
+Fast Outputs (5)
+Text HLabel 8800 4100 2    50   Output ~ 0
 DBG_UART_TX
-Text HLabel 1900 4900 2    50   Input ~ 0
+Text HLabel 7400 3500 0    50   Input ~ 0
 DBG_UART_RX
 Text Notes 1450 1950 0    50   ~ 0
 Place the discrete outputs on the same SPI bus as the discrete inputs.
@@ -349,4 +337,14 @@ Text Notes 1450 1550 0    50   ~ 0
 Have the discrete interrupt inputs be AND-ed together. Need to invert to the same logic.\nHonestly it might be good to have them sampled along with the keys.\nAre any of the interrupts super short such that a sample couldn't be made?
 Text Notes 1450 2150 0    50   ~ 0
 Might need to use BT paired with a phone app instead of a screen.
+Text Notes 550  3000 0    50   ~ 0
+Discrete Inputs
+Text Notes 1300 3000 0    50   ~ 0
+Slow Outputs (5)
+Text Notes 1700 4100 0    50   ~ 0
+PCB Checklist:\n1. Ensure serial lines are correct for each device
+Text Notes 9800 1350 0    50   ~ 0
+Device Mapping:\nSPI1 - RF24 Radio\nSPI2 - NOR Flash\nSPI3 - GPIO Shift Registers
+Text Notes 1450 2600 0    50   ~ 0
+Need some leds on the output for debugging as well.
 $EndSCHEMATC
