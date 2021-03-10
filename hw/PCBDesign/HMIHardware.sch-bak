@@ -641,28 +641,6 @@ Entry Wire Line
 	2900 2400 3000 2500
 $Comp
 L Device:R_US R?
-U 1 1 605874BC
-P 7500 4650
-F 0 "R?" H 7568 4696 50  0000 L CNN
-F 1 "10k" H 7568 4605 50  0000 L CNN
-F 2 "" V 7540 4640 50  0001 C CNN
-F 3 "~" H 7500 4650 50  0001 C CNN
-	1    7500 4650
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R_US R?
-U 1 1 60587B6F
-P 7800 4650
-F 0 "R?" H 7868 4696 50  0000 L CNN
-F 1 "10k" H 7868 4605 50  0000 L CNN
-F 2 "" V 7840 4640 50  0001 C CNN
-F 3 "~" H 7800 4650 50  0001 C CNN
-	1    7800 4650
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R_US R?
 U 1 1 6058828C
 P 8100 4650
 F 0 "R?" H 8168 4696 50  0000 L CNN
@@ -681,28 +659,6 @@ F 1 "10k" H 8468 4605 50  0000 L CNN
 F 2 "" V 8440 4640 50  0001 C CNN
 F 3 "~" H 8400 4650 50  0001 C CNN
 	1    8400 4650
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR?
-U 1 1 6058901C
-P 7500 4800
-F 0 "#PWR?" H 7500 4550 50  0001 C CNN
-F 1 "GND" H 7505 4627 50  0000 C CNN
-F 2 "" H 7500 4800 50  0001 C CNN
-F 3 "" H 7500 4800 50  0001 C CNN
-	1    7500 4800
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR?
-U 1 1 6058949C
-P 7800 4800
-F 0 "#PWR?" H 7800 4550 50  0001 C CNN
-F 1 "GND" H 7805 4627 50  0000 C CNN
-F 2 "" H 7800 4800 50  0001 C CNN
-F 3 "" H 7800 4800 50  0001 C CNN
-	1    7800 4800
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -751,6 +707,12 @@ Text Label 8100 4400 0    50   ~ 0
 d22
 Text Label 8400 4400 0    50   ~ 0
 d23
+Text Notes 8700 5550 1    50   ~ 0
+These inputs currently unused
+Text GLabel 7500 4500 3    50   Output ~ 0
+nBatteryPowerGood
+Text GLabel 7800 4500 3    50   Output ~ 0
+nBatteryChargeGood
 Wire Bus Line
 	9100 3950 9100 4250
 Wire Bus Line
@@ -765,6 +727,4 @@ Wire Bus Line
 	3000 2100 3000 2800
 Wire Bus Line
 	9100 900  9100 2800
-Text Notes 7400 5100 0    50   ~ 0
-These inputs currently unused
 $EndSCHEMATC
