@@ -28,3 +28,6 @@
 [submodule "lib/DroneNet"]
 	path = lib/DroneNet
 	url = https://github.com/brandonbraun653/DroneNet.git
+[submodule "hw/lib/KiCadLib"]
+	path = hw/lib/KiCadLib
+	url = https://github.com/brandonbraun653/KiCadLib.git
