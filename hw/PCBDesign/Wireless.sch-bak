@@ -171,4 +171,8 @@ Text HLabel 8300 1300 1    50   Input ~ 0
 V+
 Text HLabel 6300 1100 1    50   Input ~ 0
 V+
+Text HLabel 4550 3600 2    50   Input ~ 0
+BT_VCC_EN
+Text HLabel 4200 1000 0    50   Input ~ 0
+RF24_VCC_EN
 $EndSCHEMATC
