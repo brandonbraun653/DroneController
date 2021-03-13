@@ -34,3 +34,6 @@
 [submodule "lib/nanopb"]
 	path = lib/nanopb
 	url = https://github.com/nanopb/nanopb.git
+[submodule "lib/Conda"]
+	path = lib/Conda
+	url = https://github.com/brandonbraun653/Conda.git
