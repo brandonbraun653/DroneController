@@ -301,76 +301,66 @@ Text Notes 2750 2800 0    50   ~ 0
 Left Joystick Inputs
 Text Notes 5100 2800 0    50   ~ 0
 Right Joystick Inputs\n
-$Comp
-L Connector_Generic:Conn_01x04 J16
-U 1 1 60531BA7
-P 7300 3550
-F 0 "J16" H 7380 3542 50  0000 L CNN
-F 1 "TY_Joystick" H 7380 3451 50  0000 L CNN
-F 2 "" H 7300 3550 50  0001 C CNN
-F 3 "~" H 7300 3550 50  0001 C CNN
-	1    7300 3550
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	7100 3650 6750 3650
+	6900 4500 6550 4500
 Wire Wire Line
-	6750 3550 7100 3550
+	6550 4400 6900 4400
 $Comp
 L power:GND #PWR0113
 U 1 1 60533290
-P 7100 3750
-F 0 "#PWR0113" H 7100 3500 50  0001 C CNN
-F 1 "GND" H 7105 3577 50  0000 C CNN
-F 2 "" H 7100 3750 50  0001 C CNN
-F 3 "" H 7100 3750 50  0001 C CNN
-	1    7100 3750
-	1    0    0    -1  
+P 6900 4600
+F 0 "#PWR0113" H 6900 4350 50  0001 C CNN
+F 1 "GND" H 6905 4427 50  0000 C CNN
+F 2 "" H 6900 4600 50  0001 C CNN
+F 3 "" H 6900 4600 50  0001 C CNN
+	1    6900 4600
+	0    1    1    0   
 $EndComp
-Text HLabel 7100 3450 0    50   Input ~ 0
+Text HLabel 6900 4300 0    50   Input ~ 0
 AnalogRef
-Text Label 6750 3550 0    50   ~ 0
+Text Label 6550 4400 0    50   ~ 0
 JS_0
-Text Label 6750 3650 0    50   ~ 0
+Text Label 6550 4500 0    50   ~ 0
 JS_1
 Text Label 5400 3750 0    50   ~ 0
 JS_1
 Text Label 5950 3300 0    50   ~ 0
 JS_0
-$Comp
-L Connector_Generic:Conn_01x04 J15
-U 1 1 6053654A
-P 4100 4200
-F 0 "J15" H 4180 4192 50  0000 L CNN
-F 1 "PR_Joystick" H 4180 4101 50  0000 L CNN
-F 2 "" H 4100 4200 50  0001 C CNN
-F 3 "~" H 4100 4200 50  0001 C CNN
-	1    4100 4200
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	3900 4300 3550 4300
+	6900 4900 6550 4900
 Wire Wire Line
-	3550 4200 3900 4200
+	6550 4800 6900 4800
 $Comp
 L power:GND #PWR0112
 U 1 1 60536552
-P 3900 4400
-F 0 "#PWR0112" H 3900 4150 50  0001 C CNN
-F 1 "GND" H 3905 4227 50  0000 C CNN
-F 2 "" H 3900 4400 50  0001 C CNN
-F 3 "" H 3900 4400 50  0001 C CNN
-	1    3900 4400
-	1    0    0    -1  
+P 6900 5000
+F 0 "#PWR0112" H 6900 4750 50  0001 C CNN
+F 1 "GND" H 6905 4827 50  0000 C CNN
+F 2 "" H 6900 5000 50  0001 C CNN
+F 3 "" H 6900 5000 50  0001 C CNN
+	1    6900 5000
+	0    1    1    0   
 $EndComp
-Text Label 3550 4200 0    50   ~ 0
+Text Label 6550 4800 0    50   ~ 0
 JS_2
-Text Label 3550 4300 0    50   ~ 0
+Text Label 6550 4900 0    50   ~ 0
 JS_3
 Text Label 3550 3300 0    50   ~ 0
 JS_2
 Text Label 3000 3750 0    50   ~ 0
 JS_3
-Text HLabel 3900 4100 0    50   Input ~ 0
+Text HLabel 6900 4700 0    50   Input ~ 0
 AnalogRef
+$Comp
+L Connector_Generic:Conn_01x08 J6
+U 1 1 605026C0
+P 7100 4600
+F 0 "J6" H 7180 4592 50  0000 L CNN
+F 1 "JoystickConn" H 7180 4501 50  0000 L CNN
+F 2 "Connector_JST:JST_PH_S8B-PH-SM4-TB_1x08-1MP_P2.00mm_Horizontal" H 7100 4600 50  0001 C CNN
+F 3 "~" H 7100 4600 50  0001 C CNN
+F 4 "455-1755-2-ND" H 7100 4600 50  0001 C CNN "DigiKey"
+	1    7100 4600
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

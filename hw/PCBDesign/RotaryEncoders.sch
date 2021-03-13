@@ -493,51 +493,29 @@ Wire Wire Line
 	4300 4550 4450 4550
 Wire Wire Line
 	4300 4750 4450 4750
-$Comp
-L Connector_Generic:Conn_01x03 J5
-U 1 1 604F4AB4
-P 7050 2650
-F 0 "J5" H 7130 2692 50  0000 L CNN
-F 1 "Enc1" H 7130 2601 50  0000 L CNN
-F 2 "" H 7050 2650 50  0001 C CNN
-F 3 "~" H 7050 2650 50  0001 C CNN
-	1    7050 2650
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	6850 2550 6600 2550
+	7700 3100 7450 3100
 Wire Wire Line
-	6850 2650 6600 2650
+	7700 3200 7450 3200
 Wire Wire Line
-	6850 2750 6600 2750
-$Comp
-L Connector_Generic:Conn_01x03 J6
-U 1 1 604F96F4
-P 7050 4650
-F 0 "J6" H 7130 4692 50  0000 L CNN
-F 1 "Enc0" H 7130 4601 50  0000 L CNN
-F 2 "" H 7050 4650 50  0001 C CNN
-F 3 "~" H 7050 4650 50  0001 C CNN
-	1    7050 4650
-	1    0    0    -1  
-$EndComp
+	7700 3300 7450 3300
 Wire Wire Line
-	6850 4550 6600 4550
+	7700 3500 7450 3500
 Wire Wire Line
-	6850 4650 6600 4650
+	7700 3600 7450 3600
 Wire Wire Line
-	6850 4750 6600 4750
-Text Label 6600 2550 0    50   ~ 0
+	7700 3700 7450 3700
+Text Label 7450 3100 0    50   ~ 0
 SW1_Btn
-Text Label 6600 2650 0    50   ~ 0
+Text Label 7450 3200 0    50   ~ 0
 SW1_A
-Text Label 6600 2750 0    50   ~ 0
+Text Label 7450 3300 0    50   ~ 0
 SW1_B
-Text Label 6600 4750 0    50   ~ 0
+Text Label 7450 3700 0    50   ~ 0
 SW2_B
-Text Label 6600 4650 0    50   ~ 0
+Text Label 7450 3600 0    50   ~ 0
 SW2_A
-Text Label 6600 4550 0    50   ~ 0
+Text Label 7450 3500 0    50   ~ 0
 SW2_Btn
 Text Label 5900 4250 0    50   ~ 0
 SW2_Btn
@@ -551,4 +529,40 @@ Text Label 4850 4550 0    50   ~ 0
 SW2_A
 Text Label 4850 4750 0    50   ~ 0
 SW2_B
+$Comp
+L Connector_Generic:Conn_01x08 J?
+U 1 1 605134CE
+P 7900 3400
+AR Path="/60445E97/60452A36/605134CE" Ref="J?"  Part="1" 
+AR Path="/60445E97/6044E41E/605134CE" Ref="J5"  Part="1" 
+F 0 "J5" H 7980 3392 50  0000 L CNN
+F 1 "EncoderConn" H 7980 3301 50  0000 L CNN
+F 2 "Connector_JST:JST_PH_S8B-PH-SM4-TB_1x08-1MP_P2.00mm_Horizontal" H 7900 3400 50  0001 C CNN
+F 3 "~" H 7900 3400 50  0001 C CNN
+F 4 "455-1755-2-ND" H 7900 3400 50  0001 C CNN "DigiKey"
+	1    7900 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR064
+U 1 1 60514E4E
+P 7700 3400
+F 0 "#PWR064" H 7700 3150 50  0001 C CNN
+F 1 "GND" V 7705 3272 50  0000 R CNN
+F 2 "" H 7700 3400 50  0001 C CNN
+F 3 "" H 7700 3400 50  0001 C CNN
+	1    7700 3400
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR066
+U 1 1 605152B2
+P 7700 3800
+F 0 "#PWR066" H 7700 3550 50  0001 C CNN
+F 1 "GND" V 7705 3672 50  0000 R CNN
+F 2 "" H 7700 3800 50  0001 C CNN
+F 3 "" H 7700 3800 50  0001 C CNN
+	1    7700 3800
+	0    1    1    0   
+$EndComp
 $EndSCHEMATC
