@@ -26,6 +26,14 @@ elseif(Toolchain::HAS_GCC)
   add_compile_definitions(SIMULATOR)
 endif()
 
+
+# ====================================================
+# NanoPB exports
+# ====================================================
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/nanopb/extra)
+find_package(Nanopb REQUIRED)
+set(NANO_PB_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/lib/nanopb" CACHE STRING "")
+
 # ====================================================
 # Import common packages and projects
 # ====================================================
@@ -36,6 +44,7 @@ add_subdirectory("lib/ChimeraSim")
 add_subdirectory("lib/CommonTools/cpputest")
 add_subdirectory("lib/CommonTools/googletest")
 add_subdirectory("lib/FreeRTOS")
+add_subdirectory("lib/nanopb")
 add_subdirectory("lib/Ripple")
 add_subdirectory("lib/Thor")
 add_subdirectory("lib/ugfx")
@@ -72,6 +81,8 @@ if(Toolchain::REQUIRES_FREERTOS_THREADS)
 endif()
 
 export(TARGETS project_ugfx_inc FILE "${PROJECT_BINARY_DIR}/project/project_ugfx_inc.cmake")
+
+
 
 # ====================================================
 # Project Imports

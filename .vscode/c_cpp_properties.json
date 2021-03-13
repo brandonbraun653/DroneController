@@ -20,6 +20,7 @@
             "${workspaceFolder}/lib/FreeRTOS/include",
             "${workspaceFolder}/lib/FreeRTOS/include/FreeRTOS",
             "${workspaceFolder}/lib/FreeRTOS/portable/GCC/ARM_CM4F",
+            "${workspaceFolder}/lib/nanopb",
             "${workspaceFolder}/lib/Ripple/inc",
             "${workspaceFolder}/lib/Thor/config/freertos",
             "${workspaceFolder}/lib/Thor/include",

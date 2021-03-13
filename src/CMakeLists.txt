@@ -74,6 +74,7 @@ target_link_libraries(DroneController PRIVATE
   ripple_network_stack
   ripple_netif_nrf24_physical
   ripple_netif_nrf24_datalink
+  ripple_netif_nrf24_protobuf
 
   # Utility Libraries
   aurora_core_dbg
