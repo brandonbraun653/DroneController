@@ -31,3 +31,6 @@
 [submodule "hw/lib/KiCadLib"]
 	path = hw/lib/KiCadLib
 	url = https://github.com/brandonbraun653/KiCadLib.git
+[submodule "lib/nanopb"]
+	path = lib/nanopb
+	url = https://github.com/nanopb/nanopb.git
