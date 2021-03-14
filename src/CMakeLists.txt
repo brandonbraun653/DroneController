@@ -40,6 +40,7 @@ add_executable(DroneController startup.cpp)
 
 # Include Directories
 target_include_directories(DroneController PRIVATE ".")
+add_dependencies(DroneController ripple_netif_nrf24_protobuf)
 
 # Dependent Modules
 target_link_libraries(DroneController PRIVATE

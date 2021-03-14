@@ -2,6 +2,7 @@
     "env": {
         "defaultIncludePaths": [
             "${workspaceFolder}",
+            "${workspaceFolder}/build/lib/DroneNet/nanopb",
             "${workspaceFolder}/lib",
             "${workspaceFolder}/lib/Aurora/include",
             "${workspaceFolder}/lib/Aurora/include",
