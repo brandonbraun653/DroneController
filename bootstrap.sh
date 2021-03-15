@@ -10,6 +10,7 @@
 # VS Code Integration:
 #   "terminal.integrated.shellArgs.linux": [ "--init-file", "bootstrap.sh" ]
 #------------------------------------------------------------------------------
+echo "Bootstrapping into DroneController environment"
 
 # Pull the system level shell config
 source ~/.bashrc

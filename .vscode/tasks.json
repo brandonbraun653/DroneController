@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "CMake Clean",
+      "type": "shell",
+      "command": "rm -rf ${workspaceFolder}/build/*",
+      "problemMatcher": []
+    },
+    {
+      "label": "Configure Simulator",
+      "type": "shell",
+      "command": "cmake -DTOOLCHAIN=gcc -DNATIVE_THREADS=ON -DDEVICE_TARGET=sim -DCMAKE_BUILD_TYPE=Debug --configure ../",
+      "dependsOn": [
+        "CMake Clean"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Configure Embedded",
+      "type": "shell",
+      "command": "cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32f446re -DCMAKE_BUILD_TYPE=Debug --configure ../",
+      "dependsOn": [
+        "CMake Clean"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "problemMatcher": []
+    },
+  ]
+}
