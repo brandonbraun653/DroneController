@@ -394,21 +394,21 @@ Wire Wire Line
 Wire Wire Line
 	4300 3700 4500 3700
 $Comp
-L Mechanical:MountingHole_Pad H?
+L Mechanical:MountingHole_Pad H1
 U 1 1 60507987
 P 1000 1050
-F 0 "H?" H 1100 1099 50  0000 L CNN
+F 0 "H1" H 1100 1099 50  0000 L CNN
 F 1 "MountingHole_Pad" H 1100 1008 50  0000 L CNN
-F 2 "" H 1000 1050 50  0001 C CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3_Pad_Via" H 1000 1050 50  0001 C CNN
 F 3 "~" H 1000 1050 50  0001 C CNN
 	1    1000 1050
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0114
 U 1 1 60507F24
 P 1000 1150
-F 0 "#PWR?" H 1000 900 50  0001 C CNN
+F 0 "#PWR0114" H 1000 900 50  0001 C CNN
 F 1 "GND" H 1005 977 50  0000 C CNN
 F 2 "" H 1000 1150 50  0001 C CNN
 F 3 "" H 1000 1150 50  0001 C CNN
@@ -416,21 +416,21 @@ F 3 "" H 1000 1150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:MountingHole_Pad H?
+L Mechanical:MountingHole_Pad H2
 U 1 1 6050ADDB
 P 1000 1550
-F 0 "H?" H 1100 1599 50  0000 L CNN
+F 0 "H2" H 1100 1599 50  0000 L CNN
 F 1 "MountingHole_Pad" H 1100 1508 50  0000 L CNN
-F 2 "" H 1000 1550 50  0001 C CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3_Pad_Via" H 1000 1550 50  0001 C CNN
 F 3 "~" H 1000 1550 50  0001 C CNN
 	1    1000 1550
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0115
 U 1 1 6050ADE1
 P 1000 1650
-F 0 "#PWR?" H 1000 1400 50  0001 C CNN
+F 0 "#PWR0115" H 1000 1400 50  0001 C CNN
 F 1 "GND" H 1005 1477 50  0000 C CNN
 F 2 "" H 1000 1650 50  0001 C CNN
 F 3 "" H 1000 1650 50  0001 C CNN
@@ -438,21 +438,21 @@ F 3 "" H 1000 1650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:MountingHole_Pad H?
+L Mechanical:MountingHole_Pad H3
 U 1 1 6050CE46
 P 1000 2050
-F 0 "H?" H 1100 2099 50  0000 L CNN
+F 0 "H3" H 1100 2099 50  0000 L CNN
 F 1 "MountingHole_Pad" H 1100 2008 50  0000 L CNN
-F 2 "" H 1000 2050 50  0001 C CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3_Pad_Via" H 1000 2050 50  0001 C CNN
 F 3 "~" H 1000 2050 50  0001 C CNN
 	1    1000 2050
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0116
 U 1 1 6050CE4C
 P 1000 2150
-F 0 "#PWR?" H 1000 1900 50  0001 C CNN
+F 0 "#PWR0116" H 1000 1900 50  0001 C CNN
 F 1 "GND" H 1005 1977 50  0000 C CNN
 F 2 "" H 1000 2150 50  0001 C CNN
 F 3 "" H 1000 2150 50  0001 C CNN
@@ -460,21 +460,21 @@ F 3 "" H 1000 2150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:MountingHole_Pad H?
+L Mechanical:MountingHole_Pad H4
 U 1 1 6050EC15
 P 1000 2550
-F 0 "H?" H 1100 2599 50  0000 L CNN
+F 0 "H4" H 1100 2599 50  0000 L CNN
 F 1 "MountingHole_Pad" H 1100 2508 50  0000 L CNN
-F 2 "" H 1000 2550 50  0001 C CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3_Pad_Via" H 1000 2550 50  0001 C CNN
 F 3 "~" H 1000 2550 50  0001 C CNN
 	1    1000 2550
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0117
 U 1 1 6050EC1B
 P 1000 2650
-F 0 "#PWR?" H 1000 2400 50  0001 C CNN
+F 0 "#PWR0117" H 1000 2400 50  0001 C CNN
 F 1 "GND" H 1005 2477 50  0000 C CNN
 F 2 "" H 1000 2650 50  0001 C CNN
 F 3 "" H 1000 2650 50  0001 C CNN

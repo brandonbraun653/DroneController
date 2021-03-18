@@ -179,4 +179,6 @@ Text HLabel 4550 3600 2    50   Input ~ 0
 BT_VCC_EN
 Text HLabel 4200 1000 0    50   Input ~ 0
 RF24_VCC_EN
+Text Notes 5100 800  0    50   ~ 0
+NOTE: The NRF24 will not mount on the board.\nIt will be remote mounted to the controller chassis and wired in.
 $EndSCHEMATC

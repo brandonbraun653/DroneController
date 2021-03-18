@@ -586,8 +586,6 @@ Wire Wire Line
 	5000 4350 4650 4350
 Wire Wire Line
 	5350 4450 5350 4100
-Text HLabel 5900 4950 2    50   BiDi ~ 0
-V_Digital
 $Comp
 L Device:R_US R83
 U 1 1 604B6706
@@ -632,14 +630,11 @@ Wire Wire Line
 Wire Wire Line
 	4650 4450 5150 4450
 Wire Wire Line
-	5900 4950 5800 4950
-Wire Wire Line
 	5800 4950 5800 5000
 Wire Wire Line
 	5800 4950 5450 4950
 Wire Wire Line
 	5450 4950 5450 5000
-Connection ~ 5800 4950
 Wire Wire Line
 	5800 5300 5800 5400
 Connection ~ 5800 5400
@@ -877,8 +872,6 @@ Wire Wire Line
 Connection ~ 2750 3850
 Wire Wire Line
 	2750 3850 3650 3850
-Text HLabel 2400 3200 0    50   BiDi ~ 0
-V_Digital
 Wire Wire Line
 	2400 3200 2750 3200
 Wire Wire Line
@@ -1007,4 +1000,10 @@ Text Label 5650 3750 0    50   ~ 0
 vBatt
 Wire Wire Line
 	5650 3750 6250 3750
+Text Label 5900 3300 0    50   ~ 0
+VBattProtectOut
+Text Label 2500 3200 0    50   ~ 0
+vBatt
+Text Label 5600 4950 0    50   ~ 0
+vBatt
 $EndSCHEMATC

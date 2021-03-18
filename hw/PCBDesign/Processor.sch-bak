@@ -36,9 +36,9 @@ F 3 "http://infocenter.arm.com/help/topic/com.arm.doc.ddi0314h/DDI0314H_coresigh
 	1    10200 5650
 	1    0    0    -1  
 $EndComp
-Text HLabel 8800 2600 2    50   BiDi ~ 0
+Text HLabel 10050 2700 2    50   BiDi ~ 0
 USB_D+
-Text HLabel 8800 2500 2    50   BiDi ~ 0
+Text HLabel 10050 2400 2    50   BiDi ~ 0
 USB_D-
 Text HLabel 8100 5600 2    50   Input ~ 0
 nBatt_Pwr_Good
@@ -822,4 +822,40 @@ Text HLabel 3350 2500 2    50   Output ~ 0
 RF24_VCC_EN
 Text Notes 3800 5600 0    50   ~ 0
 Debug LEDs
+$Comp
+L Device:R_US R?
+U 1 1 605FAE0B
+P 9900 2400
+F 0 "R?" V 9800 2400 50  0000 C CNN
+F 1 "33" V 10000 2400 50  0000 C CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 9940 2390 50  0001 C CNN
+F 3 "~" H 9900 2400 50  0001 C CNN
+F 4 "C25105" H 9900 2400 50  0001 C CNN "LCSC"
+	1    9900 2400
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 605FB594
+P 9900 2700
+F 0 "R?" V 9800 2700 50  0000 C CNN
+F 1 "33" V 10000 2700 50  0000 C CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 9940 2690 50  0001 C CNN
+F 3 "~" H 9900 2700 50  0001 C CNN
+F 4 "C25105" H 9900 2700 50  0001 C CNN "LCSC"
+	1    9900 2700
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	9750 2700 9400 2700
+Wire Wire Line
+	9400 2700 9400 2600
+Wire Wire Line
+	9400 2600 8800 2600
+Wire Wire Line
+	9750 2400 9400 2400
+Wire Wire Line
+	9400 2400 9400 2500
+Wire Wire Line
+	9400 2500 8800 2500
 $EndSCHEMATC
