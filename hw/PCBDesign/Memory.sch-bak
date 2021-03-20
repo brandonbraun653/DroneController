@@ -53,11 +53,11 @@ Text HLabel 6700 2600 2    50   Output ~ 0
 NOR_MISO
 Wire Wire Line
 	6700 2600 6550 2600
-Text HLabel 4800 2600 0    50   Input ~ 0
+Text HLabel 4650 2600 0    50   Input ~ 0
 NOR_MOSI
-Text HLabel 4800 2700 0    50   Input ~ 0
+Text HLabel 4650 2700 0    50   Input ~ 0
 NOR_SCK
-Text HLabel 4800 2800 0    50   Input ~ 0
+Text HLabel 4650 2800 0    50   Input ~ 0
 NOR_nCS
 $Comp
 L Device:R_US R62
@@ -309,11 +309,7 @@ Wire Wire Line
 Wire Wire Line
 	5300 2900 5300 2350
 Wire Wire Line
-	4800 2600 5350 2600
-Wire Wire Line
-	4800 2700 5350 2700
-Wire Wire Line
-	4800 2800 5350 2800
+	4650 2800 4700 2800
 Text HLabel 5150 1850 1    50   Input ~ 0
 V+
 Wire Wire Line
@@ -327,4 +323,84 @@ Wire Wire Line
 Wire Wire Line
 	5300 1950 5300 2050
 Connection ~ 5150 1950
+$Comp
+L Device:C C?
+U 1 1 60544AA2
+P 7550 2450
+AR Path="/604707FB/60544AA2" Ref="C?"  Part="1" 
+AR Path="/60463DC2/60544AA2" Ref="C26"  Part="1" 
+F 0 "C26" H 7665 2496 50  0000 L CNN
+F 1 "100n" H 7665 2405 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 7588 2300 50  0001 C CNN
+F 3 "~" H 7550 2450 50  0001 C CNN
+F 4 "C1525" H 7550 2450 50  0001 C CNN "LCSC"
+	1    7550 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 60545508
+P 7950 4150
+AR Path="/604707FB/60545508" Ref="C?"  Part="1" 
+AR Path="/60463DC2/60545508" Ref="C27"  Part="1" 
+F 0 "C27" H 8065 4196 50  0000 L CNN
+F 1 "100n" H 8065 4105 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 7988 4000 50  0001 C CNN
+F 3 "~" H 7950 4150 50  0001 C CNN
+F 4 "C1525" H 7950 4150 50  0001 C CNN "LCSC"
+	1    7950 4150
+	1    0    0    -1  
+$EndComp
+Text HLabel 7950 4000 1    50   Input ~ 0
+V+
+Text HLabel 7550 2300 1    50   Input ~ 0
+V+
+$Comp
+L power:GND #PWR068
+U 1 1 60545E1F
+P 7550 2600
+F 0 "#PWR068" H 7550 2350 50  0001 C CNN
+F 1 "GND" H 7555 2427 50  0000 C CNN
+F 2 "" H 7550 2600 50  0001 C CNN
+F 3 "" H 7550 2600 50  0001 C CNN
+	1    7550 2600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR070
+U 1 1 605461BE
+P 7950 4300
+F 0 "#PWR070" H 7950 4050 50  0001 C CNN
+F 1 "GND" H 7955 4127 50  0000 C CNN
+F 2 "" H 7950 4300 50  0001 C CNN
+F 3 "" H 7950 4300 50  0001 C CNN
+	1    7950 4300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R99
+U 1 1 6069D3D7
+P 4700 2200
+F 0 "R99" H 4768 2246 50  0000 L CNN
+F 1 "10k" H 4768 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 4740 2190 50  0001 C CNN
+F 3 "~" H 4700 2200 50  0001 C CNN
+F 4 "C25744" H 4700 2200 50  0001 C CNN "LCSC"
+	1    4700 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4700 2350 4700 2800
+Connection ~ 4700 2800
+Wire Wire Line
+	4700 2050 4700 1950
+Wire Wire Line
+	4700 1950 5000 1950
+Connection ~ 5000 1950
+Wire Wire Line
+	4650 2600 5350 2600
+Wire Wire Line
+	4650 2700 5350 2700
+Wire Wire Line
+	4700 2800 5350 2800
 $EndSCHEMATC

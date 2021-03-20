@@ -44,24 +44,16 @@ Text HLabel 8100 5600 2    50   Input ~ 0
 nBatt_Pwr_Good
 Text HLabel 8100 5700 2    50   Input ~ 0
 nBatt_Chg_Good
-Text HLabel 8800 1400 2    50   Input ~ 0
-vBatt_Sense
-Text HLabel 3350 2100 2    50   Output ~ 0
+Text HLabel 3550 2100 2    50   Output ~ 0
 nBattChgEn
-Text HLabel 3350 1900 2    50   Output ~ 0
+Text HLabel 3550 1900 2    50   Output ~ 0
 BattChgCfg0
-Text HLabel 3350 2000 2    50   Output ~ 0
+Text HLabel 3550 2000 2    50   Output ~ 0
 BattChgCfg1
 Text HLabel 7400 3700 0    50   Input ~ 0
 BT_UART_RX
 Text HLabel 7400 3600 0    50   Output ~ 0
 BT_UART_TX
-Text HLabel 3350 2200 2    50   Output ~ 0
-BT_nWakeup
-Text HLabel 3350 2300 2    50   Output ~ 0
-BT_nPowerUp
-Text HLabel 7400 3800 0    50   Input ~ 0
-BT_IRQ
 Text HLabel 8800 2100 2    50   Output ~ 0
 RF24_MOSI
 Text HLabel 8800 2000 2    50   Input ~ 0
@@ -88,10 +80,6 @@ Text HLabel 8800 2200 2    50   Output ~ 0
 EEPROM_SCL
 Text HLabel 8800 1500 2    50   Input ~ 0
 VSense_Digital
-Text HLabel 8800 1600 2    50   Input ~ 0
-VSense_Radio
-Text HLabel 8800 1700 2    50   Input ~ 0
-VSense_Analog
 Text HLabel 8100 1100 1    50   Input ~ 0
 V+
 Text HLabel 7200 1400 0    50   Input ~ 0
@@ -816,9 +804,9 @@ Wire Wire Line
 Wire Wire Line
 	6850 2700 6850 2600
 Connection ~ 6400 2700
-Text HLabel 3350 2400 2    50   Output ~ 0
+Text HLabel 3550 2400 2    50   Output ~ 0
 BT_VCC_EN
-Text HLabel 3350 2500 2    50   Output ~ 0
+Text HLabel 3550 2500 2    50   Output ~ 0
 RF24_VCC_EN
 Text Notes 3800 5600 0    50   ~ 0
 Debug LEDs
@@ -858,4 +846,163 @@ Wire Wire Line
 	9400 2400 9400 2500
 Wire Wire Line
 	9400 2500 8800 2500
+NoConn ~ 7400 4300
+NoConn ~ 7400 4400
+NoConn ~ 7400 4500
+NoConn ~ 8800 3800
+NoConn ~ 8800 3300
+$Comp
+L Device:C C55
+U 1 1 6065388D
+P 5500 1300
+F 0 "C55" H 5615 1346 50  0000 L CNN
+F 1 "100n" H 5615 1255 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 5538 1150 50  0001 C CNN
+F 3 "~" H 5500 1300 50  0001 C CNN
+F 4 "C1525" H 5500 1300 50  0001 C CNN "LCSC"
+	1    5500 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C56
+U 1 1 606541DA
+P 5900 1300
+F 0 "C56" H 6015 1346 50  0000 L CNN
+F 1 "100n" H 6015 1255 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 5938 1150 50  0001 C CNN
+F 3 "~" H 5900 1300 50  0001 C CNN
+F 4 "C1525" H 5900 1300 50  0001 C CNN "LCSC"
+	1    5900 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C57
+U 1 1 6065440B
+P 6300 1300
+F 0 "C57" H 6415 1346 50  0000 L CNN
+F 1 "100n" H 6415 1255 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 6338 1150 50  0001 C CNN
+F 3 "~" H 6300 1300 50  0001 C CNN
+F 4 "C1525" H 6300 1300 50  0001 C CNN "LCSC"
+	1    6300 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C33
+U 1 1 60654852
+P 5100 1300
+F 0 "C33" H 5215 1346 50  0000 L CNN
+F 1 "100n" H 5215 1255 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 5138 1150 50  0001 C CNN
+F 3 "~" H 5100 1300 50  0001 C CNN
+F 4 "C1525" H 5100 1300 50  0001 C CNN "LCSC"
+	1    5100 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C31
+U 1 1 60654BAF
+P 4700 1300
+F 0 "C31" H 4815 1346 50  0000 L CNN
+F 1 "100n" H 4815 1255 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 4738 1150 50  0001 C CNN
+F 3 "~" H 4700 1300 50  0001 C CNN
+F 4 "C1525" H 4700 1300 50  0001 C CNN "LCSC"
+	1    4700 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C29
+U 1 1 606550A4
+P 4300 1300
+F 0 "C29" H 4415 1346 50  0000 L CNN
+F 1 "100n" H 4415 1255 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 4338 1150 50  0001 C CNN
+F 3 "~" H 4300 1300 50  0001 C CNN
+F 4 "C1525" H 4300 1300 50  0001 C CNN "LCSC"
+	1    4300 1300
+	1    0    0    -1  
+$EndComp
+Text HLabel 5900 1150 1    50   Input ~ 0
+V+
+Text HLabel 5500 1150 1    50   Input ~ 0
+V+
+Text HLabel 5100 1150 1    50   Input ~ 0
+V+
+Text HLabel 4700 1150 1    50   Input ~ 0
+V+
+Text HLabel 4300 1150 1    50   Input ~ 0
+V+
+$Comp
+L power:GND #PWR0122
+U 1 1 60655583
+P 6300 1450
+F 0 "#PWR0122" H 6300 1200 50  0001 C CNN
+F 1 "GND" H 6305 1277 50  0000 C CNN
+F 2 "" H 6300 1450 50  0001 C CNN
+F 3 "" H 6300 1450 50  0001 C CNN
+	1    6300 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0123
+U 1 1 60655871
+P 5900 1450
+F 0 "#PWR0123" H 5900 1200 50  0001 C CNN
+F 1 "GND" H 5905 1277 50  0000 C CNN
+F 2 "" H 5900 1450 50  0001 C CNN
+F 3 "" H 5900 1450 50  0001 C CNN
+	1    5900 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0124
+U 1 1 606559F7
+P 5500 1450
+F 0 "#PWR0124" H 5500 1200 50  0001 C CNN
+F 1 "GND" H 5505 1277 50  0000 C CNN
+F 2 "" H 5500 1450 50  0001 C CNN
+F 3 "" H 5500 1450 50  0001 C CNN
+	1    5500 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0125
+U 1 1 60655C44
+P 5100 1450
+F 0 "#PWR0125" H 5100 1200 50  0001 C CNN
+F 1 "GND" H 5105 1277 50  0000 C CNN
+F 2 "" H 5100 1450 50  0001 C CNN
+F 3 "" H 5100 1450 50  0001 C CNN
+	1    5100 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0126
+U 1 1 60655DFB
+P 4700 1450
+F 0 "#PWR0126" H 4700 1200 50  0001 C CNN
+F 1 "GND" H 4705 1277 50  0000 C CNN
+F 2 "" H 4700 1450 50  0001 C CNN
+F 3 "" H 4700 1450 50  0001 C CNN
+	1    4700 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0127
+U 1 1 6065602B
+P 4300 1450
+F 0 "#PWR0127" H 4300 1200 50  0001 C CNN
+F 1 "GND" H 4305 1277 50  0000 C CNN
+F 2 "" H 4300 1450 50  0001 C CNN
+F 3 "" H 4300 1450 50  0001 C CNN
+	1    4300 1450
+	1    0    0    -1  
+$EndComp
+Text HLabel 6300 1150 1    50   Input ~ 0
+VDDA
+NoConn ~ 7400 3800
+NoConn ~ 8800 1400
+NoConn ~ 8800 1600
+NoConn ~ 8800 1700
 $EndSCHEMATC

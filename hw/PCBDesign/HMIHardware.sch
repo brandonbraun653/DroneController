@@ -398,16 +398,6 @@ Wire Wire Line
 	9600 1900 9200 1900
 Wire Wire Line
 	9600 2000 9200 2000
-Wire Bus Line
-	7250 2800 9100 2800
-Entry Wire Line
-	9100 900  9200 1000
-Entry Wire Line
-	9100 1000 9200 1100
-Entry Wire Line
-	9100 1800 9200 1900
-Entry Wire Line
-	9100 1900 9200 2000
 Text Label 7000 2000 0    50   ~ 0
 d0
 Text Label 7000 2100 0    50   ~ 0
@@ -424,14 +414,6 @@ Text Label 7000 2600 0    50   ~ 0
 d6
 Text Label 7000 2700 0    50   ~ 0
 d7
-Text Label 9300 1000 0    50   ~ 0
-d0
-Text Label 9300 1100 0    50   ~ 0
-d1
-Text Label 9300 1900 0    50   ~ 0
-d2
-Text Label 9300 2000 0    50   ~ 0
-d3
 Wire Wire Line
 	4900 2000 5100 2000
 Wire Wire Line
@@ -504,8 +486,6 @@ Entry Wire Line
 	9100 3500 9200 3600
 Entry Wire Line
 	9100 3800 9200 3900
-Wire Bus Line
-	5200 2800 5650 2800
 Text Label 4950 2000 0    50   ~ 0
 d8
 Text Label 4950 2100 0    50   ~ 0
@@ -522,26 +502,6 @@ Text Label 4950 2600 0    50   ~ 0
 d14
 Text Label 4950 2700 0    50   ~ 0
 d15
-Text Label 9300 3200 0    50   ~ 0
-d8
-Text Label 9300 3300 0    50   ~ 0
-d9
-Text Label 9300 3400 0    50   ~ 0
-d10
-Text Label 9300 3500 0    50   ~ 0
-d11
-Text Label 9300 3600 0    50   ~ 0
-d12
-Text Label 9300 3700 0    50   ~ 0
-d13
-Text Label 9300 3800 0    50   ~ 0
-d14
-Text Label 9300 3900 0    50   ~ 0
-d15
-Wire Bus Line
-	9100 3800 5650 3800
-Wire Bus Line
-	5650 2800 5650 3800
 Entry Wire Line
 	9100 3950 9200 4050
 Entry Wire Line
@@ -550,14 +510,6 @@ Entry Wire Line
 	9100 4150 9200 4250
 Entry Wire Line
 	9100 4250 9200 4350
-Text Label 9300 4050 0    50   ~ 0
-d16
-Text Label 9300 4150 0    50   ~ 0
-d17
-Text Label 9300 4250 0    50   ~ 0
-d18
-Text Label 9300 4350 0    50   ~ 0
-d19
 Wire Wire Line
 	2700 2000 2900 2000
 Wire Wire Line
@@ -582,10 +534,6 @@ Entry Wire Line
 	2900 2200 3000 2300
 Entry Wire Line
 	2900 2300 3000 2400
-Wire Bus Line
-	3000 2800 3500 2800
-Wire Bus Line
-	3500 2800 3500 4250
 Text Label 2750 2000 0    50   ~ 0
 d16
 Text Label 2750 2100 0    50   ~ 0
@@ -647,14 +595,6 @@ Wire Wire Line
 	4650 4500 4650 4350
 Wire Wire Line
 	4350 4500 4350 4350
-Text Label 4350 4400 0    50   ~ 0
-d20
-Text Label 4650 4400 0    50   ~ 0
-d21
-Text Label 4950 4400 0    50   ~ 0
-d22
-Text Label 5250 4400 0    50   ~ 0
-d23
 Text Notes 6300 5150 2    50   ~ 0
 These inputs currently unused
 Text GLabel 4350 4500 3    50   Output ~ 0
@@ -713,8 +653,6 @@ Entry Wire Line
 	5450 4250 5550 4350
 Wire Wire Line
 	5550 4500 5550 4350
-Text Label 5550 4400 0    50   ~ 0
-d4
 $Comp
 L Device:R_US R47
 U 1 1 604C2A2C
@@ -742,8 +680,6 @@ Entry Wire Line
 	5750 4250 5850 4350
 Wire Wire Line
 	5850 4500 5850 4350
-Text Label 5850 4400 0    50   ~ 0
-d5
 $Comp
 L Device:R_US R49
 U 1 1 604C6290
@@ -771,8 +707,6 @@ Entry Wire Line
 	6050 4250 6150 4350
 Wire Wire Line
 	6150 4500 6150 4350
-Text Label 6150 4400 0    50   ~ 0
-d6
 $Comp
 L Device:R_US R51
 U 1 1 604C9E66
@@ -800,20 +734,10 @@ Entry Wire Line
 	6350 4250 6450 4350
 Wire Wire Line
 	6450 4500 6450 4350
-Text Label 6450 4400 0    50   ~ 0
-d7
-Wire Bus Line
-	9100 3950 9100 4250
-Wire Bus Line
-	9100 900  9100 2800
 Wire Bus Line
 	7250 2100 7250 2800
 Wire Bus Line
 	5200 2100 5200 2800
 Wire Bus Line
-	9100 3100 9100 3800
-Wire Bus Line
 	3000 2100 3000 2800
-Wire Bus Line
-	3500 4250 9100 4250
 $EndSCHEMATC
