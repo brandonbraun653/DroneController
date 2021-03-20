@@ -78,7 +78,7 @@ Text HLabel 7400 3900 0    50   BiDi ~ 0
 EEPROM_SDA
 Text HLabel 8800 2200 2    50   Output ~ 0
 EEPROM_SCL
-Text HLabel 8800 1500 2    50   Input ~ 0
+Text HLabel 8800 1400 2    50   Input ~ 0
 VSense_Digital
 Text HLabel 8100 1100 1    50   Input ~ 0
 V+
@@ -96,21 +96,21 @@ Text HLabel 8800 4000 2    50   Output ~ 0
 KEY_nCS
 Text HLabel 8800 3900 2    50   Output ~ 0
 KEY_nSAMPLE
-Text HLabel 7400 2800 0    50   Input ~ 0
-ENCODER0_A
 Text HLabel 7400 4200 0    50   Input ~ 0
+ENCODER0_A
+Text HLabel 7400 2800 0    50   Input ~ 0
 ENCODER0_B
-Text HLabel 8800 2400 2    50   Input ~ 0
-ENCODER1_A
 Text HLabel 8800 2300 2    50   Input ~ 0
+ENCODER1_A
+Text HLabel 8800 2400 2    50   Input ~ 0
 ENCODER1_B
-Text HLabel 7400 3000 0    50   Input ~ 0
-ANALOG_IN_VPITCH
 Text HLabel 7400 3100 0    50   Input ~ 0
+ANALOG_IN_VPITCH
+Text HLabel 7400 3000 0    50   Input ~ 0
 ANALOG_IN_VROLL
-Text HLabel 7400 3200 0    50   Input ~ 0
-ANALOG_IN_VYAW
 Text HLabel 7400 3300 0    50   Input ~ 0
+ANALOG_IN_VYAW
+Text HLabel 7400 3200 0    50   Input ~ 0
 ANALOG_IN_VTHROTTLE
 Wire Wire Line
 	10700 5350 11050 5350
@@ -317,7 +317,7 @@ DBG_UART_TX
 Text HLabel 7400 3500 0    50   Input ~ 0
 DBG_UART_RX
 Text Notes 1250 1100 0    50   ~ 0
-PCB Checklist: \n    https://github.com/azonenberg/pcb-checklist\n1. Ensure serial lines are correct for each device\n2. Verify the shift register connections match the pin names\n3. Verify interrupt lines are all separated and can fire individually.
+PCB Checklist: \n    https://github.com/azonenberg/pcb-checklist\n1. Ensure serial lines are correct for each device\n2. Verify the shift register connections match the pin names\n3. Verify interrupt lines are all separated and can fire individually.\n4. Verify Analog input ranges on sensor and mcu
 Text Notes 9800 1350 0    50   ~ 0
 Device Mapping:\nSPI1 - RF24 Radio\nSPI2 - NOR Flash\nSPI3 - GPIO Shift Registers
 Text GLabel 7900 5600 0    50   Output ~ 0
@@ -1002,7 +1002,7 @@ $EndComp
 Text HLabel 6300 1150 1    50   Input ~ 0
 VDDA
 NoConn ~ 7400 3800
-NoConn ~ 8800 1400
 NoConn ~ 8800 1600
 NoConn ~ 8800 1700
+NoConn ~ 8800 1500
 $EndSCHEMATC
