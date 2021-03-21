@@ -533,16 +533,8 @@ F 3 "" H 3100 5300 50  0001 C CNN
 $EndComp
 Text HLabel 2400 3850 0    50   Input ~ 0
 CHG_nEN
-Text HLabel 2400 4050 0    50   Input ~ 0
-CHG_CFG0
-Text HLabel 2400 4150 0    50   Input ~ 0
-CHG_CFG1
 Wire Wire Line
 	2400 3850 2750 3850
-Wire Wire Line
-	2400 4050 2750 4050
-Wire Wire Line
-	2400 4150 3100 4150
 Wire Wire Line
 	3600 4650 3600 4450
 Wire Wire Line
@@ -608,12 +600,10 @@ Wire Wire Line
 	3100 4550 3100 5200
 Wire Wire Line
 	3100 4250 3100 4150
-Connection ~ 3100 4150
 Wire Wire Line
 	3100 4150 3650 4150
 Wire Wire Line
 	2750 4250 2750 4050
-Connection ~ 2750 4050
 Wire Wire Line
 	2750 4050 3650 4050
 Wire Wire Line
@@ -833,4 +823,14 @@ F 3 "" H 8100 5050 50  0001 C CNN
 	1    8100 5050
 	1    0    0    -1  
 $EndComp
+Connection ~ 2750 4050
+Wire Wire Line
+	2400 4050 2750 4050
+Text HLabel 2400 4050 0    50   Input ~ 0
+CHG_CFG0
+Connection ~ 3100 4150
+Wire Wire Line
+	2400 4150 3100 4150
+Text HLabel 2400 4150 0    50   Input ~ 0
+CHG_CFG1
 $EndSCHEMATC
