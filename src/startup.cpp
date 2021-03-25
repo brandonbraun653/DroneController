@@ -15,6 +15,9 @@
 /* Project Includes */
 #include <src/tasks/tsk_common.hpp>
 
+/* Segger Includes */
+#include "SEGGER_SYSVIEW.h"
+
 /*-------------------------------------------------------------------------------
 Public Functions
 -------------------------------------------------------------------------------*/
@@ -29,6 +32,11 @@ int main()
   Project level task power up
   -------------------------------------------------*/
   DC::Tasks::initialize();
+
+  /*-------------------------------------------------
+  Initialize the SystemView driver
+  -------------------------------------------------*/
+  SEGGER_SYSVIEW_Conf();
 
   /*-------------------------------------------------
   Start the system threads. Never returns.

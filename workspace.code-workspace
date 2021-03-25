@@ -114,7 +114,8 @@
       "codecvt": "cpp",
       "future": "cpp",
       "nrf24l01_types": "cpp",
-      "netstack": "cpp"
+      "netstack": "cpp",
+      "freertos.h": "c"
     },
     "workbench.colorCustomizations": {
       "activityBar.activeBackground": "#1f6fd0",

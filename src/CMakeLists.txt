@@ -5,6 +5,7 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 # -----------------------------------------------------------------------------
 add_subdirectory(config/bsp)
 add_subdirectory(config/ugfx)
+add_subdirectory(debug)
 add_subdirectory(hmi)
 add_subdirectory(registry)
 add_subdirectory(system)
@@ -53,6 +54,7 @@ target_link_libraries(DroneController PRIVATE
 
   # Project Libraries
   lib_config
+  lib_debug
   lib_human_interface
   lib_registry
   lib_system
@@ -63,10 +65,9 @@ target_link_libraries(DroneController PRIVATE
   # Board Support Libraries
   bsp_nucleo_f446re
 
-  # Graphics Libraries
-  # ugfx_lib_dbg
-  # ugfx_st7735_lib_dbg
-  # ugfx_prj_config
+  # Segger System View
+  segger_sys_view
+  segger_sys_view_intf
 
   # Networking Libraries
   #ripple_core_dbg

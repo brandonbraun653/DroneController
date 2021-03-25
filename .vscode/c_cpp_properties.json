@@ -23,6 +23,9 @@
             "${workspaceFolder}/lib/FreeRTOS/portable/GCC/ARM_CM4F",
             "${workspaceFolder}/lib/nanopb",
             "${workspaceFolder}/lib/Ripple/inc",
+            "${workspaceFolder}/lib/segger/Config",
+            "${workspaceFolder}/lib/segger/SEGGER",
+            "${workspaceFolder}/lib/segger/SEGGER/Syscalls",
             "${workspaceFolder}/lib/Thor/config/freertos",
             "${workspaceFolder}/lib/Thor/include",
             "${workspaceFolder}/lib/ugfx/ugfx_2.9/**",
@@ -30,7 +33,8 @@
             "${workspaceFolder}/lib/yaffs2/include",
             "${workspaceFolder}/lib/yaffs2/integration",
             "${workspaceFolder}/src/config",
-            "${workspaceFolder}/src/config/ugfx"
+            "${workspaceFolder}/src/config/ugfx",
+            "${workspaceFolder}/src/debug/segger"
         ],
         "defaultDefines": [
             "DEBUG",

@@ -116,38 +116,38 @@ namespace DC::Tasks::BKGD
     {
       lastTickWoken = Chimera::millis();
 
-      /*-------------------------------------------------
-      Process the task hits
-      -------------------------------------------------*/
-      s_task_lock.lock();
-      while ( s_task_kicks.size() )
-      {
-        PrjTaskId tmp = s_task_kicks.front();
-        s_task_kicks.pop();
+      // /*-------------------------------------------------
+      // Process the task hits
+      // -------------------------------------------------*/
+      // s_task_lock.lock();
+      // while ( s_task_kicks.size() )
+      // {
+      //   PrjTaskId tmp = s_task_kicks.front();
+      //   s_task_kicks.pop();
 
-        if ( tmp < PrjTaskId::NUM_OPTIONS )
-        {
-          s_timing_stats[ static_cast<size_t>( tmp ) ].exact++;
-        }
-      }
-      s_task_lock.unlock();
+      //   if ( tmp < PrjTaskId::NUM_OPTIONS )
+      //   {
+      //     s_timing_stats[ static_cast<size_t>( tmp ) ].exact++;
+      //   }
+      // }
+      // s_task_lock.unlock();
 
-      /*-------------------------------------------------
-      Are the number of hits out of bounds?
-      -------------------------------------------------*/
-      for ( auto x = 0; x < ARRAY_COUNT( s_timing_stats ); x++ )
-      {
-        if ( ( s_timing_stats[ x ].exact < s_timing_stats[ x ].lower ) ||
-             ( s_timing_stats[ x ].exact > s_timing_stats[ x ].upper ) )
-        {
-          Chimera::insert_debug_breakpoint();
-          Chimera::System::softwareReset();
-        }
-        else
-        {
-          s_timing_stats[ x ].exact = 0;
-        }
-      }
+      // /*-------------------------------------------------
+      // Are the number of hits out of bounds?
+      // -------------------------------------------------*/
+      // for ( auto x = 0; x < ARRAY_COUNT( s_timing_stats ); x++ )
+      // {
+      //   if ( ( s_timing_stats[ x ].exact < s_timing_stats[ x ].lower ) ||
+      //        ( s_timing_stats[ x ].exact > s_timing_stats[ x ].upper ) )
+      //   {
+      //     Chimera::insert_debug_breakpoint();
+      //     Chimera::System::softwareReset();
+      //   }
+      //   else
+      //   {
+      //     s_timing_stats[ x ].exact = 0;
+      //   }
+      // }
 
       /*-------------------------------------------------
       Periodically kick the hardware watchdog
@@ -174,7 +174,7 @@ namespace DC::Tasks::BKGD
     The monitor thread must always be able to process
     through the queue, otherwise there is a problem.
     -------------------------------------------------*/
-    RT_HARD_ASSERT( !s_task_kicks.full() );
+    //RT_HARD_ASSERT( !s_task_kicks.full() );
 
     /*-------------------------------------------------
     Otherwise push the task event and continue on
