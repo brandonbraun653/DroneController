@@ -674,4 +674,16 @@ Text Label 9300 4050 0    50   ~ 0
 d23
 Text Label 9300 3900 0    50   ~ 0
 d22
+Text Label 6450 4350 0    50   ~ 0
+d19
+Text Label 5850 4350 0    50   ~ 0
+d18
+Text Label 5250 4350 0    50   ~ 0
+d17
+Text Label 6150 4350 0    50   ~ 0
+d16
+Text Label 4950 4350 0    50   ~ 0
+d21
+Text Label 5550 4350 0    50   ~ 0
+d20
 $EndSCHEMATC

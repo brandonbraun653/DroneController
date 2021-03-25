@@ -734,7 +734,7 @@ $EndComp
 Wire Wire Line
 	6150 6150 6150 6100
 Wire Wire Line
-	6150 6100 6650 6100
+	6150 6100 6550 6100
 Text Label 6300 6100 0    50   ~ 0
 vBatt
 Text Label 5650 3750 0    50   ~ 0
@@ -748,7 +748,7 @@ vBatt
 Text Label 5600 4950 0    50   ~ 0
 vBatt
 Wire Wire Line
-	5900 3300 7850 3300
+	5900 3300 7050 3300
 $Comp
 L Device:LED D9
 U 1 1 60590DC3
@@ -833,4 +833,71 @@ Wire Wire Line
 	2400 4150 3100 4150
 Text HLabel 2400 4150 0    50   Input ~ 0
 CHG_CFG1
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605E73DA
+P 6550 5950
+AR Path="/6045890B/605E73DA" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605E73DA" Ref="TP?"  Part="1" 
+AR Path="/60472222/605E73DA" Ref="TP24"  Part="1" 
+F 0 "TP24" H 6608 6068 50  0000 L CNN
+F 1 "TestPoint" H 6608 5977 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 6750 5950 50  0001 C CNN
+F 3 "~" H 6750 5950 50  0001 C CNN
+	1    6550 5950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6550 5950 6550 6100
+Connection ~ 6550 6100
+Wire Wire Line
+	6550 6100 6650 6100
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605EF9F2
+P 7050 3300
+AR Path="/6045890B/605EF9F2" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605EF9F2" Ref="TP?"  Part="1" 
+AR Path="/60472222/605EF9F2" Ref="TP25"  Part="1" 
+F 0 "TP25" H 7108 3418 50  0000 L CNN
+F 1 "TestPoint" H 7108 3327 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 7250 3300 50  0001 C CNN
+F 3 "~" H 7250 3300 50  0001 C CNN
+	1    7050 3300
+	1    0    0    -1  
+$EndComp
+Connection ~ 7050 3300
+Wire Wire Line
+	7050 3300 7850 3300
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605EFDA7
+P 9400 3300
+AR Path="/6045890B/605EFDA7" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605EFDA7" Ref="TP?"  Part="1" 
+AR Path="/60472222/605EFDA7" Ref="TP26"  Part="1" 
+F 0 "TP26" H 9458 3418 50  0000 L CNN
+F 1 "TestPoint" H 9458 3327 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 9600 3300 50  0001 C CNN
+F 3 "~" H 9600 3300 50  0001 C CNN
+	1    9400 3300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605EFFE3
+P 4150 2800
+AR Path="/6045890B/605EFFE3" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605EFFE3" Ref="TP?"  Part="1" 
+AR Path="/60472222/605EFFE3" Ref="TP23"  Part="1" 
+F 0 "TP23" H 4208 2918 50  0000 L CNN
+F 1 "TestPoint" H 4208 2827 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 4350 2800 50  0001 C CNN
+F 3 "~" H 4350 2800 50  0001 C CNN
+	1    4150 2800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4150 2800 4150 2900
+Connection ~ 4150 2900
 $EndSCHEMATC

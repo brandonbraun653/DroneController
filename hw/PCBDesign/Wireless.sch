@@ -24,9 +24,9 @@ F 3 "http://www.nordicsemi.com/eng/content/download/2730/34105/file/nRF24L01_Pro
 	1    6300 1700
 	1    0    0    -1  
 $EndComp
-Text HLabel 5600 3650 0    50   Input ~ 0
+Text HLabel 5200 4500 3    50   Input ~ 0
 BT_RX
-Text HLabel 5600 3750 0    50   Output ~ 0
+Text HLabel 5400 4500 3    50   Output ~ 0
 BT_TX
 Text HLabel 5650 1400 0    50   Input ~ 0
 RF24_SPI_MOSI
@@ -168,7 +168,7 @@ P 6400 3950
 F 0 "U14" H 6700 4600 50  0000 C CNN
 F 1 "RN4871" H 6700 4500 50  0000 C CNN
 F 2 "RF_Module:Microchip_RN4871" H 6400 3250 50  0001 C CNN
-F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/50002489A.pdf" H 5900 4500 50  0001 C CNN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/50002489C.pdf" H 5900 4500 50  0001 C CNN
 	1    6400 3950
 	1    0    0    -1  
 $EndComp
@@ -480,10 +480,6 @@ F 4 "C1525" H 4650 3450 50  0001 C CNN "LCSC"
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5600 3750 5700 3750
-Wire Wire Line
-	5600 3650 5700 3650
-Wire Wire Line
 	4650 3300 4650 3250
 Connection ~ 4650 3250
 Wire Wire Line
@@ -536,4 +532,140 @@ Wire Wire Line
 	5450 3600 5450 4050
 Wire Wire Line
 	5450 4050 5700 4050
+$Comp
+L Device:R_US R87
+U 1 1 605A9E3C
+P 5400 4350
+F 0 "R87" H 5468 4396 50  0000 L CNN
+F 1 "0" H 5468 4305 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 5440 4340 50  0001 C CNN
+F 3 "~" H 5400 4350 50  0001 C CNN
+F 4 "C17477" H 5400 4350 50  0001 C CNN "LCSC"
+	1    5400 4350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R86
+U 1 1 605AA255
+P 5200 4350
+F 0 "R86" H 5268 4396 50  0000 L CNN
+F 1 "0" H 5268 4305 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 5240 4340 50  0001 C CNN
+F 3 "~" H 5200 4350 50  0001 C CNN
+F 4 "C17477" H 5200 4350 50  0001 C CNN "LCSC"
+	1    5200 4350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5200 4200 5200 3650
+Wire Wire Line
+	5200 3650 5700 3650
+Wire Wire Line
+	5400 3750 5700 3750
+Wire Wire Line
+	5400 3750 5400 4200
+$Comp
+L Connector:TestPoint TP10
+U 1 1 605C7EEC
+P 8500 2500
+F 0 "TP10" H 8558 2618 50  0000 L CNN
+F 1 "TestPoint" H 8558 2527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 8700 2500 50  0001 C CNN
+F 3 "~" H 8700 2500 50  0001 C CNN
+	1    8500 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP12
+U 1 1 605C8193
+P 9000 2500
+F 0 "TP12" H 9058 2618 50  0000 L CNN
+F 1 "TestPoint" H 9058 2527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 9200 2500 50  0001 C CNN
+F 3 "~" H 9200 2500 50  0001 C CNN
+	1    9000 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP13
+U 1 1 605C825C
+P 9500 2500
+F 0 "TP13" H 9558 2618 50  0000 L CNN
+F 1 "TestPoint" H 9558 2527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 9700 2500 50  0001 C CNN
+F 3 "~" H 9700 2500 50  0001 C CNN
+	1    9500 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP14
+U 1 1 605C8384
+P 10000 2500
+F 0 "TP14" H 10058 2618 50  0000 L CNN
+F 1 "TestPoint" H 10058 2527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 10200 2500 50  0001 C CNN
+F 3 "~" H 10200 2500 50  0001 C CNN
+	1    10000 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP8
+U 1 1 605C85FA
+P 8000 2500
+F 0 "TP8" H 8058 2618 50  0000 L CNN
+F 1 "TestPoint" H 8058 2527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 8200 2500 50  0001 C CNN
+F 3 "~" H 8200 2500 50  0001 C CNN
+	1    8000 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP7
+U 1 1 605C875B
+P 7500 2500
+F 0 "TP7" H 7558 2618 50  0000 L CNN
+F 1 "TestPoint" H 7558 2527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 7700 2500 50  0001 C CNN
+F 3 "~" H 7700 2500 50  0001 C CNN
+	1    7500 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP9
+U 1 1 605C8883
+P 8000 3500
+F 0 "TP9" H 8058 3618 50  0000 L CNN
+F 1 "TestPoint" H 8058 3527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 8200 3500 50  0001 C CNN
+F 3 "~" H 8200 3500 50  0001 C CNN
+	1    8000 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP11
+U 1 1 605C8B8B
+P 8500 3500
+F 0 "TP11" H 8558 3618 50  0000 L CNN
+F 1 "TestPoint" H 8558 3527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 8700 3500 50  0001 C CNN
+F 3 "~" H 8700 3500 50  0001 C CNN
+	1    8500 3500
+	1    0    0    -1  
+$EndComp
+Text HLabel 8000 3500 3    50   Input ~ 0
+BT_RX
+Text HLabel 8500 3500 3    50   Output ~ 0
+BT_TX
+Text HLabel 7500 2500 3    50   Input ~ 0
+RF24_SPI_SCK
+Text HLabel 8000 2500 3    50   Input ~ 0
+RF24_SPI_MOSI
+Text HLabel 8500 2500 3    50   Output ~ 0
+RF24_SPI_MISO
+Text HLabel 9000 2500 3    50   Input ~ 0
+nRF24_SPI_CS
+Text HLabel 9500 2500 3    50   Input ~ 0
+RF24_CE
+Text HLabel 10000 2500 3    50   Output ~ 0
+nRF24_IRQ
 $EndSCHEMATC

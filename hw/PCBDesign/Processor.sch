@@ -78,7 +78,7 @@ Text HLabel 7400 3900 0    50   BiDi ~ 0
 EEPROM_SDA
 Text HLabel 8800 2200 2    50   Output ~ 0
 EEPROM_SCL
-Text HLabel 8800 1400 2    50   Input ~ 0
+Text HLabel 9100 1400 2    50   Input ~ 0
 VSense_Digital
 Text HLabel 8100 1100 1    50   Input ~ 0
 V+
@@ -98,7 +98,7 @@ Text HLabel 8800 3900 2    50   Output ~ 0
 KEY_nSAMPLE
 Text HLabel 7400 4200 0    50   Input ~ 0
 ENCODER0_A
-Text HLabel 7400 2800 0    50   Input ~ 0
+Text HLabel 7400 4300 0    50   Input ~ 0
 ENCODER0_B
 Text HLabel 8800 2300 2    50   Input ~ 0
 ENCODER1_A
@@ -312,12 +312,10 @@ Wire Wire Line
 	8800 2700 9100 2700
 Text Label 8850 2700 0    50   ~ 0
 JT_TMS
-Text HLabel 8800 4100 2    50   Output ~ 0
+Text HLabel 10050 4100 2    50   Output ~ 0
 DBG_UART_TX
-Text HLabel 7400 3500 0    50   Input ~ 0
+Text HLabel 6150 3500 0    50   Input ~ 0
 DBG_UART_RX
-Text Notes 1250 1100 0    50   ~ 0
-PCB Checklist: \n    https://github.com/azonenberg/pcb-checklist\n1. Ensure serial lines are correct for each device\n2. Verify the shift register connections match the pin names\n3. Verify interrupt lines are all separated and can fire individually.\n4. Verify Analog input ranges on sensor and mcu
 Text Notes 9800 1350 0    50   ~ 0
 Device Mapping:\nSPI1 - RF24 Radio\nSPI2 - NOR Flash\nSPI3 - GPIO Shift Registers
 Text GLabel 7900 5600 0    50   Output ~ 0
@@ -687,7 +685,6 @@ Wire Wire Line
 	9400 2400 9400 2500
 Wire Wire Line
 	9400 2500 8800 2500
-NoConn ~ 7400 4300
 NoConn ~ 7400 4400
 NoConn ~ 7400 4500
 NoConn ~ 8800 3800
@@ -842,8 +839,229 @@ F 3 "" H 4300 1450 50  0001 C CNN
 $EndComp
 Text HLabel 6300 1150 1    50   Input ~ 0
 VDDA
-NoConn ~ 7400 3800
 NoConn ~ 8800 1600
 NoConn ~ 8800 1700
 NoConn ~ 8800 1500
+$Comp
+L Device:R_US R65
+U 1 1 605A69C7
+P 8950 1400
+F 0 "R65" V 8850 1400 50  0000 C CNN
+F 1 "10k" V 9050 1400 50  0000 C CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 8990 1390 50  0001 C CNN
+F 3 "~" H 8950 1400 50  0001 C CNN
+F 4 "C25744" H 8950 1400 50  0001 C CNN "LCSC"
+	1    8950 1400
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R91
+U 1 1 605B2DF4
+P 9900 4100
+F 0 "R91" V 9800 4100 50  0000 C CNN
+F 1 "10k" V 10000 4100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 9940 4090 50  0001 C CNN
+F 3 "~" H 9900 4100 50  0001 C CNN
+F 4 "C25744" H 9900 4100 50  0001 C CNN "LCSC"
+	1    9900 4100
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	9750 4100 8800 4100
+$Comp
+L Device:R_US R89
+U 1 1 605B77B2
+P 6300 3500
+F 0 "R89" V 6200 3500 50  0000 C CNN
+F 1 "10k" V 6400 3500 50  0000 C CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 6340 3490 50  0001 C CNN
+F 3 "~" H 6300 3500 50  0001 C CNN
+F 4 "C25744" H 6300 3500 50  0001 C CNN "LCSC"
+	1    6300 3500
+	0    1    1    0   
+$EndComp
+NoConn ~ 7400 2800
+Wire Wire Line
+	6450 3500 7400 3500
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605CFE2B
+P 3500 5500
+AR Path="/6045890B/605CFE2B" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605CFE2B" Ref="TP18"  Part="1" 
+F 0 "TP18" H 3558 5618 50  0000 L CNN
+F 1 "TestPoint" H 3558 5527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 3700 5500 50  0001 C CNN
+F 3 "~" H 3700 5500 50  0001 C CNN
+	1    3500 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR09
+U 1 1 605D1BD5
+P 3500 5500
+F 0 "#PWR09" H 3500 5250 50  0001 C CNN
+F 1 "GND" H 3505 5327 50  0000 C CNN
+F 2 "" H 3500 5500 50  0001 C CNN
+F 3 "" H 3500 5500 50  0001 C CNN
+	1    3500 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605D1DEB
+P 4000 5500
+AR Path="/6045890B/605D1DEB" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605D1DEB" Ref="TP15"  Part="1" 
+F 0 "TP15" H 4058 5618 50  0000 L CNN
+F 1 "TestPoint" H 4058 5527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 4200 5500 50  0001 C CNN
+F 3 "~" H 4200 5500 50  0001 C CNN
+	1    4000 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605D20E0
+P 4500 5500
+AR Path="/6045890B/605D20E0" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605D20E0" Ref="TP16"  Part="1" 
+F 0 "TP16" H 4558 5618 50  0000 L CNN
+F 1 "TestPoint" H 4558 5527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 4700 5500 50  0001 C CNN
+F 3 "~" H 4700 5500 50  0001 C CNN
+	1    4500 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605D227A
+P 5000 5500
+AR Path="/6045890B/605D227A" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605D227A" Ref="TP17"  Part="1" 
+F 0 "TP17" H 5058 5618 50  0000 L CNN
+F 1 "TestPoint" H 5058 5527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 5200 5500 50  0001 C CNN
+F 3 "~" H 5200 5500 50  0001 C CNN
+	1    5000 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605D23A2
+P 5500 5500
+AR Path="/6045890B/605D23A2" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605D23A2" Ref="TP19"  Part="1" 
+F 0 "TP19" H 5558 5618 50  0000 L CNN
+F 1 "TestPoint" H 5558 5527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 5700 5500 50  0001 C CNN
+F 3 "~" H 5700 5500 50  0001 C CNN
+	1    5500 5500
+	1    0    0    -1  
+$EndComp
+Text HLabel 4500 5500 3    50   Output ~ 0
+KEY_MOSI
+Text HLabel 5000 5500 3    50   Input ~ 0
+KEY_MISO
+Text HLabel 4000 5500 3    50   Output ~ 0
+KEY_SCK
+Text Label 5500 5500 3    50   ~ 0
+KeyOut_nCS
+Wire Wire Line
+	5500 5500 5500 5800
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605D756E
+P 6000 5500
+AR Path="/6045890B/605D756E" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605D756E" Ref="TP20"  Part="1" 
+F 0 "TP20" H 6058 5618 50  0000 L CNN
+F 1 "TestPoint" H 6058 5527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 6200 5500 50  0001 C CNN
+F 3 "~" H 6200 5500 50  0001 C CNN
+	1    6000 5500
+	1    0    0    -1  
+$EndComp
+Text HLabel 6000 5500 3    50   Output ~ 0
+KEY_nSAMPLE
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605D9B3F
+P 6500 5500
+AR Path="/6045890B/605D9B3F" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605D9B3F" Ref="TP21"  Part="1" 
+F 0 "TP21" H 6558 5618 50  0000 L CNN
+F 1 "TestPoint" H 6558 5527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 6700 5500 50  0001 C CNN
+F 3 "~" H 6700 5500 50  0001 C CNN
+	1    6500 5500
+	1    0    0    -1  
+$EndComp
+Text HLabel 6500 5500 3    50   Output ~ 0
+KEY_nCS
+$Comp
+L Connector:TestPoint TP?
+U 1 1 605E052A
+P 6150 3150
+AR Path="/6045890B/605E052A" Ref="TP?"  Part="1" 
+AR Path="/604707FB/605E052A" Ref="TP22"  Part="1" 
+F 0 "TP22" H 6208 3268 50  0000 L CNN
+F 1 "TestPoint" H 6208 3177 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 6350 3150 50  0001 C CNN
+F 3 "~" H 6350 3150 50  0001 C CNN
+	1    6150 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR012
+U 1 1 605E0530
+P 6150 3150
+F 0 "#PWR012" H 6150 2900 50  0001 C CNN
+F 1 "GND" H 6155 2977 50  0000 C CNN
+F 2 "" H 6150 3150 50  0001 C CNN
+F 3 "" H 6150 3150 50  0001 C CNN
+	1    6150 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED D3
+U 1 1 6066A05B
+P 6400 4550
+F 0 "D3" V 6500 4550 50  0000 R CNN
+F 1 "STATUS_LED" H 6600 4650 50  0000 R CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 6400 4550 50  0001 C CNN
+F 3 "~" H 6400 4550 50  0001 C CNN
+F 4 "C72041" H 6400 4550 50  0001 C CNN "LCSC"
+	1    6400 4550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR090
+U 1 1 6066A061
+P 6400 4700
+F 0 "#PWR090" H 6400 4450 50  0001 C CNN
+F 1 "GND" H 6405 4527 50  0000 C CNN
+F 2 "" H 6400 4700 50  0001 C CNN
+F 3 "" H 6400 4700 50  0001 C CNN
+	1    6400 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6400 4300 6400 4400
+$Comp
+L Device:R_US R92
+U 1 1 6066A054
+P 6400 4150
+F 0 "R92" H 6332 4104 50  0000 R CNN
+F 1 "560" H 6332 4195 50  0000 R CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 6440 4140 50  0001 C CNN
+F 3 "~" H 6400 4150 50  0001 C CNN
+F 4 "C11702" H 6400 4150 50  0001 C CNN "LCSC"
+	1    6400 4150
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	7400 3800 6400 3800
+Wire Wire Line
+	6400 3800 6400 4000
 $EndSCHEMATC
