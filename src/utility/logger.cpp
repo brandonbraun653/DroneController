@@ -23,6 +23,7 @@ namespace DC::UTL
   -------------------------------------------------------------------------------*/
   static Aurora::Logging::SerialSink s_serial_sink;
   static Aurora::Logging::SinkHandle s_serial_handle;
+  static Aurora::Logging::SinkHandle s_jlink_handle;
 
 #if defined( CHIMERA_SIMULATOR )
   static Aurora::Logging::CoutSink s_console_sink;
@@ -57,6 +58,19 @@ namespace DC::UTL
     }
 
     /*-------------------------------------------------
+    Initialize the JLink sink
+    -------------------------------------------------*/
+    JLinkSink::getInstance().setLogLevel( lvl );
+    JLinkSink::getInstance().enable();
+    JLinkSink::getInstance().setName( "JLINK" );
+
+    if( !s_jlink_handle )
+    {
+      s_jlink_handle = SinkHandle( &JLinkSink::getInstance() );
+      registerSink( s_jlink_handle );
+    }
+
+    /*-------------------------------------------------
     Initialize the console sink
     -------------------------------------------------*/
 #if defined( CHIMERA_SIMULATOR )
@@ -77,7 +91,7 @@ namespace DC::UTL
 #if defined( CHIMERA_SIMULATOR )
     setRootSink( s_console_handle );
 #else
-    setRootSink( s_serial_handle );
+    setRootSink( s_jlink_handle );
 #endif
   }
 
