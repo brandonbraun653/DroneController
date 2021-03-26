@@ -46,7 +46,6 @@ add_subdirectory("lib/CommonTools/googletest")
 add_subdirectory("lib/DroneNet")
 add_subdirectory("lib/FreeRTOS")
 add_subdirectory("lib/Ripple")
-add_subdirectory("lib/segger")
 add_subdirectory("lib/Thor")
 add_subdirectory("lib/nanopb")
 add_subdirectory("lib/ugfx")
@@ -64,9 +63,11 @@ export(TARGETS project_inc FILE "${PROJECT_BINARY_DIR}/Project/project_inc.cmake
 add_library(freertos_cfg INTERFACE)
 target_include_directories(freertos_cfg INTERFACE
   "${PROJECT_ROOT}/src/config/freertos"
-  "${PROJECT_ROOT}/src/debug/segger"
 )
-target_link_libraries(freertos_cfg INTERFACE segger_sys_view_intf)
+target_link_libraries(freertos_cfg INTERFACE
+  segger_sys_view_intf
+  segger_sys_view_cortex_m4_freertos_intf
+)
 export(TARGETS freertos_cfg FILE "${PROJECT_BINARY_DIR}/ProjectConfig/freertos-cfg.cmake")
 
 # Adjust Thor build configuration to use this project's config

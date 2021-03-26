@@ -54,7 +54,7 @@ target_link_libraries(DroneController PRIVATE
 
   # Project Libraries
   lib_config
-  lib_debug
+  #lib_debug
   lib_human_interface
   lib_registry
   lib_system
@@ -68,6 +68,7 @@ target_link_libraries(DroneController PRIVATE
   # Segger System View
   segger_sys_view
   segger_sys_view_intf
+  segger_sys_view_cortex_m4_freertos
 
   # Networking Libraries
   #ripple_core_dbg
