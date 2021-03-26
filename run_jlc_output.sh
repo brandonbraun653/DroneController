@@ -1,0 +1,1 @@
+jlc-kicad-tools ./hw/PCBDesign -n DroneController -o ./hw/PCBDesign/gerbers

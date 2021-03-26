@@ -46,10 +46,6 @@ Text HLabel 8100 5700 2    50   Input ~ 0
 nBatt_Chg_Good
 Text HLabel 3350 2300 2    50   Output ~ 0
 nBattChgEn
-Text HLabel 3350 2100 2    50   Output ~ 0
-BattChgCfg0
-Text HLabel 3350 2200 2    50   Output ~ 0
-BattChgCfg1
 Text HLabel 7400 3700 0    50   Input ~ 0
 BT_UART_RX
 Text HLabel 7400 3600 0    50   Output ~ 0
@@ -79,7 +75,7 @@ EEPROM_SDA
 Text HLabel 8800 2200 2    50   Output ~ 0
 EEPROM_SCL
 Text HLabel 9100 1400 2    50   Input ~ 0
-VSense_Digital
+VSense_Batt
 Text HLabel 8100 1100 1    50   Input ~ 0
 V+
 Text HLabel 7200 1400 0    50   Input ~ 0
@@ -316,8 +312,6 @@ Text HLabel 10050 4100 2    50   Output ~ 0
 DBG_UART_TX
 Text HLabel 6150 3500 0    50   Input ~ 0
 DBG_UART_RX
-Text Notes 9800 1350 0    50   ~ 0
-Device Mapping:\nSPI1 - RF24 Radio\nSPI2 - NOR Flash\nSPI3 - GPIO Shift Registers
 Text GLabel 7900 5600 0    50   Output ~ 0
 nBatteryPowerGood
 Text GLabel 7900 5700 0    50   Output ~ 0
@@ -1024,10 +1018,10 @@ F 3 "" H 6150 3150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:LED D?
+L Device:LED D3
 U 1 1 6066A05B
 P 6400 4550
-F 0 "D?" V 6500 4550 50  0000 R CNN
+F 0 "D3" V 6500 4550 50  0000 R CNN
 F 1 "STATUS_LED" H 6600 4650 50  0000 R CNN
 F 2 "LED_SMD:LED_0603_1608Metric" H 6400 4550 50  0001 C CNN
 F 3 "~" H 6400 4550 50  0001 C CNN
@@ -1036,10 +1030,10 @@ F 4 "C72041" H 6400 4550 50  0001 C CNN "LCSC"
 	0    -1   -1   0   
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR090
 U 1 1 6066A061
 P 6400 4700
-F 0 "#PWR?" H 6400 4450 50  0001 C CNN
+F 0 "#PWR090" H 6400 4450 50  0001 C CNN
 F 1 "GND" H 6405 4527 50  0000 C CNN
 F 2 "" H 6400 4700 50  0001 C CNN
 F 3 "" H 6400 4700 50  0001 C CNN
@@ -1049,10 +1043,10 @@ $EndComp
 Wire Wire Line
 	6400 4300 6400 4400
 $Comp
-L Device:R_US R?
+L Device:R_US R92
 U 1 1 6066A054
 P 6400 4150
-F 0 "R?" H 6332 4104 50  0000 R CNN
+F 0 "R92" H 6332 4104 50  0000 R CNN
 F 1 "560" H 6332 4195 50  0000 R CNN
 F 2 "Resistor_SMD:R_0402_1005Metric" V 6440 4140 50  0001 C CNN
 F 3 "~" H 6400 4150 50  0001 C CNN
@@ -1064,4 +1058,6 @@ Wire Wire Line
 	7400 3800 6400 3800
 Wire Wire Line
 	6400 3800 6400 4000
+NoConn ~ 3350 2200
+NoConn ~ 3350 2100
 $EndSCHEMATC

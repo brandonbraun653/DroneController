@@ -46,10 +46,6 @@ Text HLabel 8100 5700 2    50   Input ~ 0
 nBatt_Chg_Good
 Text HLabel 3350 2300 2    50   Output ~ 0
 nBattChgEn
-Text HLabel 3350 2100 2    50   Output ~ 0
-BattChgCfg0
-Text HLabel 3350 2200 2    50   Output ~ 0
-BattChgCfg1
 Text HLabel 7400 3700 0    50   Input ~ 0
 BT_UART_RX
 Text HLabel 7400 3600 0    50   Output ~ 0
@@ -79,7 +75,7 @@ EEPROM_SDA
 Text HLabel 8800 2200 2    50   Output ~ 0
 EEPROM_SCL
 Text HLabel 9100 1400 2    50   Input ~ 0
-VSense_Digital
+VSense_Batt
 Text HLabel 8100 1100 1    50   Input ~ 0
 V+
 Text HLabel 7200 1400 0    50   Input ~ 0
@@ -316,8 +312,6 @@ Text HLabel 10050 4100 2    50   Output ~ 0
 DBG_UART_TX
 Text HLabel 6150 3500 0    50   Input ~ 0
 DBG_UART_RX
-Text Notes 9800 1350 0    50   ~ 0
-Device Mapping:\nSPI1 - RF24 Radio\nSPI2 - NOR Flash\nSPI3 - GPIO Shift Registers
 Text GLabel 7900 5600 0    50   Output ~ 0
 nBatteryPowerGood
 Text GLabel 7900 5700 0    50   Output ~ 0
@@ -1064,4 +1058,6 @@ Wire Wire Line
 	7400 3800 6400 3800
 Wire Wire Line
 	6400 3800 6400 4000
+NoConn ~ 3350 2200
+NoConn ~ 3350 2100
 $EndSCHEMATC
