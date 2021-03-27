@@ -11,7 +11,7 @@
 /* Aurora Includes */
 #include <Aurora/database>
 #include <Aurora/datastore>
-#include <Aurora/filesystem_lfs>
+#include <Aurora/filesystem_spiffs>
 #include <Aurora/logging>
 #include <Aurora/memory>
 
@@ -28,7 +28,7 @@
 namespace DC::REG
 {
   /*-------------------------------------------------------------------------------
-  Forward Declarations
+  Static Functions
   -------------------------------------------------------------------------------*/
   static bool initializeSPI();
   static void registerDatabaseKeys();
@@ -38,27 +38,6 @@ namespace DC::REG
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
-  /*-------------------------------------------------
-  File System
-  -------------------------------------------------*/
-  static lfs_t lfs;
-  static const lfs_config lfs_cfg = { .context = nullptr,
-
-                                      // Block device operations
-                                      .read  = lfs_safe_read,
-                                      .prog  = lfs_safe_prog,
-                                      .erase = lfs_safe_erase,
-                                      .sync  = lfs_safe_sync,
-
-                                      // Block device configuration
-                                      .read_size      = 16,
-                                      .prog_size      = 16,
-                                      .block_size     = 4096,
-                                      .block_count    = 256,
-                                      .block_cycles   = 500,
-                                      .cache_size     = 16,
-                                      .lookahead_size = 16 };
-
   /*-------------------------------------------------
   Database Memory Allocation
   -------------------------------------------------*/
@@ -89,11 +68,10 @@ namespace DC::REG
     /*-------------------------------------------------
     Prepare the FileSystem driver
     -------------------------------------------------*/
-    if constexpr ( DEFAULT_FILESYSTEM == BackendType::DRIVER_LITTLE_FS )
+    if constexpr ( DEFAULT_FILESYSTEM == BackendType::DRIVER_SPIFFS )
     {
       result |= initializeSPI();
-      result |= Aurora::FileSystem::LFS::attachFS( &lfs, &lfs_cfg );
-      result |= Aurora::FileSystem::LFS::attachDevice( Chip::AT25SF081, DC::IO::NOR::spiChannel, lfs_cfg );
+      result |= Aurora::FileSystem::SPIFFS::attachDevice( Chip::AT25SF081, DC::IO::NOR::spiChannel );
       RT_HARD_ASSERT( result );
     }
 

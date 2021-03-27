@@ -86,7 +86,7 @@ target_link_libraries(DroneController PRIVATE
   aurora_memory_dbg
   aurora_database_dbg
   aurora_datastore_dbg
-  aurora_filesystem_lfs_dbg
+  aurora_filesystem_spiffs_dbg
 
   # Hardware Libraries
   chimera_core_dbg
@@ -98,9 +98,9 @@ target_link_libraries(DroneController PRIVATE
 
 # Hardware Driver Model
 if(${DEVICE_TARGET} MATCHES "^stm32l4")
-  target_link_libraries(DroneController PRIVATE thor_lld_stm32l4_dbg embedded_core_libs_dbg)
+  target_link_libraries(DroneController PRIVATE thor_lld_stm32l4_dbg embedded_core_libs_rel)
 elseif(${DEVICE_TARGET} MATCHES "^stm32f4")
-  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_dbg embedded_core_libs_dbg)
+  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_dbg embedded_core_libs_rel)
 elseif(${DEVICE_TARGET} MATCHES "^sim")
   target_link_libraries(DroneController PRIVATE chimera_sim_core)
 else()

@@ -23,7 +23,7 @@ namespace DC::Files
   -------------------------------------------------------------------------------*/
   namespace SysCfg
   {
-    static const std::string_view filename = "sys_config.bin";
+    static const std::string_view filename = "root/sys_config.bin";
 
     struct DataType
     {

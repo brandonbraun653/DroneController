@@ -29,7 +29,7 @@ namespace DC::REG::Disk
     using namespace Aurora::Logging;
     namespace fs = Aurora::FileSystem;
 
-    FileHandle file = nullptr;
+    FileHandle file = {};
 
     /*-------------------------------------------------
     Open the file as directed
@@ -53,7 +53,7 @@ namespace DC::REG::Disk
     Rewind so subsequent filesystem calls are rooted to
     the start of the file.
     -------------------------------------------------*/
-    if ( file )
+    if ( file >= 0)
     {
       fs::frewind( file );
     }
@@ -73,7 +73,7 @@ namespace DC::REG::Disk
     using namespace Aurora::FileSystem;
 
     FileHandle file = openFile( direction, filename );
-    if ( !file && createFile( filename, data, size ) )
+    if ( ( file < 0 ) && createFile( filename, data, size ) )
     {
       file = openFile( direction, filename );
     }
@@ -91,7 +91,7 @@ namespace DC::REG::Disk
     getRootSink()->flog( Level::LVL_DEBUG, "Initializing %s\r\n", filename.begin() );
     FileHandle file = openFile( IO_WRITE, filename );
 
-    if ( !file )
+    if ( file < 0 )
     {
       getRootSink()->flog( Level::LVL_DEBUG, "Could not create %s\r\n", filename.begin() );
       return false;
@@ -126,8 +126,7 @@ namespace DC::REG::Disk
         break;
     }
 
-    RT_HARD_ASSERT( rw_bytes == size );
-    return true;
+    return rw_bytes == size;
   }
 
 

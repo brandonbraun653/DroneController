@@ -91,7 +91,7 @@ namespace DC::UTL
 #if defined( CHIMERA_SIMULATOR )
     setRootSink( s_console_handle );
 #else
-    setRootSink( s_jlink_handle );
+    setRootSink( s_serial_handle );
 #endif
   }
 

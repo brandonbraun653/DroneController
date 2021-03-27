@@ -118,41 +118,41 @@ namespace DC::Tasks::RADIO
 
     while ( 1 )
     {
-      /*-------------------------------------------------
-      Periodically transmit data. Expects to talk with a
-      python program that will simply echo the data back.
-      -------------------------------------------------*/
-      if ( ( ( Chimera::millis() - lastTx ) > 1000 ) && !transmitted )
-      {
-        txSocket->write( some_data.data(), some_data.size() );
-        lastTx      = Chimera::millis();
-        lastRx      = Chimera::millis();
-        transmitted = true;
-      }
+      // /*-------------------------------------------------
+      // Periodically transmit data. Expects to talk with a
+      // python program that will simply echo the data back.
+      // -------------------------------------------------*/
+      // if ( ( ( Chimera::millis() - lastTx ) > 1000 ) && !transmitted )
+      // {
+      //   txSocket->write( some_data.data(), some_data.size() );
+      //   lastTx      = Chimera::millis();
+      //   lastRx      = Chimera::millis();
+      //   transmitted = true;
+      // }
 
-      /*-------------------------------------------------
-      Try and sample data. Expects to receive an echo of
-      the transmit.
-      -------------------------------------------------*/
-      if ( transmitted && ( ( Chimera::millis() - lastRx ) > 1000 ) )
-      {
-        auto bytesAvailable = rxSocket->available();
-        lastRx = Chimera::millis();
+      // /*-------------------------------------------------
+      // Try and sample data. Expects to receive an echo of
+      // the transmit.
+      // -------------------------------------------------*/
+      // if ( transmitted && ( ( Chimera::millis() - lastRx ) > 1000 ) )
+      // {
+      //   auto bytesAvailable = rxSocket->available();
+      //   lastRx = Chimera::millis();
 
-        if( !bytesAvailable )
-        {
-          getRootSink()->flog( Level::LVL_DEBUG, "Didn't receive data: %d\r\n", Chimera::millis() );
-          continue;
-        }
+      //   if( !bytesAvailable )
+      //   {
+      //     getRootSink()->flog( Level::LVL_DEBUG, "Didn't receive data: %d\r\n", Chimera::millis() );
+      //     continue;
+      //   }
 
-        auto mem = context->malloc( bytesAvailable );
+      //   auto mem = context->malloc( bytesAvailable );
 
-        result = rxSocket->read( mem, bytesAvailable );
+      //   result = rxSocket->read( mem, bytesAvailable );
 
-        transmitted = false;
-        getRootSink()->flog( Level::LVL_DEBUG, "Got %d bytes\r\n", bytesAvailable );
-        context->free( mem );
-      }
+      //   transmitted = false;
+      //   getRootSink()->flog( Level::LVL_DEBUG, "Got %d bytes\r\n", bytesAvailable );
+      //   context->free( mem );
+      // }
 
       BKGD::kickDog( PrjTaskId::RADIO );
       Chimera::delayMilliseconds( 10 );
