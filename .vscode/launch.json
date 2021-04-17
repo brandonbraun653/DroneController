@@ -20,19 +20,38 @@
       ]
     },
     {
-      "name": "Last Built Version (Luminary-JLink)",
-      "cwd": "${workspaceRoot}",
-      "executable": "./artifacts/last_build_version/sys_image",
+      "name": "Black Magic Probe",
+      "type": "cppdbg",
       "request": "launch",
-      "type": "cortex-debug",
-      "servertype": "jlink",
-      "interface": "swd",
-      "device": "STM32L432KC",
-      "svdFile": "${workspaceRoot}/lib/CommonTools/svd/STM32L4x2.svd",
-      "armToolchainPath": "/home/braunbr/programs/gcc/gcc-arm-none-eabi-9-2020-q2-update/bin",
+      "cwd": "${workspaceRoot}",
+      "program": "${workspaceRoot}/artifacts/last_build_version/sys_image",
+      "MIMode": "gdb",
+      "targetArchitecture": "arm",
+      "logging": { "engineLogging": true },
+      "miDebuggerPath": "/usr/bin/gdb-multiarch",
+      "serverLaunchTimeout": 10000,
+      "customLaunchSetupCommands": [
+        { "text": "target extended-remote /dev/ttyACM0"},
+        { "text": "monitor swdp_scan"},
+        {
+          "text": "attach 1"
+        },
+        {
+          "text": "file ${workspaceRoot}/artifacts/last_build_version/sys_image"
+        },
+        {
+          "text": "load"
+        },
+        {
+          "text": "set mem inaccessible-by-default off"
+        },
+        {
+          "text": "break main"
+        }
+      ]
     },
     {
-      "name": "Last Built Version (NucleoF446-JLink)",
+      "name": "Last Built Version (JLink)",
       "cwd": "${workspaceRoot}",
       "executable": "./artifacts/last_build_version/sys_image",
       "request": "launch",
