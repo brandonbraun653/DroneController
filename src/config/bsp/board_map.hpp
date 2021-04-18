@@ -32,7 +32,7 @@ namespace DC::IO
     Heartbeat
     -------------------------------------------------*/
     static constexpr Chimera::GPIO::Pin pinHeartbeat   = 8;
-    static constexpr Chimera::GPIO::Port portHeartbeat = Chimera::GPIO::Port::PORTA;
+    static constexpr Chimera::GPIO::Port portHeartbeat = Chimera::GPIO::Port::PORTC;
   }    // namespace LED
 
   namespace HMI
