@@ -19,7 +19,6 @@ gen_static_lib_variants(
     Boost::boost
     lfs_intf_inc
     ripple_inc
-    ugfx_inc
 
     project_inc
   EXPORT_DIR

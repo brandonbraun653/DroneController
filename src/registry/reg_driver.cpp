@@ -285,7 +285,7 @@ namespace DC::REG
   {
     for ( size_t x = 0; x < ARRAY_COUNT( ObservableList ); x++ )
     {
-      RT_HARD_ASSERT( Datastore.registerObservable( *ObservableList[ x ] ) );
+      RT_HARD_ASSERT( Datastore.registerObservable( ObservableList[ x ], &Database ) );
     }
   }
 

@@ -48,48 +48,60 @@ add_subdirectory("lib/FreeRTOS")
 add_subdirectory("lib/Ripple")
 add_subdirectory("lib/Thor")
 add_subdirectory("lib/nanopb")
-add_subdirectory("lib/ugfx")
 add_subdirectory("lib/yaffs2")
 
 # ====================================================
 # Project Exports
 # ====================================================
-# Public include location
-add_library(project_inc INTERFACE)
-target_include_directories(project_inc INTERFACE "${PROJECT_ROOT}" "${PROJECT_ROOT}/src/config")
-export(TARGETS project_inc FILE "${PROJECT_BINARY_DIR}/Project/project_inc.cmake")
-
-
-add_library(freertos_cfg INTERFACE)
-target_include_directories(freertos_cfg INTERFACE
-  "${PROJECT_ROOT}/src/config/freertos"
+# Project Headers
+gen_intf_lib(
+  TARGET
+    project_inc
+  INTF_DEFINES
+    THOR_USER_CONFIG
+  INTF_INCLUDES
+    "${PROJECT_ROOT}"
+    "${PROJECT_ROOT}/src/config"
+  INTF_LIBRARIES
+    freertos_intf_inc_all
+    #vdrone_nanopb_proto_intf_inc
+  EXPORT_DIR
+    "${PROJECT_BINARY_DIR}/Project"
 )
-target_link_libraries(freertos_cfg INTERFACE
-  segger_sys_view_intf
-  segger_sys_view_cortex_m4_freertos_intf
-)
-export(TARGETS freertos_cfg FILE "${PROJECT_BINARY_DIR}/ProjectConfig/freertos-cfg.cmake")
 
-# Adjust Thor build configuration to use this project's config
-target_compile_definitions(thor_project_config INTERFACE "THOR_USER_CONFIG")
-target_include_directories(thor_project_config INTERFACE "${PROJECT_ROOT}/src/config")
-
-# uGFX Configuration file
-add_library(project_ugfx_inc INTERFACE)
-target_include_directories(project_ugfx_inc INTERFACE "${PROJECT_ROOT}/src/config/ugfx")
-target_link_libraries(project_ugfx_inc INTERFACE ugfx_st7735_inc)
-if(Toolchain::REQUIRES_FREERTOS_THREADS)
-  target_link_libraries(project_ugfx_inc INTERFACE
-    freertos_inc
-    freertos_inc_legacy
+# FreeRTOS Configuration
+gen_intf_lib(
+  TARGET
     freertos_cfg
+  INTF_INCLUDES
+    "${PROJECT_ROOT}/src/config/freertos"
+    "${PROJECT_ROOT}/lib/Aurora/lib/segger/contrib/cortex_m4_freertos"
+  INTF_LIBRARIES
+    # segger_sys_view_intf
+    # segger_sys_view_cortex_m4_freertos_intf
+  EXPORT_DIR
+    "${PROJECT_BINARY_DIR}/Project"
+)
+
+gen_intf_lib(
+  TARGET
     freertos_port
-  )
-endif()
+  INTF_INCLUDES
+    "${PROJECT_ROOT}/lib/FreeRTOS/portable/GCC/ARM_CM4F"
+  INTF_DEFINES
+    FREERTOS_CFG_PORT_ARM_CM4F=1
+  EXPORT_DIR
+    "${PROJECT_BINARY_DIR}/Project"
+)
 
-export(TARGETS project_ugfx_inc FILE "${PROJECT_BINARY_DIR}/project/project_ugfx_inc.cmake")
-
-
+gen_intf_lib(
+  TARGET
+    freertos_heap
+  INTF_DEFINES
+    FREERTOS_CFG_MEM_MANG_HEAP4=1
+  EXPORT_DIR
+    "${PROJECT_BINARY_DIR}/Project"
+)
 
 # ====================================================
 # Project Imports

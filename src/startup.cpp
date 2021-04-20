@@ -36,7 +36,7 @@ int main()
   /*-------------------------------------------------
   Initialize the SystemView driver
   -------------------------------------------------*/
-  SEGGER_SYSVIEW_Conf();
+  // SEGGER_SYSVIEW_Conf();
 
   /*-------------------------------------------------
   Start the system threads. Never returns.

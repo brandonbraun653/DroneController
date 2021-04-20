@@ -186,10 +186,6 @@
       "vgdb",
       "wwdg",
       "yaffs"
-    ],
-    "terminal.integrated.shellArgs.linux": [
-      "--init-file",
-      "bootstrap.sh"
     ]
   }
 }

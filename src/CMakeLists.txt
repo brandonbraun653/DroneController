@@ -4,7 +4,6 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 # Project Libraries
 # -----------------------------------------------------------------------------
 add_subdirectory(config/bsp)
-add_subdirectory(config/ugfx)
 add_subdirectory(debug)
 add_subdirectory(hmi)
 add_subdirectory(registry)
@@ -21,11 +20,11 @@ gen_intf_lib_variants(
   TARGET
     embedded_core_libs
   LIBRARIES
-    freertos_core
-    thor_cfg_freertos
     thor_cmn_cm4
     thor_hld_core
     thor_lld_intf
+    thor_lld_stm32f4
+    thor_cfg_freertos
   EXPORT_DIR
     ${PROJECT_BINARY_DIR}/DroneController
 )
@@ -43,7 +42,7 @@ target_link_options(DroneController PRIVATE "-Wl,-Map=${CMAKE_RUNTIME_OUTPUT_DIR
 
 # Include Directories
 target_include_directories(DroneController PRIVATE ".")
-add_dependencies(DroneController ripple_netif_nrf24_protobuf)
+#add_dependencies(DroneController ripple_netif_nrf24_protobuf)
 
 # Dependent Modules
 target_link_libraries(DroneController PRIVATE
@@ -53,10 +52,12 @@ target_link_libraries(DroneController PRIVATE
   chimera_intf_inc
   thor_intf_inc
   type_safe_inc
+  freertos_intf_inc_all
+
+
 
   # Project Libraries
   lib_config
-  #lib_debug
   lib_human_interface
   lib_registry
   lib_system
@@ -64,22 +65,29 @@ target_link_libraries(DroneController PRIVATE
   lib_utility
   lib_wireless
 
+  # Threading Library
+  freertos_intf_inc_all
+  freertos_core
+  freertos_port
+  freertos_heap
+  freertos_heap_4
+  freertos_cm4f_port
+
   # Board Support Libraries
   bsp_nucleo_f446re
 
   # Segger System View
-  segger_sys_view
-  segger_sys_view_intf
-  segger_sys_view_cortex_m4_freertos
+  # segger_sys_view
+  # segger_sys_view_intf
+  # segger_sys_view_cortex_m4_freertos
 
   # Networking Libraries
-  #ripple_core_dbg
   ripple_shared
   ripple_user_intf
   ripple_network_stack
-  ripple_netif_nrf24_physical
   ripple_netif_nrf24_datalink
-  ripple_netif_nrf24_protobuf
+  ripple_netif_nrf24_physical
+  #ripple_netif_nrf24_protobuf
 
   # Utility Libraries
   aurora_core_dbg
@@ -100,24 +108,15 @@ target_link_libraries(DroneController PRIVATE
 
 # Hardware Driver Model
 if(${DEVICE_TARGET} MATCHES "^stm32l4")
-  target_link_libraries(DroneController PRIVATE thor_lld_stm32l4_dbg embedded_core_libs_rel)
+  target_link_libraries(DroneController PRIVATE thor_lld_stm32l4_rel embedded_core_libs_rel)
 elseif(${DEVICE_TARGET} MATCHES "^stm32f4")
-  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_dbg embedded_core_libs_rel)
+  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_rel embedded_core_libs_rel)
 elseif(${DEVICE_TARGET} MATCHES "^sim")
   target_link_libraries(DroneController PRIVATE chimera_sim_core)
 else()
   message(FATAL_ERROR "Unsupported device target")
 endif()
 
-if(Toolchain::REQUIRES_FREERTOS_THREADS)
-  target_link_libraries(DroneController PRIVATE
-    freertos_inc
-    freertos_inc_legacy
-    freertos_cfg
-    freertos_port
-    freertos_heap
-  )
-endif()
 
 if(Toolchain::HAS_GCC)
   target_link_libraries(DroneController PRIVATE
