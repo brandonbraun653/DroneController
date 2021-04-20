@@ -134,14 +134,14 @@ namespace DC::HMI::Button
       switch ( s_btn_ctrl[ x ].thisKey )
       {
         case Key::TOUCH_KEY_1:
-          s_btn_ctrl[ x ].activeState = State::LOW;
-          config.gpioConfig.pin       = DC::IO::HMI::pinKeyIn0;
-          config.gpioConfig.port      = DC::IO::HMI::portKeyIn0;
-          config.gpioConfig.validity  = true;
-          config.activeEdge           = ActiveEdge::BOTH_EDGES;
-          config.debounceTime         = 50;
-          config.sampleRate           = 10;
-          config.stableSamples        = 3;
+          // s_btn_ctrl[ x ].activeState = State::LOW;
+          // config.gpioConfig.pin       = DC::IO::HMI::pinKeyIn0;
+          // config.gpioConfig.port      = DC::IO::HMI::portKeyIn0;
+          // config.gpioConfig.validity  = true;
+          // config.activeEdge           = ActiveEdge::BOTH_EDGES;
+          // config.debounceTime         = 50;
+          // config.sampleRate           = 10;
+          // config.stableSamples        = 3;
           break;
 
         default:

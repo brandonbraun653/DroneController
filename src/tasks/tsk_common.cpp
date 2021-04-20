@@ -16,7 +16,6 @@
 #include <src/tasks/tsk_background.hpp>
 #include <src/tasks/tsk_common.hpp>
 #include <src/tasks/tsk_file_system.hpp>
-#include <src/tasks/tsk_graphics.hpp>
 #include <src/tasks/tsk_heartbeat.hpp>
 #include <src/tasks/tsk_hmi.hpp>
 #include <src/tasks/tsk_radio.hpp>
@@ -65,18 +64,11 @@ namespace DC::Tasks
     s_thread_id[ static_cast<size_t>( PrjTaskId::HMI ) ] = hmi.start();
 
     /*-------------------------------------------------
-    System Thread: Graphics
-    -------------------------------------------------*/
-    Task graphics;
-    graphics.initialize( GFX::GraphicsThread, nullptr, GFX::PRIORITY, GFX::STACK, GFX::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( PrjTaskId::GRAPHICS ) ] = graphics.start();
-
-    /*-------------------------------------------------
     System Thread: Radio
     -------------------------------------------------*/
-    Task radio;
-    radio.initialize( RADIO::RadioThread, nullptr, RADIO::PRIORITY, RADIO::STACK, RADIO::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( PrjTaskId::RADIO ) ] = radio.start();
+    // Task radio;
+    // radio.initialize( RADIO::RadioThread, nullptr, RADIO::PRIORITY, RADIO::STACK, RADIO::NAME.cbegin() );
+    // s_thread_id[ static_cast<size_t>( PrjTaskId::RADIO ) ] = radio.start();
 
     /*-------------------------------------------------
     System Thread: File System

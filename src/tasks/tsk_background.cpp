@@ -78,7 +78,6 @@ namespace DC::Tasks::BKGD
     /* clang-format off */
     { .id = PrjTaskId::MONITOR,      .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
     { .id = PrjTaskId::FILE_SYSTEM,  .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
-    { .id = PrjTaskId::GRAPHICS,     .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
     { .id = PrjTaskId::HEART_BEAT,   .lower = 0, .upper = 12,  .exact = 0 },
     { .id = PrjTaskId::HMI,          .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
     { .id = PrjTaskId::RADIO,        .lower = 0, .upper = 50,  .exact = 0 },

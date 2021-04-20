@@ -7,7 +7,6 @@ gen_static_lib_variants(
     tsk_background.cpp
     tsk_common.cpp
     tsk_file_system.cpp
-    tsk_graphics.cpp
     tsk_heartbeat.cpp
     tsk_hmi.cpp
     tsk_radio.cpp

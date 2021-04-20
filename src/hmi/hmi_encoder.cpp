@@ -148,22 +148,22 @@ namespace DC::HMI::Encoder
       {
         case Key::ENCODER_1:
           /* Center Button Configuration */
-          s_enc_ctrl[ x ].btnActiveState = State::LOW;
-          config.btnCfg.pin              = DC::IO::HMI::Encoder::pinBtnIn0;
-          config.btnCfg.port             = DC::IO::HMI::Encoder::portBtnIn0;
-          config.btnCfg.validity         = true;
-          config.btnActiveEdge           = Button::ActiveEdge::BOTH_EDGES;
-          config.btnDebounceTime         = 30;
-          config.btnSampleRate           = 10;
-          config.btnNumSamples           = 2;
+          // s_enc_ctrl[ x ].btnActiveState = State::LOW;
+          // config.btnCfg.pin              = DC::IO::HMI::Encoder0::pin;
+          // config.btnCfg.port             = DC::IO::HMI::Encoder0::p;
+          // config.btnCfg.validity         = true;
+          // config.btnActiveEdge           = Button::ActiveEdge::BOTH_EDGES;
+          // config.btnDebounceTime         = 30;
+          // config.btnSampleRate           = 10;
+          // config.btnNumSamples           = 2;
 
           /* Rotary Encoder Configuration */
-          config.encACfg.pin      = DC::IO::HMI::Encoder::pinA;
-          config.encACfg.port     = DC::IO::HMI::Encoder::portA;
+          config.encACfg.pin      = DC::IO::HMI::Encoder0::pinA;
+          config.encACfg.port     = DC::IO::HMI::Encoder0::portA;
           config.encACfg.validity = true;
 
-          config.encBCfg.pin      = DC::IO::HMI::Encoder::pinB;
-          config.encBCfg.port     = DC::IO::HMI::Encoder::portB;
+          config.encBCfg.pin      = DC::IO::HMI::Encoder0::pinB;
+          config.encBCfg.port     = DC::IO::HMI::Encoder0::portB;
           config.encBCfg.validity = true;
 
           config.encActiveEdge = Button::ActiveEdge::BOTH_EDGES;

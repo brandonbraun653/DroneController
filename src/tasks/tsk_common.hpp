@@ -34,7 +34,6 @@ namespace DC::Tasks
 
     /* User Threads */
     FILE_SYSTEM, /**< File system processing */
-    GRAPHICS,    /**< Graphics processing */
     HEART_BEAT,  /**< Heartbeat thread indicates the system is alive */
     HMI,         /**< Human machine interface processing */
     RADIO,       /**< NRF24L01 Radio processing */
