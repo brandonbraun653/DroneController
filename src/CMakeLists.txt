@@ -6,12 +6,12 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 add_subdirectory(config/bsp)
 add_subdirectory(debug)
 add_subdirectory(hmi)
+add_subdirectory(io)
 add_subdirectory(registry)
 add_subdirectory(system)
 add_subdirectory(tasks)
 add_subdirectory(utility)
 add_subdirectory(wireless)
-
 
 # -----------------------------------------------------------------------------
 # Project Libraries
@@ -59,6 +59,7 @@ target_link_libraries(DroneController PRIVATE
   # Project Libraries
   lib_config
   lib_human_interface
+  lib_io
   lib_registry
   lib_system
   lib_tasks
@@ -110,7 +111,7 @@ target_link_libraries(DroneController PRIVATE
 if(${DEVICE_TARGET} MATCHES "^stm32l4")
   target_link_libraries(DroneController PRIVATE thor_lld_stm32l4_rel embedded_core_libs_rel)
 elseif(${DEVICE_TARGET} MATCHES "^stm32f4")
-  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_rel embedded_core_libs_rel)
+  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_dbg embedded_core_libs_dbg)
 elseif(${DEVICE_TARGET} MATCHES "^sim")
   target_link_libraries(DroneController PRIVATE chimera_sim_core)
 else()

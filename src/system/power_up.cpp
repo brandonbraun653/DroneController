@@ -12,6 +12,8 @@
 #include <Aurora/logging>
 
 /* Project Includes */
+#include <src/io/gpio_driver.hpp>
+#include <src/io/sr_driver.hpp>
 #include <src/registry/reg_intf.hpp>
 #include <src/system/power_up.hpp>
 #include <src/utility/serial_output.hpp>
@@ -34,6 +36,16 @@ namespace DC::SYS
     registry to initialize properly.
     -------------------------------------------------*/
     powerUpFileSystem();
+
+    /*-------------------------------------------------
+    Power up the shift register processing
+    -------------------------------------------------*/
+    DC::GPIO::SR::init();
+
+    uint8_t data = 0x00;
+    DC::GPIO::SR::write( &data, sizeof( data ) );
+
+    DC::GPIO::setShiftRegister( DC::GPIO::SR::OutputPin::RF24_PWR_EN );
   }
 
 

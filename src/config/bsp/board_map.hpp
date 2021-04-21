@@ -72,44 +72,46 @@ namespace DC::IO
       static constexpr Chimera::GPIO::Port portB = Chimera::GPIO::Port::PORTA;
     }    // namespace Encoder1
 
-    /*-------------------------------------------------
-    Discrete IO - SPI3
-    -------------------------------------------------*/
-    namespace IO
-    {
-      /*-------------------------------------------------
-      GPIO
-      -------------------------------------------------*/
-      static constexpr Chimera::GPIO::Pin csPin_KeyIn    = 9;
-      static constexpr Chimera::GPIO::Port csPort_KeyIn  = Chimera::GPIO::Port::PORTB;
-      static constexpr Chimera::GPIO::Pin csPin_KeyOut   = 5;
-      static constexpr Chimera::GPIO::Port csPort_KeyOut = Chimera::GPIO::Port::PORTB;
-
-      static constexpr Chimera::GPIO::Pin sckPin       = 10;
-      static constexpr Chimera::GPIO::Port sckPort     = Chimera::GPIO::Port::PORTC;
-      static constexpr Chimera::GPIO::Alternate sckAlt = Chimera::GPIO::Alternate::SPI3_SCK;
-
-      static constexpr Chimera::GPIO::Pin misoPin       = 11;
-      static constexpr Chimera::GPIO::Port misoPort     = Chimera::GPIO::Port::PORTC;
-      static constexpr Chimera::GPIO::Alternate misoAlt = Chimera::GPIO::Alternate::SPI3_MISO;
-
-      static constexpr Chimera::GPIO::Pin mosiPin       = 0;
-      static constexpr Chimera::GPIO::Port mosiPort     = Chimera::GPIO::Port::PORTB;
-      static constexpr Chimera::GPIO::Alternate mosiAlt = Chimera::GPIO::Alternate::SPI3_MOSI;
-
-      /*-------------------------------------------------
-      SPI
-      -------------------------------------------------*/
-      static constexpr Chimera::SPI::Channel spiChannel       = Chimera::SPI::Channel::SPI3;
-      static constexpr Chimera::SPI::TransferMode spiTxfrMode = Chimera::SPI::TransferMode::BLOCKING;
-      static constexpr Chimera::SPI::BitOrder spiBitOrder     = Chimera::SPI::BitOrder::MSB_FIRST;
-      static constexpr Chimera::SPI::ClockFreq spiClockFreq   = 8 * 1000000;
-      static constexpr Chimera::SPI::ClockMode spiClockMode   = Chimera::SPI::ClockMode::MODE0;
-      static constexpr Chimera::SPI::CSMode spiChipSelectMode = Chimera::SPI::CSMode::MANUAL;
-      static constexpr Chimera::SPI::DataSize spiDataSize     = Chimera::SPI::DataSize::SZ_8BIT;
-    }    // namespace IO
-
   }    // namespace HMI
+
+  /*-------------------------------------------------------------------------------
+  Discrete IO via Shift Registers - SPI3
+  -------------------------------------------------------------------------------*/
+  namespace SR
+  {
+    /*-------------------------------------------------
+    GPIO
+    -------------------------------------------------*/
+    static constexpr Chimera::GPIO::Pin csPin_KeyIn       = 9;
+    static constexpr Chimera::GPIO::Port csPort_KeyIn     = Chimera::GPIO::Port::PORTB;
+    static constexpr Chimera::GPIO::Pin csPin_KeySample   = 8;
+    static constexpr Chimera::GPIO::Port csPort_KeySample = Chimera::GPIO::Port::PORTB;
+    static constexpr Chimera::GPIO::Pin csPin_KeyOut      = 5;
+    static constexpr Chimera::GPIO::Port csPort_KeyOut    = Chimera::GPIO::Port::PORTB;
+
+    static constexpr Chimera::GPIO::Pin sckPin       = 10;
+    static constexpr Chimera::GPIO::Port sckPort     = Chimera::GPIO::Port::PORTC;
+    static constexpr Chimera::GPIO::Alternate sckAlt = Chimera::GPIO::Alternate::SPI3_SCK;
+
+    static constexpr Chimera::GPIO::Pin misoPin       = 11;
+    static constexpr Chimera::GPIO::Port misoPort     = Chimera::GPIO::Port::PORTC;
+    static constexpr Chimera::GPIO::Alternate misoAlt = Chimera::GPIO::Alternate::SPI3_MISO;
+
+    static constexpr Chimera::GPIO::Pin mosiPin       = 0;
+    static constexpr Chimera::GPIO::Port mosiPort     = Chimera::GPIO::Port::PORTB;
+    static constexpr Chimera::GPIO::Alternate mosiAlt = Chimera::GPIO::Alternate::SPI3_MOSI;
+
+    /*-------------------------------------------------
+    SPI
+    -------------------------------------------------*/
+    static constexpr Chimera::SPI::Channel spiChannel       = Chimera::SPI::Channel::SPI3;
+    static constexpr Chimera::SPI::TransferMode spiTxfrMode = Chimera::SPI::TransferMode::BLOCKING;
+    static constexpr Chimera::SPI::BitOrder spiBitOrder     = Chimera::SPI::BitOrder::MSB_FIRST;
+    static constexpr Chimera::SPI::ClockFreq spiClockFreq   = 8 * 1000000;
+    static constexpr Chimera::SPI::ClockMode spiClockMode   = Chimera::SPI::ClockMode::MODE0;
+    static constexpr Chimera::SPI::CSMode spiChipSelectMode = Chimera::SPI::CSMode::MANUAL;
+    static constexpr Chimera::SPI::DataSize spiDataSize     = Chimera::SPI::DataSize::SZ_8BIT;
+  }    // namespace SR
 
   /*-------------------------------------------------------------------------------
   NOR Flash - SPI2
@@ -210,7 +212,7 @@ namespace DC::IO
     static constexpr Chimera::GPIO::Port rxPort = Chimera::GPIO::Port::PORTC;
     static constexpr Chimera::GPIO::Pin txPin   = 6;
     static constexpr Chimera::GPIO::Port txPort = Chimera::GPIO::Port::PORTC;
-  }    // namespace Bluetooh
+  }    // namespace Bluetooth
 
   /*-------------------------------------------------------------------------------
   Debug Port
