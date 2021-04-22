@@ -13,7 +13,7 @@
 #include <string>
 
 /* Aurora Includes */
-#include <Aurora/filesystem>
+#include <Aurora/filesystem_spiffs>
 #include <Aurora/logging>
 
 /* Chimera Includes */
@@ -51,18 +51,55 @@ namespace DC::Tasks::FIL
     /*-------------------------------------------------
     Mount the filesystem
     -------------------------------------------------*/
-    Aurora::FileSystem::mount();
+    //Aurora::FileSystem::mount();
 
     /*-------------------------------------------------
     Read out the boot information
     -------------------------------------------------*/
-    SYS::updateBootCount();
-    LOG_DEBUG( "Boot Count: %d\r\n", SYS::getBootCount() );
+    // SYS::updateBootCount();
+    // LOG_DEBUG( "Boot Count: %d\r\n", SYS::getBootCount() );
 
+    std::array<uint8_t, 256> pageDataWrite;
+    std::array<uint8_t, 256> pageDataRead;
+
+    auto nor = Aurora::FileSystem::SPIFFS::getDriver();
+    nor->erase();
+
+    size_t currentChunk = 0;
+    size_t totalErrors = 0;
+    size_t totalSuccess = 0;
 
     size_t lastWoken;
     while ( true )
     {
+      /*-------------------------------------------------
+      Fill with data
+      -------------------------------------------------*/
+      std::generate( pageDataWrite.begin(), pageDataWrite.end(), std::rand );
+      pageDataRead.fill( 0 );
+
+      /*-------------------------------------------------
+      Write data
+      -------------------------------------------------*/
+      nor->write( currentChunk, 0, pageDataWrite.data(), pageDataWrite.size() );
+      nor->read( currentChunk, 0, pageDataRead.data(), pageDataRead.size() );
+      if( pageDataRead != pageDataWrite )
+      {
+        totalErrors++;
+        LOG_ERROR( "Failed compare on chunk: %d; Errors: %d; Success: %d\r\n", currentChunk, totalErrors, totalSuccess );
+      }
+      else
+      {
+        totalSuccess++;
+      }
+
+      currentChunk++;
+      if( currentChunk >= 4096 )
+      {
+        currentChunk = 0;
+        nor->erase();
+      }
+
       lastWoken = Chimera::millis();
       Chimera::delayMilliseconds( lastWoken, 100 );
     }

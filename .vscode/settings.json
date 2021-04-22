@@ -109,7 +109,8 @@
     "future": "cpp",
     "nrf24l01_types": "cpp",
     "netstack": "cpp",
-    "rcc": "cpp"
+    "rcc": "cpp",
+    "filesystem_spiffs": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

@@ -136,9 +136,19 @@ namespace DC::Tasks
     /*-------------------------------------------------
     System Thread: File System
     -------------------------------------------------*/
-    // Task file;
-    // file.initialize( FIL::FileSystemThread, nullptr, FIL::PRIORITY, FIL::STACK, FIL::NAME.cbegin() );
-    // s_thread_id[ EnumValue( PrjTaskId::FILE_SYSTEM ) ] = file.start();
+    Task file;
+
+    cfg.arg        = nullptr;
+    cfg.function   = FIL::FileSystemThread;
+    cfg.priority   = FIL::PRIORITY;
+    cfg.stackWords = FIL::STACK;
+    cfg.type       = TaskInitType::DYNAMIC;
+
+    cfg.name.clear();
+    memcpy( cfg.name.data(), FIL::NAME.cbegin(), FIL::NAME.size() );
+
+    file.create( cfg );
+    s_thread_id[ EnumValue( PrjTaskId::FILE_SYSTEM ) ] = file.start();
   }
 
 

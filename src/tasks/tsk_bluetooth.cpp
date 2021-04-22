@@ -40,6 +40,7 @@ namespace DC::Tasks::BT
     /*-------------------------------------------------
     Power up the bluetooth driver
     -------------------------------------------------*/
+    LOG_INFO( "Enabling bluetooth module\r\n" );
     RF::BT::setPower( RF::BT::PowerState::ENABLED );
 
     while ( 1 )
