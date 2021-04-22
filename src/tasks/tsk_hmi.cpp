@@ -19,6 +19,8 @@
 #include <Chimera/thread>
 
 /* Project Includes */
+#include <src/io/gpio_driver.hpp>
+#include <src/io/sr_driver.hpp>
 #include <src/hmi/hmi_button.hpp>
 #include <src/hmi/hmi_encoder.hpp>
 #include <src/tasks/tsk_common.hpp>
@@ -80,16 +82,17 @@ namespace DC::Tasks::HMI
     size_t lastWoken;
     while ( true )
     {
-      lastWoken = Chimera::millis();
-
-      if ( updated )
+      if( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_0 ) )
       {
-        int pos = currentPosition;
-        updated = false;
-        getRootSink()->flog( Level::LVL_DEBUG, "Position %d\r\n", pos );
+        LOG_DEBUG( "Key 0 press\r\n" );
       }
 
-      Chimera::delayMilliseconds( lastWoken, 10 );
+      if( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_1 ) )
+      {
+        LOG_DEBUG( "Key 1 press\r\n" );
+      }
+
+      Chimera::delayMilliseconds( 100 );
     }
   }
 }    // namespace DC::Tasks::HMI

@@ -102,7 +102,7 @@ namespace DC::GPIO
     Input protection
     -------------------------------------------------*/
     uint32_t bitField = SR::pinToBitField( pin );
-    if ( ( bitField == SR::INVALID_BIT_FIELD ) || ( bitField > std::numeric_limits<decltype( s_ouput_state )>::max() ) )
+    if ( ( bitField == SR::INVALID_BIT_FIELD ) || ( bitField > std::numeric_limits<decltype( s_input_state )>::max() ) )
     {
       /* Bit didn't exist or the configuration was wrong */
       return false;

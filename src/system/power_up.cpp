@@ -41,11 +41,6 @@ namespace DC::SYS
     Power up the shift register processing
     -------------------------------------------------*/
     DC::GPIO::SR::init();
-
-    uint8_t data = 0x00;
-    DC::GPIO::SR::write( &data, sizeof( data ) );
-
-    DC::GPIO::setShiftRegister( DC::GPIO::SR::OutputPin::RF24_PWR_EN );
   }
 
 
