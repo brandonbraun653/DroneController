@@ -54,8 +54,6 @@ target_link_libraries(DroneController PRIVATE
   type_safe_inc
   freertos_intf_inc_all
 
-
-
   # Project Libraries
   lib_config
   lib_human_interface
@@ -64,7 +62,8 @@ target_link_libraries(DroneController PRIVATE
   lib_system
   lib_tasks
   lib_utility
-  lib_wireless
+  lib_rf24
+  lib_bluetooth
 
   # Threading Library
   freertos_intf_inc_all

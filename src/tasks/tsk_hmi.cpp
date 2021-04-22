@@ -34,13 +34,13 @@ namespace DC::Tasks::HMI
   void keyPress( Aurora::HMI::Button::ActiveEdge key )
   {
     using namespace Aurora::Logging;
-    getRootSink()->flog( Level::LVL_DEBUG, "Key pressed! \r\n" );
+    LOG_DEBUG( "Key pressed! \r\n" );
   }
 
   void keyRelease( Aurora::HMI::Button::ActiveEdge key )
   {
     using namespace Aurora::Logging;
-    getRootSink()->flog( Level::LVL_DEBUG, "Key release! \r\n" );
+    LOG_DEBUG( "Key release! \r\n" );
   }
 
   void rotate( Aurora::HMI::Encoder::State &state )

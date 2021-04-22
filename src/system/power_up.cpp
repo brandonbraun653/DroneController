@@ -16,8 +16,10 @@
 #include <src/io/sr_driver.hpp>
 #include <src/registry/reg_intf.hpp>
 #include <src/system/power_up.hpp>
-#include <src/utility/serial_output.hpp>
 #include <src/utility/logger.hpp>
+#include <src/utility/serial_output.hpp>
+#include <src/wireless/bluetooth/bt_driver.hpp>
+#include <src/wireless/rf24/rf_driver.hpp>
 
 namespace DC::SYS
 {
@@ -41,6 +43,16 @@ namespace DC::SYS
     Power up the shift register processing
     -------------------------------------------------*/
     DC::GPIO::SR::init();
+
+    /*-------------------------------------------------
+    Power up the bluetooth driver
+    -------------------------------------------------*/
+    DC::RF::BT::initDriver();
+
+    /*-------------------------------------------------
+    Power up the radio driver
+    -------------------------------------------------*/
+    DC::RF::RF24::initDriver();
   }
 
 
@@ -57,7 +69,7 @@ namespace DC::SYS
     Turn on logger functionality (depends on serial)
     -------------------------------------------------*/
     UTL::initializeLogger( Level::LVL_DEBUG );
-    getRootSink()->flog( Level::LVL_DEBUG, "Power on device\r\n" );
+    LOG_DEBUG( "Power on device\r\n" );
   }
 
 
@@ -70,7 +82,7 @@ namespace DC::SYS
     -------------------------------------------------*/
     if( !REG::initialize() )
     {
-      getRootSink()->flog( Level::LVL_ERROR, "Failed to mount registry\r\n" );
+      LOG_ERROR( "Failed to mount registry\r\n" );
     }
   }
 }    // namespace DC::SYS

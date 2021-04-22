@@ -21,15 +21,36 @@
 #include <Ripple/netif/nrf24l01>
 
 /* Project Includes */
-#include <src/wireless/rf_system_types.hpp>
-#include <src/wireless/rf_packet_types.hpp>
+#include <src/wireless/rf24/rf_system_types.hpp>
+#include <src/wireless/rf24/rf_packet_types.hpp>
 
 
-namespace DC::RF
+namespace DC::RF::RF24
 {
+  /*-------------------------------------------------------------------------------
+  Enumerations
+  -------------------------------------------------------------------------------*/
+  enum class PowerState : uint8_t
+  {
+    ENABLED,
+    DISABLED
+  };
+
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
+  /**
+   * @brief Initialize the RF24 driver module
+   */
+  void initDriver();
+
+  /**
+   * @brief Controls power to the RF24 module
+   *
+   * @param state     Which state to place the power into
+   */
+  void setPower( const PowerState state );
+
   /**
    *  Generates the project's radio configuration structure
    *

@@ -8,12 +8,16 @@
  *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
+/* Aurora Includes */
+#include <Aurora/utility>
+
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/thread>
 
 /* Project Includes */
 #include <src/tasks/tsk_background.hpp>
+#include <src/tasks/tsk_bluetooth.hpp>
 #include <src/tasks/tsk_common.hpp>
 #include <src/tasks/tsk_file_system.hpp>
 #include <src/tasks/tsk_heartbeat.hpp>
@@ -34,6 +38,8 @@ namespace DC::Tasks
   {
     using namespace Chimera::Thread;
 
+    TaskConfig cfg;
+
     /*-------------------------------------------------
     Initialize local memory
     -------------------------------------------------*/
@@ -46,36 +52,93 @@ namespace DC::Tasks
     System Thread: Background
     -------------------------------------------------*/
     Task background;
-    background.initialize( BKGD::BackgroundThread, nullptr, BKGD::PRIORITY, BKGD::STACK, BKGD::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( PrjTaskId::MONITOR ) ] = background.start();
+
+    cfg.arg        = nullptr;
+    cfg.function   = BKGD::BackgroundThread;
+    cfg.priority   = BKGD::PRIORITY;
+    cfg.stackWords = BKGD::STACK;
+    cfg.type       = TaskInitType::DYNAMIC;
+
+    cfg.name.clear();
+    memcpy( cfg.name.data(), BKGD::NAME.cbegin(), BKGD::NAME.size() );
+
+    background.create( cfg );
+    s_thread_id[ EnumValue( PrjTaskId::MONITOR ) ] = background.start();
 
     /*-------------------------------------------------
     System Thread: Heartbeat
     -------------------------------------------------*/
     Task heartbeat;
-    heartbeat.initialize( HB::HeartBeatThread, nullptr, HB::PRIORITY, HB::STACK, HB::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( PrjTaskId::HEART_BEAT ) ] = heartbeat.start();
+
+    cfg.arg        = nullptr;
+    cfg.function   = HB::HeartBeatThread;
+    cfg.priority   = HB::PRIORITY;
+    cfg.stackWords = HB::STACK;
+    cfg.type       = TaskInitType::DYNAMIC;
+
+    cfg.name.clear();
+    memcpy( cfg.name.data(), HB::NAME.cbegin(), HB::NAME.size() );
+
+    heartbeat.create( cfg );
+    s_thread_id[ EnumValue( PrjTaskId::HEART_BEAT ) ] = heartbeat.start();
 
     /*-------------------------------------------------
     System Thread: Human Interface
     -------------------------------------------------*/
     Task hmi;
-    hmi.initialize( HMI::HumanInterfaceThread, nullptr, HMI::PRIORITY, HMI::STACK, HMI::NAME.cbegin() );
-    s_thread_id[ static_cast<size_t>( PrjTaskId::HMI ) ] = hmi.start();
+
+    cfg.arg        = nullptr;
+    cfg.function   = HMI::HumanInterfaceThread;
+    cfg.priority   = HMI::PRIORITY;
+    cfg.stackWords = HMI::STACK;
+    cfg.type       = TaskInitType::DYNAMIC;
+
+    cfg.name.clear();
+    memcpy( cfg.name.data(), HMI::NAME.cbegin(), HMI::NAME.size() );
+
+    hmi.create( cfg );
+    s_thread_id[ EnumValue( PrjTaskId::HMI ) ] = hmi.start();
+
+    /*-------------------------------------------------
+    System Thread: Bluetooth
+    -------------------------------------------------*/
+    Task bt;
+
+    cfg.arg        = nullptr;
+    cfg.function   = BT::BluetoothThread;
+    cfg.priority   = BT::PRIORITY;
+    cfg.stackWords = BT::STACK;
+    cfg.type       = TaskInitType::DYNAMIC;
+
+    cfg.name.clear();
+    memcpy( cfg.name.data(), BT::NAME.cbegin(), BT::NAME.size() );
+
+    bt.create( cfg );
+    s_thread_id[ EnumValue( PrjTaskId::BLUETOOTH ) ] = bt.start();
 
     /*-------------------------------------------------
     System Thread: Radio
     -------------------------------------------------*/
-    // Task radio;
-    // radio.initialize( RADIO::RadioThread, nullptr, RADIO::PRIORITY, RADIO::STACK, RADIO::NAME.cbegin() );
-    // s_thread_id[ static_cast<size_t>( PrjTaskId::RADIO ) ] = radio.start();
+    Task radio;
+
+    cfg.arg        = nullptr;
+    cfg.function   = RADIO::RadioThread;
+    cfg.priority   = RADIO::PRIORITY;
+    cfg.stackWords = RADIO::STACK;
+    cfg.type       = TaskInitType::DYNAMIC;
+
+    cfg.name.clear();
+    memcpy( cfg.name.data(), RADIO::NAME.cbegin(), RADIO::NAME.size() );
+
+    radio.create( cfg );
+    s_thread_id[ EnumValue( PrjTaskId::RADIO ) ] = radio.start();
 
     /*-------------------------------------------------
     System Thread: File System
     -------------------------------------------------*/
     // Task file;
     // file.initialize( FIL::FileSystemThread, nullptr, FIL::PRIORITY, FIL::STACK, FIL::NAME.cbegin() );
-    // s_thread_id[ static_cast<size_t>( PrjTaskId::FILE_SYSTEM ) ] = file.start();
+    // s_thread_id[ EnumValue( PrjTaskId::FILE_SYSTEM ) ] = file.start();
   }
 
 

@@ -99,7 +99,7 @@ namespace DC::REG
     Datastore.registerCallback( CB_REGISTER_FAIL, registerCallback );
     registerObservables();
 
-    getRootSink()->flog( Level::LVL_DEBUG, "Registry initialized\r\n" );
+    LOG_DEBUG( "Registry initialized\r\n" );
     return true;
   }
 
@@ -107,9 +107,9 @@ namespace DC::REG
   void format()
   {
     // uint32_t eraseTimeout = 10000;
-    // getRootSink()->flog( Level::LVL_ERROR, "Performing full chip erase. Timeout of %d ms.\r\n", eraseTimeout );
+    // LOG_ERROR( "Performing full chip erase. Timeout of %d ms.\r\n", eraseTimeout );
     // Aurora::Memory::LFS::fullChipErase( eraseTimeout );
-    // getRootSink()->flog( Level::LVL_ERROR, "Chip erased\r\n" );
+    // LOG_ERROR( "Chip erased\r\n" );
   }
 
 
@@ -300,6 +300,6 @@ namespace DC::REG
   static void datastoreRegisterFail( const size_t id )
   {
     using namespace Aurora::Logging;
-    getRootSink()->flog( Level::LVL_ERROR, "Failed to register observable" );
+    LOG_ERROR( "Failed to register observable" );
   }
 }    // namespace DC::REG

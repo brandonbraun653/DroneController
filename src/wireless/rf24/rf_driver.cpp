@@ -8,15 +8,48 @@
  *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
-/* Project Includes */
-#include <src/wireless/rf_driver.hpp>
-#include <src/config/bsp/board_map.hpp>
+/* Ripple Includes */
+#include <Ripple/netif/nrf24l01>
 
-namespace DC::RF
+/* Project Includes */
+#include <src/config/bsp/board_map.hpp>
+#include <src/io/gpio_driver.hpp>
+#include <src/wireless/rf24/rf_driver.hpp>
+
+namespace DC::RF::RF24
 {
+  /*-------------------------------------------------------------------------------
+  Static Data
+  -------------------------------------------------------------------------------*/
+  static bool s_is_enabled = false;
+
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
+  void initDriver()
+  {
+    /*-------------------------------------------------
+    Initialize local data
+    -------------------------------------------------*/
+    s_is_enabled = false;
+  }
+
+
+  void setPower( const PowerState state )
+  {
+    if( state == PowerState::ENABLED )
+    {
+      GPIO::setShiftRegister( GPIO::SR::OutputPin::RF24_PWR_EN );
+      s_is_enabled = true;
+    }
+    else
+    {
+      GPIO::clearShiftRegister( GPIO::SR::OutputPin::RF24_PWR_EN );
+      s_is_enabled = false;
+    }
+  }
+
+
   void genRadioCfg( Ripple::NetIf::NRF24::Physical::Handle &config )
   {
     using namespace Chimera::GPIO;
@@ -120,6 +153,7 @@ namespace DC::RF
     // SPI Parameters
     config.cfg.spi.validity           = true;
     config.cfg.spi.externalCS         = true;
+    config.cfg.spi.HWInit.validity    = true;
     config.cfg.spi.HWInit.bitOrder    = DC::IO::Radio::spiBitOrder;
     config.cfg.spi.HWInit.clockFreq   = DC::IO::Radio::spiClockFreq;
     config.cfg.spi.HWInit.clockMode   = DC::IO::Radio::spiClockMode;
@@ -128,5 +162,6 @@ namespace DC::RF
     config.cfg.spi.HWInit.dataSize    = DC::IO::Radio::spiDataSize;
     config.cfg.spi.HWInit.hwChannel   = DC::IO::Radio::spiChannel;
     config.cfg.spi.HWInit.txfrMode    = DC::IO::Radio::spiTxfrMode;
+
   }
 }  // namespace DC::RF

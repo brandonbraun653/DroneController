@@ -18,7 +18,7 @@
 
 /* Ripple Includes */
 
-namespace DC::RF
+namespace DC::RF::RF24
 {
   /*-------------------------------------------------------------------------------
   Enumerations

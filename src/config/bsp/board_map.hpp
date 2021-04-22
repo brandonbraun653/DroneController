@@ -177,7 +177,7 @@ namespace DC::IO
     -------------------------------------------------*/
     static constexpr bool pinThreadMode = false;
 
-    static constexpr Chimera::GPIO::Pin pinSCK       = 1;
+    static constexpr Chimera::GPIO::Pin pinSCK       = 5;
     static constexpr Chimera::GPIO::Alternate altSCK = Chimera::GPIO::Alternate::SPI1_SCK;
 
     static constexpr Chimera::GPIO::Pin pinMOSI       = 7;

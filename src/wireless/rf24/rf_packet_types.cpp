@@ -9,7 +9,7 @@
  *******************************************************************************/
 
 
-namespace DC::RF
+namespace DC::RF::RF24
 {
   // Use macros to generate register packets. This is how you'll be able to automate
   // all the struct member types.

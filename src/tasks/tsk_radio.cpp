@@ -28,7 +28,7 @@
 #include <src/tasks/tsk_background.hpp>
 #include <src/tasks/tsk_radio.hpp>
 #include <src/utility/logger.hpp>
-#include <src/wireless/rf_driver.hpp>
+#include <src/wireless/rf24/rf_driver.hpp>
 
 
 // Testing only
@@ -55,6 +55,12 @@ namespace DC::Tasks::RADIO
     -------------------------------------------------*/
     waitInit();
 
+    /*-------------------------------------------------
+    Power up the Radio
+    -------------------------------------------------*/
+    DC::RF::RF24::setPower( DC::RF::RF24::PowerState::ENABLED );
+    Chimera::delayMilliseconds( 25 );
+
     /*-------------------------------------------------------------------------------
     Network testing
     -------------------------------------------------------------------------------*/
@@ -69,7 +75,7 @@ namespace DC::Tasks::RADIO
     auto netif = Ripple::NetIf::NRF24::DataLink::createNetIf( context );
 
     Ripple::NetIf::NRF24::Physical::Handle cfg;
-    DC::RF::genRadioCfg( cfg );
+    DC::RF::RF24::genRadioCfg( cfg );
 
     netif->assignConfig( cfg );
     netif->powerUp( context );
@@ -141,7 +147,7 @@ namespace DC::Tasks::RADIO
 
       //   if( !bytesAvailable )
       //   {
-      //     getRootSink()->flog( Level::LVL_DEBUG, "Didn't receive data: %d\r\n", Chimera::millis() );
+      //     LOG_DEBUG( "Didn't receive data: %d\r\n", Chimera::millis() );
       //     continue;
       //   }
 
@@ -150,7 +156,7 @@ namespace DC::Tasks::RADIO
       //   result = rxSocket->read( mem, bytesAvailable );
 
       //   transmitted = false;
-      //   getRootSink()->flog( Level::LVL_DEBUG, "Got %d bytes\r\n", bytesAvailable );
+      //   LOG_DEBUG( "Got %d bytes\r\n", bytesAvailable );
       //   context->free( mem );
       // }
 

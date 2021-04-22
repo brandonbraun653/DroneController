@@ -37,6 +37,7 @@ namespace DC::Tasks
     HEART_BEAT,  /**< Heartbeat thread indicates the system is alive */
     HMI,         /**< Human machine interface processing */
     RADIO,       /**< NRF24L01 Radio processing */
+    BLUETOOTH,   /**< RN4871 bluetooth processing */
 
     NUM_OPTIONS,
     UNKNOWN

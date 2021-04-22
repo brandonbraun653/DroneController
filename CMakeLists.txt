@@ -63,6 +63,7 @@ gen_intf_lib(
     "${PROJECT_ROOT}"
     "${PROJECT_ROOT}/src/config"
   INTF_LIBRARIES
+    ripple_inc
     freertos_intf_inc_all
     #vdrone_nanopb_proto_intf_inc
   EXPORT_DIR

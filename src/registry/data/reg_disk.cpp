@@ -59,7 +59,7 @@ namespace DC::REG::Disk
     }
     else
     {
-      getRootSink()->flog( Level::LVL_DEBUG, "Failed to open file %s\r\n", filename.begin() );
+      LOG_DEBUG( "Failed to open file %s\r\n", filename.begin() );
     }
 
     return file;
@@ -88,12 +88,12 @@ namespace DC::REG::Disk
     using namespace Aurora::Logging;
     namespace fs = Aurora::FileSystem;
 
-    getRootSink()->flog( Level::LVL_DEBUG, "Initializing %s\r\n", filename.begin() );
+    LOG_DEBUG( "Initializing %s\r\n", filename.begin() );
     FileHandle file = openFile( IO_WRITE, filename );
 
     if ( file < 0 )
     {
-      getRootSink()->flog( Level::LVL_DEBUG, "Could not create %s\r\n", filename.begin() );
+      LOG_DEBUG( "Could not create %s\r\n", filename.begin() );
       return false;
     }
     else
