@@ -57,10 +57,9 @@
       "request": "launch",
       "type": "cortex-debug",
       "servertype": "jlink",
-      "interface": "swd",
+      "interface": "jtag",
       "device": "STM32F446RE",
-      "svdFile": "${workspaceRoot}/lib/CommonTools/svd/STM32F446.svd",
-      "armToolchainPath": "/home/braunbr/programs/gcc/gcc-arm-none-eabi-9-2020-q2-update/bin"
+      "svdFile": "${workspaceRoot}/lib/CommonTools/svd/STM32F446.svd"
     },
   ]
 }

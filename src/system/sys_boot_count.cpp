@@ -62,7 +62,7 @@ namespace DC::SYS
     fileSys::fclose( fd );
     LOG_INFO( "Saved boot count of %d\r\n", fileData.bootCount );
 
-    size_t saved = fileData.bootCount;
+    //size_t saved = fileData.bootCount;
 
     fd = fileSys::fopen( Files::SysCfg::filename.data(), "rb" );
     fileSys::frewind( fd );

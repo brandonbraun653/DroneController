@@ -191,7 +191,7 @@ namespace DC::Tasks::BKGD
     /*-------------------------------------------------
     Initialize local memory
     -------------------------------------------------*/
-    for ( auto x = 0; x < ARRAY_COUNT( s_timing_stats ); x++ )
+    for ( size_t x = 0; x < ARRAY_COUNT( s_timing_stats ); x++ )
     {
       s_timing_stats[ x ].exact = 0;
     }
@@ -225,7 +225,7 @@ namespace DC::Tasks::BKGD
     Start up system threads. Monitor thread is always
     the first task, so don't bother sending msg there.
     -------------------------------------------------*/
-    for ( auto x = 1; x < ARRAY_COUNT( s_timing_stats ); x++ )
+    for ( size_t x = 1; x < ARRAY_COUNT( s_timing_stats ); x++ )
     {
       TaskId threadId = getTaskId( s_timing_stats[ x ].id );
       if( threadId == THREAD_ID_INVALID )

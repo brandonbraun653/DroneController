@@ -31,7 +31,7 @@ gen_intf_lib_variants(
 
 # -----------------------------------------------------------------------------
 # Hardware Config:
-# cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DCUSTOM_FREERTOS_CFG=ON -DDEVICE_TARGET=stm32f446re -DCMAKE_BUILD_TYPE=Debug ./../
+# cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DDEVICE_TARGET=stm32f446re -DCMAKE_BUILD_TYPE=Debug ./../
 #
 # Simulator Config:
 # cmake -DTOOLCHAIN=gcc -DNATIVE_THREADS=ON -DDEVICE_TARGET=sim -DCMAKE_BUILD_TYPE=Debug ./../

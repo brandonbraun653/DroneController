@@ -110,10 +110,8 @@ namespace DC::HMI::Button
     /*-------------------------------------------------
     Reset and then initialize the GPIO for each block
     -------------------------------------------------*/
-    for ( auto x = 0; x < ARRAY_COUNT( s_btn_ctrl ); x++ )
+    for ( size_t x = 0; x < ARRAY_COUNT( s_btn_ctrl ); x++ )
     {
-      Chimera::Status_t result = Chimera::Status::OK;
-
       /*-------------------------------------------------
       Control block reset
       -------------------------------------------------*/

@@ -116,11 +116,10 @@ namespace DC::Tasks::RADIO
     /*-------------------------------------------------
     Initialize some local data for the transfers
     -------------------------------------------------*/
-    Chimera::Status_t result;
-
-    size_t lastTx    = Chimera::millis();
-    size_t lastRx    = Chimera::millis();
-    bool transmitted = false;
+    // Chimera::Status_t result;
+    // size_t lastTx    = Chimera::millis();
+    // size_t lastRx    = Chimera::millis();
+    // bool transmitted = false;
 
     while ( 1 )
     {

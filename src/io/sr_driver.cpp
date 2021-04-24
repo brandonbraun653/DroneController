@@ -185,7 +185,7 @@ namespace DC::GPIO::SR
     Read out the requested number of bytes
     -------------------------------------------------*/
     KeyInCS->setState( State::LOW );
-    auto spiResult = KeySPI->readBytes( buffer, bytes );
+    KeySPI->readBytes( buffer, bytes );
     KeySPI->await( Chimera::Event::Trigger::TRIGGER_TRANSFER_COMPLETE, TIMEOUT_BLOCK );
     KeyInCS->setState( State::HIGH );
 
@@ -210,7 +210,7 @@ namespace DC::GPIO::SR
     Write out the requested number of bytes
     -------------------------------------------------*/
     KeyOutCS->setState( State::LOW );
-    auto spiResult = KeySPI->writeBytes( buffer, bytes );
+    KeySPI->writeBytes( buffer, bytes );
     KeySPI->await( Chimera::Event::Trigger::TRIGGER_TRANSFER_COMPLETE, TIMEOUT_BLOCK );
     KeyOutCS->setState( State::HIGH );
 

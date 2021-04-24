@@ -2,7 +2,6 @@
     "env": {
         "defaultIncludePaths": [
             "${workspaceFolder}",
-            "${workspaceFolder}/build/lib/DroneNet/nanopb",
             "${workspaceFolder}/lib",
             "${workspaceFolder}/lib/Aurora/include",
             "${workspaceFolder}/lib/Aurora/include",
@@ -33,8 +32,7 @@
             "${workspaceFolder}/lib/ugfx/ugfx_2.9/**",
             "${workspaceFolder}/lib/yaffs2/direct",
             "${workspaceFolder}/lib/yaffs2/integration",
-            "${workspaceFolder}/src/config",
-            "${workspaceFolder}/src/config/ugfx"
+            "${workspaceFolder}/src/config"
         ],
         "defaultDefines": [
             "DEBUG",

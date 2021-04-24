@@ -67,9 +67,9 @@ namespace DC::Tasks::HMI
     /*-------------------------------------------------
     Initialize the HMI drivers
     -------------------------------------------------*/
-    auto pressCB    = Aurora::HMI::Button::EdgeCallback::create<keyPress>();
-    auto releaseCB  = Aurora::HMI::Button::EdgeCallback::create<keyRelease>();
-    auto rotateCB   = Aurora::HMI::Encoder::RotationCallback::create<rotate>();
+    // auto pressCB    = Aurora::HMI::Button::EdgeCallback::create<keyPress>();
+    // auto releaseCB  = Aurora::HMI::Button::EdgeCallback::create<keyRelease>();
+    // auto rotateCB   = Aurora::HMI::Encoder::RotationCallback::create<rotate>();
     // bool initResult = DC::HMI::Encoder::initialize();
     // RT_HARD_ASSERT( initResult );
 
@@ -79,7 +79,6 @@ namespace DC::Tasks::HMI
 
     // Encoder::enable( Encoder::Key::ENCODER_1 );
 
-    size_t lastWoken;
     while ( true )
     {
       if( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_0 ) )
