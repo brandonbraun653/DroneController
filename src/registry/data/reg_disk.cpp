@@ -41,7 +41,7 @@ namespace DC::REG::Disk
         break;
 
       case IO_WRITE:
-        file = fs::fopen( filename.begin(), "wb+" );
+        file = fs::fopen( filename.begin(), "w+" );
         break;
 
       default:
