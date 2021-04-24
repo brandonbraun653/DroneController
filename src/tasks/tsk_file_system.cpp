@@ -51,6 +51,7 @@ namespace DC::Tasks::FIL
     /*-------------------------------------------------
     Mount the filesystem
     -------------------------------------------------*/
+    //Aurora::FileSystem::massErase();
     Aurora::FileSystem::mount();
 
     /*-------------------------------------------------

@@ -110,7 +110,13 @@
     "nrf24l01_types": "cpp",
     "netstack": "cpp",
     "rcc": "cpp",
-    "filesystem_spiffs": "cpp"
+    "filesystem_spiffs": "cpp",
+    "compare": "cpp",
+    "concepts": "cpp",
+    "ranges": "cpp",
+    "span": "cpp",
+    "stop_token": "cpp",
+    "typeindex": "cpp"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#1f6fd0",

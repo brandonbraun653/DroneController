@@ -49,44 +49,10 @@ namespace DC::SYS
     Pull the last known info from disk
     -------------------------------------------------*/
     Files::SysCfg::DataType fileData;
-    fileData.bootCount = 500;
-
-    auto fd = fileSys::fopen( Files::SysCfg::filename.data(), "rb" );
-    fileSys::frewind( fd );
-    fileSys::fread( &fileData, 1, sizeof( fileData ), fd );
-    fileSys::fclose( fd );
+    s_refreshed_from_disk = REG::Disk::io_sys_cfg( IO_READ, fileData );
 
     fileData.bootCount += 1;
-    fd = fileSys::fopen( Files::SysCfg::filename.data(), "w+" );
-    fileSys::fwrite( &fileData, 1, sizeof( fileData ), fd );
-    fileSys::fclose( fd );
-    LOG_INFO( "Saved boot count of %d\r\n", fileData.bootCount );
-
-    //size_t saved = fileData.bootCount;
-
-    fd = fileSys::fopen( Files::SysCfg::filename.data(), "rb" );
-    fileSys::frewind( fd );
-    fileSys::fread( &fileData, 1, sizeof( fileData ), fd );
-    fileSys::fclose( fd );
-
-    LOG_INFO( "Read boot count of %d\r\n", fileData.bootCount );
-
-    // if( saved != fileData.bootCount )
-    // {
-    //   auto nor = Aurora::FileSystem::SPIFFS::getDriver();
-    //   nor->erase();
-    // }
-
-    // fileData.bootCount += 1;
-    // fd = fileSys::fopen( Files::SysCfg::filename.data(), "w+" );
-    // fileSys::fwrite( &fileData, 1, sizeof( fileData ), fd );
-    // fileSys::fclose( fd );
-
-    // Files::SysCfg::DataType fileData;
-    // s_refreshed_from_disk = REG::Disk::io_sys_cfg( IO_READ, fileData );
-
-    // fileData.bootCount += 1;
-    // REG::Disk::io_sys_cfg( IO_WRITE, fileData );
+    REG::Disk::io_sys_cfg( IO_WRITE, fileData );
 
     /*-------------------------------------------------
     Update the registry cache

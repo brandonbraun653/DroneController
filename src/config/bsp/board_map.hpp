@@ -142,7 +142,7 @@ namespace DC::IO
     static constexpr Chimera::SPI::Channel spiChannel       = Chimera::SPI::Channel::SPI2;
     static constexpr Chimera::SPI::TransferMode spiTxfrMode = Chimera::SPI::TransferMode::BLOCKING;
     static constexpr Chimera::SPI::BitOrder spiBitOrder     = Chimera::SPI::BitOrder::MSB_FIRST;
-    static constexpr Chimera::SPI::ClockFreq spiClockFreq   = 8 * 1000000;
+    static constexpr Chimera::SPI::ClockFreq spiClockFreq   = 32 * 1000000;
     static constexpr Chimera::SPI::ClockMode spiClockMode   = Chimera::SPI::ClockMode::MODE0;
     static constexpr Chimera::SPI::CSMode spiChipSelectMode = Chimera::SPI::CSMode::MANUAL;
     static constexpr Chimera::SPI::DataSize spiDataSize     = Chimera::SPI::DataSize::SZ_8BIT;

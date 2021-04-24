@@ -32,7 +32,8 @@
             "${workspaceFolder}/lib/ugfx/ugfx_2.9/**",
             "${workspaceFolder}/lib/yaffs2/direct",
             "${workspaceFolder}/lib/yaffs2/integration",
-            "${workspaceFolder}/src/config"
+            "${workspaceFolder}/src/config",
+            "${workspaceFolder}/src/config/freertos"
         ],
         "defaultDefines": [
             "DEBUG",
