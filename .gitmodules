@@ -13,9 +13,6 @@
 [submodule "lib/FreeRTOS"]
 	path = lib/FreeRTOS
 	url = https://github.com/brandonbraun653/FreeRTOS.git
-[submodule "lib/ugfx"]
-	path = lib/ugfx
-	url = https://github.com/brandonbraun653/ugfx.git
 [submodule "lib/Ripple"]
 	path = lib/Ripple
 	url = https://github.com/brandonbraun653/Ripple.git
@@ -25,9 +22,6 @@
 [submodule "lib/ChimeraSim"]
 	path = lib/ChimeraSim
 	url = https://github.com/brandonbraun653/ChimeraSim.git
-[submodule "lib/DroneNet"]
-	path = lib/DroneNet
-	url = https://github.com/brandonbraun653/DroneNet.git
 [submodule "hw/lib/KiCadLib"]
 	path = hw/lib/KiCadLib
 	url = https://github.com/brandonbraun653/KiCadLib.git

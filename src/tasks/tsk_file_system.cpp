@@ -53,7 +53,7 @@ namespace DC::Tasks::FIL
     Wait for initialization command
     -------------------------------------------------*/
     waitInit();
-    Chimera::delayMilliseconds( 500 );
+    Chimera::delayMilliseconds( 100 );
 
     /*-------------------------------------------------
     Mount the filesystem
