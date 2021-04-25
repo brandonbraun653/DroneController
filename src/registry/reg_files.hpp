@@ -21,14 +21,10 @@ namespace DC::Files
   /*-------------------------------------------------------------------------------
   System Configuration Data
   -------------------------------------------------------------------------------*/
-  namespace SysCfg
+  namespace BootCount
   {
-    static const std::string_view filename = "root/sys_config.bin";
-
-    struct DataType
-    {
-      uint32_t bootCount;
-    };
+    static const std::string_view Filename = "boot_count.bin";
+    using DataType = uint32_t;
   }
 }  // namespace DC::Files
 

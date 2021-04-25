@@ -6,12 +6,10 @@ gen_static_lib_variants(
   SOURCES
     reg_driver.cpp
     data/reg_data_button_up.cpp
-    data/reg_disk.cpp
   PRV_LIBRARIES
     aurora_intf_inc
     chimera_intf_inc
     lfs_intf_inc
-
     project_inc
   EXPORT_DIR
     "${PROJECT_BINARY_DIR}/DroneController"

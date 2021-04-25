@@ -1,6 +1,7 @@
 {
     "env": {
         "defaultIncludePaths": [
+            "~/Programs/boost/boost_1_76_0",
             "${workspaceFolder}",
             "${workspaceFolder}/lib",
             "${workspaceFolder}/lib/Aurora/include",
@@ -55,7 +56,8 @@
             "${defaultDefines}"
         ],
         "defaultEmbeddedCStandard": "gnu17",
-        "defaultEmbeddedCppStandard": "gnu++20"
+        "defaultEmbeddedCppStandard": "gnu++20",
+        "arm_none_eabi_path": "~/Programs/compilers/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gcc"
     },
     "configurations": [
         {
@@ -69,7 +71,7 @@
                 "TARGET_STM32L4",
                 "THOR_USER_CONFIG"
             ],
-            "compilerPath": "/usr/bin/gcc",
+            "compilerPath": "${arm_none_eabi_path}",
             "cStandard": "gnu17",
             "cppStandard": "gnu++20"
         },
@@ -84,7 +86,7 @@
                 "TARGET_STM32F4",
                 "THOR_USER_CONFIG"
             ],
-            "compilerPath": "/usr/bin/gcc",
+            "compilerPath": "${arm_none_eabi_path}",
             "cStandard": "gnu17",
             "cppStandard": "gnu++20"
         },

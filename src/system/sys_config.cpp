@@ -10,7 +10,6 @@
 
 /* Project Includes */
 #include <src/system/sys_config.hpp>
-#include <src/registry/reg_disk.hpp>
 
 namespace DC::SYS
 {
