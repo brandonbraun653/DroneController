@@ -48,7 +48,7 @@ target_include_directories(DroneController PRIVATE ".")
 target_link_libraries(DroneController PRIVATE
   # Public Includes
   aurora_intf_inc
-  Boost::boost
+
   chimera_intf_inc
   thor_intf_inc
   type_safe_inc

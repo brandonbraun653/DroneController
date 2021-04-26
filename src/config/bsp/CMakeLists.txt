@@ -6,7 +6,7 @@ gen_static_lib_variants(
   SOURCES
     board_map.cpp
   PRV_LIBRARIES
-    Boost::boost
+
     chimera_intf_inc
     aurora_intf_inc
 

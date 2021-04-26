@@ -8,7 +8,7 @@ gen_static_lib_variants(
     pin_mapping.cpp
     sr_driver.cpp
   PRV_LIBRARIES
-    Boost::boost
+
     chimera_intf_inc
     aurora_intf_inc
     project_inc

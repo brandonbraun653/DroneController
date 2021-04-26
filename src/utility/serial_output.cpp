@@ -5,7 +5,7 @@
  *  Description:
  *    Insert Description
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* Chimera Includes */
@@ -15,7 +15,7 @@
 #include <Chimera/thread>
 
 /* ETL Includes */
-#include <boost/circular_buffer.hpp>
+#include <etl/circular_buffer.h>
 
 /* Testing Includes */
 #include <src/utility/serial_output.hpp>
@@ -27,14 +27,15 @@ Serial Driver Configuration
 -------------------------------------------------*/
 // Length of the hardware buffer for transceiving a Serial message
 static constexpr size_t HWBufferSize = 128;
+static constexpr size_t CircleBufSize = 2 * HWBufferSize;
 
 // Serial Transmit Buffers
 static std::array<uint8_t, HWBufferSize> sTXHWBuffer;
-static boost::circular_buffer<uint8_t> sTXCircularBuffer( 256 );
+static etl::circular_buffer<uint8_t, CircleBufSize> sTXCircularBuffer;
 
 // Serial Receive Buffers
 static std::array<uint8_t, HWBufferSize> sRXHWBuffer;
-static boost::circular_buffer<uint8_t> sRXCircularBuffer( 256 );
+static etl::circular_buffer<uint8_t, CircleBufSize> sRXCircularBuffer;
 
 
 namespace DC::UTL
@@ -66,8 +67,8 @@ namespace DC::UTL
 
     result |= Serial->assignHW( DC::IO::DBG::serialChannel, pins );
     result |= Serial->configure( cfg );
-    result |= Serial->enableBuffering( SubPeripheral::TX, &sTXCircularBuffer, sTXHWBuffer.data(), sTXHWBuffer.size() );
-    result |= Serial->enableBuffering( SubPeripheral::RX, &sRXCircularBuffer, sRXHWBuffer.data(), sRXHWBuffer.size() );
+    result |= Serial->enableBuffering( SubPeripheral::TX, sTXCircularBuffer, sTXHWBuffer.data(), sTXHWBuffer.size() );
+    result |= Serial->enableBuffering( SubPeripheral::RX, sRXCircularBuffer, sRXHWBuffer.data(), sRXHWBuffer.size() );
     result |= Serial->begin( PeripheralMode::INTERRUPT, PeripheralMode::INTERRUPT );
   }
 }    // namespace DC::UTL
