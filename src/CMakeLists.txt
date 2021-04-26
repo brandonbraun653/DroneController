@@ -73,21 +73,18 @@ target_link_libraries(DroneController PRIVATE
   freertos_heap_4
   freertos_cm4f_port
 
-  # Board Support Libraries
-  bsp_nucleo_f446re
-
   # Segger System View
   # segger_sys_view
   # segger_sys_view_intf
   # segger_sys_view_cortex_m4_freertos
 
   # Networking Libraries
-  ripple_shared
-  ripple_user_intf
-  ripple_network_stack
-  ripple_netif_nrf24_datalink
-  ripple_netif_nrf24_physical
-  #ripple_netif_nrf24_protobuf
+  # ripple_shared
+  # ripple_user_intf
+  # ripple_network_stack
+  # ripple_netif_nrf24_datalink
+  # ripple_netif_nrf24_physical
+  # ripple_netif_nrf24_protobuf
 
   # Utility Libraries
   aurora_core_dbg

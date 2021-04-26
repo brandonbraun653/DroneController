@@ -117,7 +117,8 @@
       "nrf24l01_types": "cpp",
       "netstack": "cpp",
       "freertos.h": "c",
-      "yportenv.h": "c"
+      "yportenv.h": "c",
+      "database": "cpp"
     },
     "workbench.colorCustomizations": {
       "activityBar.activeBackground": "#ef7853",

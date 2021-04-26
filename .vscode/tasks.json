@@ -39,6 +39,15 @@
         "cwd": "${workspaceFolder}/build"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Memory Component Analysis",
+      "type": "shell",
+      "command": "bloaty -d compileunits,symbols --domain=vm --demangle=full -n 0 -s vm DroneController > mem_components.txt",
+      "options": {
+        "cwd": "${workspaceFolder}/artifacts/last_build_version"
+      },
+      "problemMatcher": []
     }
   ]
 }

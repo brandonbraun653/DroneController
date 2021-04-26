@@ -8,14 +8,14 @@
  *  2020 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
-/* Boost Includes */
-#include <boost/circular_buffer.hpp>
-
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/gpio>
 #include <Chimera/serial>
 #include <Chimera/thread>
+
+/* ETL Includes */
+#include <etl/circular_buffer.h>
 
 /* Testing Includes */
 #include <src/utility/serial_output.hpp>
@@ -28,16 +28,13 @@ Serial Driver Configuration
 // Length of the hardware buffer for transceiving a Serial message
 static constexpr size_t HWBufferSize = 128;
 
-// Length of the user buffer for queueing multiple messages
-static constexpr size_t CircularBufferSize = 2 * HWBufferSize;
-
 // Serial Transmit Buffers
 static std::array<uint8_t, HWBufferSize> sTXHWBuffer;
-static boost::circular_buffer<uint8_t> sTXCircularBuffer( CircularBufferSize );
+static etl::circular_buffer<uint8_t, 256> sTXCircularBuffer;
 
-// Serial Recieve Buffers
+// Serial Receive Buffers
 static std::array<uint8_t, HWBufferSize> sRXHWBuffer;
-static boost::circular_buffer<uint8_t> sRXCircularBuffer( CircularBufferSize );
+static etl::circular_buffer<uint8_t, 256> sRXCircularBuffer;
 
 
 namespace DC::UTL
