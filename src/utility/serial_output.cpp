@@ -15,7 +15,7 @@
 #include <Chimera/thread>
 
 /* ETL Includes */
-#include <etl/circular_buffer.h>
+#include <boost/circular_buffer.hpp>
 
 /* Testing Includes */
 #include <src/utility/serial_output.hpp>
@@ -30,11 +30,11 @@ static constexpr size_t HWBufferSize = 128;
 
 // Serial Transmit Buffers
 static std::array<uint8_t, HWBufferSize> sTXHWBuffer;
-static etl::circular_buffer<uint8_t, 256> sTXCircularBuffer;
+static boost::circular_buffer<uint8_t> sTXCircularBuffer( 256 );
 
 // Serial Receive Buffers
 static std::array<uint8_t, HWBufferSize> sRXHWBuffer;
-static etl::circular_buffer<uint8_t, 256> sRXCircularBuffer;
+static boost::circular_buffer<uint8_t> sRXCircularBuffer( 256 );
 
 
 namespace DC::UTL
