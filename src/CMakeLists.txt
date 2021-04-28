@@ -10,6 +10,7 @@ add_subdirectory(io)
 add_subdirectory(registry)
 add_subdirectory(system)
 add_subdirectory(tasks)
+add_subdirectory(usb)
 add_subdirectory(utility)
 add_subdirectory(wireless)
 
@@ -55,15 +56,16 @@ target_link_libraries(DroneController PRIVATE
   type_safe_inc
 
   # Project Libraries
+  lib_bluetooth
   lib_config
   lib_human_interface
   lib_io
   lib_registry
+  lib_rf24
   lib_system
   lib_tasks
+  lib_usb
   lib_utility
-  lib_rf24
-  lib_bluetooth
 
   # Threading Library
   freertos_intf_inc_all

@@ -17,6 +17,9 @@
 #include <Chimera/spi>
 #include <Chimera/thread>
 
+/* TinyUSB Includes */
+#include <tusb.h>
+
 /* Project Includes */
 #include <src/tasks/tsk_common.hpp>
 #include <src/tasks/tsk_background.hpp>
@@ -35,10 +38,19 @@ namespace DC::Tasks::USB
     Wait to be told to initialize by monitor thread
     -------------------------------------------------*/
     waitInit();
+
+    /*-------------------------------------------------
+    Power up the USB stack
+    -------------------------------------------------*/
     LOG_INFO( "Booting USB thread\r\n" );
+    tusb_init();
 
     while( 1 )
     {
+      /*-------------------------------------------------
+      Periodically update the USB stack
+      -------------------------------------------------*/
+      tud_task();
 
       BKGD::kickDog( PrjTaskId::USB );
       Chimera::delayMilliseconds( 10 );

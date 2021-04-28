@@ -2,7 +2,7 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 
 gen_static_lib_variants(
   TARGET
-  lib_tasks
+    lib_tasks
   SOURCES
     tsk_background.cpp
     tsk_bluetooth.cpp
