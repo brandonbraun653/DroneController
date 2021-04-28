@@ -31,3 +31,6 @@
 [submodule "lib/VirtualDrone"]
 	path = lib/VirtualDrone
 	url = https://github.com/brandonbraun653/VirtualDrone.git
+[submodule "lib/tinyusb"]
+	path = lib/tinyusb
+	url = https://github.com/hathach/tinyusb.git

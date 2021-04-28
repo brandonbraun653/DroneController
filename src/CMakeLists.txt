@@ -48,11 +48,11 @@ target_include_directories(DroneController PRIVATE ".")
 target_link_libraries(DroneController PRIVATE
   # Public Includes
   aurora_intf_inc
-
   chimera_intf_inc
-  thor_intf_inc
-  type_safe_inc
   freertos_intf_inc_all
+  thor_intf_inc
+  tiny_usb_intf_inc
+  type_safe_inc
 
   # Project Libraries
   lib_config
@@ -97,6 +97,8 @@ target_link_libraries(DroneController PRIVATE
 
   # Hardware Libraries
   chimera_core_dbg
+  tiny_usb_core_dbg
+  tiny_usb_port_st_dbg
 
   # Target Properties
   prj_device_target

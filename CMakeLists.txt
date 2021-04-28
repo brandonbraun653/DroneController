@@ -38,6 +38,7 @@ set(NANO_PB_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/lib/nanopb" CACHE STRING "")
 # Import common packages and projects
 # ====================================================
 find_package(Boost REQUIRED)
+add_subdirectory("lib")
 add_subdirectory("lib/Aurora")
 add_subdirectory("lib/Chimera")
 add_subdirectory("lib/ChimeraSim")
