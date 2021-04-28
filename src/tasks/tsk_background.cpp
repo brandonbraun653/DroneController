@@ -82,6 +82,7 @@ namespace DC::Tasks::BKGD
     { .id = PrjTaskId::HMI,          .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
     { .id = PrjTaskId::RADIO,        .lower = 0, .upper = 50,  .exact = 0 },
     { .id = PrjTaskId::BLUETOOTH,    .lower = 0, .upper = 0,   .exact = 0 },
+    { .id = PrjTaskId::USB,          .lower = 0, .upper = 0,   .exact = 0 },
     /* clang-format on */
   };
   static_assert( ARRAY_COUNT( s_timing_stats ) == static_cast<size_t>( PrjTaskId::NUM_OPTIONS ) );

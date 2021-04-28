@@ -38,6 +38,7 @@ namespace DC::Tasks
     HMI,         /**< Human machine interface processing */
     RADIO,       /**< NRF24L01 Radio processing */
     BLUETOOTH,   /**< RN4871 bluetooth processing */
+    USB,         /**< USB processing */
 
     NUM_OPTIONS,
     UNKNOWN

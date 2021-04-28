@@ -79,11 +79,11 @@ target_link_libraries(DroneController PRIVATE
   # segger_sys_view_cortex_m4_freertos
 
   # Networking Libraries
-  # ripple_shared
-  # ripple_user_intf
-  # ripple_network_stack
-  # ripple_netif_nrf24_datalink
-  # ripple_netif_nrf24_physical
+  ripple_shared
+  ripple_user_intf
+  ripple_network_stack
+  ripple_netif_nrf24_datalink
+  ripple_netif_nrf24_physical
   # ripple_netif_nrf24_protobuf
 
   # Utility Libraries

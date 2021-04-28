@@ -23,6 +23,7 @@
 #include <src/tasks/tsk_heartbeat.hpp>
 #include <src/tasks/tsk_hmi.hpp>
 #include <src/tasks/tsk_radio.hpp>
+#include <src/tasks/tsk_usb.hpp>
 
 namespace DC::Tasks
 {
@@ -58,9 +59,7 @@ namespace DC::Tasks
     cfg.priority   = BKGD::PRIORITY;
     cfg.stackWords = BKGD::STACK;
     cfg.type       = TaskInitType::DYNAMIC;
-
-    cfg.name.clear();
-    memcpy( cfg.name.data(), BKGD::NAME.cbegin(), BKGD::NAME.size() );
+    cfg.name       = BKGD::NAME.data();
 
     background.create( cfg );
     s_thread_id[ EnumValue( PrjTaskId::MONITOR ) ] = background.start();
@@ -75,9 +74,7 @@ namespace DC::Tasks
     cfg.priority   = HB::PRIORITY;
     cfg.stackWords = HB::STACK;
     cfg.type       = TaskInitType::DYNAMIC;
-
-    cfg.name.clear();
-    memcpy( cfg.name.data(), HB::NAME.cbegin(), HB::NAME.size() );
+    cfg.name       = HB::NAME.data();
 
     heartbeat.create( cfg );
     s_thread_id[ EnumValue( PrjTaskId::HEART_BEAT ) ] = heartbeat.start();
@@ -92,9 +89,7 @@ namespace DC::Tasks
     cfg.priority   = HMI::PRIORITY;
     cfg.stackWords = HMI::STACK;
     cfg.type       = TaskInitType::DYNAMIC;
-
-    cfg.name.clear();
-    memcpy( cfg.name.data(), HMI::NAME.cbegin(), HMI::NAME.size() );
+    cfg.name       = HMI::NAME.data();
 
     hmi.create( cfg );
     s_thread_id[ EnumValue( PrjTaskId::HMI ) ] = hmi.start();
@@ -109,9 +104,7 @@ namespace DC::Tasks
     cfg.priority   = BT::PRIORITY;
     cfg.stackWords = BT::STACK;
     cfg.type       = TaskInitType::DYNAMIC;
-
-    cfg.name.clear();
-    memcpy( cfg.name.data(), BT::NAME.cbegin(), BT::NAME.size() );
+    cfg.name       = BT::NAME.data();
 
     bt.create( cfg );
     s_thread_id[ EnumValue( PrjTaskId::BLUETOOTH ) ] = bt.start();
@@ -126,9 +119,7 @@ namespace DC::Tasks
     cfg.priority   = RADIO::PRIORITY;
     cfg.stackWords = RADIO::STACK;
     cfg.type       = TaskInitType::DYNAMIC;
-
-    cfg.name.clear();
-    memcpy( cfg.name.data(), RADIO::NAME.cbegin(), RADIO::NAME.size() );
+    cfg.name       = RADIO::NAME.data();
 
     radio.create( cfg );
     s_thread_id[ EnumValue( PrjTaskId::RADIO ) ] = radio.start();
@@ -143,12 +134,25 @@ namespace DC::Tasks
     cfg.priority   = FIL::PRIORITY;
     cfg.stackWords = FIL::STACK;
     cfg.type       = TaskInitType::DYNAMIC;
-
-    cfg.name.clear();
-    memcpy( cfg.name.data(), FIL::NAME.cbegin(), FIL::NAME.size() );
+    cfg.name       = FIL::NAME.data();
 
     file.create( cfg );
     s_thread_id[ EnumValue( PrjTaskId::FILE_SYSTEM ) ] = file.start();
+
+    /*-------------------------------------------------
+    System Thread: USB
+    -------------------------------------------------*/
+    Task usb;
+
+    cfg.arg        = nullptr;
+    cfg.function   = USB::USBThread;
+    cfg.priority   = USB::PRIORITY;
+    cfg.stackWords = USB::STACK;
+    cfg.type       = TaskInitType::DYNAMIC;
+    cfg.name       = USB::NAME.data();
+
+    usb.create( cfg );
+    s_thread_id[ EnumValue( PrjTaskId::USB ) ] = usb.start();
   }
 
 
