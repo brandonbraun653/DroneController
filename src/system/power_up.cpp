@@ -12,6 +12,7 @@
 #include <Aurora/logging>
 
 /* Project Includes */
+#include <src/hmi/hmi_sticks.hpp>
 #include <src/io/gpio_driver.hpp>
 #include <src/io/sr_driver.hpp>
 #include <src/registry/reg_intf.hpp>
@@ -53,6 +54,11 @@ namespace DC::SYS
     Power up the radio driver
     -------------------------------------------------*/
     DC::RF::RF24::initDriver();
+
+    /*-------------------------------------------------
+    Power up the HMI drivers
+    -------------------------------------------------*/
+    DC::HMI::JoyStick::initialize();
   }
 
 

@@ -5,7 +5,7 @@
  *  Description:
  *    Maps system hardware resources for various development boards
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
@@ -13,6 +13,7 @@
 #define DC_BOARD_MAP_HPP
 
 /* Chimera Includes */
+#include <Chimera/adc>
 #include <Chimera/exti>
 #include <Chimera/gpio>
 #include <Chimera/spi>
@@ -48,6 +49,15 @@ namespace DC::IO
                                                                .threaded  = true,
                                                                .validity  = false };
 
+    static constexpr Chimera::GPIO::PinInit CommonAnalogCfg = { .alternate = Chimera::GPIO::Alternate::NONE,
+                                                                .drive     = Chimera::GPIO::Drive::ANALOG,
+                                                                .pin       = 0,
+                                                                .port      = Chimera::GPIO::Port::UNKNOWN_PORT,
+                                                                .pull      = Chimera::GPIO::Pull::NO_PULL,
+                                                                .state     = Chimera::GPIO::State::HIGH,
+                                                                .threaded  = true,
+                                                                .validity  = false };
+
     /*-------------------------------------------------
     Rotary Encoder 0
     -------------------------------------------------*/
@@ -71,6 +81,32 @@ namespace DC::IO
       static constexpr Chimera::GPIO::Pin pinB   = 10;
       static constexpr Chimera::GPIO::Port portB = Chimera::GPIO::Port::PORTA;
     }    // namespace Encoder1
+
+    /*-------------------------------------------------
+    Analog Inputs
+    -------------------------------------------------*/
+    namespace JoyStick
+    {
+      /* Roll */
+      static constexpr Chimera::GPIO::Pin pinRoll    = 0;
+      static constexpr Chimera::GPIO::Port portRoll  = Chimera::GPIO::Port::PORTC;
+      static constexpr Chimera::ADC::Channel adcRoll = Chimera::ADC::Channel::ADC_CH_10;
+
+      /* Pitch */
+      static constexpr Chimera::GPIO::Pin pinPitch    = 1;
+      static constexpr Chimera::GPIO::Port portPitch  = Chimera::GPIO::Port::PORTC;
+      static constexpr Chimera::ADC::Channel adcPitch = Chimera::ADC::Channel::ADC_CH_11;
+
+      /* Throttle */
+      static constexpr Chimera::GPIO::Pin pinThrottle    = 2;
+      static constexpr Chimera::GPIO::Port portThrottle  = Chimera::GPIO::Port::PORTC;
+      static constexpr Chimera::ADC::Channel adcThrottle = Chimera::ADC::Channel::ADC_CH_12;
+
+      /* Yaw */
+      static constexpr Chimera::GPIO::Pin pinYaw    = 3;
+      static constexpr Chimera::GPIO::Port portYaw  = Chimera::GPIO::Port::PORTC;
+      static constexpr Chimera::ADC::Channel adcYaw = Chimera::ADC::Channel::ADC_CH_13;
+    }    // namespace JoyStick
 
   }    // namespace HMI
 
