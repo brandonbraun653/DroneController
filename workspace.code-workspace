@@ -118,7 +118,10 @@
       "netstack": "cpp",
       "freertos.h": "c",
       "yportenv.h": "c",
-      "database": "cpp"
+      "database": "cpp",
+      "adc": "cpp",
+      "execution": "cpp",
+      "callback": "cpp"
     },
     "workbench.colorCustomizations": {
       "activityBar.activeBackground": "#ef7853",
