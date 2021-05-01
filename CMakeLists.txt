@@ -62,6 +62,7 @@ gen_intf_lib(
   INTF_INCLUDES
     "${PROJECT_ROOT}"
     "${PROJECT_ROOT}/src/config"
+    "${PROJECT_ROOT}/src/config/thor"
   INTF_LIBRARIES
     ripple_inc
     freertos_intf_inc_all

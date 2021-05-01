@@ -28,6 +28,9 @@
 #include <src/tasks/tsk_background.hpp>
 #include <src/tasks/tsk_common.hpp>
 
+// Testing only
+#include <etl/to_string.h>
+
 
 namespace DC::Tasks::HMI
 {
@@ -97,7 +100,14 @@ namespace DC::Tasks::HMI
       }
 
       auto sample = adc->sampleChannel( DC::IO::HMI::JoyStick::adcPitch );
-      LOG_DEBUG( "ADC -> Value: %d, Time: %d\r\n", sample.counts, sample.us );
+      auto voltage = adc->toVoltage( sample );
+
+      etl::format_spec format;
+      format.width(5).precision(4);
+      etl::string<5> text;
+      etl::to_string( voltage, text, format );
+
+      LOG_DEBUG( "ADC -> Voltage: %sV, Counts: %d, Time: %d\r\n", text.data(), sample.counts, sample.us );
 
       BKGD::kickDog( PrjTaskId::HMI );
       Chimera::delayMilliseconds( 100 );

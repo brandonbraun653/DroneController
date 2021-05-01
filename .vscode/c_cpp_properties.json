@@ -31,7 +31,7 @@
             "${workspaceFolder}/lib/Thor/include",
             "${workspaceFolder}/lib/nanopb",
             "${workspaceFolder}/lib/tinyusb/src",
-            "${workspaceFolder}/src/config",
+            "${workspaceFolder}/src/config/thor",
             "${workspaceFolder}/src/config/freertos",
             "${workspaceFolder}/src/config/tinyusb"
         ],
