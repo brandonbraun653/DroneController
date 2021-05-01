@@ -16,6 +16,7 @@
 #include <Chimera/gpio>
 
 /* Project Includes */
+#include <src/registry/reg_intf.hpp>
 #include <src/hmi/hmi_sticks.hpp>
 #include <src/config/bsp/board_map.hpp>
 
@@ -124,11 +125,12 @@ namespace DC::HMI::JoyStick
       s_adc_channels[ 3 ] = DC::IO::HMI::JoyStick::adcThrottle;
 
       seq.clear();
-      seq.channels = &s_adc_channels;
-      seq.data     = &s_adc_samples;
-      seq.mode     = ADC::SamplingMode::CONTINUOUS;
+      seq.channels    = &s_adc_channels;
+      seq.numChannels = 4;
+      seq.mode        = ADC::SamplingMode::ONE_SHOT;
 
       adc->configSequence( seq );
+      adc->onInterrupt( ADC::Interrupt::EOC_SEQUENCE, ADC::ISRCallback::create<adc_isr_handler>() );
     }
   }
 
@@ -138,5 +140,42 @@ namespace DC::HMI::JoyStick
   -------------------------------------------------------------------------------*/
   static void adc_isr_handler( const Chimera::ADC::InterruptDetail &detail )
   {
+    using namespace DC::REG;
+
+    /*-------------------------------------------------
+    Grab the ADC driver
+    -------------------------------------------------*/
+    auto adc = Chimera::ADC::getDriver( Chimera::ADC::Peripheral::ADC_0 );
+    if( !adc )
+    {
+      return;
+    }
+
+    /*-------------------------------------------------
+    Populate the registry with the new data
+    -------------------------------------------------*/
+    float voltage = adc->toVoltage( detail.data );
+
+    switch( detail.channel )
+    {
+      case DC::IO::HMI::JoyStick::adcPitch:
+        DC::REG::writeSafe( KEY_ANALOG_IN_PITCH, &voltage, sizeof( voltage ) );
+        break;
+
+      case DC::IO::HMI::JoyStick::adcRoll:
+        DC::REG::writeSafe( KEY_ANALOG_IN_ROLL, &voltage, sizeof( voltage ) );
+        break;
+
+      case DC::IO::HMI::JoyStick::adcYaw:
+        DC::REG::writeSafe( KEY_ANALOG_IN_YAW, &voltage, sizeof( voltage ) );
+        break;
+
+      case DC::IO::HMI::JoyStick::adcThrottle:
+        DC::REG::writeSafe( KEY_ANALOG_IN_THROTTLE, &voltage, sizeof( voltage ) );
+        break;
+
+      default:
+        break;
+    };
   }
 }    // namespace DC::HMI::JoyStick

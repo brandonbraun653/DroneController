@@ -40,12 +40,18 @@ namespace DC::REG
     KEY_SIMPLE_START,
     KEY_BOOT_COUNT = KEY_SIMPLE_START,
 
+    KEY_ANALOG_IN_PITCH,
+    KEY_ANALOG_IN_ROLL,
+    KEY_ANALOG_IN_YAW,
+    KEY_ANALOG_IN_THROTTLE,
+
     /*-------------------------------------------------
     Observable Data
     -------------------------------------------------*/
     KEY_OBSERVABLE_START,
     KEY_BUTTON_UP = KEY_OBSERVABLE_START,
     KEY_BUTTON_DOWN,
+
 
     /*-------------------------------------------------
     Miscellaneous

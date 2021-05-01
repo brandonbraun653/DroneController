@@ -30,6 +30,7 @@
 
 // Testing only
 #include <etl/to_string.h>
+#include <src/registry/reg_intf.hpp>
 
 
 namespace DC::Tasks::HMI
@@ -87,30 +88,64 @@ namespace DC::Tasks::HMI
 
     auto adc = Chimera::ADC::getDriver( Chimera::ADC::Peripheral::ADC_0 );
 
+
+    size_t debugPrintTick = Chimera::millis();
+
     while ( true )
     {
-      if( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_0 ) )
-      {
-        LOG_DEBUG( "Key 0 press\r\n" );
-      }
-
-      if( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_1 ) )
-      {
-        LOG_DEBUG( "Key 1 press\r\n" );
-      }
-
-      auto sample = adc->sampleChannel( DC::IO::HMI::JoyStick::adcPitch );
-      auto voltage = adc->toVoltage( sample );
-
-      etl::format_spec format;
-      format.width(5).precision(4);
-      etl::string<5> text;
-      etl::to_string( voltage, text, format );
-
-      LOG_DEBUG( "ADC -> Voltage: %sV, Counts: %d, Time: %d\r\n", text.data(), sample.counts, sample.us );
-
       BKGD::kickDog( PrjTaskId::HMI );
-      Chimera::delayMilliseconds( 100 );
+      Chimera::delayMilliseconds( 10 );
+
+      /*-------------------------------------------------
+      Sample the ADC inputs as fast as this thread
+      -------------------------------------------------*/
+      adc->startSequence();
+
+
+      /*-------------------------------------------------
+      Print some debug info for testing
+      -------------------------------------------------*/
+      if( ( Chimera::millis() - debugPrintTick ) > 100 )
+      {
+        debugPrintTick = Chimera::millis();
+
+        etl::format_spec format;
+        format.width(5).precision(4);
+
+        float pitch = 0.0f;
+        etl::string<5> textP;
+        DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_PITCH, &pitch, sizeof( pitch ) );
+        etl::to_string( pitch, textP, format );
+
+        float roll = 0.0f;
+        etl::string<5> textR;
+        DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_ROLL, &roll, sizeof( roll ) );
+        etl::to_string( roll, textR, format );
+
+        float yaw = 0.0f;
+        etl::string<5> textY;
+        DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_YAW, &yaw, sizeof( yaw ) );
+        etl::to_string( yaw, textY, format );
+
+        float throttle = 0.0f;
+        etl::string<5> textT;
+        DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_THROTTLE, &throttle, sizeof( throttle ) );
+        etl::to_string( throttle, textT, format );
+
+        LOG_DEBUG( "ADC -> Pitch: %sV, Roll: %sV, Yaw: %sV, Throttle: %sV\r\n", textP.data(), textR.data(), textY.data(), textT.data() );
+
+
+        if( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_0 ) )
+        {
+          LOG_DEBUG( "Key 0 press\r\n" );
+        }
+
+        if( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_1 ) )
+        {
+          LOG_DEBUG( "Key 1 press\r\n" );
+        }
+      }
+
     }
   }
 }    // namespace DC::Tasks::HMI

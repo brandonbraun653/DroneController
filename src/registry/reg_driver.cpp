@@ -266,6 +266,14 @@ namespace DC::REG
           result           = Database.insert( x, &pData.boot_count, sizeof( ParamData::boot_count ), MemAccess::MEM_RW );
           break;
 
+
+        case KEY_ANALOG_IN_PITCH:
+        case KEY_ANALOG_IN_ROLL:
+        case KEY_ANALOG_IN_YAW:
+        case KEY_ANALOG_IN_THROTTLE:
+          result = Database.insert( x, sizeof( float ) );
+          break;
+
         default:
           // A parameter was forgotten to be registered
           RT_HARD_ASSERT( false );
