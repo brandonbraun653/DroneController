@@ -61,15 +61,15 @@ namespace DC::UTL
     Initialize the JLink sink
     -------------------------------------------------*/
 #if defined( SEGGER_SYS_VIEW )
-    JLinkSink::getInstance().setLogLevel( lvl );
-    JLinkSink::getInstance().enable();
-    JLinkSink::getInstance().setName( "JLINK" );
+    // JLinkSink::getInstance().setLogLevel( lvl );
+    // JLinkSink::getInstance().enable();
+    // JLinkSink::getInstance().setName( "JLINK" );
 
-    if( !s_jlink_handle )
-    {
-      s_jlink_handle = SinkHandle( &JLinkSink::getInstance() );
-      registerSink( s_jlink_handle );
-    }
+    // if( !s_jlink_handle )
+    // {
+    //   s_jlink_handle = SinkHandle( &JLinkSink::getInstance() );
+    //   registerSink( s_jlink_handle );
+    // }
 #endif /* SEGGER_SYS_VIEW */
 
     /*-------------------------------------------------

@@ -58,6 +58,7 @@ gen_intf_lib(
     project_inc
   INTF_DEFINES
     THOR_USER_CONFIG
+    SEGGER_SYS_VIEW
   INTF_INCLUDES
     "${PROJECT_ROOT}"
     "${PROJECT_ROOT}/src/config"
@@ -73,12 +74,14 @@ gen_intf_lib(
 gen_intf_lib(
   TARGET
     freertos_cfg
+  INTF_DEFINES
+    SEGGER_SYS_VIEW
   INTF_INCLUDES
     "${PROJECT_ROOT}/src/config/freertos"
     "${PROJECT_ROOT}/lib/Aurora/lib/segger/contrib/cortex_m4_freertos"
   INTF_LIBRARIES
-    # segger_sys_view_intf
-    # segger_sys_view_cortex_m4_freertos_intf
+    segger_sys_view_intf
+    segger_sys_view_cortex_m4_freertos_intf
   EXPORT_DIR
     "${PROJECT_BINARY_DIR}/Project"
 )

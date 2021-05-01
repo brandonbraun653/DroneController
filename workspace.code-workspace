@@ -121,7 +121,8 @@
       "database": "cpp",
       "adc": "cpp",
       "execution": "cpp",
-      "callback": "cpp"
+      "callback": "cpp",
+      "system": "cpp"
     },
     "workbench.colorCustomizations": {
       "activityBar.activeBackground": "#ef7853",

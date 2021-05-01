@@ -11,6 +11,7 @@
             "${workspaceFolder}/lib/Aurora/lib/embedded_template_library/etl/include",
             "${workspaceFolder}/lib/Aurora/lib/littlefs/lfs",
             "${workspaceFolder}/lib/Aurora/lib/segger/Config",
+            "${workspaceFolder}/lib/Aurora/lib/segger/contrib/cortex_m4_freertos",
             "${workspaceFolder}/lib/Aurora/lib/segger/SEGGER",
             "${workspaceFolder}/lib/Aurora/lib/segger/SEGGER/Syscalls",
             "${workspaceFolder}/lib/Aurora/lib/spiffs/src",
@@ -44,6 +45,7 @@
         "defaultEmbeddedDefines": [
             "EMBEDDED",
             "FREERTOS_CFG_PORT_ARM_CM4F=1",
+            "SEGGER_SYS_VIEW",
             "USING_FREERTOS_THREADS",
             "${defaultDefines}"
         ],
@@ -59,26 +61,12 @@
     },
     "configurations": [
         {
-            "name": "STM32L432 Development",
-            "includePath": [
-                "${defaultIncludePaths}"
-            ],
-            "defines": [
-                "${defaultEmbeddedDefines}",
-                "STM32L432xx",
-                "TARGET_STM32L4",
-                "THOR_USER_CONFIG"
-            ],
-            "compilerPath": "${arm_none_eabi_path}",
-            "cStandard": "gnu17",
-            "cppStandard": "gnu++20"
-        },
-        {
             "name": "STM32F446 Development",
             "includePath": [
                 "${defaultIncludePaths}"
             ],
             "defines": [
+                "${defaultDefines}",
                 "${defaultEmbeddedDefines}",
                 "STM32F446xx",
                 "TARGET_STM32F4",

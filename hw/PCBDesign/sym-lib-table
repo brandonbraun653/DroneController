@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name tp4056)(type Legacy)(uri /home/braunbr/git/Projects/DroneController/hw/lib/KiCadLib/PMIC/tp4056.lib)(options "")(descr ""))
+  (lib (name DroneController-rescue)(type Legacy)(uri ${KIPRJMOD}/DroneController-rescue.lib)(options "")(descr ""))
 )

@@ -16,7 +16,9 @@
 #include <src/tasks/tsk_common.hpp>
 
 /* Segger Includes */
+#if defined( SEGGER_SYS_VIEW )
 #include "SEGGER_SYSVIEW.h"
+#endif
 
 /*-------------------------------------------------------------------------------
 Public Functions
@@ -36,7 +38,9 @@ int main()
   /*-------------------------------------------------
   Initialize the SystemView driver
   -------------------------------------------------*/
-  // SEGGER_SYSVIEW_Conf();
+#if defined( SEGGER_SYS_VIEW )
+  SEGGER_SYSVIEW_Conf();
+#endif
 
   /*-------------------------------------------------
   Start the system threads. Never returns.

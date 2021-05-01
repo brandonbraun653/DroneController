@@ -5,7 +5,7 @@
  *  Description:
  *    Interface to the Monitor task
  *
- *  2020 | Brandon Braun | brandonbraun653@gmail.com
+ *  2020-2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
@@ -26,7 +26,7 @@ namespace DC::Tasks::BKGD
   -------------------------------------------------------------------------------*/
   static constexpr size_t STACK                          = STACK_BYTES( 2048 );
   static constexpr std::string_view NAME                 = "watchdog";
-  static constexpr Chimera::Thread::Priority PRIORITY = Chimera::Thread::Priority::LEVEL_0;
+  static constexpr Chimera::Thread::Priority PRIORITY    = Chimera::Thread::Priority::LEVEL_0;
 
   /*-------------------------------------------------------------------------------
   Public Functions

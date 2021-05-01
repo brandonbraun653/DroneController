@@ -26,6 +26,7 @@
 #include <src/registry/reg_files.hpp>
 #include <src/registry/reg_intf.hpp>
 #include <src/system/sys_config.hpp>
+#include <src/tasks/tsk_background.hpp>
 #include <src/tasks/tsk_common.hpp>
 #include <src/tasks/tsk_file_system.hpp>
 
@@ -96,6 +97,7 @@ namespace DC::Tasks::FIL
     while ( true )
     {
       lastWoken = Chimera::millis();
+      BKGD::kickDog( PrjTaskId::FILE_SYSTEM );
       Chimera::delayMilliseconds( lastWoken, 500 );
     }
   }

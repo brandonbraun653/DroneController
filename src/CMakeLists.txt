@@ -76,9 +76,9 @@ target_link_libraries(DroneController PRIVATE
   freertos_cm4f_port
 
   # Segger System View
-  # segger_sys_view
-  # segger_sys_view_intf
-  # segger_sys_view_cortex_m4_freertos
+  segger_sys_view
+  segger_sys_view_intf
+  segger_sys_view_cortex_m4_freertos
 
   # Networking Libraries
   ripple_shared

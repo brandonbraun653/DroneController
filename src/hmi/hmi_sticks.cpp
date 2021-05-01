@@ -103,7 +103,7 @@ namespace DC::HMI::JoyStick
       /* Core configuration */
       cfg.clear();
       cfg.bmISREnable         = ADC::Interrupt::EOC_SEQUENCE | ADC::Interrupt::EOC_SINGLE | ADC::Interrupt::OVERRUN;
-      cfg.clockPrescale       = ADC::Prescaler::DIV_1;
+      cfg.clockPrescale       = ADC::Prescaler::DIV_2;
       cfg.clockSource         = Chimera::Clock::Bus::PCLK2;
       cfg.defaultSampleCycles = 24;
       cfg.oversampleRate      = ADC::Oversampler::OS_NONE;
@@ -112,7 +112,7 @@ namespace DC::HMI::JoyStick
       cfg.transferMode        = ADC::TransferMode::INTERRUPT;
 
       adc = ADC::getDriver( cfg.periph );
-      LOG_IF_ERROR( adc->open( cfg ) != Chimera::Status::OK, "Failed ADC driver init\n" );
+      LOG_IF_ERROR( adc->open( cfg ) == Chimera::Status::OK, "Failed ADC driver init\n" );
 
       /* Attach project side interrupt handler */
       adc->onInterrupt( cfg.bmISREnable, ADC::ISRCallback::create<adc_isr_handler>() );
@@ -127,6 +127,8 @@ namespace DC::HMI::JoyStick
       seq.channels = &s_adc_channels;
       seq.data     = &s_adc_samples;
       seq.mode     = ADC::SamplingMode::CONTINUOUS;
+
+      adc->configSequence( seq );
     }
   }
 

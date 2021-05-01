@@ -12,6 +12,7 @@
 #include <Aurora/logging>
 
 /* Chimera Includes */
+#include <Chimera/adc>
 #include <Chimera/assert>
 #include <Chimera/common>
 #include <Chimera/interrupt>
@@ -19,10 +20,12 @@
 #include <Chimera/thread>
 
 /* Project Includes */
-#include <src/io/gpio_driver.hpp>
-#include <src/io/sr_driver.hpp>
+#include <src/config/bsp/board_map.hpp>
 #include <src/hmi/hmi_button.hpp>
 #include <src/hmi/hmi_encoder.hpp>
+#include <src/io/gpio_driver.hpp>
+#include <src/io/sr_driver.hpp>
+#include <src/tasks/tsk_background.hpp>
 #include <src/tasks/tsk_common.hpp>
 
 
@@ -79,6 +82,8 @@ namespace DC::Tasks::HMI
 
     // Encoder::enable( Encoder::Key::ENCODER_1 );
 
+    auto adc = Chimera::ADC::getDriver( Chimera::ADC::Peripheral::ADC_0 );
+
     while ( true )
     {
       if( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_0 ) )
@@ -91,6 +96,10 @@ namespace DC::Tasks::HMI
         LOG_DEBUG( "Key 1 press\r\n" );
       }
 
+      auto sample = adc->sampleChannel( DC::IO::HMI::JoyStick::adcPitch );
+      LOG_DEBUG( "ADC -> Value: %d, Time: %d\r\n", sample.counts, sample.us );
+
+      BKGD::kickDog( PrjTaskId::HMI );
       Chimera::delayMilliseconds( 100 );
     }
   }
