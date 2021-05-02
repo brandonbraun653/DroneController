@@ -203,6 +203,7 @@
       "vgdb",
       "wwdg",
       "yaffs"
-    ]
+    ],
+    "git.ignoreLimitWarning": true
   }
 }

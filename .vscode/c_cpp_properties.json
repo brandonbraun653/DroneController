@@ -38,6 +38,44 @@
             "${workspaceFolder}/src/config/freertos",
             "${workspaceFolder}/src/config/tinyusb"
         ],
+        "thorIncludePaths_HLD": [
+            "${workspaceFolder}/lib/Thor/hld",
+            "${workspaceFolder}/lib/Thor/hld/adc",
+            "${workspaceFolder}/lib/Thor/hld/can",
+            "${workspaceFolder}/lib/Thor/hld/clock",
+            "${workspaceFolder}/lib/Thor/hld/common",
+            "${workspaceFolder}/lib/Thor/hld/dma",
+            "${workspaceFolder}/lib/Thor/hld/exti",
+            "${workspaceFolder}/lib/Thor/hld/gpio",
+            "${workspaceFolder}/lib/Thor/hld/interrupt",
+            "${workspaceFolder}/lib/Thor/hld/pwm",
+            "${workspaceFolder}/lib/Thor/hld/spi",
+            "${workspaceFolder}/lib/Thor/hld/system",
+            "${workspaceFolder}/lib/Thor/hld/timer",
+            "${workspaceFolder}/lib/Thor/hld/uart",
+            "${workspaceFolder}/lib/Thor/hld/usart",
+            "${workspaceFolder}/lib/Thor/hld/usb",
+            "${workspaceFolder}/lib/Thor/hld/watchdog"
+        ],
+        "thorIncludePaths_LLD_F4": [
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/adc",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/des",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/dma",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/exti",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/flash",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/gpio",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/interrupt",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/iwdg",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/power",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/rcc",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/spi",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/startup",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/system",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/timer",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/uart",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/usart",
+            "${workspaceFolder}/lib/Thor/lld/stm32f4x/wwdg"
+        ],
         "defaultDefines": [
             "DEBUG",
             "UNICODE",
@@ -64,9 +102,11 @@
     },
     "configurations": [
         {
-            "name": "STM32F446 Development",
+            "name": "Embedded Development",
             "includePath": [
-                "${defaultIncludePaths}"
+                "${defaultIncludePaths}",
+                "${thorIncludePaths_HLD}",
+                "${thorIncludePaths_LLD_F4}"
             ],
             "defines": [
                 "${defaultDefines}",
