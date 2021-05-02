@@ -122,7 +122,17 @@
       "adc": "cpp",
       "execution": "cpp",
       "callback": "cpp",
-      "system": "cpp"
+      "system": "cpp",
+      "peripheral": "cpp",
+      "any": "cpp",
+      "charconv": "cpp",
+      "source_location": "cpp",
+      "rope": "cpp",
+      "slist": "cpp",
+      "typeindex": "cpp",
+      "cstdbool": "cpp",
+      "dma": "cpp",
+      "*.def": "cpp"
     },
     "workbench.colorCustomizations": {
       "activityBar.activeBackground": "#ef7853",

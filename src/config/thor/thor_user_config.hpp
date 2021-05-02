@@ -16,6 +16,7 @@
 Peripheral Support
 -------------------------------------------------*/
 #define DC_NEED_ADC   1
+#define DC_NEED_DMA   1
 #define DC_NEED_EXTI  1
 #define DC_NEED_GPIO  1
 #define DC_NEED_SPI   1
@@ -30,6 +31,11 @@ High Level Driver Support
 #if DC_NEED_ADC
 #define THOR_HLD_ADC
 #define THOR_LLD_ADC
+#endif
+
+#if DC_NEED_DMA
+#define THOR_HLD_DMA
+#define THOR_LLD_DMA
 #endif
 
 #if DC_NEED_EXTI
