@@ -132,7 +132,8 @@
       "typeindex": "cpp",
       "cstdbool": "cpp",
       "dma": "cpp",
-      "*.def": "cpp"
+      "*.def": "cpp",
+      "rcc": "cpp"
     },
     "workbench.colorCustomizations": {
       "activityBar.activeBackground": "#ef7853",
