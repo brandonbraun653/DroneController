@@ -205,6 +205,18 @@
       "wwdg",
       "yaffs"
     ],
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "files.watcherExclude": {
+      "**/.git/objects/**": true,
+      "**/.git/subtree-cache/**": true,
+      "**/.idea/**": true,
+      "**/node_modules/*/**": true,
+      "${workspaceFolder}/build/**": true,
+      "${workspaceFolder}/hw/**": true,
+      "${workspaceFolder}/nanopb/**": true,
+      "${workspaceFolder}/tinyusb/**": true,
+      "${workspaceFolder}/tinyusb/src/portable/**": true
+    }
+
   }
 }
