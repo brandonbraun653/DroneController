@@ -69,6 +69,6 @@ namespace DC::UTL
     result |= Serial->configure( cfg );
     result |= Serial->enableBuffering( SubPeripheral::TX, sTXCircularBuffer, sTXHWBuffer.data(), sTXHWBuffer.size() );
     result |= Serial->enableBuffering( SubPeripheral::RX, sRXCircularBuffer, sRXHWBuffer.data(), sRXHWBuffer.size() );
-    result |= Serial->begin( PeripheralMode::DMA, PeripheralMode::DMA );
+    result |= Serial->begin( PeripheralMode::INTERRUPT, PeripheralMode::DMA );
   }
 }    // namespace DC::UTL
