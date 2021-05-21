@@ -18,7 +18,7 @@ namespace DC::IO
   -------------------------------------------------------------------------------*/
   namespace Bluetooth
   {
-    const Chimera::Serial::Config comConfig = { .baud     = 9600,
+    const Chimera::Serial::Config comConfig = { .baud     = 115200,
                                                 .width    = Chimera::Serial::CharWid::CW_8BIT,
                                                 .parity   = Chimera::Serial::Parity::PAR_NONE,
                                                 .stopBits = Chimera::Serial::StopBits::SBITS_ONE,

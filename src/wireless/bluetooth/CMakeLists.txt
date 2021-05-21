@@ -5,6 +5,8 @@ gen_static_lib_variants(
     lib_bluetooth
   SOURCES
     bt_driver.cpp
+    rn4871/rn_action_cmds.cpp
+    rn4871/rn_device.cpp
   PRV_LIBRARIES
     aurora_intf_inc
     chimera_intf_inc

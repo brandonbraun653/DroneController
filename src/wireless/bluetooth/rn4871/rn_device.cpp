@@ -8,6 +8,10 @@
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
+/* Chimera Includes */
+#include <Chimera/common>
+#include <Chimera/serial>
+
 /* Driver Includes */
 #include <src/wireless/bluetooth/rn4871/rn_device.hpp>
 #include <src/wireless/bluetooth/rn4871/rn_types.hpp>
@@ -51,7 +55,7 @@ namespace RN4871
 
     response.clear();
     CMD::Action::version( cmd );
-    if( this->command( cmd, &response ) == StatusCode::OK )
+    if( this->command( cmd, &response, 10 ) == StatusCode::OK )
     {
       return response;
     }
@@ -70,6 +74,7 @@ namespace RN4871
    */
   bool DeviceDriver::enterTransparentMode()
   {
+    return false;
   }
 
 
@@ -94,9 +99,23 @@ namespace RN4871
    *
    * @param cmd       Command to send
    * @param rsp       Optional buffer to write the raw response into
+   * @param delay     How long to wait in milliseconds for the response
    * @return StatusCode
    */
-  StatusCode DeviceDriver::command( const PacketString &cmd, PacketString *const rsp )
+  StatusCode DeviceDriver::command( const PacketString &cmd, PacketString *const rsp, const size_t delay )
   {
+    auto serial = Chimera::Serial::getDriver( mSerialChannel );
+
+    serial->write( cmd.data(), cmd.size() );
+    Chimera::delayMilliseconds( delay );
+
+    size_t bytesAvailable = 0;
+    if( rsp && serial->available( &bytesAvailable ))
+    {
+      rsp->clear();
+      serial->readAsync( reinterpret_cast<uint8_t*>( rsp->data() ), bytesAvailable );
+    }
+
+    return StatusCode::OK;
   }
 }    // namespace RN4871

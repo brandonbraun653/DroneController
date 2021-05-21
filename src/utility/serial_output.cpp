@@ -21,7 +21,6 @@
 #include <src/utility/serial_output.hpp>
 #include <src/config/bsp/board_map.hpp>
 
-
 /*-------------------------------------------------
 Serial Driver Configuration
 -------------------------------------------------*/
@@ -69,6 +68,8 @@ namespace DC::UTL
     result |= Serial->configure( cfg );
     result |= Serial->enableBuffering( SubPeripheral::TX, sTXCircularBuffer, sTXHWBuffer.data(), sTXHWBuffer.size() );
     result |= Serial->enableBuffering( SubPeripheral::RX, sRXCircularBuffer, sRXHWBuffer.data(), sRXHWBuffer.size() );
-    result |= Serial->begin( PeripheralMode::INTERRUPT, PeripheralMode::DMA );
+    RT_HARD_ASSERT( result == Chimera::Status::OK );
+
+    Serial->begin( PeripheralMode::INTERRUPT, PeripheralMode::INTERRUPT );
   }
 }    // namespace DC::UTL

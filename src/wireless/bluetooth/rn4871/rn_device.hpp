@@ -42,7 +42,7 @@ namespace RN4871
     /*-------------------------------------------------
     Data Transfer
     -------------------------------------------------*/
-    StatusCode command( const PacketString &cmd, PacketString *const rsp );
+    StatusCode command( const PacketString &cmd, PacketString *const rsp = nullptr, const size_t delay = 0 );
 
   private:
     Chimera::Serial::Channel mSerialChannel; /**< Serial channel device is on */

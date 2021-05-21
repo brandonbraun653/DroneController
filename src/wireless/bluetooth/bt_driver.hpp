@@ -29,18 +29,9 @@ namespace DC::RF::BT
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  /**
-   * @brief Initialize the bluetooth driver module
-   */
   void initDriver();
-
-  /**
-   * @brief Controls power to the bluetooth module
-   *
-   * @param state     Which state to place the power into
-   */
   void setPower( const PowerState state );
-
+  void doPowerOnReset();
 
 }  // namespace DC::RF::BT
 

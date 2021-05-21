@@ -34,6 +34,9 @@ namespace DC::IO
     static constexpr Chimera::GPIO::Port portHeartbeat = Chimera::GPIO::Port::PORTC;
   }    // namespace LED
 
+  /*-------------------------------------------------------------------------------
+  Human-Machine Interfaces
+  -------------------------------------------------------------------------------*/
   namespace HMI
   {
     /*-------------------------------------------------
