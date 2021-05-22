@@ -20,8 +20,9 @@ namespace RN4871
   /*-------------------------------------------------------------------------------
   Aliases
   -------------------------------------------------------------------------------*/
-  using VersionString = etl::string<16>;
-  using PacketString = etl::string<128>;
+  using VersionString = etl::string<64>;
+  using PacketString  = etl::string<128>;
+  using PacketBuffer  = char[ PacketString::MAX_SIZE ];
 
   /*-------------------------------------------------------------------------------
   Constants
@@ -34,11 +35,25 @@ namespace RN4871
   enum class StatusCode : uint8_t
   {
     OK,
+    FAIL,
+    NO_RESPONSE,
+    TIMEOUT,
+    OVERFLOW,
 
     NUM_OPTIONS,
     INVALID
   };
 
-}  // namespace RN4871
 
-#endif  /* !RN4871_TYPES_HPP */
+  enum class OpMode : uint8_t
+  {
+    COMMAND,
+    DATA,
+
+    NUM_OPTIONS,
+    INVALID
+  };
+
+}    // namespace RN4871
+
+#endif /* !RN4871_TYPES_HPP */

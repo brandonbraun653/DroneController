@@ -147,6 +147,9 @@ namespace DC::RF::BT
     setPower( PowerState::ENABLED );
     Chimera::delayMilliseconds( 150 );
 
+    auto serial = Chimera::Serial::getDriver( DC::IO::Bluetooth::serialChannel );
+    serial->flush( Chimera::Hardware::SubPeripheral::RX );
+
     /*-------------------------------------------------
     Ping the unit to grab version information
     -------------------------------------------------*/
@@ -155,8 +158,8 @@ namespace DC::RF::BT
     /*-------------------------------------------------
     Apply configuration settings by doing a warm reset
     -------------------------------------------------*/
-    //s_bt_device.reboot();
-    //Chimera::delayMilliseconds( 100 );
+    s_bt_device.reboot();
+    Chimera::delayMilliseconds( 100 );
   }
 
 }    // namespace DC::RF::BT

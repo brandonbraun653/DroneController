@@ -8,6 +8,9 @@
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
+/* Aurora Includes */
+#include <Aurora/logging>
+
 /* Chimera Includes */
 #include <Chimera/common>
 #include <Chimera/serial>
@@ -20,7 +23,7 @@
 
 namespace RN4871
 {
-  DeviceDriver::DeviceDriver() : mSerialChannel( Chimera::Serial::Channel::NOT_SUPPORTED )
+  DeviceDriver::DeviceDriver() : mSerialChannel( Chimera::Serial::Channel::NOT_SUPPORTED ), mCurrentMode( OpMode::INVALID )
   {
   }
 
@@ -49,13 +52,21 @@ namespace RN4871
   VersionString DeviceDriver::softwareVersion()
   {
     /*-------------------------------------------------
+    Getting the version requires command mode
+    -------------------------------------------------*/
+    if ( !this->enterCommandMode() )
+    {
+      return "ERROR";
+    }
+
+    /*-------------------------------------------------
     Request the current software version
     -------------------------------------------------*/
     PacketString cmd, response;
-
-    response.clear();
     CMD::Action::version( cmd );
-    if( this->command( cmd, &response, 10 ) == StatusCode::OK )
+    this->transfer( cmd );
+
+    if ( this->accumulateResponse( response, "\r" ) == StatusCode::OK )
     {
       return response;
     }
@@ -67,30 +78,108 @@ namespace RN4871
 
 
   /**
-   * @brief Instructs the module to pass through UART data
-   *
-   * @return true     Pass through enabled
-   * @return false    Failed to enable pass through
+   * @brief Instructs the module to enter comand mode
    */
-  bool DeviceDriver::enterTransparentMode()
+  bool DeviceDriver::enterCommandMode()
   {
-    return false;
+    PacketString response;
+
+    /*-------------------------------------------------
+    Already in command mode?
+    -------------------------------------------------*/
+    if ( mCurrentMode == OpMode::COMMAND )
+    {
+      return true;
+    }
+
+    /*-------------------------------------------------
+    Send the request
+    -------------------------------------------------*/
+    this->transfer( "$$$" );
+    if ( ( this->accumulateResponse( response, " " ) == StatusCode::OK ) && ( response == "CMD>" ) )
+    {
+      mCurrentMode = OpMode::COMMAND;
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
 
   /**
-   * @brief Leaves UART passthrough mode
+   * @brief Instructs the module to enter data mode
    */
-  void DeviceDriver::exitTransparentMode()
+  bool DeviceDriver::enterDataMode()
   {
+    PacketString cmd, response;
+
+    /*-------------------------------------------------
+    Already in command mode?
+    -------------------------------------------------*/
+    if ( mCurrentMode == OpMode::DATA )
+    {
+      return true;
+    }
+
+    /*-------------------------------------------------
+    Send the request
+    -------------------------------------------------*/
+    this->transfer( "---\r" );
+    if ( ( this->accumulateResponse( response, " " ) == StatusCode::OK ) && ( response == "END" ) )
+    {
+      mCurrentMode = OpMode::DATA;
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
 
   /**
    * @brief Instructs the RN4871 to perform a warm reset
    */
-  void DeviceDriver::reboot()
+  bool DeviceDriver::reboot()
   {
+    /*-------------------------------------------------
+    Ensure command mode is entered
+    -------------------------------------------------*/
+    if( !this->enterCommandMode() )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Send the command sequence. This can take a second.
+    Expected flow:
+      Send -> R,1\r
+      Recv <- Rebooting\r\n
+      Recv <- %REBOOT%
+    -------------------------------------------------*/
+    PacketString r1, r2;
+
+    /* Send reboot command */
+    this->transfer( "R,1\r" );
+    if( this->accumulateResponse( r1, "\r" ) != StatusCode::OK )
+    {
+      return false;
+    }
+    LOG_INFO( "Bluetooth: %s\r\n", r1.data() );
+
+    /* Wait for the reboot complete */
+    if( this->accumulateResponse( r2, "%REBOOT%" ) == StatusCode::OK )
+    {
+      LOG_INFO( "Bluetooth: Done\r\n" );
+      return true;
+    }
+    else
+    {
+      LOG_INFO( "Bluetooth: Missing reboot message\r\n" );
+      return false;
+    }
   }
 
 
@@ -99,23 +188,110 @@ namespace RN4871
    *
    * @param cmd       Command to send
    * @param rsp       Optional buffer to write the raw response into
-   * @param delay     How long to wait in milliseconds for the response
    * @return StatusCode
    */
-  StatusCode DeviceDriver::command( const PacketString &cmd, PacketString *const rsp, const size_t delay )
+  StatusCode DeviceDriver::transfer( const PacketString &cmd  )
   {
+    using namespace Chimera::Event;
+    using namespace Chimera::Thread;
+
     auto serial = Chimera::Serial::getDriver( mSerialChannel );
 
-    serial->write( cmd.data(), cmd.size() );
-    Chimera::delayMilliseconds( delay );
-
-    size_t bytesAvailable = 0;
-    if( rsp && serial->available( &bytesAvailable ))
+    if( serial->write( cmd.data(), cmd.size() ) == Chimera::Status::OK )
     {
-      rsp->clear();
-      serial->readAsync( reinterpret_cast<uint8_t*>( rsp->data() ), bytesAvailable );
+      serial->await( Trigger::TRIGGER_WRITE_COMPLETE, TIMEOUT_BLOCK );
+      return StatusCode::OK;
+    }
+    else
+    {
+      return StatusCode::FAIL;
+    }
+  }
+
+
+  /**
+   * @brief Accumulates a terminated response
+   *
+   *
+   * @param rsp
+   * @return StatusCode
+   */
+  StatusCode DeviceDriver::accumulateResponse( PacketString &response, const std::string_view &terminator )
+  {
+    using namespace Chimera::Thread;
+
+    auto serial = Chimera::Serial::getDriver( mSerialChannel );
+
+    /*-------------------------------------------------
+    Use a temp buffer to accumulate into
+    -------------------------------------------------*/
+    char tmp_buffer[ PacketString::MAX_SIZE ];
+    memset( tmp_buffer, 0, PacketString::MAX_SIZE );
+
+    /*-------------------------------------------------
+    Start the 2 second timeout waiting for a response
+    -------------------------------------------------*/
+    size_t start_time        = Chimera::millis();
+    bool timeout_expired     = false;
+    bool accumulate_done     = false;
+    size_t bytesAvailable    = 0;
+    size_t byteOffset        = 0;
+
+    while ( !timeout_expired )
+    {
+      /*-------------------------------------------------
+      Pull more data into the accumulation buffer
+      -------------------------------------------------*/
+      if( serial->available( &bytesAvailable ) )
+      {
+        /*-------------------------------------------------
+        Protect against buffer overflow
+        -------------------------------------------------*/
+        if( ( byteOffset + bytesAvailable ) > ARRAY_BYTES( tmp_buffer ) )
+        {
+          return StatusCode::OVERFLOW;
+        }
+
+        /*-------------------------------------------------
+        Update the accumulation buffer
+        -------------------------------------------------*/
+        serial->readAsync( reinterpret_cast<uint8_t *>( &tmp_buffer[ byteOffset ] ), bytesAvailable );
+        byteOffset += bytesAvailable;
+      }
+
+      /*-------------------------------------------------
+      Parse the buffer for the expected terminator
+      -------------------------------------------------*/
+      auto eom_ptr = strstr( tmp_buffer, terminator.data() );
+      if ( eom_ptr )
+      {
+        size_t str_size = eom_ptr - tmp_buffer;
+        response        = PacketString( tmp_buffer, str_size );
+        accumulate_done = true;
+        break;
+      }
+
+      timeout_expired = ( Chimera::millis() - start_time ) > ( 2 * TIMEOUT_1S );
+      this_thread::yield();
     }
 
-    return StatusCode::OK;
+    /*-------------------------------------------------
+    Ensure the RX buffers are clean on exit to help
+    with parsing the next message.
+    -------------------------------------------------*/
+    serial->flush( Chimera::Hardware::SubPeripheral::RX );
+
+    /*-------------------------------------------------
+    Retrieve the response if available
+    -------------------------------------------------*/
+    if ( timeout_expired || !accumulate_done )
+    {
+      return StatusCode::NO_RESPONSE;
+    }
+    else
+    {
+      return StatusCode::OK;
+    }
   }
+
 }    // namespace RN4871

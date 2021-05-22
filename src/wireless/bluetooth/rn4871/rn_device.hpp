@@ -35,17 +35,23 @@ namespace RN4871
     /*-------------------------------------------------
     System Commands
     -------------------------------------------------*/
-    bool enterTransparentMode();
-    void exitTransparentMode();
-    void reboot();
+    bool enterCommandMode();
+    bool enterDataMode();
+    bool reboot();
 
     /*-------------------------------------------------
     Data Transfer
     -------------------------------------------------*/
-    StatusCode command( const PacketString &cmd, PacketString *const rsp = nullptr, const size_t delay = 0 );
+    StatusCode transfer( const PacketString &cmd );
+    StatusCode accumulateResponse( PacketString &rsp, const std::string_view &terminator );
+
+  protected:
+
+
 
   private:
     Chimera::Serial::Channel mSerialChannel; /**< Serial channel device is on */
+    OpMode mCurrentMode;
   };
 }    // namespace RN4871
 

@@ -9,8 +9,8 @@
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
-/* STL Includes */
-#include <cstring>
+/* Aurora Includes */
+#include <Aurora/utility>
 
 /* Driver Includes */
 #include <src/wireless/bluetooth/rn4871/rn_action_cmds.hpp>
@@ -27,8 +27,7 @@ namespace RN4871::CMD::Action
   StatusCode version( PacketString &cmd )
   {
     cmd.clear();
-    cmd[ 0 ] = 'V';
-    cmd[ 1 ] = CMD_TERM;
+    cmd = "V\n";
 
     return StatusCode::OK;
   }

@@ -133,7 +133,8 @@
       "cstdbool": "cpp",
       "dma": "cpp",
       "*.def": "cpp",
-      "rcc": "cpp"
+      "rcc": "cpp",
+      "csetjmp": "cpp"
     },
     "workbench.colorCustomizations": {
       "activityBar.activeBackground": "#ef7853",
