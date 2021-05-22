@@ -39,7 +39,7 @@ namespace DC::Tasks::BT
     /*-------------------------------------------------
     Power up the bluetooth driver
     -------------------------------------------------*/
-    RF::BT::doPowerOnReset();
+    //RF::BT::doPowerOnReset();
 
     while ( 1 )
     {

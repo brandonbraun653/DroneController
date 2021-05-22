@@ -27,18 +27,32 @@ namespace RN4871
     ~DeviceDriver();
 
     /*-------------------------------------------------
-    Info and Configuration
+    Device Information
+    -------------------------------------------------*/
+    VersionString softwareVersion();
+    int connectionStrength();
+    bool isConnected();
+
+    /*-------------------------------------------------
+    Configuration
     -------------------------------------------------*/
     void assignSerial( const Chimera::Serial::Channel channel );
-    VersionString softwareVersion();
     bool setName( const std::string_view &name );
+    bool setAdvertisePower( const OutputPower pwr );
+    bool setConnectedPower( const OutputPower pwr );
+    bool setGAPService( const uint16_t service );
+    bool setFeatures( const Feature bitmap );
 
     /*-------------------------------------------------
     System Commands
     -------------------------------------------------*/
     bool enterCommandMode();
     bool enterDataMode();
+    bool enterUARTMode();
     bool reboot();
+    bool startAdvertisement();
+    bool stopAdvertisement();
+    bool killCurrentConnection();
 
     /*-------------------------------------------------
     Data Transfer

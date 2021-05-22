@@ -8,6 +8,9 @@
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
+/* STL Includes */
+#include <string>
+
 /* Aurora Includes */
 #include <Aurora/logging>
 #include <Aurora/utility>
@@ -83,6 +86,165 @@ namespace RN4871
 
 
   /**
+   * @brief Sets the TX power during advertisement
+   *
+   * @param pwr       Power level to transmit at
+   * @return bool
+   */
+  bool DeviceDriver::setAdvertisePower( const OutputPower pwr )
+  {
+    /*-------------------------------------------------
+    This action requires command mode
+    -------------------------------------------------*/
+    if ( !this->enterCommandMode() )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Format the command string
+    -------------------------------------------------*/
+    PacketBuffer buf;
+    memset( buf, 0, sizeof( buf ) );
+    scnprintf( buf, sizeof( buf ), "SGA,%d\r", EnumValue( pwr ) );
+
+    PacketString response;
+    this->transfer( buf );
+    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    {
+      return true;
+    }
+    else
+    {
+      LOG_ERROR( "Failed configuring Advertise Output Power: %d\r\n", EnumValue( pwr ) );
+      return false;
+    }
+  };
+
+
+  /**
+   * @brief Sets the TX power once connected to a device
+   *
+   * @param pwr       Power level to transmit at
+   * @return bool
+   */
+  bool DeviceDriver::setConnectedPower( const OutputPower pwr )
+  {
+    /*-------------------------------------------------
+    This action requires command mode
+    -------------------------------------------------*/
+    if ( !this->enterCommandMode() )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Format the command string
+    -------------------------------------------------*/
+    PacketBuffer buf;
+    memset( buf, 0, sizeof( buf ) );
+    scnprintf( buf, sizeof( buf ), "SGC,%d\r", EnumValue( pwr ) );
+
+    PacketString response;
+    this->transfer( buf );
+    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    {
+      return true;
+    }
+    else
+    {
+      LOG_ERROR( "Failed configuring Connected Output Power: %d\r\n", EnumValue( pwr ) );
+      return false;
+    }
+  }
+
+
+  /**
+   * @brief Sets the GAP service the device will identify as
+   * See https://www.bluetooth.com/ for more information, or download the values from
+   * https://specificationrefs.bluetooth.com/assigned-values/Appearance%20Values.pdf.
+   *
+   * @param service   Service ID to identify as
+   * @return bool
+   */
+  bool DeviceDriver::setGAPService( const uint16_t service )
+  {
+    /*-------------------------------------------------
+    This action requires command mode
+    -------------------------------------------------*/
+    if ( !this->enterCommandMode() )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Format the command string
+    -------------------------------------------------*/
+    PacketBuffer buf;
+    memset( buf, 0, sizeof( buf ) );
+    scnprintf( buf, sizeof( buf ), "SDA,%4.4x\r", service );
+    LOG_INFO( "Setting service appearance as: 0x%4.4x\r\n", service );
+
+    /*-------------------------------------------------
+    Send the transfer. No response is expected.
+    -------------------------------------------------*/
+    PacketString response;
+    bool success = this->transfer( buf ) == StatusCode::OK;
+    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    {
+      return true;
+    }
+    else
+    {
+      LOG_ERROR( "Failed configuring GAP service: 0x%4.4x\r\n", service );
+      return false;
+    }
+
+    return success;
+  }
+
+
+  /**
+   * @brief Configure supported feature set on the RN4871
+   *
+   * @param bitmap      Feature set bitmap
+   * @return bool
+   */
+  bool DeviceDriver::setFeatures( const Feature bitmap )
+  {
+    /*-------------------------------------------------
+    This action requires command mode
+    -------------------------------------------------*/
+    if ( !this->enterCommandMode() )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Format the command string
+    -------------------------------------------------*/
+    PacketBuffer buf;
+    memset( buf, 0, sizeof( buf ) );
+    scnprintf( buf, sizeof( buf ), "SR,%4.4x\r", EnumValue( bitmap ) );
+
+    /*-------------------------------------------------
+    Send the transaction
+    -------------------------------------------------*/
+    PacketString response;
+    this->transfer( buf );
+    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    {
+      return true;
+    }
+    else
+    {
+      LOG_ERROR( "Failed configuring feature set: 0x%4.4x\r\n", EnumValue( bitmap ) );
+      return false;
+    }
+  }
+
+
+  /**
    * @brief Gets the software version running on the RN4871
    *
    * @return VersionString
@@ -116,6 +278,77 @@ namespace RN4871
 
 
   /**
+   * @brief Gets the current connection signal strength in dBm
+   *
+   * @return int
+   */
+  int DeviceDriver::connectionStrength()
+  {
+    /*-------------------------------------------------
+    Must be in command mode
+    -------------------------------------------------*/
+    if ( !this->enterCommandMode() )
+    {
+      return -1;
+    }
+
+    /*-------------------------------------------------
+    Request the connection strength
+    -------------------------------------------------*/
+    PacketString response;
+    this->transfer( "M\r" );
+
+    if ( this->accumulateResponse( response, "\r" ) == StatusCode::OK )
+    {
+      if( strstr( response.c_str(), "Err" ) )
+      {
+        return -1;
+      }
+
+      return std::stoi( response.c_str(), nullptr, 16 );
+    }
+    else
+    {
+      LOG_ERROR( "Failed to retrieve connection strength\r\n" );
+      return -1;
+    }
+  }
+
+
+  bool DeviceDriver::isConnected()
+  {
+    /*-------------------------------------------------
+    Must be in command mode
+    -------------------------------------------------*/
+    if ( !this->enterCommandMode() )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Request the connection strength
+    -------------------------------------------------*/
+    PacketString response;
+    this->transfer( "GK\r" );
+
+    if ( this->accumulateResponse( response, "\r" ) == StatusCode::OK )
+    {
+      if( strstr( response.c_str(), "none" ) )
+      {
+        return false;
+      }
+
+      return true;
+    }
+    else
+    {
+      LOG_ERROR( "Failed to retrieve connection status\r\n" );
+      return false;
+    }
+  }
+
+
+  /**
    * @brief Instructs the module to enter comand mode
    */
   bool DeviceDriver::enterCommandMode()
@@ -134,13 +367,14 @@ namespace RN4871
     Send the request
     -------------------------------------------------*/
     this->transfer( "$$$" );
-    if ( ( this->accumulateResponse( response, " " ) == StatusCode::OK ) && ( response == "CMD>" ) )
+    if ( this->accumulateResponse( response, "CMD>" ) == StatusCode::OK )
     {
       mCurrentMode = OpMode::COMMAND;
       return true;
     }
     else
     {
+      LOG_ERROR( "Failed to enter command mode\r\n" );
       return false;
     }
   }
@@ -154,7 +388,7 @@ namespace RN4871
     PacketString cmd, response;
 
     /*-------------------------------------------------
-    Already in command mode?
+    Already in data mode?
     -------------------------------------------------*/
     if ( mCurrentMode == OpMode::DATA )
     {
@@ -172,6 +406,39 @@ namespace RN4871
     }
     else
     {
+      LOG_ERROR( "Failed to enter data mode\r\n" );
+      return false;
+    }
+  }
+
+
+  /**
+   * @brief Instructs the device to enter the UART transparent mode
+   * @return bool
+   */
+  bool DeviceDriver::enterUARTMode()
+  {
+    /*-------------------------------------------------
+    Ensure command mode is entered
+    -------------------------------------------------*/
+    if( !this->enterCommandMode() )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Send the command
+    -------------------------------------------------*/
+    PacketString response;
+
+    this->transfer( "I\r" );
+    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( strstr( response.c_str(), "AOK" ) ) )
+    {
+      return true;
+    }
+    else
+    {
+      LOG_ERROR( "Failed transitioning to UART transparent mode\r\n" );
       return false;
     }
   }
@@ -205,12 +472,12 @@ namespace RN4871
     {
       return false;
     }
+    mCurrentMode = OpMode::UNKNOWN;
     LOG_INFO( "Bluetooth: %s\r\n", r1.data() );
 
     /* Wait for the reboot complete */
-    if( this->accumulateResponse( r2, "%REBOOT%" ) == StatusCode::OK )
+    if( this->accumulateResponse( r2, "%RE" ) == StatusCode::OK )
     {
-      LOG_INFO( "Bluetooth: Done\r\n" );
       return true;
     }
     else
@@ -218,6 +485,81 @@ namespace RN4871
       LOG_INFO( "Bluetooth: Missing reboot message\r\n" );
       return false;
     }
+  }
+
+
+  /**
+   * @brief Begin advertisement of the device
+   * @return bool
+   */
+  bool DeviceDriver::startAdvertisement()
+  {
+    /*-------------------------------------------------
+    This action requires command mode
+    -------------------------------------------------*/
+    if ( !this->enterCommandMode() )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Format the command string
+    -------------------------------------------------*/
+    PacketString response;
+    this->transfer( "A\r" );
+    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    {
+      return true;
+    }
+    else
+    {
+      LOG_ERROR( "Failed to start advertising\r\n" );
+      return false;
+    }
+  }
+
+
+  /**
+   * @brief Begin advertisement of the device
+   * @return bool
+   */
+  bool DeviceDriver::stopAdvertisement()
+  {
+    /*-------------------------------------------------
+    This action requires command mode
+    -------------------------------------------------*/
+    if ( !this->enterCommandMode() )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Format the command string
+    -------------------------------------------------*/
+    PacketString response;
+    this->transfer( "Y\r" );
+    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    {
+      return true;
+    }
+    else
+    {
+      LOG_ERROR( "Failed to start advertising\r\n" );
+      return false;
+    }
+  }
+
+  /**
+   * @brief Kills the current active BTLE connection
+   * @return bool
+   */
+  bool DeviceDriver::killCurrentConnection()
+  {
+    /*-------------------------------------------------
+    Eventually will use this: 2.6.25 (K,1)
+    -------------------------------------------------*/
+    Chimera::insert_debug_breakpoint();
+    return false;
   }
 
 
@@ -235,6 +577,9 @@ namespace RN4871
 
     auto serial = Chimera::Serial::getDriver( mSerialChannel );
 
+    /*-------------------------------------------------
+    Do the transfer
+    -------------------------------------------------*/
     if( serial->write( cmd.data(), cmd.size() ) == Chimera::Status::OK )
     {
       serial->await( Trigger::TRIGGER_WRITE_COMPLETE, TIMEOUT_BLOCK );
