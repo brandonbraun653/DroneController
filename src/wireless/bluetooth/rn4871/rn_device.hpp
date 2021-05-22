@@ -31,6 +31,7 @@ namespace RN4871
     -------------------------------------------------*/
     void assignSerial( const Chimera::Serial::Channel channel );
     VersionString softwareVersion();
+    bool setName( const std::string_view &name );
 
     /*-------------------------------------------------
     System Commands

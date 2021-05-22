@@ -35,16 +35,16 @@ namespace DC::RF::BT
   static RN4871::DeviceDriver s_bt_device;
 
   /*-------------------------------------------------
-  serial Driver Configuration
+  Serial Driver Configuration
   -------------------------------------------------*/
   static constexpr size_t HWBufferSize = 256;
   static constexpr size_t CircleBufSize = 2 * HWBufferSize;
 
-  // serial Transmit Buffers
+  // Transmit Buffers
   static std::array<uint8_t, HWBufferSize> sTXHWBuffer;
   static etl::circular_buffer<uint8_t, CircleBufSize> sTXCircularBuffer;
 
-  // serial Receive Buffers
+  // Receive Buffers
   static std::array<uint8_t, HWBufferSize> sRXHWBuffer;
   static etl::circular_buffer<uint8_t, CircleBufSize> sRXCircularBuffer;
 
@@ -112,6 +112,7 @@ namespace DC::RF::BT
     s_bt_device.assignSerial( DC::IO::Bluetooth::serialChannel );
   }
 
+
   /**
    * @brief Controls power to the bluetooth module
    *
@@ -154,6 +155,11 @@ namespace DC::RF::BT
     Ping the unit to grab version information
     -------------------------------------------------*/
     LOG_INFO( "Bluetooth version: %s\r\n", s_bt_device.softwareVersion().data() );
+
+    /*-------------------------------------------------
+    Set the device name to something useful
+    -------------------------------------------------*/
+    s_bt_device.setName( "DroneCtrl" );
 
     /*-------------------------------------------------
     Apply configuration settings by doing a warm reset

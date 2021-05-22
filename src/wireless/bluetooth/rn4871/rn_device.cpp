@@ -10,6 +10,7 @@
 
 /* Aurora Includes */
 #include <Aurora/logging>
+#include <Aurora/utility>
 
 /* Chimera Includes */
 #include <Chimera/common>
@@ -41,6 +42,43 @@ namespace RN4871
   void DeviceDriver::assignSerial( const Chimera::Serial::Channel channel )
   {
     mSerialChannel = channel;
+  }
+
+
+  /**
+   * @brief Assigns the name to the BT device
+   *
+   * @param name    Name to be assigned
+   * @return true   Device accepted the name
+   * @return false  Failure occurred
+   */
+  bool DeviceDriver::setName( const std::string_view &name )
+  {
+    /*-------------------------------------------------
+    This action requires command mode
+    -------------------------------------------------*/
+    if ( !this->enterCommandMode() )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Format the command string
+    -------------------------------------------------*/
+    PacketBuffer buf;
+    memset( buf, 0, sizeof( buf ) );
+    scnprintf( buf, sizeof( buf ), "S-,%s\r", name.data() );
+
+    PacketString response;
+    this->transfer( buf );
+    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
 
