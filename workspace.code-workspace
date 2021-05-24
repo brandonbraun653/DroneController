@@ -134,7 +134,8 @@
       "dma": "cpp",
       "*.def": "cpp",
       "rcc": "cpp",
-      "csetjmp": "cpp"
+      "csetjmp": "cpp",
+      "hmi": "cpp"
     },
     "workbench.colorCustomizations": {
       "activityBar.activeBackground": "#ef7853",

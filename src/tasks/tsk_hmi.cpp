@@ -10,6 +10,7 @@
 
 /* Aurora Includes */
 #include <Aurora/logging>
+#include <Aurora/math>
 
 /* Chimera Includes */
 #include <Chimera/adc>
@@ -53,8 +54,11 @@ namespace DC::Tasks::HMI
   void rotate( Aurora::HMI::Encoder::State &state )
   {
     currentPosition = state.absolutePosition;
-    updated = true;
+    updated         = true;
   }
+
+
+  Aurora::HMI::SR::ShiftInput srInput;
 
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -71,6 +75,26 @@ namespace DC::Tasks::HMI
     waitInit();
     Chimera::delayMilliseconds( 100 );
 
+    Aurora::HMI::SR::ShifterConfig srCfg;
+    srCfg.byteWidth      = 3;
+    srCfg.chipSelectPin  = DC::IO::SR::csPin_KeyIn;
+    srCfg.chipSelectPort = DC::IO::SR::csPort_KeyIn;
+    srCfg.sampleKeyPin   = DC::IO::SR::csPin_KeySample;
+    srCfg.sampleKeyPort  = DC::IO::SR::csPort_KeySample;
+    srCfg.spiChannel     = DC::IO::SR::spiChannel;
+    srCfg.inputMask      = 0xFFFFFFFF;
+
+
+    Aurora::HMI::SR::InputConfig bitCfg;
+    bitCfg.bit          = 1u << 0;
+    bitCfg.polarity     = Aurora::HMI::SR::Polarity::ACTIVE_LOW;
+    bitCfg.debounceTime = 25;
+
+    srInput.init( srCfg );
+    srInput.configureBit( bitCfg );
+
+    Aurora::HMI::SR::InputEvent bitEvent;
+
     /*-------------------------------------------------
     Initialize the HMI drivers
     -------------------------------------------------*/
@@ -86,9 +110,7 @@ namespace DC::Tasks::HMI
 
     // Encoder::enable( Encoder::Key::ENCODER_1 );
 
-    auto adc = Chimera::ADC::getDriver( Chimera::ADC::Peripheral::ADC_0 );
-
-
+    auto adc              = Chimera::ADC::getDriver( Chimera::ADC::Peripheral::ADC_0 );
     size_t debugPrintTick = Chimera::millis();
 
     while ( true )
@@ -101,16 +123,22 @@ namespace DC::Tasks::HMI
       -------------------------------------------------*/
       adc->startSequence();
 
+      srInput.processHardware();
+
+      if ( srInput.nextEvent( bitEvent ) )
+      {
+        LOG_DEBUG( "Bit %d event\r\n", Aurora::Math::maxBitSet( bitEvent.bit ) );
+      }
 
       /*-------------------------------------------------
       Print some debug info for testing
       -------------------------------------------------*/
-      if( ( Chimera::millis() - debugPrintTick ) > 100 )
+      if ( ( Chimera::millis() - debugPrintTick ) > 100 )
       {
         debugPrintTick = Chimera::millis();
 
         etl::format_spec format;
-        format.width(5).precision(4);
+        format.width( 5 ).precision( 4 );
 
         float pitch = 0.0f;
         etl::string<5> textP;
@@ -132,20 +160,20 @@ namespace DC::Tasks::HMI
         DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_THROTTLE, &throttle, sizeof( throttle ) );
         etl::to_string( throttle, textT, format );
 
-        //LOG_DEBUG( "ADC -> Pitch: %sV, Roll: %sV, Yaw: %sV, Throttle: %sV\r\n", textP.data(), textR.data(), textY.data(), textT.data() );
+        // LOG_DEBUG( "ADC -> Pitch: %sV, Roll: %sV, Yaw: %sV, Throttle: %sV\r\n", textP.data(), textR.data(), textY.data(),
+        // textT.data() );
 
 
-        if( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_0 ) )
-        {
-          LOG_DEBUG( "Key 0 press\r\n" );
-        }
+        // if ( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_0 ) )
+        // {
+        //   LOG_DEBUG( "Key 0 press\r\n" );
+        // }
 
-        if( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_1 ) )
-        {
-          LOG_DEBUG( "Key 1 press\r\n" );
-        }
+        // if ( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_1 ) )
+        // {
+        //   LOG_DEBUG( "Key 1 press\r\n" );
+        // }
       }
-
     }
   }
 }    // namespace DC::Tasks::HMI

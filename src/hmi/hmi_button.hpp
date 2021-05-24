@@ -3,7 +3,7 @@
  *    hmi_button.hpp
  *
  *  Description:
- *    Button input interface
+ *    Interrupt driven button input interface.
  *
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
