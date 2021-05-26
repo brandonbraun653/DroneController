@@ -36,28 +36,6 @@
 
 namespace DC::Tasks::HMI
 {
-  volatile int currentPosition = 0;
-  volatile bool updated        = false;
-
-  void keyPress( Aurora::HMI::Button::ActiveEdge key )
-  {
-    using namespace Aurora::Logging;
-    LOG_DEBUG( "Key pressed! \r\n" );
-  }
-
-  void keyRelease( Aurora::HMI::Button::ActiveEdge key )
-  {
-    using namespace Aurora::Logging;
-    LOG_DEBUG( "Key release! \r\n" );
-  }
-
-  void rotate( Aurora::HMI::Encoder::State &state )
-  {
-    currentPosition = state.absolutePosition;
-    updated         = true;
-  }
-
-
   Aurora::HMI::SR::ShiftInput srInput;
 
   /*-------------------------------------------------------------------------------
@@ -84,9 +62,8 @@ namespace DC::Tasks::HMI
     srCfg.spiChannel     = DC::IO::SR::spiChannel;
     srCfg.inputMask      = 0xFFFFFFFF;
 
-
     Aurora::HMI::SR::InputConfig bitCfg;
-    bitCfg.bit          = 1u << 0;
+    bitCfg.bit          = DC::GPIO::SR::pinToBitField( DC::GPIO::SR::InputPin::KEY_USER_0 );
     bitCfg.polarity     = Aurora::HMI::SR::Polarity::ACTIVE_LOW;
     bitCfg.debounceTime = 25;
 
@@ -98,17 +75,8 @@ namespace DC::Tasks::HMI
     /*-------------------------------------------------
     Initialize the HMI drivers
     -------------------------------------------------*/
-    // auto pressCB    = Aurora::HMI::Button::EdgeCallback::create<keyPress>();
-    // auto releaseCB  = Aurora::HMI::Button::EdgeCallback::create<keyRelease>();
-    // auto rotateCB   = Aurora::HMI::Encoder::RotationCallback::create<rotate>();
-    // bool initResult = DC::HMI::Encoder::initialize();
-    // RT_HARD_ASSERT( initResult );
-
-    // Encoder::onCenterPress( Encoder::Key::ENCODER_1, pressCB );
-    // Encoder::onCenterRelease( Encoder::Key::ENCODER_1, releaseCB );
-    // Encoder::onRotate( Encoder::Key::ENCODER_1, rotateCB );
-
-    // Encoder::enable( Encoder::Key::ENCODER_1 );
+    Encoder::enable( Encoder::Key::ENCODER_0 );
+    Encoder::enable( Encoder::Key::ENCODER_1 );
 
     auto adc              = Chimera::ADC::getDriver( Chimera::ADC::Peripheral::ADC_0 );
     size_t debugPrintTick = Chimera::millis();
@@ -128,6 +96,20 @@ namespace DC::Tasks::HMI
       if ( srInput.nextEvent( bitEvent ) )
       {
         LOG_DEBUG( "Bit %d event\r\n", Aurora::Math::maxBitSet( bitEvent.bit ) );
+      }
+
+      /*-------------------------------------------------
+      Dump the encoder data
+      -------------------------------------------------*/
+      Aurora::HMI::Encoder::State event;
+      if ( Encoder::nextEvent( Encoder::Key::ENCODER_0, event ) )
+      {
+        LOG_DEBUG( "Encoder 0 Position: %d\r\n", event.absolutePosition );
+      }
+
+      if ( Encoder::nextEvent( Encoder::Key::ENCODER_1, event ) )
+      {
+        LOG_DEBUG( "Encoder 1 Position: %d\r\n", event.absolutePosition );
       }
 
       /*-------------------------------------------------
@@ -160,8 +142,7 @@ namespace DC::Tasks::HMI
         DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_THROTTLE, &throttle, sizeof( throttle ) );
         etl::to_string( throttle, textT, format );
 
-        // LOG_DEBUG( "ADC -> Pitch: %sV, Roll: %sV, Yaw: %sV, Throttle: %sV\r\n", textP.data(), textR.data(), textY.data(),
-        // textT.data() );
+        //LOG_DEBUG( "ADC -> Pitch: %sV, Roll: %sV, Yaw: %sV, Throttle: %sV\r\n", textP.data(), textR.data(), textY.data(), textT.data() );
 
 
         // if ( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_0 ) )

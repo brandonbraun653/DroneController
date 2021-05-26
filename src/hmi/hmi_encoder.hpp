@@ -17,6 +17,7 @@
 
 /* Aurora Includes */
 #include <Aurora/hmi>
+#include <Aurora/utility>
 
 namespace DC::HMI::Encoder
 {
@@ -28,6 +29,7 @@ namespace DC::HMI::Encoder
    */
   enum class Key : uint8_t
   {
+    ENCODER_0,
     ENCODER_1,
 
     NUM_OPTIONS,
@@ -37,56 +39,11 @@ namespace DC::HMI::Encoder
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  /**
-   *  Power up the GPIO inputs for processing inputs. By default
-   *  this will leave all encoders disabled.
-   *
-   *  @return bool
-   */
   bool initialize();
-
-  /**
-   *  Register a callback to execute on encoder center key press
-   *
-   *  @param[in]  encoder       Which encoder to register against
-   *  @param[in]  cb            The callback to execute
-   *  @return bool
-   */
-  bool onCenterPress( const Key encoder, Aurora::HMI::Button::EdgeCallback &cb );
-
-  /**
-   *  Register a callback to execute on encoder center key release
-   *
-   *  @param[in]  encoder       Which encoder to register against
-   *  @param[in]  cb            The callback to execute
-   *  @return bool
-   */
-  bool onCenterRelease( const Key encoder, Aurora::HMI::Button::EdgeCallback &cb );
-
-  /**
-   *  Register a callback to execute on encoder rotation
-   *
-   *  @param[in]  encoder       Which encoder to register against
-   *  @param[in]  cb            The callback to execute
-   *  @return bool
-   */
   bool onRotate( const Key encoder, Aurora::HMI::Encoder::RotationCallback &cb );
-
-  /**
-   *  Enable input processing for a particular key
-   *
-   *  @param[in]  encoder       Which encoder to enable
-   *  @return bool
-   */
   bool enable( const Key encoder );
-
-  /**
-   *  Disable input processing for a particular key
-   *
-   *  @param[in]  encoder       Which encoder to disable
-   *  @return void
-   */
   void disable( const Key encoder );
+  bool nextEvent( const Key encoder, Aurora::HMI::Encoder::State &event );
 
 }  // namespace DC::HMI::Encoder
 

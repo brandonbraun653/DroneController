@@ -10,6 +10,7 @@
 
 /* Aurora Includes */
 #include <Aurora/hmi>
+#include <Aurora/utility>
 
 /* Chimera Includes */
 #include <Chimera/assert>
@@ -18,6 +19,9 @@
 #include <Chimera/exti>
 #include <Chimera/thread>
 
+/* ETL Includes */
+#include <etl/queue.h>
+
 /* Project Includes */
 #include <src/config/bsp/board_map.hpp>
 #include <src/hmi/hmi_encoder.hpp>
@@ -25,68 +29,52 @@
 namespace DC::HMI::Encoder
 {
   /*-------------------------------------------------------------------------------
+  Aliases
+  -------------------------------------------------------------------------------*/
+  template<size_t SIZE>
+  using EventQueue = etl::queue<Aurora::HMI::Encoder::State, SIZE>;
+
+  /*-------------------------------------------------------------------------------
   Private Structures
   -------------------------------------------------------------------------------*/
   struct ControlBlock
   {
-    bool enabled;                                      /**< Key processing enabled */
-    Key thisEnc;                                       /**< Which encoder this is */
-    Aurora::HMI::Button::EdgeCallback onCenterPress;   /**< Callback when key is pressed */
-    Aurora::HMI::Button::EdgeCallback onCenterRelease; /**< Callback when key is released */
-    Aurora::HMI::Encoder::RotationCallback onRotate;   /**< Callback when a rotation occurs */
-    Chimera::GPIO::State btnActiveState;               /**< GPIO state that is considered as active */
-    Chimera::Thread::RecursiveMutex mutex;          /**< Resource lock */
-    Aurora::HMI::Encoder::Encoder encoder;
+    bool enabled;                                    /**< Key processing enabled */
+    Key thisEnc;                                     /**< Which encoder this is */
+    EventQueue<32> queue;                                /**< Queue for rotation events */
+    Aurora::HMI::Encoder::RotationCallback onRotate; /**< Callback when a rotation occurs */
+    Chimera::Thread::RecursiveMutex mutex;           /**< Resource lock */
+    Aurora::HMI::Encoder::Encoder encoder;           /**< Basic encoder device driver */
 
+    /**
+     * @brief Initializes the control block to defaults
+     */
     void clear()
     {
-      enabled         = false;
-      onCenterPress   = {};
-      onCenterRelease = {};
-      onRotate        = {};
-      btnActiveState  = Chimera::GPIO::State::LOW;
+      enabled  = false;
+      onRotate = {};
     }
 
-
-    void edgeCallback( Aurora::HMI::Button::ActiveEdge edge )
-    {
-      using namespace Aurora::HMI::Button;
-      using namespace Chimera::GPIO;
-
-      switch ( edge )
-      {
-        case ActiveEdge::RISING_EDGE:
-          if ( ( btnActiveState == State::HIGH ) && onCenterPress )
-          {
-            onCenterPress( edge );
-          }
-          else if ( onCenterRelease )    // btnActiveState == LOW
-          {
-            onCenterRelease( edge );
-          }
-          // else no registered callbacks
-          break;
-
-        case ActiveEdge::FALLING_EDGE:
-          if ( ( btnActiveState == State::LOW ) && onCenterPress )
-          {
-            onCenterPress( edge );
-          }
-          else if ( onCenterRelease )    // btnActiveState == HIGH
-          {
-            onCenterRelease( edge );
-          }
-          // else no registered callbacks
-          break;
-
-        default:
-          break;
-      };
-    }
-
-
+    /**
+     * @brief Operations to perform on a rotate event
+     *
+     * @param state
+     */
     void rotateCallback( Aurora::HMI::Encoder::State &state )
     {
+      /*-------------------------------------------------
+      Push an event to the queue
+      -------------------------------------------------*/
+      mutex.lock();
+      if( !queue.full() )
+      {
+        queue.push( state );
+      }
+      mutex.unlock();
+
+      /*-------------------------------------------------
+      Invoke the user callback if registered
+      -------------------------------------------------*/
       if ( onRotate )
       {
         onRotate( state );
@@ -98,7 +86,7 @@ namespace DC::HMI::Encoder
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
-  static ControlBlock s_enc_ctrl[ static_cast<size_t>( Key::NUM_OPTIONS ) ];
+  static ControlBlock s_enc_ctrl[ EnumValue( Key::NUM_OPTIONS ) ];
 
 
   /*-------------------------------------------------------------------------------
@@ -113,6 +101,12 @@ namespace DC::HMI::Encoder
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
+  /**
+   *  Power up the GPIO inputs for processing inputs. By default
+   *  this will leave all encoders disabled.
+   *
+   *  @return bool
+   */
   bool initialize()
   {
     using namespace Chimera::GPIO;
@@ -133,7 +127,7 @@ namespace DC::HMI::Encoder
       Prepare the input configuration
       -------------------------------------------------*/
       Aurora::HMI::Encoder::Config config;
-      config.btnCfg  = DC::IO::HMI::CommonInputCfg;
+      config.btnCfg  = {};
       config.encACfg = DC::IO::HMI::CommonInputCfg;
       config.encBCfg = DC::IO::HMI::CommonInputCfg;
 
@@ -144,16 +138,9 @@ namespace DC::HMI::Encoder
       -------------------------------------------------*/
       switch ( s_enc_ctrl[ x ].thisEnc )
       {
-        case Key::ENCODER_1:
+        case Key::ENCODER_0:
           /* Center Button Configuration */
-          // s_enc_ctrl[ x ].btnActiveState = State::LOW;
-          // config.btnCfg.pin              = DC::IO::HMI::Encoder0::pin;
-          // config.btnCfg.port             = DC::IO::HMI::Encoder0::p;
-          // config.btnCfg.validity         = true;
-          // config.btnActiveEdge           = Button::ActiveEdge::BOTH_EDGES;
-          // config.btnDebounceTime         = 30;
-          // config.btnSampleRate           = 10;
-          // config.btnNumSamples           = 2;
+          config.btnCfg.validity = false;
 
           /* Rotary Encoder Configuration */
           config.encACfg.pin      = DC::IO::HMI::Encoder0::pinA;
@@ -167,6 +154,22 @@ namespace DC::HMI::Encoder
           config.encActiveEdge = Button::ActiveEdge::BOTH_EDGES;
           break;
 
+        case Key::ENCODER_1:
+          /* Center Button Configuration */
+          config.btnCfg.validity = false;
+
+          /* Rotary Encoder Configuration */
+          config.encACfg.pin      = DC::IO::HMI::Encoder1::pinA;
+          config.encACfg.port     = DC::IO::HMI::Encoder1::portA;
+          config.encACfg.validity = true;
+
+          config.encBCfg.pin      = DC::IO::HMI::Encoder1::pinB;
+          config.encBCfg.port     = DC::IO::HMI::Encoder1::portB;
+          config.encBCfg.validity = true;
+
+          config.encActiveEdge = Button::ActiveEdge::BOTH_EDGES;
+          break;
+
         default:
           RT_HARD_ASSERT( false );
           break;
@@ -175,7 +178,6 @@ namespace DC::HMI::Encoder
       /*-------------------------------------------------
       Initialize the rotary encoder
       -------------------------------------------------*/
-      auto centerCB = Button::EdgeCallback::create<ControlBlock, &ControlBlock::edgeCallback>( s_enc_ctrl[ x ] );
       auto rotateCB =
           Aurora::HMI::Encoder::RotationCallback::create<ControlBlock, &ControlBlock::rotateCallback>( s_enc_ctrl[ x ] );
 
@@ -183,7 +185,6 @@ namespace DC::HMI::Encoder
       {
         s_enc_ctrl[ x ].encoder.disable();
         s_enc_ctrl[ x ].encoder.onRotation( rotateCB );
-        s_enc_ctrl[ x ].encoder.onCenterPush( centerCB );
       }
       else
       {
@@ -195,40 +196,13 @@ namespace DC::HMI::Encoder
   }
 
 
-  bool onCenterPress( const Key encoder, Aurora::HMI::Button::EdgeCallback &cb )
-  {
-    if ( keyIsValid( encoder ) )
-    {
-      auto k = static_cast<size_t>( encoder );
-      s_enc_ctrl[ k ].mutex.lock();
-      s_enc_ctrl[ k ].onCenterPress = cb;
-      s_enc_ctrl[ k ].mutex.unlock();
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
-
-  bool onCenterRelease( const Key encoder, Aurora::HMI::Button::EdgeCallback &cb )
-  {
-    if ( keyIsValid( encoder ) )
-    {
-      auto k = static_cast<size_t>( encoder );
-      s_enc_ctrl[ k ].mutex.lock();
-      s_enc_ctrl[ k ].onCenterRelease = cb;
-      s_enc_ctrl[ k ].mutex.unlock();
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
-
+  /**
+   *  Register a callback to execute on encoder rotation
+   *
+   *  @param[in]  encoder       Which encoder to register against
+   *  @param[in]  cb            The callback to execute
+   *  @return bool
+   */
   bool onRotate( const Key encoder, Aurora::HMI::Encoder::RotationCallback &cb )
   {
     if ( keyIsValid( encoder ) )
@@ -246,6 +220,12 @@ namespace DC::HMI::Encoder
   }
 
 
+  /**
+   *  Enable input processing for a particular key
+   *
+   *  @param[in]  encoder       Which encoder to enable
+   *  @return bool
+   */
   bool enable( const Key encoder )
   {
     auto k = static_cast<size_t>( encoder );
@@ -262,6 +242,12 @@ namespace DC::HMI::Encoder
   }
 
 
+  /**
+   *  Disable input processing for a particular key
+   *
+   *  @param[in]  encoder       Which encoder to disable
+   *  @return void
+   */
   void disable( const Key encoder )
   {
     auto k = static_cast<size_t>( encoder );
@@ -271,6 +257,41 @@ namespace DC::HMI::Encoder
       s_enc_ctrl[ k ].encoder.disable();
       s_enc_ctrl[ k ].enabled = false;
     }
+  }
+
+
+  /**
+   * @brief Gets the latest event on the encoder
+   *
+   * @param encoder   Which encoder to retrieve
+   * @param event     The event data to fill in
+   * @return true     Data retrieved
+   * @return false    Error or no data available
+   */
+  bool nextEvent( const Key encoder, Aurora::HMI::Encoder::State &event )
+  {
+    /*-------------------------------------------------
+    Input Protection
+    -------------------------------------------------*/
+    if( !keyIsValid( encoder ) )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Check the queue for emptiness
+    -------------------------------------------------*/
+    Chimera::Thread::LockGuard lck( s_enc_ctrl[ EnumValue( encoder ) ].mutex );
+    if( s_enc_ctrl[ EnumValue( encoder ) ].queue.empty() )
+    {
+      return false;
+    }
+
+    /*-------------------------------------------------
+    Grab the event data
+    -------------------------------------------------*/
+    s_enc_ctrl[ EnumValue( encoder ) ].queue.pop_into( event );
+    return true;
   }
 
 }    // namespace DC::HMI::Encoder

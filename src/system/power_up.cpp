@@ -12,6 +12,7 @@
 #include <Aurora/logging>
 
 /* Project Includes */
+#include <src/hmi/hmi_encoder.hpp>
 #include <src/hmi/hmi_sticks.hpp>
 #include <src/io/gpio_driver.hpp>
 #include <src/io/sr_driver.hpp>
@@ -59,6 +60,11 @@ namespace DC::SYS
     Power up the HMI drivers
     -------------------------------------------------*/
     DC::HMI::JoyStick::initialize();
+
+    /*-------------------------------------------------
+    Power up the encoder
+    -------------------------------------------------*/
+    DC::HMI::Encoder::initialize();
   }
 
 
