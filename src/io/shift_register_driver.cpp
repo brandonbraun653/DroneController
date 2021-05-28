@@ -17,7 +17,7 @@
 
 /* Project Includes */
 #include <src/config/bsp/board_map.hpp>
-#include <src/io/sr_driver.hpp>
+#include <src/io/shift_register_driver.hpp>
 #include <src/io/pin_mapping.hpp>
 
 namespace DC::GPIO::SR

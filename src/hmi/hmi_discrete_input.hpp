@@ -1,16 +1,16 @@
 /********************************************************************************
  *  File Name:
- *    hmi_button.hpp
+ *    hmi_discrete.hpp
  *
  *  Description:
- *    Interrupt driven button input interface.
+ *    Digital discrete input interface
  *
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
-#ifndef DC_HMI_BUTTON_HPP
-#define DC_HMI_BUTTON_HPP
+#ifndef DC_HMI_DISCRETE_HPP
+#define DC_HMI_DISCRETE_HPP
 
 /* STL Includes */
 #include <cstdint>
@@ -18,28 +18,16 @@
 /* Aurora Includes */
 #include <Aurora/hmi>
 
-namespace DC::HMI::Button
+/* Project Includes */
+#include <src/io/pin_mapping.hpp>
+
+namespace DC::HMI::Discrete
 {
-  /*-------------------------------------------------------------------------------
-  Enumerations
-  -------------------------------------------------------------------------------*/
-  /**
-   *  Aliases for the identifying the key inputs by name
-   */
-  enum class Key : uint8_t
-  {
-    TOUCH_KEY_1,
-
-    NUM_OPTIONS,
-    INVALID
-  };
-
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
   /**
-   *  Power up the GPIO inputs for processing inputs. By default
-   *  this will leave all buttons disabled.
+   *  Power up the GPIO inputs for processing edge events
    *
    *  @return bool
    */
@@ -48,37 +36,40 @@ namespace DC::HMI::Button
   /**
    *  Register a callback to execute on key press
    *
-   *  @param[in]  button        Which button to register against
+   *  @param[in]  discrete        Which discrete to register against
    *  @param[in]  cb            The callback to execute
    *  @return bool
    */
-  bool onPress( const Key button, Aurora::HMI::Button::EdgeCallback &cb );
+  bool onPress( const GPIO::InputPin discrete, Aurora::HMI::Button::EdgeCallback &cb );
 
   /**
    *  Register a callback to execute on key release
    *
-   *  @param[in]  button        Which button to register against
+   *  @param[in]  discrete        Which discrete to register against
    *  @param[in]  cb            The callback to execute
    *  @return bool
    */
-  bool onRelease( const Key button, Aurora::HMI::Button::EdgeCallback &cb );
+  bool onRelease( const GPIO::InputPin discrete, Aurora::HMI::Button::EdgeCallback &cb );
 
   /**
    *  Enable input processing for a particular key
    *
-   *  @param[in]  button        Which button to enable
+   *  @param[in]  discrete        Which discrete to enable
    *  @return bool
    */
-  bool enable( const Key button );
+  bool enable( const GPIO::InputPin discrete );
 
   /**
    *  Disable input processing for a particular key
    *
-   *  @param[in]  button        Which button to disable
+   *  @param[in]  discrete        Which discrete to disable
    *  @return void
    */
-  void disable( const Key button );
+  void disable( const GPIO::InputPin discrete );
+
+
+  void doPeriodicProcessing( void );
 
 }  // namespace DC::HMI
 
-#endif  /* !DC_HMI_BUTTON_HPP */
+#endif  /* !DC_HMI_DISCRETE_HPP */

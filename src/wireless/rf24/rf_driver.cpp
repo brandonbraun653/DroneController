@@ -14,6 +14,7 @@
 /* Project Includes */
 #include <src/config/bsp/board_map.hpp>
 #include <src/io/gpio_driver.hpp>
+#include <src/io/pin_mapping.hpp>
 #include <src/wireless/rf24/rf_driver.hpp>
 
 namespace DC::RF::RF24
@@ -39,12 +40,12 @@ namespace DC::RF::RF24
   {
     if( state == PowerState::ENABLED )
     {
-      GPIO::setShiftRegister( GPIO::SR::OutputPin::RF24_PWR_EN );
+      GPIO::setShiftRegister( ::DC::GPIO::OutputPin::RF24_PWR_EN );
       s_is_enabled = true;
     }
     else
     {
-      GPIO::clearShiftRegister( GPIO::SR::OutputPin::RF24_PWR_EN );
+      GPIO::clearShiftRegister( DC::GPIO::OutputPin::RF24_PWR_EN );
       s_is_enabled = false;
     }
   }

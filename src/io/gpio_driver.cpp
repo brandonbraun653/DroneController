@@ -17,7 +17,7 @@
 /* Project Includes */
 #include <src/io/gpio_driver.hpp>
 #include <src/io/pin_mapping.hpp>
-#include <src/io/sr_driver.hpp>
+#include <src/io/shift_register_driver.hpp>
 
 namespace DC::GPIO
 {
@@ -46,15 +46,15 @@ namespace DC::GPIO
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  void setShiftRegister( const SR::OutputPin pin )
+  void setShiftRegister( const OutputPin pin )
   {
     using namespace Chimera::Thread;
 
     /*-------------------------------------------------
     Input protection
     -------------------------------------------------*/
-    uint32_t bitField = SR::pinToBitField( pin );
-    if ( ( bitField == SR::INVALID_BIT_FIELD ) || ( bitField > std::numeric_limits<decltype( s_ouput_state )>::max() ) )
+    uint32_t bitField = pinToBitField( pin );
+    if ( ( bitField == INVALID_BIT_FIELD ) || ( bitField > std::numeric_limits<decltype( s_ouput_state )>::max() ) )
     {
       /* Bit didn't exist or the configuration was wrong */
       return;
@@ -70,15 +70,15 @@ namespace DC::GPIO
   }
 
 
-  void clearShiftRegister( const SR::OutputPin pin )
+  void clearShiftRegister( const OutputPin pin )
   {
     using namespace Chimera::Thread;
 
     /*-------------------------------------------------
     Input protection
     -------------------------------------------------*/
-    uint32_t bitField = SR::pinToBitField( pin );
-    if ( ( bitField == SR::INVALID_BIT_FIELD ) || ( bitField > std::numeric_limits<decltype( s_ouput_state )>::max() ) )
+    uint32_t bitField = pinToBitField( pin );
+    if ( ( bitField == INVALID_BIT_FIELD ) || ( bitField > std::numeric_limits<decltype( s_ouput_state )>::max() ) )
     {
       /* Bit didn't exist or the configuration was wrong */
       return;
@@ -94,15 +94,15 @@ namespace DC::GPIO
   }
 
 
-  bool getShiftRegister( const SR::InputPin pin )
+  bool getShiftRegister( const InputPin pin )
   {
     using namespace Chimera::Thread;
 
     /*-------------------------------------------------
     Input protection
     -------------------------------------------------*/
-    uint32_t bitField = SR::pinToBitField( pin );
-    if ( ( bitField == SR::INVALID_BIT_FIELD ) || ( bitField > std::numeric_limits<decltype( s_input_state )>::max() ) )
+    uint32_t bitField = pinToBitField( pin );
+    if ( ( bitField == INVALID_BIT_FIELD ) || ( bitField > std::numeric_limits<decltype( s_input_state )>::max() ) )
     {
       /* Bit didn't exist or the configuration was wrong */
       return false;

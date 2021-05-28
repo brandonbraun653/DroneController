@@ -20,16 +20,9 @@ namespace DC::GPIO
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  /**
-   * @brief Set
-   *
-   * @param pin
-   */
-  void setShiftRegister( const SR::OutputPin pin );
-
-  void clearShiftRegister( const SR::OutputPin pin );
-
-  bool getShiftRegister( const SR::InputPin pin );
+  void setShiftRegister( const OutputPin pin );
+  void clearShiftRegister( const OutputPin pin );
+  bool getShiftRegister( const InputPin pin );
 
 }  // namespace DC::GPIO
 

@@ -22,10 +22,10 @@
 
 /* Project Includes */
 #include <src/config/bsp/board_map.hpp>
-#include <src/hmi/hmi_button.hpp>
+#include <src/hmi/hmi_discrete_input.hpp>
 #include <src/hmi/hmi_encoder.hpp>
 #include <src/io/gpio_driver.hpp>
-#include <src/io/sr_driver.hpp>
+#include <src/io/shift_register_driver.hpp>
 #include <src/tasks/tsk_background.hpp>
 #include <src/tasks/tsk_common.hpp>
 
@@ -34,9 +34,9 @@
 #include <src/registry/reg_intf.hpp>
 
 
+
 namespace DC::Tasks::HMI
 {
-  Aurora::HMI::SR::ShiftInput srInput;
 
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -53,31 +53,10 @@ namespace DC::Tasks::HMI
     waitInit();
     Chimera::delayMilliseconds( 100 );
 
-    Aurora::HMI::SR::ShifterConfig srCfg;
-    srCfg.byteWidth      = 3;
-    srCfg.chipSelectPin  = DC::IO::SR::csPin_KeyIn;
-    srCfg.chipSelectPort = DC::IO::SR::csPort_KeyIn;
-    srCfg.sampleKeyPin   = DC::IO::SR::csPin_KeySample;
-    srCfg.sampleKeyPort  = DC::IO::SR::csPort_KeySample;
-    srCfg.spiChannel     = DC::IO::SR::spiChannel;
-    srCfg.inputMask      = 0xFFFFFFFF;
-
-    Aurora::HMI::SR::InputConfig bitCfg;
-    bitCfg.bit          = DC::GPIO::SR::pinToBitField( DC::GPIO::SR::InputPin::KEY_ENC_0 );
-    bitCfg.polarity     = Aurora::HMI::SR::Polarity::ACTIVE_LOW;
-    bitCfg.debounceTime = 25;
-
-    srInput.init( srCfg );
-    srInput.configureBit( bitCfg );
-
-    Aurora::HMI::SR::InputEvent bitEvent;
 
     /*-------------------------------------------------
     Initialize the HMI drivers
     -------------------------------------------------*/
-    Encoder::enable( Encoder::Key::ENCODER_0 );
-    Encoder::enable( Encoder::Key::ENCODER_1 );
-
     auto adc              = Chimera::ADC::getDriver( Chimera::ADC::Peripheral::ADC_0 );
     size_t debugPrintTick = Chimera::millis();
 
@@ -90,20 +69,7 @@ namespace DC::Tasks::HMI
       Sample the ADC inputs as fast as this thread
       -------------------------------------------------*/
       adc->startSequence();
-
-      srInput.processHardware();
-
-      if ( srInput.nextEvent( bitEvent ) )
-      {
-        if ( bitEvent.state == Aurora::HMI::SR::State::ACTIVE )
-        {
-          LOG_DEBUG( "Bit %d pressed\r\n", bitEvent.bit );
-        }
-        else
-        {
-          LOG_DEBUG( "Bit %d released\r\n", bitEvent.bit );
-        }
-      }
+      DC::HMI::Discrete::doPeriodicProcessing();
 
       /*-------------------------------------------------
       Dump the encoder data
@@ -151,17 +117,6 @@ namespace DC::Tasks::HMI
 
         // LOG_DEBUG( "ADC -> Pitch: %sV, Roll: %sV, Yaw: %sV, Throttle: %sV\r\n", textP.data(), textR.data(), textY.data(),
         // textT.data() );
-
-
-        // if ( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_0 ) )
-        // {
-        //   LOG_DEBUG( "Key 0 press\r\n" );
-        // }
-
-        // if ( !DC::GPIO::getShiftRegister( DC::GPIO::SR::InputPin::KEY_USER_1 ) )
-        // {
-        //   LOG_DEBUG( "Key 1 press\r\n" );
-        // }
       }
     }
   }

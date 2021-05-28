@@ -14,8 +14,9 @@
 /* Project Includes */
 #include <src/hmi/hmi_encoder.hpp>
 #include <src/hmi/hmi_sticks.hpp>
+#include <src/hmi/hmi_discrete_input.hpp>
 #include <src/io/gpio_driver.hpp>
-#include <src/io/sr_driver.hpp>
+#include <src/io/shift_register_driver.hpp>
 #include <src/registry/reg_intf.hpp>
 #include <src/system/power_up.hpp>
 #include <src/utility/logger.hpp>
@@ -65,6 +66,11 @@ namespace DC::SYS
     Power up the encoder
     -------------------------------------------------*/
     DC::HMI::Encoder::initialize();
+
+    /*-------------------------------------------------
+    Power up the discrete inputs
+    -------------------------------------------------*/
+    DC::HMI::Discrete::initialize();
   }
 
 

@@ -11,6 +11,7 @@
 /* STL Includes */
 #include <array>
 #include <cstdint>
+#include <cstddef>
 
 /* Aurora Includes */
 #include <Aurora/utility>
@@ -18,7 +19,7 @@
 /* Project Includes */
 #include <src/io/pin_mapping.hpp>
 
-namespace DC::GPIO::SR
+namespace DC::GPIO
 {
   /*-------------------------------------------------------------------------------
   Static Data
@@ -29,6 +30,9 @@ namespace DC::GPIO::SR
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
+  /**
+   * @brief Initializes the shift register pin map
+   */
   void initPinMap()
   {
     /*-------------------------------------------------
@@ -81,12 +85,53 @@ namespace DC::GPIO::SR
   }
 
 
+  /**
+   * @brief Converts a logical InputPin to a literal bitfield
+   *
+   * The bit field corresponds to the physical location of the input
+   * shift register chain.
+   *
+   * @param pin   Which pin to convert
+   * @return uint32_t
+   */
   uint32_t pinToBitField( const InputPin pin )
   {
     return ( pin < InputPin::NUM_PINS ) ? s_input_pin_map[ EnumValue( pin ) ] : INVALID_BIT_FIELD;
   }
 
+  /**
+   * @brief Converts a literal bitfield into a logical InputPin
+   *
+   * @param bit_field   The bitfield to convert
+   * @return InputPin
+   */
+  InputPin bitFieldToInputPin( const uint32_t bit_field )
+  {
+    /*-------------------------------------------------
+    Iterate over all possible pins. There aren't many,
+    so a linear search should be fine.
+    -------------------------------------------------*/
+    for( size_t idx = 0; idx < s_input_pin_map.size(); idx++ )
+    {
+      if( bit_field == s_input_pin_map[ idx ] )
+      {
+        return static_cast<InputPin>( idx );
+      }
+    }
 
+    return InputPin::NUM_PINS;
+  }
+
+
+  /**
+   * @brief Converts a logical OutputPin to a literal bitfield
+   *
+   * The bit field corresponds to the physical location of the input
+   * shift register chain.
+   *
+   * @param pin   Which pin to convert
+   * @return uint32_t
+   */
   uint32_t pinToBitField( const OutputPin pin )
   {
     return ( pin < OutputPin::NUM_PINS ) ? s_output_pin_map[ EnumValue( pin ) ] : INVALID_BIT_FIELD;

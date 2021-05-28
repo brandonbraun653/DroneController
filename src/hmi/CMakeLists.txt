@@ -4,7 +4,7 @@ gen_static_lib_variants(
   TARGET
     lib_human_interface
   SOURCES
-    hmi_button.cpp
+    hmi_discrete_input.cpp
     hmi_encoder.cpp
     hmi_sticks.cpp
   PRV_LIBRARIES

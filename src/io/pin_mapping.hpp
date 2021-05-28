@@ -17,7 +17,7 @@
 #include <cstddef>
 #include <limits>
 
-namespace DC::GPIO::SR
+namespace DC::GPIO
 {
   /*-------------------------------------------------------------------------------
   Constants
@@ -55,7 +55,8 @@ namespace DC::GPIO::SR
     USER_SW_C,
     USER_SW_D,
 
-    NUM_PINS
+    NUM_PINS,
+    START_PIN = KEY_ENC_0
   };
 
   /**
@@ -76,31 +77,9 @@ namespace DC::GPIO::SR
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  /**
-   * @brief Initializes the shift register pin map
-   */
   void initPinMap();
-
-  /**
-   * @brief Converts a logical InputPin to a literal bitfield
-   *
-   * The bit field corresponds to the physical location of the input
-   * shift register chain.
-   *
-   * @param pin   Which pin to convert
-   * @return uint32_t
-   */
   uint32_t pinToBitField( const InputPin pin );
-
-  /**
-   * @brief Converts a logical OutputPin to a literal bitfield
-   *
-   * The bit field corresponds to the physical location of the input
-   * shift register chain.
-   *
-   * @param pin   Which pin to convert
-   * @return uint32_t
-   */
+  InputPin bitFieldToInputPin( const uint32_t bit_field );
   uint32_t pinToBitField( const OutputPin pin );
 
 }    // namespace DC::GPIO

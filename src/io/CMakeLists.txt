@@ -6,7 +6,7 @@ gen_static_lib_variants(
   SOURCES
     gpio_driver.cpp
     pin_mapping.cpp
-    sr_driver.cpp
+    shift_register_driver.cpp
   PRV_LIBRARIES
 
     chimera_intf_inc

@@ -122,12 +122,12 @@ namespace DC::RF::BT
   {
     if( state == PowerState::ENABLED )
     {
-      GPIO::setShiftRegister( GPIO::SR::OutputPin::BT_PWR_EN );
+      GPIO::setShiftRegister( GPIO::OutputPin::BT_PWR_EN );
       s_is_enabled = true;
     }
     else
     {
-      GPIO::clearShiftRegister( GPIO::SR::OutputPin::BT_PWR_EN );
+      GPIO::clearShiftRegister( GPIO::OutputPin::BT_PWR_EN );
       s_is_enabled = false;
     }
   }

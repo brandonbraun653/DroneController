@@ -192,6 +192,12 @@ namespace DC::HMI::Encoder
       }
     }
 
+    /*-------------------------------------------------
+    Enable the encoders
+    -------------------------------------------------*/
+    enable( Encoder::Key::ENCODER_0 );
+    enable( Encoder::Key::ENCODER_1 );
+
     return true;
   }
 
