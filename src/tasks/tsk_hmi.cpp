@@ -70,20 +70,7 @@ namespace DC::Tasks::HMI
       -------------------------------------------------*/
       adc->startSequence();
       DC::HMI::Discrete::doPeriodicProcessing();
-
-      /*-------------------------------------------------
-      Dump the encoder data
-      -------------------------------------------------*/
-      Aurora::HMI::Encoder::State event;
-      if ( Encoder::nextEvent( Encoder::Key::ENCODER_0, event ) )
-      {
-        LOG_DEBUG( "Encoder 0 Position: %d\r\n", event.absolutePosition );
-      }
-
-      if ( Encoder::nextEvent( Encoder::Key::ENCODER_1, event ) )
-      {
-        LOG_DEBUG( "Encoder 1 Position: %d\r\n", event.absolutePosition );
-      }
+      DC::HMI::Encoder::doPeriodicProcessing();
 
       /*-------------------------------------------------
       Print some debug info for testing

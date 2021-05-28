@@ -10,6 +10,7 @@
 
 /* Aurora Includes */
 #include <Aurora/hmi>
+#include <Aurora/logging>
 #include <Aurora/utility>
 
 /* Chimera Includes */
@@ -41,7 +42,7 @@ namespace DC::HMI::Encoder
   {
     bool enabled;                                    /**< Key processing enabled */
     Key thisEnc;                                     /**< Which encoder this is */
-    EventQueue<32> queue;                                /**< Queue for rotation events */
+    EventQueue<32> queue;                            /**< Queue for rotation events */
     Aurora::HMI::Encoder::RotationCallback onRotate; /**< Callback when a rotation occurs */
     Chimera::Thread::RecursiveMutex mutex;           /**< Resource lock */
     Aurora::HMI::Encoder::Encoder encoder;           /**< Basic encoder device driver */
@@ -71,14 +72,6 @@ namespace DC::HMI::Encoder
         queue.push( state );
       }
       mutex.unlock();
-
-      /*-------------------------------------------------
-      Invoke the user callback if registered
-      -------------------------------------------------*/
-      if ( onRotate )
-      {
-        onRotate( state );
-      }
     }
   };
 
@@ -86,6 +79,7 @@ namespace DC::HMI::Encoder
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
+  static bool s_driver_enabled = false;
   static ControlBlock s_enc_ctrl[ EnumValue( Key::NUM_OPTIONS ) ];
 
 
@@ -111,6 +105,8 @@ namespace DC::HMI::Encoder
   {
     using namespace Chimera::GPIO;
     using namespace Aurora::HMI;
+
+    s_driver_enabled = false;
 
     /*-------------------------------------------------
     Reset and then initialize the GPIO for each block
@@ -198,7 +194,8 @@ namespace DC::HMI::Encoder
     enable( Encoder::Key::ENCODER_0 );
     enable( Encoder::Key::ENCODER_1 );
 
-    return true;
+    s_driver_enabled = true;
+    return s_driver_enabled;
   }
 
 
@@ -298,6 +295,46 @@ namespace DC::HMI::Encoder
     -------------------------------------------------*/
     s_enc_ctrl[ EnumValue( encoder ) ].queue.pop_into( event );
     return true;
+  }
+
+
+  void doPeriodicProcessing()
+  {
+    /*-------------------------------------------------
+    Don't do anything before enabled
+    -------------------------------------------------*/
+    if( !s_driver_enabled )
+    {
+      return;
+    }
+
+    /*-------------------------------------------------
+    Process all generated events
+    -------------------------------------------------*/
+    Aurora::HMI::Encoder::State event;
+
+    for( size_t idx = EnumValue( Key::ENCODER_0 ); idx < EnumValue( Key::NUM_OPTIONS ); idx++ )
+    {
+      while( nextEvent( static_cast<Key>( idx ), event ) )
+      {
+        /*-------------------------------------------------
+        Print a debug message if needed
+        -------------------------------------------------*/
+        if constexpr( DEBUG )
+        {
+          LOG_DEBUG( "Encoder %d Position: %d\r\n", idx, event.absolutePosition );
+        }
+
+        /*-------------------------------------------------
+        Invoke the user callback
+        -------------------------------------------------*/
+        Chimera::Thread::LockGuard lck( s_enc_ctrl[ idx ].mutex );
+        if( s_enc_ctrl[ idx ].onRotate )
+        {
+          s_enc_ctrl[ idx ].onRotate( event );
+        }
+      }
+    }
   }
 
 }    // namespace DC::HMI::Encoder

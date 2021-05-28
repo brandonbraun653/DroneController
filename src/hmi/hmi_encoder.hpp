@@ -44,6 +44,7 @@ namespace DC::HMI::Encoder
   bool enable( const Key encoder );
   void disable( const Key encoder );
   bool nextEvent( const Key encoder, Aurora::HMI::Encoder::State &event );
+  void doPeriodicProcessing();
 
 }  // namespace DC::HMI::Encoder
 
