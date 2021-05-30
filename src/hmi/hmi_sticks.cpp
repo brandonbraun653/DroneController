@@ -138,6 +138,15 @@ namespace DC::HMI::JoyStick
   /*-------------------------------------------------------------------------------
   Static Functions
   -------------------------------------------------------------------------------*/
+  /**
+   * @brief Processes sampled ADC data
+   *
+   * This function is registered as a callback with the ADC driver's userspace
+   * interrupt handler, allowing normal multi-tasking operations to be used
+   * safely.
+   *
+   * @param detail    Details about the interrupt event
+   */
   static void adc_isr_handler( const Chimera::ADC::InterruptDetail &detail )
   {
     using namespace DC::REG;
@@ -155,6 +164,7 @@ namespace DC::HMI::JoyStick
     Populate the registry with the new data
     -------------------------------------------------*/
     float voltage = adc->toVoltage( detail.data );
+
 
     switch( detail.channel )
     {

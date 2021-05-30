@@ -60,6 +60,7 @@ namespace DC::Tasks::HMI
     auto adc              = Chimera::ADC::getDriver( Chimera::ADC::Peripheral::ADC_0 );
     size_t debugPrintTick = Chimera::millis();
 
+
     while ( true )
     {
       BKGD::kickDog( PrjTaskId::HMI );
@@ -68,9 +69,10 @@ namespace DC::Tasks::HMI
       /*-------------------------------------------------
       Sample the ADC inputs as fast as this thread
       -------------------------------------------------*/
-      adc->startSequence();
       DC::HMI::Discrete::doPeriodicProcessing();
       DC::HMI::Encoder::doPeriodicProcessing();
+      adc->startSequence();
+
 
       /*-------------------------------------------------
       Print some debug info for testing
@@ -79,31 +81,19 @@ namespace DC::Tasks::HMI
       {
         debugPrintTick = Chimera::millis();
 
-        etl::format_spec format;
-        format.width( 5 ).precision( 4 );
-
         float pitch = 0.0f;
-        etl::string<5> textP;
         DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_PITCH, &pitch, sizeof( pitch ) );
-        etl::to_string( pitch, textP, format );
 
         float roll = 0.0f;
-        etl::string<5> textR;
         DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_ROLL, &roll, sizeof( roll ) );
-        etl::to_string( roll, textR, format );
 
         float yaw = 0.0f;
-        etl::string<5> textY;
         DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_YAW, &yaw, sizeof( yaw ) );
-        etl::to_string( yaw, textY, format );
 
         float throttle = 0.0f;
-        etl::string<5> textT;
         DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_THROTTLE, &throttle, sizeof( throttle ) );
-        etl::to_string( throttle, textT, format );
 
-        LOG_DEBUG( "ADC -> Pitch: %sV, Roll: %sV, Yaw: %sV, Throttle: %sV\r\n", textP.data(), textR.data(), textY.data(),
-                   textT.data() );
+        LOG_DEBUG( "ADC -> Pitch: %fV, Roll: %fV, Yaw: %fV, Throttle: %fV\r\n", pitch, roll, yaw, throttle );
       }
     }
   }
