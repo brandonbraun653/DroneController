@@ -37,6 +37,9 @@
 
 static etl::random_xorshift rng;
 
+#define CONTROLLER_DEVICE 0
+
+
 namespace DC::Tasks::RADIO
 {
   std::array<uint8_t, 10 * 1024> netMemoryPool;
@@ -79,17 +82,27 @@ namespace DC::Tasks::RADIO
 
     netif->assignConfig( cfg );
     netif->powerUp( context );
-
     context->attachNetif( netif );
 
-    /*-------------------------------------------------
-    Inform the NRF ARP how to resolve addresses
-    -------------------------------------------------*/
+/*-------------------------------------------------
+Inform the NRF ARP how to resolve addresses
+-------------------------------------------------*/
+#if ( CONTROLLER_DEVICE == 1 )
     std::string thisNode = "device123";
-    uint64_t thisMAC = 0xB4B5B6B7B5;
+    uint64_t thisMAC     = 0xB4B5B6B7B5;
 
     std::string destNode = "device321";
-    uint64_t destMAC = 0xA4A5A6A7A0;
+    uint64_t destMAC     = 0xA4A5A6A7A0;
+
+#else
+    std::string destNode = "device123";
+    uint64_t destMAC     = 0xB4B5B6B7B5;
+
+    std::string thisNode = "device321";
+    uint64_t thisMAC     = 0xA4A5A6A7A0;
+
+#endif /* CONTROLLER_DEVICE */
+
 
     netif->addARPEntry( thisNode, &thisMAC, sizeof( thisMAC ) );
     netif->addARPEntry( destNode, &destMAC, sizeof( destMAC ) );
@@ -116,10 +129,10 @@ namespace DC::Tasks::RADIO
     /*-------------------------------------------------
     Initialize some local data for the transfers
     -------------------------------------------------*/
-    // Chimera::Status_t result;
-    // size_t lastTx    = Chimera::millis();
-    // size_t lastRx    = Chimera::millis();
-    // bool transmitted = false;
+    Chimera::Status_t result;
+    size_t lastTx    = Chimera::millis();
+    size_t lastRx    = Chimera::millis();
+    bool transmitted = false;
 
     while ( 1 )
     {
@@ -127,37 +140,28 @@ namespace DC::Tasks::RADIO
       Periodically transmit data. Expects to talk with a
       python program that will simply echo the data back.
       -------------------------------------------------*/
-      // if ( ( ( Chimera::millis() - lastTx ) > 1000 ) && !transmitted )
-      // {
-      //   txSocket->write( some_data.data(), some_data.size() );
-      //   lastTx      = Chimera::millis();
-      //   lastRx      = Chimera::millis();
-      //   transmitted = true;
-      // }
+#if ( CONTROLLER_DEVICE == 1 )
+      if ( ( ( Chimera::millis() - lastTx ) > 1000 ) )
+      {
+        lastTx = Chimera::millis();
+        txSocket->write( some_data.data(), some_data.size() );
+      }
+#endif /* CONTROLLER_DEVICE == 1 */
 
       /*-------------------------------------------------
       Try and sample data. Expects to receive an echo of
       the transmit.
       -------------------------------------------------*/
-      // if ( transmitted && ( ( Chimera::millis() - lastRx ) > 1000 ) )
-      // {
-      //   auto bytesAvailable = rxSocket->available();
-      //   lastRx = Chimera::millis();
-
-      //   if( !bytesAvailable )
-      //   {
-      //     LOG_DEBUG( "Didn't receive data: %d\r\n", Chimera::millis() );
-      //     continue;
-      //   }
-
-      //   auto mem = context->malloc( bytesAvailable );
-
-      //   result = rxSocket->read( mem, bytesAvailable );
-
-      //   transmitted = false;
-      //   LOG_DEBUG( "Got %d bytes\r\n", bytesAvailable );
-      //   context->free( mem );
-      // }
+#if ( CONTROLLER_DEVICE == 0 )
+      if ( auto bytesAvailable = rxSocket->available(); bytesAvailable )
+      {
+        lastRx   = Chimera::millis();
+        auto mem = context->malloc( bytesAvailable );
+        result   = rxSocket->read( mem, bytesAvailable );
+        LOG_DEBUG( "Got %d bytes\r\n", bytesAvailable );
+        context->free( mem );
+      }
+#endif /* CONTROLLER_DEVICE == 0 */
 
       BKGD::kickDog( PrjTaskId::RADIO );
       Chimera::delayMilliseconds( 10 );

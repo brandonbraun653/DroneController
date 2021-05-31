@@ -1,5 +1,5 @@
 {
-  "version":"0.2.0",
+  "version": "0.2.0",
   "configurations": [
     {
       "name": "Simulator (gdb)",
@@ -12,11 +12,11 @@
       "environment": [],
       "MIMode": "gdb",
       "setupCommands": [
-          {
-              "description": "Enable pretty-printing for gdb",
-              "text": "-enable-pretty-printing",
-              "ignoreFailures": true
-          }
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
       ]
     },
     {
@@ -27,12 +27,18 @@
       "program": "${workspaceRoot}/artifacts/last_build_version/sys_image",
       "MIMode": "gdb",
       "targetArchitecture": "arm",
-      "logging": { "engineLogging": true },
+      "logging": {
+        "engineLogging": true
+      },
       "miDebuggerPath": "/usr/bin/gdb-multiarch",
       "serverLaunchTimeout": 10000,
       "customLaunchSetupCommands": [
-        { "text": "target extended-remote /dev/ttyACM0"},
-        { "text": "monitor swdp_scan"},
+        {
+          "text": "target extended-remote /dev/ttyACM0"
+        },
+        {
+          "text": "monitor swdp_scan"
+        },
         {
           "text": "attach 1"
         },
@@ -51,7 +57,7 @@
       ]
     },
     {
-      "name": "Last Built Version (JLink)",
+      "name": "J-Link",
       "cwd": "${workspaceRoot}",
       "executable": "./artifacts/last_build_version/sys_image",
       "request": "launch",

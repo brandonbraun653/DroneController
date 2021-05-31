@@ -93,7 +93,7 @@ namespace DC::Tasks::HMI
         float throttle = 0.0f;
         DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_THROTTLE, &throttle, sizeof( throttle ) );
 
-        LOG_DEBUG( "ADC -> Pitch: %fV, Roll: %fV, Yaw: %fV, Throttle: %fV\r\n", pitch, roll, yaw, throttle );
+        //LOG_DEBUG( "ADC -> Pitch: %fV, Roll: %fV, Yaw: %fV, Throttle: %fV\r\n", pitch, roll, yaw, throttle );
       }
     }
   }
