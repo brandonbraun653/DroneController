@@ -48,6 +48,7 @@ add_subdirectory("lib/FreeRTOS")
 add_subdirectory("lib/Ripple")
 add_subdirectory("lib/Thor")
 add_subdirectory("lib/nanopb")
+add_subdirectory("lib/VirtualDrone/src/VDrone/nanopb")
 
 # ====================================================
 # Project Exports

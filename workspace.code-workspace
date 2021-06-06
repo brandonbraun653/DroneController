@@ -135,7 +135,9 @@
       "*.def": "cpp",
       "rcc": "cpp",
       "csetjmp": "cpp",
-      "hmi": "cpp"
+      "hmi": "cpp",
+      "spiffs.h": "c",
+      "spiffs_config.h": "c"
     },
     "workbench.colorCustomizations": {
       "activityBar.activeBackground": "#ef7853",

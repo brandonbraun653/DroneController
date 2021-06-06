@@ -43,7 +43,6 @@ target_link_options(DroneController PRIVATE "-Wl,-Map=${CMAKE_RUNTIME_OUTPUT_DIR
 
 # Include Directories
 target_include_directories(DroneController PRIVATE ".")
-#add_dependencies(DroneController ripple_netif_nrf24_protobuf)
 
 # Dependent Modules
 target_link_libraries(DroneController PRIVATE
@@ -52,8 +51,6 @@ target_link_libraries(DroneController PRIVATE
   chimera_intf_inc
   freertos_intf_inc_all
   thor_intf_inc
-  tiny_usb_intf_inc
-  type_safe_inc
 
   # Project Libraries
   lib_bluetooth
@@ -67,40 +64,22 @@ target_link_libraries(DroneController PRIVATE
   lib_usb
   lib_utility
 
-  # Threading Library
-  freertos_intf_inc_all
-  freertos_core
-  freertos_port
-  freertos_heap
-  freertos_heap_4
-  freertos_cm4f_port
-
-  # Segger System View
-  segger_sys_view
-  segger_sys_view_intf
-  segger_sys_view_cortex_m4_freertos
-
   # Networking Libraries
   ripple_shared
   ripple_user_intf
   ripple_network_stack
-  ripple_netif_nrf24_datalink
-  ripple_netif_nrf24_physical
-  # ripple_netif_nrf24_protobuf
 
   # Utility Libraries
   aurora_core_dbg
+  aurora_database_dbg
+  aurora_datastore_dbg
+  aurora_filesystem_core_dbg
   aurora_hmi_dbg
   aurora_logging_dbg
   aurora_memory_dbg
-  aurora_database_dbg
-  aurora_datastore_dbg
-  aurora_filesystem_spiffs_dbg
 
   # Hardware Libraries
   chimera_core_dbg
-  tiny_usb_core_dbg
-  tiny_usb_port_st_dbg
 
   # Target Properties
   prj_device_target
@@ -120,13 +99,49 @@ endif()
 
 
 if(Toolchain::HAS_GCC)
+  add_dependencies(DroneController vdrone_nanopb_proto)
+
   target_link_libraries(DroneController PRIVATE
+    # Aurora
+    aurora_filesystem_generic_driver
+
     # Testing & Mock Libraries
     gmock_src
     gtest_src
 
     # Simulator networking
     zmq
+    vdrone_nanopb_proto
+    vdrone_nanopb_proto_intf_inc
+  )
+endif()
+
+if(Toolchain::HAS_GCC_ARM_NONE_EABI)
+  target_link_libraries(DroneController PRIVATE
+    # Aurora
+    aurora_filesystem_spiffs_dbg
+
+    # Threading Library
+    freertos_intf_inc_all
+    freertos_core
+    freertos_port
+    freertos_heap
+    freertos_heap_4
+    freertos_cm4f_port
+
+    # Ripple NetIf
+    ripple_netif_nrf24_datalink
+    ripple_netif_nrf24_physical
+
+    # Segger System View
+    segger_sys_view
+    segger_sys_view_intf
+    segger_sys_view_cortex_m4_freertos
+
+    # Tiny USB
+    tiny_usb_intf_inc
+    tiny_usb_core_dbg
+    tiny_usb_port_st_dbg
   )
 endif()
 

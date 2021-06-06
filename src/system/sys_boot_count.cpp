@@ -46,15 +46,24 @@ namespace DC::SYS
     BinaryFile bootFile;
     Files::BootCount::DataType boot_count = 0;
 
+    #if defined( EMBEDDED )
+    auto filename = Files::BootCount::Filename;
+    #else
+    auto fname = std::filesystem::path( Files::BootCount::Filename );
+    auto fpath = std::filesystem::current_path() / fname;
+
+    std::string_view filename( fpath.c_str() );
+    #endif
+
     /*-------------------------------------------------
     Create the file if it doesn't exist yet
     -------------------------------------------------*/
-    if( !bootFile.open( Files::BootCount::Filename, "rb" ) )
+    if( !bootFile.open( filename, "rb" ) )
     {
       /* Create the file */
       bootFile.clearErrors();
-      bootFile.create( Files::BootCount::Filename );
-      bootFile.open( Files::BootCount::Filename, "wb" );
+      bootFile.create( filename );
+      bootFile.open( filename, "wb" );
 
       /* Initialize it with defaults */
       Files::BootCount::DataType initVal = 0;
@@ -62,7 +71,7 @@ namespace DC::SYS
       bootFile.close();
 
       /* Re-open the file for continuing on further */
-      bootFile.open( Files::BootCount::Filename, "rb" );
+      bootFile.open( filename, "rb" );
     }
 
     /*-------------------------------------------------
@@ -72,7 +81,7 @@ namespace DC::SYS
     bootFile.close();
 
     boot_count += 1;
-    bootFile.open( Files::BootCount::Filename, "wb" );
+    bootFile.open( filename, "wb" );
     bootFile.write( &boot_count, sizeof( boot_count ) );
     bootFile.close();
     LOG_INFO( "Boot Count: %d\r\n", boot_count );

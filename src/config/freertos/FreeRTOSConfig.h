@@ -195,7 +195,7 @@ standard names. */
               to prevent overwriting SysTick_Handler defined within STM32Cube HAL */
 #define xPortSysTickHandler SysTick_Handler
 
-#if defined( SEGGER_SYS_VIEW )
+#if defined( SEGGER_SYS_VIEW ) && defined( EMBEDDED )
 #include "SEGGER_SYSVIEW.h"
 #include "SEGGER_SYSVIEW_FreeRTOS.h"
 #endif

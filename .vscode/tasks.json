@@ -10,7 +10,7 @@
     {
       "label": "Configure Simulator",
       "type": "shell",
-      "command": "cmake -DTOOLCHAIN=gcc -DNATIVE_THREADS=ON -DDEVICE_TARGET=sim -DCMAKE_BUILD_TYPE=Debug --configure ../",
+      "command": "cmake -DTOOLCHAIN=gcc -DNATIVE_THREADS=ON -DDEVICE_TARGET=sim -DCMAKE_BUILD_TYPE=Debug ./../",
       "dependsOn": [
         "CMake Clean"
       ],

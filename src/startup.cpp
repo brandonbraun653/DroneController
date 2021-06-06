@@ -16,7 +16,7 @@
 #include <src/tasks/tsk_common.hpp>
 
 /* Segger Includes */
-#if defined( SEGGER_SYS_VIEW )
+#if defined( SEGGER_SYS_VIEW ) && defined( EMBEDDED )
 #include "SEGGER_SYSVIEW.h"
 
 /*-------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ int main()
   /*-------------------------------------------------
   Initialize the SystemView driver
   -------------------------------------------------*/
-#if defined( SEGGER_SYS_VIEW )
+#if defined( SEGGER_SYS_VIEW ) && defined( EMBEDDED )
   SEGGER_SYSVIEW_Conf();
   SEGGER_SYSVIEW_DisableEvents( SEGGER_DISABLE_MASK );
 #endif

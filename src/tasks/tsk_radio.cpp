@@ -72,6 +72,7 @@ namespace DC::Tasks::RADIO
     -------------------------------------------------*/
     auto context = Ripple::create( netMemoryPool.data(), netMemoryPool.size() );
 
+#if defined( EMBEDDED )
     /*-------------------------------------------------
     Create the interface driver
     -------------------------------------------------*/
@@ -83,10 +84,11 @@ namespace DC::Tasks::RADIO
     netif->assignConfig( cfg );
     netif->powerUp( context );
     context->attachNetif( netif );
+#endif  /* EMBEDDED */
 
-/*-------------------------------------------------
-Inform the NRF ARP how to resolve addresses
--------------------------------------------------*/
+  /*-------------------------------------------------
+  Inform the NRF ARP how to resolve addresses
+  -------------------------------------------------*/
 #if ( CONTROLLER_DEVICE == 1 )
     std::string thisNode = "device123";
     uint64_t thisMAC     = 0xB4B5B6B7B5;
@@ -104,9 +106,11 @@ Inform the NRF ARP how to resolve addresses
 #endif /* CONTROLLER_DEVICE */
 
 
+#if defined( EMBEDDED )
     netif->addARPEntry( thisNode, &thisMAC, sizeof( thisMAC ) );
     netif->addARPEntry( destNode, &destMAC, sizeof( destMAC ) );
     netif->setRootMAC( thisMAC );
+#endif  /* EMBEDDED */
 
     /*-------------------------------------------------
     Create two sockets for a full duplex pipe
