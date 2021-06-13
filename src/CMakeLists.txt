@@ -106,6 +106,9 @@ if(Toolchain::HAS_GCC)
     # Aurora
     aurora_filesystem_generic_driver
 
+    # Ripple NetIf
+    ripple_netif_loopback
+
     # Testing & Mock Libraries
     gmock_src
     gtest_src

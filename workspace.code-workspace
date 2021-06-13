@@ -137,7 +137,11 @@
       "csetjmp": "cpp",
       "hmi": "cpp",
       "spiffs.h": "c",
-      "spiffs_config.h": "c"
+      "spiffs_config.h": "c",
+      "compare": "cpp",
+      "concepts": "cpp",
+      "ranges": "cpp",
+      "stop_token": "cpp"
     },
     "workbench.colorCustomizations": {
       "activityBar.activeBackground": "#ef7853",

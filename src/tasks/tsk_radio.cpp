@@ -21,6 +21,7 @@
 #include <Ripple/netstack>
 #include <Ripple/shared>
 #include <Ripple/netif/nrf24l01>
+#include <Ripple/netif/loopback>
 
 /* Project Includes */
 #include <src/config/bsp/board_map.hpp>
@@ -42,7 +43,11 @@ static etl::random_xorshift rng;
 
 namespace DC::Tasks::RADIO
 {
+  #if defined( EMBEDDED )
   std::array<uint8_t, 10 * 1024> netMemoryPool;
+  #else   /* SIMULATOR */
+  std::array<uint8_t, 1024 * 1024> netMemoryPool;
+  #endif  /* EMBEDDED */
 
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -71,6 +76,7 @@ namespace DC::Tasks::RADIO
     Create the network context
     -------------------------------------------------*/
     auto context = Ripple::create( netMemoryPool.data(), netMemoryPool.size() );
+    context->setIPAddress( LOCAL_HOST_IP );
 
 #if defined( EMBEDDED )
     /*-------------------------------------------------
@@ -84,11 +90,17 @@ namespace DC::Tasks::RADIO
     netif->assignConfig( cfg );
     netif->powerUp( context );
     context->attachNetif( netif );
-#endif  /* EMBEDDED */
 
-  /*-------------------------------------------------
-  Inform the NRF ARP how to resolve addresses
-  -------------------------------------------------*/
+#else
+    auto netif = Ripple::NetIf::Loopback::createNetIf( context );
+    netif->powerUp( context );
+    context->attachNetif( netif );
+#endif /* EMBEDDED */
+
+    /*-------------------------------------------------
+    Inform the NRF ARP how to resolve addresses
+    -------------------------------------------------*/
+#if defined( EMBEDDED )
 #if ( CONTROLLER_DEVICE == 1 )
     std::string thisNode = "device123";
     uint64_t thisMAC     = 0xB4B5B6B7B5;
@@ -104,31 +116,37 @@ namespace DC::Tasks::RADIO
     uint64_t thisMAC     = 0xA4A5A6A7A0;
 
 #endif /* CONTROLLER_DEVICE */
-
+#else
+#endif
 
 #if defined( EMBEDDED )
     netif->addARPEntry( thisNode, &thisMAC, sizeof( thisMAC ) );
     netif->addARPEntry( destNode, &destMAC, sizeof( destMAC ) );
     netif->setRootMAC( thisMAC );
-#endif  /* EMBEDDED */
+#endif /* EMBEDDED */
 
     /*-------------------------------------------------
     Create two sockets for a full duplex pipe
     -------------------------------------------------*/
     Socket_rPtr txSocket = context->socket( SocketType::PUSH, 256 );
-    txSocket->open( thisNode );
-    txSocket->connect( destNode );
+    txSocket->open( LOCAL_HOST_PORT );
+    txSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
     Socket_rPtr rxSocket = context->socket( SocketType::PULL, 256 );
-    rxSocket->open( thisNode );
-    rxSocket->connect( destNode );
+    rxSocket->open( LOCAL_HOST_PORT );
+    rxSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
     /*-------------------------------------------------
     Create some random data to try and transfer
     -------------------------------------------------*/
     rng.initialise( Chimera::micros() );
-    std::array<uint8_t, 100> some_data;
-    std::generate( some_data.begin(), some_data.end(), rng );
+    std::array<uint8_t, 50> some_data;
+    //std::generate( some_data.begin(), some_data.end(), rng );
+
+    for( size_t idx = 0; idx < some_data.size(); idx++ )
+    {
+      some_data[ idx ] = idx;
+    }
 
     /*-------------------------------------------------
     Initialize some local data for the transfers
@@ -140,6 +158,7 @@ namespace DC::Tasks::RADIO
 
     while ( 1 )
     {
+#if defined( EMBEDDED )
       /*-------------------------------------------------
       Periodically transmit data. Expects to talk with a
       python program that will simply echo the data back.
@@ -166,6 +185,33 @@ namespace DC::Tasks::RADIO
         context->free( mem );
       }
 #endif /* CONTROLLER_DEVICE == 0 */
+#endif /* EMBEDDED */
+
+#if defined( SIMULATOR )
+      if ( ( ( Chimera::millis() - lastTx ) > 1000 ) )
+      {
+        lastTx = Chimera::millis();
+        txSocket->write( some_data.data(), some_data.size() );
+      }
+
+      if ( auto bytesAvailable = rxSocket->available(); bytesAvailable )
+      {
+        lastRx    = Chimera::millis();
+        void *mem = context->malloc( bytesAvailable );
+        result    = rxSocket->read( mem, bytesAvailable );
+        LOG_DEBUG( "Got %d bytes\r\n", bytesAvailable );
+
+        if ( ( bytesAvailable == some_data.size() ) && ( memcmp( some_data.data(), mem, bytesAvailable ) == 0 ) )
+        {
+          LOG_DEBUG( "Data matched\r\n" );
+        }
+        else
+        {
+          LOG_DEBUG( "Data did not match\r\n" );
+        }
+        context->free( mem );
+      }
+#endif /* SIMULATOR */
 
       BKGD::kickDog( PrjTaskId::RADIO );
       Chimera::delayMilliseconds( 10 );
