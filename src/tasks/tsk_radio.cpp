@@ -102,18 +102,18 @@ namespace DC::Tasks::RADIO
     -------------------------------------------------*/
 #if defined( EMBEDDED )
 #if ( CONTROLLER_DEVICE == 1 )
-    std::string thisNode = "device123";
-    uint64_t thisMAC     = 0xB4B5B6B7B5;
+    IPAddress thisNode = 35;
+    uint64_t thisMAC   = 0xB4B5B6B7B5;
 
-    std::string destNode = "device321";
-    uint64_t destMAC     = 0xA4A5A6A7A0;
+    IPAddress destNode = 23;
+    uint64_t destMAC   = 0xA4A5A6A7A0;
 
 #else
-    std::string destNode = "device123";
-    uint64_t destMAC     = 0xB4B5B6B7B5;
+    IPAddress destNode = 23;
+    uint64_t destMAC   = 0xB4B5B6B7B5;
 
-    std::string thisNode = "device321";
-    uint64_t thisMAC     = 0xA4A5A6A7A0;
+    IPAddress thisNode = 35;
+    uint64_t thisMAC   = 0xA4A5A6A7A0;
 
 #endif /* CONTROLLER_DEVICE */
 #else
@@ -123,8 +123,16 @@ namespace DC::Tasks::RADIO
     netif->addARPEntry( thisNode, &thisMAC, sizeof( thisMAC ) );
     netif->addARPEntry( destNode, &destMAC, sizeof( destMAC ) );
     netif->setRootMAC( thisMAC );
-#endif /* EMBEDDED */
 
+    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 256 );
+    txSocket->open( thisNode );
+    txSocket->connect( destNode, thisNode );
+
+    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 256 );
+    rxSocket->open( thisNode );
+    rxSocket->connect( destNode, destNode);
+
+#else
     /*-------------------------------------------------
     Create two sockets for a full duplex pipe
     -------------------------------------------------*/
@@ -136,17 +144,13 @@ namespace DC::Tasks::RADIO
     rxSocket->open( LOCAL_HOST_PORT );
     rxSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
+#endif /* EMBEDDED */
+
     /*-------------------------------------------------
     Create some random data to try and transfer
     -------------------------------------------------*/
     rng.initialise( Chimera::micros() );
-    std::array<uint8_t, 50> some_data;
-    //std::generate( some_data.begin(), some_data.end(), rng );
-
-    for( size_t idx = 0; idx < some_data.size(); idx++ )
-    {
-      some_data[ idx ] = idx;
-    }
+    std::array<uint8_t, 13> some_data;
 
     /*-------------------------------------------------
     Initialize some local data for the transfers
@@ -156,6 +160,11 @@ namespace DC::Tasks::RADIO
     size_t lastRx    = Chimera::millis();
     bool transmitted = false;
 
+
+#if ( CONTROLLER_DEVICE == 1 )
+    txSocket->write( some_data.data(), some_data.size() );
+#endif /* CONTROLLER_DEVICE == 1 */
+
     while ( 1 )
     {
 #if defined( EMBEDDED )
@@ -163,13 +172,13 @@ namespace DC::Tasks::RADIO
       Periodically transmit data. Expects to talk with a
       python program that will simply echo the data back.
       -------------------------------------------------*/
-#if ( CONTROLLER_DEVICE == 1 )
-      if ( ( ( Chimera::millis() - lastTx ) > 1000 ) )
-      {
-        lastTx = Chimera::millis();
-        txSocket->write( some_data.data(), some_data.size() );
-      }
-#endif /* CONTROLLER_DEVICE == 1 */
+// #if ( CONTROLLER_DEVICE == 1 )
+//       if ( ( ( Chimera::millis() - lastTx ) > 1000 ) )
+//       {
+//         lastTx = Chimera::millis();
+//         txSocket->write( some_data.data(), some_data.size() );
+//       }
+// #endif /* CONTROLLER_DEVICE == 1 */
 
       /*-------------------------------------------------
       Try and sample data. Expects to receive an echo of
@@ -191,6 +200,8 @@ namespace DC::Tasks::RADIO
       if ( ( ( Chimera::millis() - lastTx ) > 1000 ) )
       {
         lastTx = Chimera::millis();
+
+        std::generate( some_data.begin(), some_data.end(), rng );
         txSocket->write( some_data.data(), some_data.size() );
       }
 
