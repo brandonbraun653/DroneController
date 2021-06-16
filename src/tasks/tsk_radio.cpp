@@ -20,6 +20,7 @@
 /* Ripple Includes */
 #include <Ripple/netstack>
 #include <Ripple/shared>
+#include <Ripple/user>
 #include <Ripple/netif/nrf24l01>
 #include <Ripple/netif/loopback>
 
