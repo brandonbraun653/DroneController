@@ -137,11 +137,11 @@ namespace DC::Tasks::RADIO
     /*-------------------------------------------------
     Create two sockets for a full duplex pipe
     -------------------------------------------------*/
-    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 256 );
+    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 512 );
     txSocket->open( LOCAL_HOST_PORT );
     txSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
-    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 256 );
+    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 512 );
     rxSocket->open( LOCAL_HOST_PORT );
     rxSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
