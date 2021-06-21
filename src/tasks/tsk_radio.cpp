@@ -202,7 +202,12 @@ namespace DC::Tasks::RADIO
       {
         lastTx = Chimera::millis();
 
-        std::generate( some_data.begin(), some_data.end(), rng );
+        //std::generate( some_data.begin(), some_data.end(), rng );
+        for( size_t x = 0; x < some_data.size(); x++ )
+        {
+          some_data[ x ] = x;
+        }
+
         txSocket->write( some_data.data(), some_data.size() );
       }
 

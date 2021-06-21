@@ -69,7 +69,7 @@ target_link_libraries(DroneController PRIVATE
   ripple_user_intf
   ripple_network_stack
   ripple_packets
-  ripple_util
+  # ripple_util
 
   # Utility Libraries
   aurora_core_dbg
