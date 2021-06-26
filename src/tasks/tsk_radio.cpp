@@ -151,7 +151,7 @@ namespace DC::Tasks::RADIO
     Create some random data to try and transfer
     -------------------------------------------------*/
     rng.initialise( Chimera::micros() );
-    std::array<uint8_t, 13> some_data;
+    std::array<uint8_t, 10> some_data;
 
     /*-------------------------------------------------
     Initialize some local data for the transfers
@@ -160,6 +160,7 @@ namespace DC::Tasks::RADIO
     size_t lastTx    = Chimera::millis();
     size_t lastRx    = Chimera::millis();
     bool transmitted = false;
+    size_t tx_count = 0;
 
 
 #if ( CONTROLLER_DEVICE == 1 )
@@ -198,17 +199,19 @@ namespace DC::Tasks::RADIO
 #endif /* EMBEDDED */
 
 #if defined( SIMULATOR )
-      if ( ( ( Chimera::millis() - lastTx ) > 1000 ) )
+      if ( ( tx_count < 5 ) && ( ( Chimera::millis() - lastTx ) > 1000 ) )
       {
         lastTx = Chimera::millis();
 
-        //std::generate( some_data.begin(), some_data.end(), rng );
-        for( size_t x = 0; x < some_data.size(); x++ )
-        {
-          some_data[ x ] = x;
-        }
+        std::generate( some_data.begin(), some_data.end(), rng );
+        // for( size_t x = 0; x < some_data.size(); x++ )
+        // {
+        //   some_data[ x ] = x;
+        // }
 
+        LOG_INFO( "Starting TX\r\n" );
         txSocket->write( some_data.data(), some_data.size() );
+        tx_count++;
       }
 
       if ( auto bytesAvailable = rxSocket->available(); bytesAvailable )
@@ -216,7 +219,6 @@ namespace DC::Tasks::RADIO
         lastRx    = Chimera::millis();
         void *mem = context->malloc( bytesAvailable );
         result    = rxSocket->read( mem, bytesAvailable );
-        LOG_DEBUG( "Got %d bytes\r\n", bytesAvailable );
 
         if ( ( bytesAvailable == some_data.size() ) && ( memcmp( some_data.data(), mem, bytesAvailable ) == 0 ) )
         {
