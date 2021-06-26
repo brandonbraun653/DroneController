@@ -151,7 +151,7 @@ namespace DC::Tasks::RADIO
     Create some random data to try and transfer
     -------------------------------------------------*/
     rng.initialise( Chimera::micros() );
-    std::array<uint8_t, 10> some_data;
+    std::array<uint8_t, 512> some_data;
 
     /*-------------------------------------------------
     Initialize some local data for the transfers
@@ -199,7 +199,7 @@ namespace DC::Tasks::RADIO
 #endif /* EMBEDDED */
 
 #if defined( SIMULATOR )
-      if ( ( tx_count < 5 ) && ( ( Chimera::millis() - lastTx ) > 1000 ) )
+      if ( /*( tx_count < 100 ) && */( ( Chimera::millis() - lastTx ) > 25 ) )
       {
         lastTx = Chimera::millis();
 
