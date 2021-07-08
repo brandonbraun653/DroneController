@@ -7,7 +7,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/artifacts/last_build_version/sys_image",
       "args": [],
-      "stopAtEntry": true,
+      "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "MIMode": "gdb",
