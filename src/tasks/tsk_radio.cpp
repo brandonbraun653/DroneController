@@ -36,6 +36,7 @@
 // Testing only
 #include <algorithm>
 #include <etl/random.h>
+#include <etl/crc32.h>
 
 static etl::random_xorshift rng;
 
@@ -44,11 +45,17 @@ static etl::random_xorshift rng;
 
 namespace DC::Tasks::RADIO
 {
-  #if defined( EMBEDDED )
+#if defined( EMBEDDED )
   std::array<uint8_t, 10 * 1024> netMemoryPool;
-  #else   /* SIMULATOR */
+#else  /* SIMULATOR */
   std::array<uint8_t, 1024 * 1024> netMemoryPool;
-  #endif  /* EMBEDDED */
+
+  struct DataPacket
+  {
+    uint32_t crc;
+    uint8_t data[ 100 ];
+  };
+#endif /* EMBEDDED */
 
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -131,7 +138,7 @@ namespace DC::Tasks::RADIO
 
     Socket_rPtr rxSocket = context->socket( SocketType::PULL, 256 );
     rxSocket->open( thisNode );
-    rxSocket->connect( destNode, destNode);
+    rxSocket->connect( destNode, destNode );
 
 #else
     /*-------------------------------------------------
@@ -160,7 +167,8 @@ namespace DC::Tasks::RADIO
     size_t lastTx    = Chimera::millis();
     size_t lastRx    = Chimera::millis();
     bool transmitted = false;
-    size_t tx_count = 0;
+    size_t tx_count  = 0;
+    size_t rx_count  = 0;
 
 
 #if ( CONTROLLER_DEVICE == 1 )
@@ -174,13 +182,13 @@ namespace DC::Tasks::RADIO
       Periodically transmit data. Expects to talk with a
       python program that will simply echo the data back.
       -------------------------------------------------*/
-// #if ( CONTROLLER_DEVICE == 1 )
-//       if ( ( ( Chimera::millis() - lastTx ) > 1000 ) )
-//       {
-//         lastTx = Chimera::millis();
-//         txSocket->write( some_data.data(), some_data.size() );
-//       }
-// #endif /* CONTROLLER_DEVICE == 1 */
+      // #if ( CONTROLLER_DEVICE == 1 )
+      //       if ( ( ( Chimera::millis() - lastTx ) > 1000 ) )
+      //       {
+      //         lastTx = Chimera::millis();
+      //         txSocket->write( some_data.data(), some_data.size() );
+      //       }
+      // #endif /* CONTROLLER_DEVICE == 1 */
 
       /*-------------------------------------------------
       Try and sample data. Expects to receive an echo of
@@ -199,36 +207,69 @@ namespace DC::Tasks::RADIO
 #endif /* EMBEDDED */
 
 #if defined( SIMULATOR )
-      if ( /*( tx_count < 100 ) && */( ( Chimera::millis() - lastTx ) > 25 ) )
+      /*-------------------------------------------------
+      Transmit some data
+      -------------------------------------------------*/
+      if ( ( tx_count < 100 ) && ( ( Chimera::millis() - lastTx ) > 25 ) )
       {
+        LOG_INFO( "Transmitting\r\n" );
         lastTx = Chimera::millis();
 
-        std::generate( some_data.begin(), some_data.end(), rng );
-        // for( size_t x = 0; x < some_data.size(); x++ )
-        // {
-        //   some_data[ x ] = x;
-        // }
+        etl::crc32 crc;
+        crc.reset();
 
-        LOG_INFO( "Starting TX\r\n" );
-        txSocket->write( some_data.data(), some_data.size() );
+        DataPacket txData;
+        memset( &txData, 0, sizeof( DataPacket ) );
+
+        std::generate( txData.data, txData.data + sizeof( txData.data ), rng );
+        crc.add( txData.data, txData.data + sizeof( txData.data ) );
+        txData.crc = crc.value();
+
+        txSocket->write( &txData, sizeof( txData ) );
         tx_count++;
+
+        if ( tx_count == 100 )
+        {
+          LOG_INFO( "Finished transmitting all data\r\n" );
+        }
       }
 
-      if ( auto bytesAvailable = rxSocket->available(); bytesAvailable )
+      /*-------------------------------------------------
+      Receive some data
+      -------------------------------------------------*/
+      if ( ( Chimera::millis() - lastRx ) > 100 )
       {
-        lastRx    = Chimera::millis();
-        void *mem = context->malloc( bytesAvailable );
-        result    = rxSocket->read( mem, bytesAvailable );
+        lastRx              = Chimera::millis();
+        auto bytesAvailable = rxSocket->available();
 
-        if ( ( bytesAvailable == some_data.size() ) && ( memcmp( some_data.data(), mem, bytesAvailable ) == 0 ) )
+        while ( bytesAvailable )
         {
-          LOG_DEBUG( "Data matched\r\n" );
+          RT_HARD_ASSERT( bytesAvailable == sizeof( DataPacket ) );
+          DataPacket rxData;
+          etl::crc32 crc;
+          crc.reset();
+
+          result = rxSocket->read( &rxData, bytesAvailable );
+          crc.add( rxData.data, rxData.data + sizeof( rxData.data ) );
+
+          if ( crc.value() == rxData.crc )
+          {
+            LOG_INFO( "Received, CRC match\r\n" );
+            rx_count++;
+          }
+          else
+          {
+            LOG_INFO( "Received, CRC fail\r\n" );
+          }
+
+          bytesAvailable = rxSocket->available();
         }
-        else
+
+        if( ( tx_count == 100 ) && ( bytesAvailable == 0 ) )
         {
-          LOG_DEBUG( "Data did not match\r\n" );
+          LOG_INFO( "Total TX: %d, Total RX: %d\r\n", tx_count, rx_count );
+          tx_count++;
         }
-        context->free( mem );
       }
 #endif /* SIMULATOR */
 
