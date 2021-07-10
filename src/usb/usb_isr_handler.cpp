@@ -17,15 +17,13 @@
 
 extern "C" void OTG_FS_WKUP_IRQHandler()
 {
-  //tud_int_handler( 0 );
-  Chimera::insert_debug_breakpoint();
+  tud_int_handler(0);
 }
 
 
 extern "C" void OTG_FS_IRQHandler()
 {
-  //tud_int_handler( 0 );
-  Chimera::insert_debug_breakpoint();
+  tud_int_handler(0);
 }
 
 

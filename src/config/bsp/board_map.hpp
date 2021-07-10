@@ -269,6 +269,20 @@ namespace DC::IO
     static constexpr Chimera::GPIO::Pin txPin   = 10;
     static constexpr Chimera::GPIO::Port txPort = Chimera::GPIO::Port::PORTB;
   }    // namespace DBG
+
+  /*-------------------------------------------------------------------------------
+  USB
+  -------------------------------------------------------------------------------*/
+  namespace USB
+  {
+    extern const Chimera::GPIO::PinInit dPPinInit;
+    extern const Chimera::GPIO::PinInit dMPinInit;
+
+    static constexpr Chimera::GPIO::Pin dPPin   = 12;
+    static constexpr Chimera::GPIO::Port dPPort = Chimera::GPIO::Port::PORTA;
+    static constexpr Chimera::GPIO::Pin dMPin   = 11;
+    static constexpr Chimera::GPIO::Port dMPort = Chimera::GPIO::Port::PORTA;
+  }
 }    // namespace DC::IO
 
 #endif /* !DC_BOARD_MAP_HPP */

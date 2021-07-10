@@ -23,6 +23,7 @@ Peripheral Support
 #define DC_NEED_INT   1
 #define DC_NEED_UART  1
 #define DC_NEED_USART 1
+#define DC_NEED_USB   1
 #define DC_NEED_WDG   1
 
 /*----------------------------------------------
@@ -66,6 +67,11 @@ High Level Driver Support
 #if DC_NEED_USART
 #define THOR_HLD_USART
 #define THOR_LLD_USART
+#endif
+
+#if DC_NEED_USB
+#define THOR_HLD_USB
+#define THOR_LLD_USB
 #endif
 
 #if DC_NEED_WDG

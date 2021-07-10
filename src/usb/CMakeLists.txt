@@ -7,6 +7,7 @@ gen_static_lib_variants(
     usb_cdc_cb.cpp
     usb_descriptor_cb.cpp
     usb_isr_handler.cpp
+    usb_system.cpp
   PRV_LIBRARIES
     aurora_intf_inc
     chimera_intf_inc

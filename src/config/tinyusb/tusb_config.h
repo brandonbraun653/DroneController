@@ -23,10 +23,11 @@ extern "C"
 #define CFG_TUSB_MCU ( OPT_MCU_STM32F4 )
 
 #define BOARD_DEVICE_RHPORT_NUM   ( 0 )
-#define BOARD_DEVICE_RHPORT_SPEED ( OPT_MODE_HIGH_SPEED )
+#define BOARD_DEVICE_RHPORT_SPEED ( OPT_MODE_FULL_SPEED )
 #define CFG_TUSB_RHPORT0_MODE     ( OPT_MODE_DEVICE | BOARD_DEVICE_RHPORT_SPEED )
 #define CFG_TUSB_OS               ( OPT_OS_NONE )
-#define CFG_TUSB_DEBUG            ( 0 )
+#define CFG_TUSB_DEBUG            ( 2 )
+#define CFG_TUSB_DEBUG_PRINTF     dc_usb_printf
 
 /* USB DMA on some MCUs can only access a specific SRAM region with restriction on alignment.
  * Tinyusb use follows macros to declare transferring memory so that they can be put

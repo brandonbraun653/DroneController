@@ -38,19 +38,20 @@ namespace DC::Tasks::USB
     Wait to be told to initialize by monitor thread
     -------------------------------------------------*/
     waitInit();
+    Chimera::delayMilliseconds( 1000 );
 
     /*-------------------------------------------------
     Power up the USB stack
     -------------------------------------------------*/
     LOG_INFO( "Booting USB thread\r\n" );
-    //tusb_init();
+    tusb_init();
 
     while( 1 )
     {
       /*-------------------------------------------------
       Periodically update the USB stack
       -------------------------------------------------*/
-      //tud_task();
+      tud_task();
 
       BKGD::kickDog( PrjTaskId::USB );
       Chimera::delayMilliseconds( 10 );

@@ -19,6 +19,7 @@
 #include <src/io/shift_register_driver.hpp>
 #include <src/registry/reg_intf.hpp>
 #include <src/system/power_up.hpp>
+#include <src/usb/usb_system.hpp>
 #include <src/utility/logger.hpp>
 #include <src/utility/serial_output.hpp>
 #include <src/wireless/bluetooth/bt_driver.hpp>
@@ -71,6 +72,11 @@ namespace DC::SYS
     Power up the discrete inputs
     -------------------------------------------------*/
     DC::HMI::Discrete::initialize();
+
+    /*-------------------------------------------------
+    Power up USB
+    -------------------------------------------------*/
+    DC::USB::initialize();
   }
 
 

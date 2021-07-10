@@ -8,6 +8,9 @@
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
+/* Chimera Includes */
+#include <Chimera/common>
+
 /* TinyUSB Includes */
 #include <device/usbd.h>
 
@@ -18,6 +21,7 @@
  */
 extern "C" uint8_t const *tud_descriptor_device_cb( void )
 {
+  Chimera::insert_debug_breakpoint();
   return nullptr;
 }
 
@@ -29,6 +33,7 @@ extern "C" uint8_t const *tud_descriptor_device_cb( void )
  */
 extern "C" uint8_t const *tud_descriptor_bos_cb( void )
 {
+  Chimera::insert_debug_breakpoint();
   return nullptr;
 }
 
@@ -42,6 +47,7 @@ extern "C" uint8_t const *tud_descriptor_bos_cb( void )
  */
 extern "C" uint8_t const *tud_descriptor_configuration_cb( uint8_t index )
 {
+  Chimera::insert_debug_breakpoint();
   return nullptr;
 }
 
@@ -56,6 +62,7 @@ extern "C" uint8_t const *tud_descriptor_configuration_cb( uint8_t index )
  */
 extern "C" uint16_t const *tud_descriptor_string_cb( uint8_t index, uint16_t langid )
 {
+  Chimera::insert_debug_breakpoint();
   return nullptr;
 }
 
@@ -68,6 +75,7 @@ extern "C" uint16_t const *tud_descriptor_string_cb( uint8_t index, uint16_t lan
  */
 extern "C" uint8_t const *tud_descriptor_device_qualifier_cb( void )
 {
+  Chimera::insert_debug_breakpoint();
   return nullptr;
 }
 
@@ -77,6 +85,7 @@ extern "C" uint8_t const *tud_descriptor_device_qualifier_cb( void )
  */
 extern "C" void tud_mount_cb( void )
 {
+  Chimera::insert_debug_breakpoint();
 }
 
 
@@ -85,6 +94,7 @@ extern "C" void tud_mount_cb( void )
  */
 extern "C" void tud_umount_cb( void )
 {
+  Chimera::insert_debug_breakpoint();
 }
 
 
@@ -96,6 +106,7 @@ extern "C" void tud_umount_cb( void )
  */
 extern "C" void tud_suspend_cb( bool remote_wakeup_en )
 {
+  Chimera::insert_debug_breakpoint();
 }
 
 
@@ -104,6 +115,7 @@ extern "C" void tud_suspend_cb( bool remote_wakeup_en )
  */
 extern "C" void tud_resume_cb( void )
 {
+  Chimera::insert_debug_breakpoint();
 }
 
 
@@ -117,5 +129,6 @@ extern "C" void tud_resume_cb( void )
  */
 extern "C" bool tud_vendor_control_xfer_cb( uint8_t rhport, uint8_t stage, tusb_control_request_t const *request )
 {
+  Chimera::insert_debug_breakpoint();
   return false;
 }

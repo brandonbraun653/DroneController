@@ -8,6 +8,9 @@
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
+/* Chimera Includes */
+#include <Chimera/common>
+
 /* TinyUSB Includes */
 #include <class/cdc/cdc_device.h>
 
@@ -18,6 +21,7 @@
  */
 extern "C" void tud_cdc_rx_cb( uint8_t itf )
 {
+  Chimera::insert_debug_breakpoint();
 }
 
 
@@ -27,6 +31,7 @@ extern "C" void tud_cdc_rx_cb( uint8_t itf )
  */
 extern "C" void tud_cdc_rx_wanted_cb( uint8_t itf, char wanted_char )
 {
+  Chimera::insert_debug_breakpoint();
 }
 
 
@@ -36,6 +41,7 @@ extern "C" void tud_cdc_rx_wanted_cb( uint8_t itf, char wanted_char )
  */
 extern "C" void tud_cdc_tx_complete_cb( uint8_t itf )
 {
+  Chimera::insert_debug_breakpoint();
 }
 
 
@@ -45,6 +51,7 @@ extern "C" void tud_cdc_tx_complete_cb( uint8_t itf )
  */
 extern "C" void tud_cdc_line_state_cb( uint8_t itf, bool dtr, bool rts )
 {
+  Chimera::insert_debug_breakpoint();
 }
 
 
@@ -54,6 +61,7 @@ extern "C" void tud_cdc_line_state_cb( uint8_t itf, bool dtr, bool rts )
  */
 extern "C" void tud_cdc_line_coding_cb( uint8_t itf, cdc_line_coding_t const *p_line_coding )
 {
+  Chimera::insert_debug_breakpoint();
 }
 
 
@@ -63,4 +71,5 @@ extern "C" void tud_cdc_line_coding_cb( uint8_t itf, cdc_line_coding_t const *p_
  */
 extern "C" void tud_cdc_send_break_cb( uint8_t itf, uint16_t duration_ms )
 {
+  Chimera::insert_debug_breakpoint();
 }

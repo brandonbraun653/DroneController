@@ -72,4 +72,29 @@ namespace DC::IO
                                                .threaded  = false,
                                                .validity  = true };
   }    // namespace DBG
+
+
+  /*-------------------------------------------------------------------------------
+  USB
+  -------------------------------------------------------------------------------*/
+  namespace USB
+  {
+    const Chimera::GPIO::PinInit dPPinInit = { .alternate = Chimera::GPIO::Alternate::OTG_FS_DP,
+                                               .drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL,
+                                               .pin       = dPPin,
+                                               .port      = dPPort,
+                                               .pull      = Chimera::GPIO::Pull::NO_PULL,
+                                               .state     = Chimera::GPIO::State::LOW,
+                                               .threaded  = false,
+                                               .validity  = true };
+
+    const Chimera::GPIO::PinInit dMPinInit = { .alternate = Chimera::GPIO::Alternate::OTG_FS_DM,
+                                               .drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL,
+                                               .pin       = dMPin,
+                                               .port      = dMPort,
+                                               .pull      = Chimera::GPIO::Pull::NO_PULL,
+                                               .state     = Chimera::GPIO::State::LOW,
+                                               .threaded  = false,
+                                               .validity  = true };
+  }
 }    // namespace DC::IO
