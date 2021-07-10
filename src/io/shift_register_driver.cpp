@@ -60,7 +60,7 @@ namespace DC::GPIO::SR
 
     KeyInCS = Chimera::GPIO::getDriver( csPort_KeyIn, csPin_KeyIn );
     initResult = KeyInCS->init( pinCfg );
-    LOG_IF_ERROR( initResult == Chimera::Status::OK, "Key input CS init fail\n" );
+    LOG_ERROR_IF( initResult != Chimera::Status::OK, "Key input CS init fail\r\n" );
 
     /*-------------------------------------------------
     Configure the input shift register strobe pin
@@ -78,7 +78,7 @@ namespace DC::GPIO::SR
 
     KeyInSample = Chimera::GPIO::getDriver( csPort_KeySample, csPin_KeySample );
     initResult = KeyInSample->init( pinCfg );
-    LOG_IF_ERROR( initResult == Chimera::Status::OK, "Key input strobe init fail\n" );
+    LOG_ERROR_IF( initResult != Chimera::Status::OK, "Key input strobe init fail\r\n" );
 
     /*-------------------------------------------------
     Configure the input shift register strobe pin
@@ -96,7 +96,7 @@ namespace DC::GPIO::SR
 
     KeyOutCS = Chimera::GPIO::getDriver( csPort_KeyOut, csPin_KeyOut );
     initResult = KeyOutCS->init( pinCfg );
-    LOG_IF_ERROR( initResult == Chimera::Status::OK, "Key output CS init fail\n" );
+    LOG_ERROR_IF( initResult != Chimera::Status::OK, "Key output CS init fail\r\n" );
 
     /*-------------------------------------------------
     Configure SPI pins
@@ -147,7 +147,7 @@ namespace DC::GPIO::SR
 
     KeySPI = Chimera::SPI::getDriver( spiChannel );
     initResult = KeySPI->init( spiCfg );
-    LOG_IF_ERROR( initResult == Chimera::Status::OK, "Shift register SPI init failed\n" );
+    LOG_ERROR_IF( initResult != Chimera::Status::OK, "Shift register SPI init failed\r\n" );
 
     /*-------------------------------------------------
     Set the initial state of the IO

@@ -110,7 +110,7 @@ namespace DC::HMI::Discrete
     }
 
     s_driver_enabled = ( result == Chimera::Status::OK );
-    LOG_IF_ERROR( s_driver_enabled, "Failed to initialize discrete input driver\r\n" );
+    LOG_ERROR_IF( !s_driver_enabled, "Failed to initialize discrete input driver\r\n" );
 
     return s_driver_enabled;
   }

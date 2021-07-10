@@ -42,6 +42,11 @@ static etl::random_xorshift rng;
 
 #define CONTROLLER_DEVICE 0
 
+struct DataPacket
+{
+  uint32_t crc;
+  uint8_t data[ 100 ];
+};
 
 namespace DC::Tasks::RADIO
 {
@@ -50,11 +55,6 @@ namespace DC::Tasks::RADIO
 #else  /* SIMULATOR */
   std::array<uint8_t, 1024 * 1024> netMemoryPool;
 
-  struct DataPacket
-  {
-    uint32_t crc;
-    uint8_t data[ 100 ];
-  };
 #endif /* EMBEDDED */
 
   /*-------------------------------------------------------------------------------
@@ -132,11 +132,11 @@ namespace DC::Tasks::RADIO
     netif->addARPEntry( destNode, &destMAC, sizeof( destMAC ) );
     netif->setRootMAC( thisMAC );
 
-    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 256 );
+    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 512 );
     txSocket->open( thisNode );
     txSocket->connect( destNode, thisNode );
 
-    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 256 );
+    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 512 );
     rxSocket->open( thisNode );
     rxSocket->connect( destNode, destNode );
 
@@ -158,7 +158,6 @@ namespace DC::Tasks::RADIO
     Create some random data to try and transfer
     -------------------------------------------------*/
     rng.initialise( Chimera::micros() );
-    std::array<uint8_t, 512> some_data;
 
     /*-------------------------------------------------
     Initialize some local data for the transfers
@@ -172,23 +171,34 @@ namespace DC::Tasks::RADIO
 
 
 #if ( CONTROLLER_DEVICE == 1 )
-    txSocket->write( some_data.data(), some_data.size() );
+    etl::crc32 crc;
+    crc.reset();
+
+    DataPacket txData;
+    memset( &txData, 0, sizeof( DataPacket ) );
+
+    std::generate( txData.data, txData.data + sizeof( txData.data ), rng );
+    crc.add( txData.data, txData.data + sizeof( txData.data ) );
+    txData.crc = crc.value();
+
+    txSocket->write( &txData, sizeof( txData ) );
 #endif /* CONTROLLER_DEVICE == 1 */
 
     while ( 1 )
     {
 #if defined( EMBEDDED )
-      /*-------------------------------------------------
-      Periodically transmit data. Expects to talk with a
-      python program that will simply echo the data back.
-      -------------------------------------------------*/
-      // #if ( CONTROLLER_DEVICE == 1 )
-      //       if ( ( ( Chimera::millis() - lastTx ) > 1000 ) )
-      //       {
-      //         lastTx = Chimera::millis();
-      //         txSocket->write( some_data.data(), some_data.size() );
-      //       }
-      // #endif /* CONTROLLER_DEVICE == 1 */
+/*-------------------------------------------------
+Periodically transmit data. Expects to talk with a
+python program that will simply echo the data back.
+-------------------------------------------------*/
+#if ( CONTROLLER_DEVICE == 1 )
+      // if ( ( ( Chimera::millis() - lastTx ) > 1000 ) )
+      // {
+      //   lastTx = Chimera::millis();
+      //   std::generate( some_data.begin(), some_data.end(), rng );
+      //   txSocket->write( some_data.data(), some_data.size() );
+      // }
+#endif /* CONTROLLER_DEVICE == 1 */
 
       /*-------------------------------------------------
       Try and sample data. Expects to receive an echo of
@@ -197,11 +207,23 @@ namespace DC::Tasks::RADIO
 #if ( CONTROLLER_DEVICE == 0 )
       if ( auto bytesAvailable = rxSocket->available(); bytesAvailable )
       {
-        lastRx   = Chimera::millis();
-        auto mem = context->malloc( bytesAvailable );
-        result   = rxSocket->read( mem, bytesAvailable );
-        LOG_DEBUG( "Got %d bytes\r\n", bytesAvailable );
-        context->free( mem );
+        RT_HARD_ASSERT( bytesAvailable == sizeof( DataPacket ) );
+        DataPacket rxData;
+        etl::crc32 crc;
+        crc.reset();
+
+        result = rxSocket->read( &rxData, bytesAvailable );
+        crc.add( rxData.data, rxData.data + sizeof( rxData.data ) );
+
+        if ( crc.value() == rxData.crc )
+        {
+          LOG_INFO( "Received, CRC match\r\n" );
+          rx_count++;
+        }
+        else
+        {
+          LOG_INFO( "Received, CRC fail\r\n" );
+        }
       }
 #endif /* CONTROLLER_DEVICE == 0 */
 #endif /* EMBEDDED */
@@ -265,7 +287,7 @@ namespace DC::Tasks::RADIO
           bytesAvailable = rxSocket->available();
         }
 
-        if( ( tx_count == 100 ) && ( bytesAvailable == 0 ) )
+        if ( ( tx_count == 100 ) && ( bytesAvailable == 0 ) )
         {
           LOG_INFO( "Total TX: %d, Total RX: %d\r\n", tx_count, rx_count );
           tx_count++;

@@ -113,7 +113,7 @@ namespace DC::HMI::JoyStick
       cfg.transferMode        = ADC::TransferMode::INTERRUPT;
 
       adc = ADC::getDriver( cfg.periph );
-      LOG_IF_ERROR( adc->open( cfg ) == Chimera::Status::OK, "Failed ADC driver init\n" );
+      LOG_ERROR_IF( adc->open( cfg ) != Chimera::Status::OK, "Failed ADC driver init\r\n" );
 
       /* Attach project side interrupt handler */
       adc->onInterrupt( cfg.bmISREnable, ADC::ISRCallback::create<adc_isr_handler>() );
