@@ -83,8 +83,8 @@ namespace DC::IO
                                                .drive     = Chimera::GPIO::Drive::ALTERNATE_PUSH_PULL,
                                                .pin       = dPPin,
                                                .port      = dPPort,
-                                               .pull      = Chimera::GPIO::Pull::NO_PULL,
-                                               .state     = Chimera::GPIO::State::LOW,
+                                               .pull      = Chimera::GPIO::Pull::PULL_UP,
+                                               .state     = Chimera::GPIO::State::HIGH,
                                                .threaded  = false,
                                                .validity  = true };
 
@@ -94,6 +94,15 @@ namespace DC::IO
                                                .port      = dMPort,
                                                .pull      = Chimera::GPIO::Pull::NO_PULL,
                                                .state     = Chimera::GPIO::State::LOW,
+                                               .threaded  = false,
+                                               .validity  = true };
+
+    const Chimera::GPIO::PinInit idPinInit = { .alternate = Chimera::GPIO::Alternate::OTG_FS_ID,
+                                               .drive     = Chimera::GPIO::Drive::ALTERNATE_OPEN_DRAIN,
+                                               .pin       = idPin,
+                                               .port      = idPort,
+                                               .pull      = Chimera::GPIO::Pull::PULL_UP,
+                                               .state     = Chimera::GPIO::State::HIGH,
                                                .threaded  = false,
                                                .validity  = true };
   }

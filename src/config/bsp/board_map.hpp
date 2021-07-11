@@ -277,11 +277,14 @@ namespace DC::IO
   {
     extern const Chimera::GPIO::PinInit dPPinInit;
     extern const Chimera::GPIO::PinInit dMPinInit;
+    extern const Chimera::GPIO::PinInit idPinInit;
 
     static constexpr Chimera::GPIO::Pin dPPin   = 12;
     static constexpr Chimera::GPIO::Port dPPort = Chimera::GPIO::Port::PORTA;
     static constexpr Chimera::GPIO::Pin dMPin   = 11;
     static constexpr Chimera::GPIO::Port dMPort = Chimera::GPIO::Port::PORTA;
+    static constexpr Chimera::GPIO::Pin idPin   = 10;
+    static constexpr Chimera::GPIO::Port idPort = Chimera::GPIO::Port::PORTA;
   }
 }    // namespace DC::IO
 

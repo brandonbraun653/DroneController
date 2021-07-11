@@ -1,7 +1,7 @@
 EESchema Schematic File Version 4
 EELAYER 30 0
 EELAYER END
-$Descr A4 11693 8268
+$Descr A3 16535 11693
 encoding utf-8
 Sheet 11 11
 Title ""
@@ -13,18 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L MCU_ST_STM32F4:STM32F446RETx U13
-U 1 1 6047114C
-P 8100 2900
-F 0 "U13" H 8100 3600 50  0000 C CNN
-F 1 "STM32F446RETx" H 8100 3450 50  0000 C CNN
-F 2 "Package_QFP:LQFP-64_10x10mm_P0.5mm" H 7500 1200 50  0001 R CNN
-F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/DM00141306.pdf" H 8100 2900 50  0001 C CNN
-F 4 "C69336" H 8100 2900 50  0001 C CNN "LCSC"
-	1    8100 2900
-	1    0    0    -1  
-$EndComp
 $Comp
 L Connector:Conn_ARM_JTAG_SWD_10 J4
 U 1 1 6047637A
@@ -140,40 +128,6 @@ Wire Wire Line
 Connection ~ 10200 6300
 Wire Wire Line
 	10200 6300 10200 6350
-$Comp
-L power:GND #PWR0106
-U 1 1 605ADCEE
-P 8100 4800
-F 0 "#PWR0106" H 8100 4550 50  0001 C CNN
-F 1 "GND" H 8105 4627 50  0000 C CNN
-F 2 "" H 8100 4800 50  0001 C CNN
-F 3 "" H 8100 4800 50  0001 C CNN
-	1    8100 4800
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8100 4700 8100 4750
-Wire Wire Line
-	8100 4750 8200 4750
-Wire Wire Line
-	8200 4750 8200 4700
-Connection ~ 8100 4750
-Wire Wire Line
-	8100 4750 8100 4800
-Wire Wire Line
-	8200 4750 8300 4750
-Wire Wire Line
-	8300 4750 8300 4700
-Connection ~ 8200 4750
-Wire Wire Line
-	8100 4750 8000 4750
-Wire Wire Line
-	8000 4750 8000 4700
-Wire Wire Line
-	8000 4750 7900 4750
-Wire Wire Line
-	7900 4750 7900 4700
-Connection ~ 8000 4750
 Text Label 10750 5350 0    50   ~ 0
 JT_nRST
 Text Label 10750 5550 0    50   ~ 0
@@ -211,8 +165,6 @@ Wire Wire Line
 Connection ~ 8000 1150
 Text HLabel 8400 1100 1    50   Input ~ 0
 VDDA
-Wire Wire Line
-	8400 1100 8400 1200
 $Comp
 L Device:R_US R96
 U 1 1 605B24E0
@@ -680,7 +632,6 @@ Wire Wire Line
 Wire Wire Line
 	9400 2500 8800 2500
 NoConn ~ 7400 4400
-NoConn ~ 7400 4500
 NoConn ~ 8800 3800
 NoConn ~ 8800 3300
 $Comp
@@ -1060,4 +1011,57 @@ Wire Wire Line
 	6400 3800 6400 4000
 NoConn ~ 3350 2200
 NoConn ~ 3350 2100
+Wire Wire Line
+	8400 1100 8400 1200
+NoConn ~ 7400 4500
+Connection ~ 8000 4750
+Wire Wire Line
+	7900 4750 7900 4700
+Wire Wire Line
+	8000 4750 7900 4750
+Wire Wire Line
+	8000 4750 8000 4700
+Wire Wire Line
+	8100 4750 8000 4750
+Connection ~ 8200 4750
+Wire Wire Line
+	8300 4750 8300 4700
+Wire Wire Line
+	8200 4750 8300 4750
+Wire Wire Line
+	8100 4750 8100 4800
+Connection ~ 8100 4750
+Wire Wire Line
+	8200 4750 8200 4700
+Wire Wire Line
+	8100 4750 8200 4750
+Wire Wire Line
+	8100 4700 8100 4750
+$Comp
+L power:GND #PWR0106
+U 1 1 605ADCEE
+P 8100 4800
+F 0 "#PWR0106" H 8100 4550 50  0001 C CNN
+F 1 "GND" H 8105 4627 50  0000 C CNN
+F 2 "" H 8100 4800 50  0001 C CNN
+F 3 "" H 8100 4800 50  0001 C CNN
+	1    8100 4800
+	1    0    0    -1  
+$EndComp
+$Comp
+L MCU_ST_STM32F4:STM32F446RETx U13
+U 1 1 6047114C
+P 8100 2900
+F 0 "U13" H 8100 3600 50  0000 C CNN
+F 1 "STM32F446RETx" H 8100 3450 50  0000 C CNN
+F 2 "Package_QFP:LQFP-64_10x10mm_P0.5mm" H 7500 1200 50  0001 R CNN
+F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/DM00141306.pdf" H 8100 2900 50  0001 C CNN
+F 4 "C69336" H 8100 2900 50  0001 C CNN "LCSC"
+	1    8100 2900
+	1    0    0    -1  
+$EndComp
+Text Notes 10550 2650 0    50   ~ 0
+BMB: 07/11/21\n-- Need to add VBUS and ID lines to USB (PA10, 9)\n-- Need re-enumeration circuit to enable FS with 1.5k pullup. See nucleo.\n-- Move encoder 1A/B to PA2/3
+Text Notes 1600 3450 0    50   ~ 0
+BMB: 07/11/21\nUse smaller shift registers if JLC allows it.
 $EndSCHEMATC

@@ -49,6 +49,10 @@ namespace DC::USB
     auto dp    = Chimera::GPIO::getDriver( DC::IO::USB::dPPinInit.port, DC::IO::USB::dPPinInit.pin );
     initResult = dp->init( DC::IO::USB::dPPinInit );
     LOG_ERROR_IF( initResult != Chimera::Status::OK, "USB DP pin init fail\r\n" );
+
+    auto id    = Chimera::GPIO::getDriver( DC::IO::USB::idPinInit.port, DC::IO::USB::idPinInit.pin );
+    initResult = id->init( DC::IO::USB::idPinInit );
+    LOG_ERROR_IF( initResult != Chimera::Status::OK, "USB ID pin init fail\r\n" );
   }
 
 }    // namespace DC::USB

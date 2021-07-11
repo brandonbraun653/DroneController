@@ -404,4 +404,8 @@ Wire Wire Line
 Connection ~ 8050 1100
 Wire Wire Line
 	8050 1100 8000 1100
+Text Notes 2350 3700 0    50   ~ 0
+BMB: 07/11/21\nGet a nice connector for this debug port.
+Text Notes 2350 2700 0    50   ~ 0
+BMB: 07/11/21\nFind smaller connectors for everything.
 $EndSCHEMATC

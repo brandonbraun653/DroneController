@@ -507,75 +507,75 @@ vBatt
 $Comp
 L Device:LED D9
 U 1 1 60590DC3
-P 8100 4900
-F 0 "D9" H 8093 5117 50  0000 C CNN
-F 1 "LED_3V3" H 8093 5026 50  0000 C CNN
-F 2 "LED_SMD:LED_0402_1005Metric" H 8100 4900 50  0001 C CNN
-F 3 "~" H 8100 4900 50  0001 C CNN
-F 4 "C72041" H 8100 4900 50  0001 C CNN "LCSC"
-	1    8100 4900
+P 5800 5750
+F 0 "D9" H 5793 5967 50  0000 C CNN
+F 1 "LED_3V3" H 5793 5876 50  0000 C CNN
+F 2 "LED_SMD:LED_0402_1005Metric" H 5800 5750 50  0001 C CNN
+F 3 "~" H 5800 5750 50  0001 C CNN
+F 4 "C72041" H 5800 5750 50  0001 C CNN "LCSC"
+	1    5800 5750
 	0    -1   -1   0   
 $EndComp
 $Comp
 L Device:LED D8
 U 1 1 605912DA
-P 7750 4900
-F 0 "D8" H 7743 5117 50  0000 C CNN
-F 1 "LED_5V0" H 7743 5026 50  0000 C CNN
-F 2 "LED_SMD:LED_0402_1005Metric" H 7750 4900 50  0001 C CNN
-F 3 "~" H 7750 4900 50  0001 C CNN
-F 4 "C72043" H 7750 4900 50  0001 C CNN "LCSC"
-	1    7750 4900
+P 5450 5750
+F 0 "D8" H 5443 5967 50  0000 C CNN
+F 1 "LED_5V0" H 5443 5876 50  0000 C CNN
+F 2 "LED_SMD:LED_0402_1005Metric" H 5450 5750 50  0001 C CNN
+F 3 "~" H 5450 5750 50  0001 C CNN
+F 4 "C72043" H 5450 5750 50  0001 C CNN "LCSC"
+	1    5450 5750
 	0    -1   -1   0   
 $EndComp
-Text HLabel 7750 4450 1    50   BiDi ~ 0
+Text HLabel 5450 5300 1    50   BiDi ~ 0
 USB_+5V
 $Comp
 L Device:R_US R60
 U 1 1 6059151B
-P 7750 4600
-F 0 "R60" V 7545 4600 50  0000 C CNN
-F 1 "1.5k" V 7636 4600 50  0000 C CNN
-F 2 "Resistor_SMD:R_0402_1005Metric" V 7790 4590 50  0001 C CNN
-F 3 "~" H 7750 4600 50  0001 C CNN
-F 4 "C25867" H 7750 4600 50  0001 C CNN "LCSC"
-	1    7750 4600
+P 5450 5450
+F 0 "R60" V 5245 5450 50  0000 C CNN
+F 1 "1.5k" V 5336 5450 50  0000 C CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 5490 5440 50  0001 C CNN
+F 3 "~" H 5450 5450 50  0001 C CNN
+F 4 "C25867" H 5450 5450 50  0001 C CNN "LCSC"
+	1    5450 5450
 	1    0    0    1   
 $EndComp
 $Comp
 L Device:R_US R63
 U 1 1 605924E4
-P 8100 4600
-F 0 "R63" V 7895 4600 50  0000 C CNN
-F 1 "330" V 7986 4600 50  0000 C CNN
-F 2 "Resistor_SMD:R_0402_1005Metric" V 8140 4590 50  0001 C CNN
-F 3 "~" H 8100 4600 50  0001 C CNN
-F 4 "C25104" H 8100 4600 50  0001 C CNN "LCSC"
-	1    8100 4600
+P 5800 5450
+F 0 "R63" V 5595 5450 50  0000 C CNN
+F 1 "330" V 5686 5450 50  0000 C CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 5840 5440 50  0001 C CNN
+F 3 "~" H 5800 5450 50  0001 C CNN
+F 4 "C25104" H 5800 5450 50  0001 C CNN "LCSC"
+	1    5800 5450
 	1    0    0    1   
 $EndComp
-Text HLabel 8100 4450 1    50   BiDi ~ 0
+Text HLabel 5800 5300 1    50   BiDi ~ 0
 V_Digital
 $Comp
 L power:GND #PWR04
 U 1 1 60596CB2
-P 7750 5050
-F 0 "#PWR04" H 7750 4800 50  0001 C CNN
-F 1 "GND" H 7755 4877 50  0000 C CNN
-F 2 "" H 7750 5050 50  0001 C CNN
-F 3 "" H 7750 5050 50  0001 C CNN
-	1    7750 5050
+P 5450 5900
+F 0 "#PWR04" H 5450 5650 50  0001 C CNN
+F 1 "GND" H 5455 5727 50  0000 C CNN
+F 2 "" H 5450 5900 50  0001 C CNN
+F 3 "" H 5450 5900 50  0001 C CNN
+	1    5450 5900
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR05
 U 1 1 60596EA9
-P 8100 5050
-F 0 "#PWR05" H 8100 4800 50  0001 C CNN
-F 1 "GND" H 8105 4877 50  0000 C CNN
-F 2 "" H 8100 5050 50  0001 C CNN
-F 3 "" H 8100 5050 50  0001 C CNN
-	1    8100 5050
+P 5800 5900
+F 0 "#PWR05" H 5800 5650 50  0001 C CNN
+F 1 "GND" H 5805 5727 50  0000 C CNN
+F 2 "" H 5800 5900 50  0001 C CNN
+F 3 "" H 5800 5900 50  0001 C CNN
+	1    5800 5900
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -729,4 +729,14 @@ F 3 "" H 4150 3300 50  0001 C CNN
 	1    4150 3300
 	-1   0    0    1   
 $EndComp
+Text Notes 5000 1650 0    50   ~ 0
+BMB: 07/11/21\nConnect ID pin to ground. We want device mode only. Add test points.
+Text Notes 4100 2650 0    50   ~ 0
+BMB: 07/11/21\nWhen no battery is connected, the charger IC won't enable thus\npreventing powering solely from USB. Need some kind of switch to\ndrive the regulator. Only need to handle 500mA.
+Text Notes 6600 4250 0    50   ~ 0
+BMB: 07/11/21\nV_Batt_Sense needs to go through a voltage divider to translate to the\nADC range. Currently will blast +5V into the MCU.
+Text Notes 7650 3000 0    50   ~ 0
+BMB: 07/11/21\nNeed a low dropout voltage regulator for battery power. This one is\nabsolutely horrendous. Consider a small SMPS.
+Text Notes 4250 6250 0    50   ~ 0
+BMB: 07/11/21\nIncrease & balance the resistances on these leds. They are too bright.
 $EndSCHEMATC
