@@ -7,6 +7,7 @@ add_subdirectory(config/bsp)
 add_subdirectory(debug)
 add_subdirectory(hmi)
 add_subdirectory(io)
+add_subdirectory(network)
 add_subdirectory(registry)
 add_subdirectory(system)
 add_subdirectory(tasks)
@@ -51,6 +52,7 @@ target_link_libraries(DroneController PRIVATE
   chimera_intf_inc
   freertos_intf_inc_all
   thor_intf_inc
+  vdrone_nanopb_proto_intf_inc
 
   # Project Libraries
   lib_bluetooth
@@ -58,6 +60,7 @@ target_link_libraries(DroneController PRIVATE
   lib_debug
   lib_human_interface
   lib_io
+  lib_network
   lib_registry
   lib_rf24
   lib_system
@@ -71,6 +74,9 @@ target_link_libraries(DroneController PRIVATE
   ripple_network_stack_rel
   ripple_packets_rel
   # ripple_util
+
+  # Packet Defintions
+  vdrone_nanopb_proto_rel
 
   # Utility Libraries
   aurora_core_rel
@@ -90,10 +96,8 @@ target_link_libraries(DroneController PRIVATE
 )
 
 # Hardware Driver Model
-if(${DEVICE_TARGET} MATCHES "^stm32l4")
-  target_link_libraries(DroneController PRIVATE thor_lld_stm32l4_rel embedded_core_libs_rel)
-elseif(${DEVICE_TARGET} MATCHES "^stm32f4")
-  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_rel embedded_core_libs_rel)
+if(${DEVICE_TARGET} MATCHES "^stm32f4")
+  target_link_libraries(DroneController PRIVATE embedded_core_libs_rel)
 elseif(${DEVICE_TARGET} MATCHES "^sim")
   target_link_libraries(DroneController PRIVATE chimera_sim_core)
 else()
@@ -117,8 +121,6 @@ if(Toolchain::HAS_GCC)
 
     # Simulator networking
     zmq
-    vdrone_nanopb_proto
-    vdrone_nanopb_proto_intf_inc
   )
 endif()
 
