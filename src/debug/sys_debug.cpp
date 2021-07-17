@@ -36,6 +36,8 @@ namespace DC::DBG
   static SwitchDObserver s_switch_d_observer;
   static Encoder0CenterButtonObserver s_enc_0_observer;
   static Encoder1CenterButtonObserver s_enc_1_observer;
+  static Encoder0RotateObserver s_enc_0_rotate_observer;
+  static Encoder1RotateObserver s_enc_1_rotate_observer;
 
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -59,6 +61,8 @@ namespace DC::DBG
     OBSERVABLE_PTR( SwitchDToggle )->add_observer( s_switch_d_observer );
     OBSERVABLE_PTR( Encoder0Btn )->add_observer( s_enc_0_observer );
     OBSERVABLE_PTR( Encoder1Btn )->add_observer( s_enc_1_observer );
+    OBSERVABLE_PTR( Encoder0Rotation )->add_observer( s_enc_0_rotate_observer );
+    OBSERVABLE_PTR( Encoder1Rotation )->add_observer( s_enc_1_rotate_observer );
   }
 
 

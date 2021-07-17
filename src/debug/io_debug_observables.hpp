@@ -152,6 +152,25 @@ namespace DC::DBG
       LOG_INFO( "Encoder 1 %s\r\n", ( data ? "PRESSED" : "RELEASED" ) );
     }
   };
+
+  class Encoder0RotateObserver : public etl::observer<Aurora::HMI::Encoder::State>
+  {
+  public:
+    void notification( Aurora::HMI::Encoder::State data )
+    {
+      LOG_INFO( "Encoder 0 position: %d\r\n", data.absolutePosition );
+    }
+  };
+
+  class Encoder1RotateObserver : public etl::observer<Aurora::HMI::Encoder::State>
+  {
+  public:
+    void notification( Aurora::HMI::Encoder::State data )
+    {
+      LOG_INFO( "Encoder 1 position: %d\r\n", data.absolutePosition );
+    }
+  };
+
 }  // namespace DC::DBG
 
 #endif  /* !DC_DEBUG_OBSERVABLES_HPP */

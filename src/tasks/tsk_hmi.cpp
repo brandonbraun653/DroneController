@@ -25,6 +25,7 @@
 #include <src/hmi/hmi_discrete.hpp>
 #include <src/hmi/hmi_discrete_msg_pump.hpp>
 #include <src/hmi/hmi_encoder.hpp>
+#include <src/hmi/hmi_encoder_msg_pump.hpp>
 #include <src/io/shift_register_driver.hpp>
 #include <src/tasks/tsk_background.hpp>
 #include <src/tasks/tsk_common.hpp>
@@ -52,6 +53,7 @@ namespace DC::Tasks::HMI
     Initialize the HMI drivers
     -------------------------------------------------*/
     Discrete::initMessagePump();
+    Encoder::initMessagePump();
 
     auto adc = Chimera::ADC::getDriver( Chimera::ADC::Peripheral::ADC_0 );
 

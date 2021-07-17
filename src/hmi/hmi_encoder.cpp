@@ -318,14 +318,6 @@ namespace DC::HMI::Encoder
       while( nextEvent( static_cast<Key>( idx ), event ) )
       {
         /*-------------------------------------------------
-        Print a debug message if needed
-        -------------------------------------------------*/
-        if constexpr( DEBUG )
-        {
-          LOG_DEBUG( "Encoder %d Position: %d\r\n", idx, event.absolutePosition );
-        }
-
-        /*-------------------------------------------------
         Invoke the user callback
         -------------------------------------------------*/
         Chimera::Thread::LockGuard lck( s_enc_ctrl[ idx ].mutex );

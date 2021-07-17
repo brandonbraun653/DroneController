@@ -7,6 +7,7 @@ gen_static_lib_variants(
     hmi_discrete.cpp
     hmi_discrete_msg_pump.cpp
     hmi_encoder.cpp
+    hmi_encoder_msg_pump.cpp
     hmi_sticks.cpp
   PRV_LIBRARIES
     aurora_intf_inc
