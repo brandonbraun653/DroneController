@@ -66,23 +66,23 @@ target_link_libraries(DroneController PRIVATE
   lib_utility
 
   # Networking Libraries
-  ripple_shared
-  ripple_user_intf
-  ripple_network_stack
-  ripple_packets
+  ripple_shared_rel
+  ripple_user_intf_rel
+  ripple_network_stack_rel
+  ripple_packets_rel
   # ripple_util
 
   # Utility Libraries
-  aurora_core_dbg
-  aurora_database_dbg
-  aurora_datastore_dbg
-  aurora_filesystem_core_dbg
-  aurora_hmi_dbg
-  aurora_logging_dbg
-  aurora_memory_dbg
+  aurora_core_rel
+  aurora_database_rel
+  aurora_datastore_rel
+  aurora_filesystem_core_rel
+  aurora_hmi_rel
+  aurora_logging_rel
+  aurora_memory_rel
 
   # Hardware Libraries
-  chimera_core_dbg
+  chimera_core_rel
 
   # Target Properties
   prj_device_target
@@ -93,7 +93,7 @@ target_link_libraries(DroneController PRIVATE
 if(${DEVICE_TARGET} MATCHES "^stm32l4")
   target_link_libraries(DroneController PRIVATE thor_lld_stm32l4_rel embedded_core_libs_rel)
 elseif(${DEVICE_TARGET} MATCHES "^stm32f4")
-  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_dbg embedded_core_libs_dbg)
+  target_link_libraries(DroneController PRIVATE thor_lld_stm32f4_rel embedded_core_libs_rel)
 elseif(${DEVICE_TARGET} MATCHES "^sim")
   target_link_libraries(DroneController PRIVATE chimera_sim_core)
 else()
@@ -125,29 +125,32 @@ endif()
 if(Toolchain::HAS_GCC_ARM_NONE_EABI)
   target_link_libraries(DroneController PRIVATE
     # Aurora
-    aurora_filesystem_spiffs_dbg
+    aurora_filesystem_spiffs_rel
+
+    # Thor
+    thor_lld_intf_rel
 
     # Threading Library
     freertos_intf_inc_all
-    freertos_core
+    freertos_core_rel
     freertos_port
     freertos_heap
-    freertos_heap_4
-    freertos_cm4f_port
+    freertos_heap_4_rel
+    freertos_cm4f_port_rel
 
     # Ripple NetIf
-    ripple_netif_nrf24_datalink
-    ripple_netif_nrf24_physical
+    ripple_netif_nrf24_datalink_rel
+    ripple_netif_nrf24_physical_rel
 
     # Segger System View
-    segger_sys_view
+    segger_sys_view_rel
     segger_sys_view_intf
-    segger_sys_view_cortex_m4_freertos
+    segger_sys_view_cortex_m4_freertos_rel
 
     # Tiny USB
     tiny_usb_intf_inc
-    tiny_usb_core_dbg
-    tiny_usb_port_st_dbg
+    tiny_usb_core_rel
+    tiny_usb_port_st_rel
   )
 endif()
 
