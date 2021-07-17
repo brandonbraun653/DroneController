@@ -13,7 +13,7 @@
 
 /* Project Includes */
 #include <src/config/bsp/board_map.hpp>
-#include <src/io/gpio_driver.hpp>
+#include <src/hmi/hmi_discrete.hpp>
 #include <src/io/pin_mapping.hpp>
 #include <src/wireless/rf24/rf_driver.hpp>
 
@@ -40,14 +40,20 @@ namespace DC::RF::RF24
   {
     if( state == PowerState::ENABLED )
     {
-      GPIO::setShiftRegister( ::DC::GPIO::OutputPin::RF24_PWR_EN );
+      HMI::Discrete::set( GPIO::Pin::RF24_PWR_EN );
       s_is_enabled = true;
     }
     else
     {
-      GPIO::clearShiftRegister( DC::GPIO::OutputPin::RF24_PWR_EN );
+      HMI::Discrete::clear( GPIO::Pin::RF24_PWR_EN );
       s_is_enabled = false;
     }
+
+    /*-------------------------------------------------
+    Due to the asynchronous nature of HMI, wait a bit
+    for this to take effect.
+    -------------------------------------------------*/
+    Chimera::delayMilliseconds( 25 );
   }
 
 

@@ -5,8 +5,8 @@ gen_static_lib_variants(
     lib_system
   SOURCES
     power_up.cpp
-    sys_config.cpp
     sys_boot_count.cpp
+    sys_config.cpp
   PRV_LIBRARIES
     aurora_intf_inc
     chimera_intf_inc

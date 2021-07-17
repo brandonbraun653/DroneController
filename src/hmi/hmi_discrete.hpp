@@ -34,6 +34,38 @@ namespace DC::HMI::Discrete
   bool initialize();
 
   /**
+   * @brief Sets a pin to logical high
+   * @note Pin must be a supported output type
+   * @warning Does not directly access hardware. There may be some delay.
+   *
+   * @param pin     Which pin to set
+   * @return true   The pin was set successfully
+   * @return false  An error occurred
+   */
+  bool set( const GPIO::Pin pin );
+
+  /**
+   * @brief Clears a pin to logical low
+   * @note Pin must be a supported output type
+   * @warning Does not directly access hardware. There may be some delay.
+   *
+   * @param pin     Which pin to clear
+   * @return true   The pin was set successfully
+   * @return false  An error occurred
+   */
+  bool clear( const GPIO::Pin pin );
+
+  /**
+   * @brief Reads the logical state of a pin from cache
+   * @note This works for all discrete pin types
+   *
+   * @param pin     Which pin to read
+   * @return true   The pin is logic high
+   * @return false  The pin is logic low
+   */
+  bool get( const GPIO::Pin pin );
+
+  /**
    *  Register a callback to execute on key press
    *
    *  @param[in]  discrete        Which discrete to register against
@@ -67,7 +99,10 @@ namespace DC::HMI::Discrete
    */
   void disable( const GPIO::InputPin discrete );
 
-
+  /**
+   * @brief Process all inputs to handle various events
+   * @return void
+   */
   void doPeriodicProcessing( void );
 
 }  // namespace DC::HMI

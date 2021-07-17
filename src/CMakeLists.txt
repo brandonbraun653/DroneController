@@ -55,6 +55,7 @@ target_link_libraries(DroneController PRIVATE
   # Project Libraries
   lib_bluetooth
   lib_config
+  lib_debug
   lib_human_interface
   lib_io
   lib_registry

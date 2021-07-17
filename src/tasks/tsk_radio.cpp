@@ -75,7 +75,6 @@ namespace DC::Tasks::RADIO
     Power up the Radio
     -------------------------------------------------*/
     DC::RF::RF24::setPower( DC::RF::RF24::PowerState::ENABLED );
-    Chimera::delayMilliseconds( 25 );
 
     /*-------------------------------------------------------------------------------
     Network testing

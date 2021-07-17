@@ -21,10 +21,10 @@
 #include <etl/circular_buffer.h>
 
 /* Project Includes */
-#include <src/io/gpio_driver.hpp>
+#include <src/config/bsp/board_map.hpp>
+#include <src/hmi/hmi_discrete.hpp>
 #include <src/wireless/bluetooth/bt_driver.hpp>
 #include <src/wireless/bluetooth/rn4871/rn_device.hpp>
-#include <src/config/bsp/board_map.hpp>
 
 namespace DC::RF::BT
 {
@@ -122,14 +122,20 @@ namespace DC::RF::BT
   {
     if( state == PowerState::ENABLED )
     {
-      GPIO::setShiftRegister( GPIO::OutputPin::BT_PWR_EN );
+      HMI::Discrete::set( GPIO::Pin::BT_PWR_EN );
       s_is_enabled = true;
     }
     else
     {
-      GPIO::clearShiftRegister( GPIO::OutputPin::BT_PWR_EN );
+      HMI::Discrete::clear( GPIO::Pin::BT_PWR_EN );
       s_is_enabled = false;
     }
+
+    /*-------------------------------------------------
+    Due to the asynchronous nature of HMI, wait a bit
+    for this to take effect.
+    -------------------------------------------------*/
+    Chimera::delayMilliseconds( 25 );
   }
 
 

@@ -1,29 +1,35 @@
 /********************************************************************************
  *  File Name:
- *    gpio_driver.hpp
+ *    sys_debug.hpp
  *
  *  Description:
- *    Driver for reading/writing to GPIO through shift registers
+ *    Debug functionality for system level events/data
  *
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 #pragma once
-#ifndef DC_GPIO_DRIVER_HPP
-#define DC_GPIO_DRIVER_HPP
+#ifndef DC_DBG_DEBUG_HPP
+#define DC_DBG_DEBUG_HPP
 
-/* Project Includes */
-#include <src/io/pin_mapping.hpp>
 
-namespace DC::GPIO
+namespace DC::DBG
 {
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  void setShiftRegister( const OutputPin pin );
-  void clearShiftRegister( const OutputPin pin );
-  bool getShiftRegister( const InputPin pin );
+  /**
+   * @brief Register handlers with observables to dump debug events
+   * @return void
+   */
+  void registerDebugObservers();
 
-}  // namespace DC::GPIO
+  /**
+   * @brief Perform periodic debug processing
+   * @return void
+   */
+  void doPeriodicDebugProcessing();
 
-#endif  /* !DC_GPIO_DRIVER_HPP */
+}  // namespace DC::DBG
+
+#endif  /* !DC_DBG_DEBUG_HPP */

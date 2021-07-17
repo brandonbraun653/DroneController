@@ -3,9 +3,8 @@
  *    sr_driver.hpp
  *
  *  Description:
- *    Shift register driver for the system's discrete IO.
-   * Due to the number IO in the project, most are read/write from a
-   * series of shift reg
+ *    Shift register driver for the system's discrete IO. This API should not be
+ *    consumed directly. It's intended for use with higher level IO drivers.
  *
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
@@ -35,6 +34,7 @@ namespace DC::GPIO::SR
 
   /**
    * @brief Reads the current state of the input shift registers
+   * @note This accesses physically different HW than the output shift registers
    *
    * @param buffer    Input buffer to read into
    * @param bytes     Number of bytes to read
@@ -42,7 +42,8 @@ namespace DC::GPIO::SR
   void read( void *const buffer, const size_t bytes );
 
   /**
-   * @brief Writes the output shift register
+   * @brief Writes the output shift register(s)
+   * @note This accesses physically different HW than the input shift registers
    *
    * @param buffer    Buffer of data to write
    * @param bytes     Number of bytes to write from the buffer

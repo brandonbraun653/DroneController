@@ -4,11 +4,9 @@ gen_static_lib_variants(
   TARGET
     lib_io
   SOURCES
-    gpio_driver.cpp
     pin_mapping.cpp
     shift_register_driver.cpp
   PRV_LIBRARIES
-
     chimera_intf_inc
     aurora_intf_inc
     project_inc

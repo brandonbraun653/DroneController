@@ -22,17 +22,12 @@
 
 /* Project Includes */
 #include <src/config/bsp/board_map.hpp>
-#include <src/hmi/hmi_discrete_input.hpp>
+#include <src/hmi/hmi_discrete.hpp>
+#include <src/hmi/hmi_discrete_msg_pump.hpp>
 #include <src/hmi/hmi_encoder.hpp>
-#include <src/io/gpio_driver.hpp>
 #include <src/io/shift_register_driver.hpp>
 #include <src/tasks/tsk_background.hpp>
 #include <src/tasks/tsk_common.hpp>
-
-// Testing only
-#include <etl/to_string.h>
-#include <src/registry/reg_intf.hpp>
-
 
 
 namespace DC::Tasks::HMI
@@ -53,13 +48,12 @@ namespace DC::Tasks::HMI
     waitInit();
     Chimera::delayMilliseconds( 100 );
 
-
     /*-------------------------------------------------
     Initialize the HMI drivers
     -------------------------------------------------*/
-    auto adc              = Chimera::ADC::getDriver( Chimera::ADC::Peripheral::ADC_0 );
-    size_t debugPrintTick = Chimera::millis();
+    Discrete::initMessagePump();
 
+    auto adc = Chimera::ADC::getDriver( Chimera::ADC::Peripheral::ADC_0 );
 
     while ( true )
     {
@@ -67,34 +61,15 @@ namespace DC::Tasks::HMI
       Chimera::delayMilliseconds( 10 );
 
       /*-------------------------------------------------
-      Sample the ADC inputs as fast as this thread
+      Update the GPIO states
       -------------------------------------------------*/
       DC::HMI::Discrete::doPeriodicProcessing();
       DC::HMI::Encoder::doPeriodicProcessing();
-      adc->startSequence();
-
 
       /*-------------------------------------------------
-      Print some debug info for testing
+      Sample the ADC inputs
       -------------------------------------------------*/
-      if ( ( Chimera::millis() - debugPrintTick ) > 100 )
-      {
-        debugPrintTick = Chimera::millis();
-
-        float pitch = 0.0f;
-        DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_PITCH, &pitch, sizeof( pitch ) );
-
-        float roll = 0.0f;
-        DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_ROLL, &roll, sizeof( roll ) );
-
-        float yaw = 0.0f;
-        DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_YAW, &yaw, sizeof( yaw ) );
-
-        float throttle = 0.0f;
-        DC::REG::readSafe( DC::REG::KEY_ANALOG_IN_THROTTLE, &throttle, sizeof( throttle ) );
-
-        //LOG_DEBUG( "ADC -> Pitch: %fV, Roll: %fV, Yaw: %fV, Throttle: %fV\r\n", pitch, roll, yaw, throttle );
-      }
+      adc->startSequence();
     }
   }
 }    // namespace DC::Tasks::HMI

@@ -22,7 +22,9 @@
 #include <src/tasks/tsk_file_system.hpp>
 #include <src/tasks/tsk_heartbeat.hpp>
 #include <src/tasks/tsk_hmi.hpp>
+#include <src/tasks/tsk_kernel.hpp>
 #include <src/tasks/tsk_radio.hpp>
+#include <src/tasks/tsk_system.hpp>
 #include <src/tasks/tsk_usb.hpp>
 
 namespace DC::Tasks
@@ -30,7 +32,7 @@ namespace DC::Tasks
   /*-------------------------------------------------------------------------------
   Static Data
   -------------------------------------------------------------------------------*/
-  static Chimera::Thread::TaskId s_thread_id[ static_cast<size_t>( PrjTaskId::NUM_OPTIONS ) ];
+  static Chimera::Thread::TaskId s_thread_id[ EnumValue( PrjTaskId::NUM_OPTIONS ) ];
 
   /*-------------------------------------------------------------------------------
   Public Functions
@@ -50,7 +52,22 @@ namespace DC::Tasks
     }
 
     /*-------------------------------------------------
-    System Thread: Background
+    Thread: Kernel
+    -------------------------------------------------*/
+    Task kernel;
+
+    cfg.arg        = nullptr;
+    cfg.function   = KERNEL::KernelThread;
+    cfg.priority   = KERNEL::PRIORITY;
+    cfg.stackWords = KERNEL::STACK;
+    cfg.type       = TaskInitType::DYNAMIC;
+    cfg.name       = KERNEL::NAME.data();
+
+    kernel.create( cfg );
+    s_thread_id[ EnumValue( PrjTaskId::KERNEL ) ] = kernel.start();
+
+    /*-------------------------------------------------
+    Thread: Background
     -------------------------------------------------*/
     Task background;
 
@@ -65,7 +82,7 @@ namespace DC::Tasks
     s_thread_id[ EnumValue( PrjTaskId::MONITOR ) ] = background.start();
 
     /*-------------------------------------------------
-    System Thread: Heartbeat
+    Thread: Heartbeat
     -------------------------------------------------*/
     Task heartbeat;
 
@@ -80,7 +97,7 @@ namespace DC::Tasks
     s_thread_id[ EnumValue( PrjTaskId::HEART_BEAT ) ] = heartbeat.start();
 
     /*-------------------------------------------------
-    System Thread: Human Interface
+    Thread: Human Interface
     -------------------------------------------------*/
     Task hmi;
 
@@ -95,7 +112,7 @@ namespace DC::Tasks
     s_thread_id[ EnumValue( PrjTaskId::HMI ) ] = hmi.start();
 
     /*-------------------------------------------------
-    System Thread: Bluetooth
+    Thread: Bluetooth
     -------------------------------------------------*/
     Task bt;
 
@@ -110,7 +127,7 @@ namespace DC::Tasks
     s_thread_id[ EnumValue( PrjTaskId::BLUETOOTH ) ] = bt.start();
 
     /*-------------------------------------------------
-    System Thread: Radio
+    Thread: Radio
     -------------------------------------------------*/
     Task radio;
 
@@ -125,7 +142,7 @@ namespace DC::Tasks
     s_thread_id[ EnumValue( PrjTaskId::RADIO ) ] = radio.start();
 
     /*-------------------------------------------------
-    System Thread: File System
+    Thread: File System
     -------------------------------------------------*/
     Task file;
 
@@ -140,7 +157,22 @@ namespace DC::Tasks
     s_thread_id[ EnumValue( PrjTaskId::FILE_SYSTEM ) ] = file.start();
 
     /*-------------------------------------------------
-    System Thread: USB
+    Thread: SYSTEM
+    -------------------------------------------------*/
+    Task system;
+
+    cfg.arg        = nullptr;
+    cfg.function   = SYSTEM::SystemThread;
+    cfg.priority   = SYSTEM::PRIORITY;
+    cfg.stackWords = SYSTEM::STACK;
+    cfg.type       = TaskInitType::DYNAMIC;
+    cfg.name       = SYSTEM::NAME.data();
+
+    system.create( cfg );
+    s_thread_id[ EnumValue( PrjTaskId::SYSTEM ) ] = system.start();
+
+    /*-------------------------------------------------
+    Thread: USB
     -------------------------------------------------*/
     Task usb;
 

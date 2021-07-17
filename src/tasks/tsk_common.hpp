@@ -21,6 +21,12 @@
 namespace DC::Tasks
 {
   /*-------------------------------------------------------------------------------
+  Constants
+  -------------------------------------------------------------------------------*/
+  static constexpr size_t TSK_KERNEL_START_DELAY_MS = 1000;
+  static constexpr size_t TSK_SYSTEM_START_DELAY_MS = 1500;
+
+  /*-------------------------------------------------------------------------------
   Enumerations
   -------------------------------------------------------------------------------*/
   /**
@@ -39,11 +45,12 @@ namespace DC::Tasks
     RADIO,       /**< NRF24L01 Radio processing */
     BLUETOOTH,   /**< RN4871 bluetooth processing */
     USB,         /**< USB processing */
+    SYSTEM,      /**< System level processing */
+    KERNEL,      /**< Handles critical functions */
 
     NUM_OPTIONS,
     UNKNOWN
   };
-
 
   /*-------------------------------------------------------------------------------
   Public Functions

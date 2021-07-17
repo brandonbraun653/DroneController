@@ -30,9 +30,6 @@ namespace DC::GPIO
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  /**
-   * @brief Initializes the shift register pin map
-   */
   void initPinMap()
   {
     /*-------------------------------------------------
@@ -85,35 +82,21 @@ namespace DC::GPIO
   }
 
 
-  /**
-   * @brief Converts a logical InputPin to a literal bitfield
-   *
-   * The bit field corresponds to the physical location of the input
-   * shift register chain.
-   *
-   * @param pin   Which pin to convert
-   * @return uint32_t
-   */
   uint32_t pinToBitField( const InputPin pin )
   {
     return ( pin < InputPin::NUM_PINS ) ? s_input_pin_map[ EnumValue( pin ) ] : INVALID_BIT_FIELD;
   }
 
-  /**
-   * @brief Converts a literal bitfield into a logical InputPin
-   *
-   * @param bit_field   The bitfield to convert
-   * @return InputPin
-   */
+
   InputPin bitFieldToInputPin( const uint32_t bit_field )
   {
     /*-------------------------------------------------
     Iterate over all possible pins. There aren't many,
     so a linear search should be fine.
     -------------------------------------------------*/
-    for( size_t idx = 0; idx < s_input_pin_map.size(); idx++ )
+    for ( size_t idx = 0; idx < s_input_pin_map.size(); idx++ )
     {
-      if( bit_field == s_input_pin_map[ idx ] )
+      if ( bit_field == s_input_pin_map[ idx ] )
       {
         return static_cast<InputPin>( idx );
       }
@@ -123,17 +106,134 @@ namespace DC::GPIO
   }
 
 
-  /**
-   * @brief Converts a logical OutputPin to a literal bitfield
-   *
-   * The bit field corresponds to the physical location of the input
-   * shift register chain.
-   *
-   * @param pin   Which pin to convert
-   * @return uint32_t
-   */
   uint32_t pinToBitField( const OutputPin pin )
   {
     return ( pin < OutputPin::NUM_PINS ) ? s_output_pin_map[ EnumValue( pin ) ] : INVALID_BIT_FIELD;
   }
-}  // namespace DC::GPIO
+
+
+  InputPin pinToInputId( const Pin pin )
+  {
+    if ( ( pin < GPIO::Pin::FIRST_INPUT_PIN ) || ( pin > GPIO::Pin::LAST_INPUT_PIN ) )
+    {
+      return InputPin::NUM_PINS;
+    }
+
+    switch ( pin )
+    {
+      case Pin::BATT_CHG_GOOD:
+        return InputPin::BATT_CHG_GOOD;
+        break;
+
+      case Pin::BATT_PWR_GOOD:
+        return InputPin::BATT_PWR_GOOD;
+        break;
+
+      case Pin::KEY_ENC_0:
+        return InputPin::KEY_ENC_0;
+        break;
+
+      case Pin::KEY_ENC_1:
+        return InputPin::KEY_ENC_1;
+        break;
+
+      case Pin::KEY_USER_0:
+        return InputPin::KEY_USER_0;
+        break;
+
+      case Pin::KEY_USER_1:
+        return InputPin::KEY_USER_1;
+        break;
+
+      case Pin::PITCH_TRIM_UP:
+        return InputPin::PITCH_TRIM_UP;
+        break;
+
+      case Pin::PITCH_TRIM_DN:
+        return InputPin::PITCH_TRIM_DN;
+        break;
+
+      case Pin::ROLL_TRIM_UP:
+        return InputPin::ROLL_TRIM_UP;
+        break;
+
+      case Pin::ROLL_TRIM_DN:
+        return InputPin::ROLL_TRIM_DN;
+        break;
+
+      case Pin::YAW_TRIM_UP:
+        return InputPin::YAW_TRIM_UP;
+        break;
+
+      case Pin::YAW_TRIM_DN:
+        return InputPin::YAW_TRIM_DN;
+        break;
+
+      case Pin::THROTTLE_TRIM_UP:
+        return InputPin::THROTTLE_TRIM_UP;
+        break;
+
+      case Pin::THROTTLE_TRIM_DN:
+        return InputPin::THROTTLE_TRIM_DN;
+        break;
+
+      case Pin::USER_SW_A:
+        return InputPin::USER_SW_A;
+        break;
+
+      case Pin::USER_SW_B:
+        return InputPin::USER_SW_B;
+        break;
+
+      case Pin::USER_SW_C:
+        return InputPin::USER_SW_C;
+        break;
+
+      case Pin::USER_SW_D:
+        return InputPin::USER_SW_D;
+        break;
+
+      default:
+        return InputPin::NUM_PINS;
+    };
+  }
+
+
+  OutputPin pinToOutputId( const Pin pin )
+  {
+    if ( ( pin < GPIO::Pin::FIRST_OUTPUT_PIN ) || ( pin > GPIO::Pin::LAST_OUTPUT_PIN ) )
+    {
+      return OutputPin::NUM_PINS;
+    }
+
+    switch ( pin )
+    {
+      case Pin::RF24_PWR_EN:
+        return OutputPin::RF24_PWR_EN;
+        break;
+
+      case Pin::BT_PWR_EN:
+        return OutputPin::BT_PWR_EN;
+        break;
+
+      case Pin::BATT_CHG_EN:
+        return OutputPin::BATT_CHG_EN;
+        break;
+
+      case Pin::DBG_LED_0:
+        return OutputPin::DBG_LED_0;
+        break;
+
+      case Pin::DBG_LED_1:
+        return OutputPin::DBG_LED_1;
+        break;
+
+      case Pin::DBG_LED_2:
+        return OutputPin::DBG_LED_2;
+        break;
+
+      default:
+        return OutputPin::NUM_PINS;
+    };
+  }
+}    // namespace DC::GPIO

@@ -4,7 +4,8 @@
  *
  *  Description:
  *    File listing for the project. All files are assumed to use a flat directory
- *    structure due to limitations with the embedded file system driver.
+ *    structure due to limitations with the embedded file system driver. For ease
+ *    of use, most files are filled with structures.
  *
  *  2021 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/

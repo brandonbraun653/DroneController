@@ -10,7 +10,9 @@ gen_static_lib_variants(
     tsk_file_system.cpp
     tsk_heartbeat.cpp
     tsk_hmi.cpp
+    tsk_kernel.cpp
     tsk_radio.cpp
+    tsk_system.cpp
     tsk_usb.cpp
   PRV_LIBRARIES
     aurora_intf_inc

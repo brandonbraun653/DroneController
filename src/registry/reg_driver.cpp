@@ -12,6 +12,7 @@
 #include <Aurora/database>
 #include <Aurora/datastore>
 #include <Aurora/filesystem_spiffs>
+#include <Aurora/hmi>
 #include <Aurora/logging>
 #include <Aurora/memory>
 
@@ -112,6 +113,14 @@ namespace DC::REG
     // LOG_ERROR( "Chip erased\r\n" );
   }
 
+
+  void doPeriodicProcessing()
+  {
+    /*-------------------------------------------------
+    Process the observables
+    -------------------------------------------------*/
+    Datastore.process();
+  }
 
   bool readSafe( const DatabaseKeys key, void *const data, const size_t size )
   {
@@ -266,17 +275,27 @@ namespace DC::REG
           result           = Database.insert( x, &pData.boot_count, sizeof( ParamData::boot_count ), MemAccess::MEM_RW );
           break;
 
-
         case KEY_ANALOG_IN_PITCH:
         case KEY_ANALOG_IN_ROLL:
         case KEY_ANALOG_IN_YAW:
         case KEY_ANALOG_IN_THROTTLE:
+        case KEY_BATT_VOLTAGE_SENSE:
           result = Database.insert( x, sizeof( float ) );
+          break;
+
+        case KEY_BATT_POWER_GOOD:
+        case KEY_BATT_CHARGE_GOOD:
+          result = Database.insert( x, sizeof( bool ) );
+          break;
+
+        case KEY_ENCODER_0_STATE:
+        case KEY_ENCODER_1_STATE:
+          result = Database.insert( x, sizeof( Aurora::HMI::Encoder::State ) );
           break;
 
         default:
           // A parameter was forgotten to be registered
-          RT_HARD_ASSERT( false );
+          result = Chimera::Status::FAIL;
           break;
       }
 

@@ -76,12 +76,14 @@ namespace DC::Tasks::BKGD
    */
   static TaskTiming s_timing_stats[] = {
     /* clang-format off */
-    { .id = PrjTaskId::MONITOR,      .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
+    { .id = PrjTaskId::BLUETOOTH,    .lower = 0, .upper = 0,   .exact = 0 },
     { .id = PrjTaskId::FILE_SYSTEM,  .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
     { .id = PrjTaskId::HEART_BEAT,   .lower = 0, .upper = 12,  .exact = 0 },
     { .id = PrjTaskId::HMI,          .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
+    { .id = PrjTaskId::KERNEL,       .lower = 0, .upper = 0,   .exact = 0 },
+    { .id = PrjTaskId::MONITOR,      .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
     { .id = PrjTaskId::RADIO,        .lower = 0, .upper = 50,  .exact = 0 },
-    { .id = PrjTaskId::BLUETOOTH,    .lower = 0, .upper = 0,   .exact = 0 },
+    { .id = PrjTaskId::SYSTEM,       .lower = 0, .upper = 0,   .exact = 0 },
     { .id = PrjTaskId::USB,          .lower = 0, .upper = 0,   .exact = 0 },
     /* clang-format on */
   };

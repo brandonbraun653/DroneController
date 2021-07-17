@@ -28,6 +28,8 @@ namespace DC::REG
 
   void format();
 
+  void doPeriodicProcessing();
+
   bool readSafe( const DatabaseKeys key, void *const data, const size_t size );
 
   bool writeSafe( const DatabaseKeys key, const void *const data, const size_t size );

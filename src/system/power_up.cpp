@@ -14,8 +14,7 @@
 /* Project Includes */
 #include <src/hmi/hmi_encoder.hpp>
 #include <src/hmi/hmi_sticks.hpp>
-#include <src/hmi/hmi_discrete_input.hpp>
-#include <src/io/gpio_driver.hpp>
+#include <src/hmi/hmi_discrete.hpp>
 #include <src/io/shift_register_driver.hpp>
 #include <src/registry/reg_intf.hpp>
 #include <src/system/power_up.hpp>
