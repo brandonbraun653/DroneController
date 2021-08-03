@@ -67,6 +67,7 @@ gen_intf_lib(
   INTF_LIBRARIES
     ripple_inc
     freertos_intf_inc_all
+    vdrone_nanopb_proto_intf_inc
   EXPORT_DIR
     "${PROJECT_BINARY_DIR}/Project"
 )
@@ -103,6 +104,15 @@ gen_intf_lib(
     freertos_heap
   INTF_DEFINES
     FREERTOS_CFG_MEM_MANG_HEAP4=1
+  EXPORT_DIR
+    "${PROJECT_BINARY_DIR}/Project"
+)
+
+gen_intf_lib(
+  TARGET
+    nanopb_intf_inc
+  INTF_INCLUDES
+    "${PROJECT_ROOT}/lib/nanopb"
   EXPORT_DIR
     "${PROJECT_BINARY_DIR}/Project"
 )

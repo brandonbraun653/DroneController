@@ -37,6 +37,7 @@
 #include <algorithm>
 #include <etl/random.h>
 #include <etl/crc32.h>
+#include "controller.pb.h"
 
 static etl::random_xorshift rng;
 
@@ -236,17 +237,23 @@ python program that will simply echo the data back.
         LOG_INFO( "Transmitting\r\n" );
         lastTx = Chimera::millis();
 
-        etl::crc32 crc;
-        crc.reset();
+        /*-----------------------------------------------------------------
+        Initialize some protobuf data
+        -----------------------------------------------------------------*/
+        ControllerInputs inputs;
+        inputs.encoder_inputs = 1;
+        inputs.stick_inputs = 2;
+        inputs.switch_inputs = 3;
+        inputs.timestamp = 4;
 
-        DataPacket txData;
-        memset( &txData, 0, sizeof( DataPacket ) );
+        /*-----------------------------------------------------------------
+        Pack the protobuf data into a packet
+        -----------------------------------------------------------------*/
+        auto encoder = PacketEncoder<ControllerInputs, ControllerInputs_size>();
+        auto encoded_data = encoder.encode( inputs, ControllerInputs_fields );
 
-        std::generate( txData.data, txData.data + sizeof( txData.data ), rng );
-        crc.add( txData.data, txData.data + sizeof( txData.data ) );
-        txData.crc = crc.value();
 
-        txSocket->write( &txData, sizeof( txData ) );
+        txSocket->write( encoded_data.data(), encoded_data.size() );
         tx_count++;
 
         if ( tx_count == 100 )
@@ -265,23 +272,12 @@ python program that will simply echo the data back.
 
         while ( bytesAvailable )
         {
-          RT_HARD_ASSERT( bytesAvailable == sizeof( DataPacket ) );
-          DataPacket rxData;
-          etl::crc32 crc;
-          crc.reset();
-
+          RT_HARD_ASSERT( sizeof( ControllerInputs ) == bytesAvailable );
+          ControllerInputs rxData;
           result = rxSocket->read( &rxData, bytesAvailable );
-          crc.add( rxData.data, rxData.data + sizeof( rxData.data ) );
 
-          if ( crc.value() == rxData.crc )
-          {
-            LOG_INFO( "Received, CRC match\r\n" );
-            rx_count++;
-          }
-          else
-          {
-            LOG_INFO( "Received, CRC fail\r\n" );
-          }
+          LOG_INFO( "Read %d bytes\r\n", bytesAvailable );
+          rx_count++;
 
           bytesAvailable = rxSocket->available();
         }

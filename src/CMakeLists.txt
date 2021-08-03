@@ -69,10 +69,10 @@ target_link_libraries(DroneController PRIVATE
   lib_utility
 
   # Networking Libraries
-  ripple_shared_rel
-  ripple_user_intf_rel
-  ripple_network_stack_rel
-  ripple_packets_rel
+  ripple_shared_dbg
+  ripple_user_intf_dbg
+  ripple_network_stack_dbg
+  ripple_packets_dbg
   # ripple_util
 
   # Packet Defintions

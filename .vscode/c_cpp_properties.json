@@ -33,6 +33,7 @@
             "${workspaceFolder}/lib/Thor/include",
             "${workspaceFolder}/lib/nanopb",
             "${workspaceFolder}/lib/tinyusb/src",
+            "${workspaceFolder}/lib/VirtualDrone/src/VDrone/nanopb",
             "${workspaceFolder}/src/**",
             "${workspaceFolder}/src/config/thor",
             "${workspaceFolder}/src/config/freertos",
