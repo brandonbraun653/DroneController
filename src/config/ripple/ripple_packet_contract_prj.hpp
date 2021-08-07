@@ -16,8 +16,29 @@
 #include <cstddef>
 
 /*-------------------------------------------------------------------------------
+Enumerations
+-------------------------------------------------------------------------------*/
+/**
+ * @brief Gives a unique name to all packets used on this project
+ * @note Type is aliased to uint32_t, but is actually Ripple::PacketId
+ *
+ * In addition to unique naming, these IDs are what will be used to reference
+ * a particular packet throughout the network stack.
+ */
+enum DCPacketList : uint32_t
+{
+  PKT_AHRS_ACCEL_DATA,
+  PKT_AHRS_GYRO_DATA,
+  PKT_AHRS_MAG_DATA,
+  PKT_CMD_CONTROLLER_INPUTS,
+
+  PKT_NUM_PKTS,
+  PKT_INVALID
+};
+
+/*-------------------------------------------------------------------------------
 Constants
 -------------------------------------------------------------------------------*/
-static constexpr size_t RIPPLE_NUM_PACKETS = 10;
+static constexpr size_t RIPPLE_MAX_NUM_PKTS = DCPacketList::PKT_NUM_PKTS;
 
 #endif  /* !DC_PACKET_DEFINTIONS_HPP */

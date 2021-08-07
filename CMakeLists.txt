@@ -62,7 +62,8 @@ gen_intf_lib(
     SEGGER_SYS_VIEW
   INTF_INCLUDES
     "${PROJECT_ROOT}"
-    "${PROJECT_ROOT}/src/config"
+    "${PROJECT_ROOT}/src/config/bsp"
+    "${PROJECT_ROOT}/src/config/ripple"
     "${PROJECT_ROOT}/src/config/thor"
   INTF_LIBRARIES
     ripple_inc
