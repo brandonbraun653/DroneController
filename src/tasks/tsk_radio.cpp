@@ -38,6 +38,7 @@
 #include <etl/random.h>
 #include <etl/crc32.h>
 #include "controller.pb.h"
+#include <src/config/ripple/ripple_packet_contract_prj.hpp>
 
 static etl::random_xorshift rng;
 
@@ -141,15 +142,20 @@ namespace DC::Tasks::RADIO
     rxSocket->connect( destNode, destNode );
 
 #else
+    Ripple::SocketConfig cfg;
+    cfg.devicePort = LOCAL_HOST_PORT;
+    cfg.txFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
+    cfg.rxFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
+
     /*-------------------------------------------------
     Create two sockets for a full duplex pipe
     -------------------------------------------------*/
-    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 1024 );
-    txSocket->open( LOCAL_HOST_PORT );
+    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 2048 );
+    txSocket->open( cfg );
     txSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
-    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 1024 );
-    rxSocket->open( LOCAL_HOST_PORT );
+    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 2048 );
+    rxSocket->open( cfg );
     rxSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
 #endif /* EMBEDDED */
@@ -249,12 +255,10 @@ python program that will simply echo the data back.
         /*-----------------------------------------------------------------
         Pack the protobuf data into a packet
         -----------------------------------------------------------------*/
-        auto encoder = PacketEncoder<ControllerInputs, ControllerInputs_size>();
-        auto encoded_data = encoder.encode( inputs, ControllerInputs_fields );
-
-
-        txSocket->write( encoded_data.data(), encoded_data.size() );
-        tx_count++;
+        if( Ripple::transmit( PKT_CMD_CONTROLLER_INPUTS, *txSocket, &inputs, sizeof( ControllerInputs ) ) )
+        {
+          tx_count++;
+        }
 
         if ( tx_count == 100 )
         {
@@ -267,26 +271,7 @@ python program that will simply echo the data back.
       -------------------------------------------------*/
       if ( ( Chimera::millis() - lastRx ) > 100 )
       {
-        lastRx              = Chimera::millis();
-        auto bytesAvailable = rxSocket->available();
-
-        while ( bytesAvailable )
-        {
-          RT_HARD_ASSERT( sizeof( ControllerInputs ) == bytesAvailable );
-          ControllerInputs rxData;
-          result = rxSocket->read( &rxData, bytesAvailable );
-
-          LOG_INFO( "Read %d bytes\r\n", bytesAvailable );
-          rx_count++;
-
-          bytesAvailable = rxSocket->available();
-        }
-
-        if ( ( tx_count == 100 ) && ( bytesAvailable == 0 ) )
-        {
-          LOG_INFO( "Total TX: %d, Total RX: %d\r\n", tx_count, rx_count );
-          tx_count++;
-        }
+        lastRx = Chimera::millis();
       }
 #endif /* SIMULATOR */
 
