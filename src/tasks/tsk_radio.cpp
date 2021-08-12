@@ -134,34 +134,35 @@ namespace DC::Tasks::RADIO
 #else
 #endif
 
+    Ripple::SocketConfig sock_cfg;
+    sock_cfg.devicePort = LOCAL_HOST_PORT;
+    sock_cfg.txFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
+    sock_cfg.rxFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
+
 #if defined( EMBEDDED )
     netif->addARPEntry( thisNode, &thisMAC, sizeof( thisMAC ) );
     netif->addARPEntry( destNode, &destMAC, sizeof( destMAC ) );
     netif->setRootMAC( thisMAC );
 
-    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 512 );
-    txSocket->open( thisNode );
+    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 2048 );
+    txSocket->open( sock_cfg );
     txSocket->connect( destNode, thisNode );
 
-    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 512 );
-    rxSocket->open( thisNode );
+    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 2048 );
+    rxSocket->open( sock_cfg );
     rxSocket->connect( destNode, destNode );
 
 #else
-    Ripple::SocketConfig cfg;
-    cfg.devicePort = LOCAL_HOST_PORT;
-    cfg.txFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
-    cfg.rxFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
 
     /*-------------------------------------------------
     Create two sockets for a full duplex pipe
     -------------------------------------------------*/
     Socket_rPtr txSocket = context->socket( SocketType::PUSH, 2048 );
-    txSocket->open( cfg );
+    txSocket->open( sock_cfg );
     txSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
     Socket_rPtr rxSocket = context->socket( SocketType::PULL, 2048 );
-    rxSocket->open( cfg );
+    rxSocket->open( sock_cfg );
     rxSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
 #endif /* EMBEDDED */
@@ -180,73 +181,13 @@ namespace DC::Tasks::RADIO
     /*-------------------------------------------------
     Initialize some local data for the transfers
     -------------------------------------------------*/
-    Chimera::Status_t result;
     size_t lastTx    = Chimera::millis();
-    size_t lastRx    = Chimera::millis();
-    bool transmitted = false;
     size_t tx_count  = 0;
-    size_t rx_count  = 0;
-
-
-#if ( CONTROLLER_DEVICE == 1 )
-    etl::crc32 crc;
-    crc.reset();
-
-    DataPacket txData;
-    memset( &txData, 0, sizeof( DataPacket ) );
-
-    std::generate( txData.data, txData.data + sizeof( txData.data ), rng );
-    crc.add( txData.data, txData.data + sizeof( txData.data ) );
-    txData.crc = crc.value();
-
-    txSocket->write( &txData, sizeof( txData ) );
-#endif /* CONTROLLER_DEVICE == 1 */
 
     while ( 1 )
     {
-#if defined( EMBEDDED )
-/*-------------------------------------------------
-Periodically transmit data. Expects to talk with a
-python program that will simply echo the data back.
--------------------------------------------------*/
-#if ( CONTROLLER_DEVICE == 1 )
-      // if ( ( ( Chimera::millis() - lastTx ) > 1000 ) )
-      // {
-      //   lastTx = Chimera::millis();
-      //   std::generate( some_data.begin(), some_data.end(), rng );
-      //   txSocket->write( some_data.data(), some_data.size() );
-      // }
-#endif /* CONTROLLER_DEVICE == 1 */
 
-      /*-------------------------------------------------
-      Try and sample data. Expects to receive an echo of
-      the transmit.
-      -------------------------------------------------*/
-#if ( CONTROLLER_DEVICE == 0 )
-      if ( auto bytesAvailable = rxSocket->available(); bytesAvailable )
-      {
-        RT_HARD_ASSERT( bytesAvailable == sizeof( DataPacket ) );
-        DataPacket rxData;
-        etl::crc32 crc;
-        crc.reset();
-
-        result = rxSocket->read( &rxData, bytesAvailable );
-        crc.add( rxData.data, rxData.data + sizeof( rxData.data ) );
-
-        if ( crc.value() == rxData.crc )
-        {
-          LOG_INFO( "Received, CRC match\r\n" );
-          rx_count++;
-        }
-        else
-        {
-          LOG_INFO( "Received, CRC fail\r\n" );
-        }
-      }
-#endif /* CONTROLLER_DEVICE == 0 */
-#endif /* EMBEDDED */
-
-#if defined( SIMULATOR )
+#if defined( SIMULATOR ) || ( defined( EMBEDDED ) && ( CONTROLLER_DEVICE == 0 ) )
       /*-------------------------------------------------
       Transmit some data
       -------------------------------------------------*/
@@ -276,14 +217,6 @@ python program that will simply echo the data back.
         {
           LOG_INFO( "Finished transmitting all data\r\n" );
         }
-      }
-
-      /*-------------------------------------------------
-      Receive some data
-      -------------------------------------------------*/
-      if ( ( Chimera::millis() - lastRx ) > 100 )
-      {
-        lastRx = Chimera::millis();
       }
 #endif /* SIMULATOR */
 
