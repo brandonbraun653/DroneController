@@ -59,6 +59,12 @@ namespace DC::Tasks::RADIO
 
 #endif /* EMBEDDED */
 
+
+  static void CmnHandler( const Ripple::PacketId id, const void *const data, const size_t size )
+  {
+    LOG_INFO( "Received pkt %d of size %d\r\n", id, size );
+  }
+
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
@@ -159,6 +165,12 @@ namespace DC::Tasks::RADIO
     rxSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
 #endif /* EMBEDDED */
+
+    /*-----------------------------------------------------------------
+    Register default handlers for RX data
+    -----------------------------------------------------------------*/
+    Ripple::onReceive( *txSocket, CmnHandler );
+    Ripple::onReceive( *rxSocket, CmnHandler );
 
     /*-------------------------------------------------
     Create some random data to try and transfer
