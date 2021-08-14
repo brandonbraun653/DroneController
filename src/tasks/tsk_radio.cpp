@@ -42,13 +42,11 @@
 
 static etl::random_xorshift rng;
 
+/*-----------------------------------------------------------------
+Device 0 is the Transmitter. Device 1 is the Receiver.
+-----------------------------------------------------------------*/
 #define CONTROLLER_DEVICE 0
 
-struct DataPacket
-{
-  uint32_t crc;
-  uint8_t data[ 100 ];
-};
 
 namespace DC::Tasks::RADIO
 {
@@ -117,10 +115,10 @@ namespace DC::Tasks::RADIO
     -------------------------------------------------*/
 #if defined( EMBEDDED )
 #if ( CONTROLLER_DEVICE == 1 )
-    IPAddress thisNode = 35;
+    IPAddress thisNode = 23;
     uint64_t thisMAC   = 0xB4B5B6B7B5;
 
-    IPAddress destNode = 23;
+    IPAddress destNode = 35;
     uint64_t destMAC   = 0xA4A5A6A7A0;
 
 #else
@@ -135,28 +133,27 @@ namespace DC::Tasks::RADIO
 #endif
 
     Ripple::SocketConfig sock_cfg;
-    sock_cfg.devicePort = LOCAL_HOST_PORT;
     sock_cfg.txFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
     sock_cfg.rxFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
 
 #if defined( EMBEDDED )
+    sock_cfg.devicePort = thisNode;
+
     netif->addARPEntry( thisNode, &thisMAC, sizeof( thisMAC ) );
     netif->addARPEntry( destNode, &destMAC, sizeof( destMAC ) );
     netif->setRootMAC( thisMAC );
 
-    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 2048 );
+    Socket_rPtr txSocket = context->socket( ( CONTROLLER_DEVICE ? SocketType::PULL : SocketType::PUSH ), 2048 );
     txSocket->open( sock_cfg );
-    txSocket->connect( destNode, thisNode );
-
-    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 2048 );
-    rxSocket->open( sock_cfg );
-    rxSocket->connect( destNode, destNode );
+    txSocket->connect( destNode, destNode );
 
 #else
 
     /*-------------------------------------------------
     Create two sockets for a full duplex pipe
     -------------------------------------------------*/
+    sock_cfg.devicePort = LOCAL_HOST_PORT;
+
     Socket_rPtr txSocket = context->socket( SocketType::PUSH, 2048 );
     txSocket->open( sock_cfg );
     txSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
@@ -165,13 +162,14 @@ namespace DC::Tasks::RADIO
     rxSocket->open( sock_cfg );
     rxSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
+    Ripple::onReceive( *rxSocket, CmnHandler );
+
 #endif /* EMBEDDED */
 
     /*-----------------------------------------------------------------
     Register default handlers for RX data
     -----------------------------------------------------------------*/
     Ripple::onReceive( *txSocket, CmnHandler );
-    Ripple::onReceive( *rxSocket, CmnHandler );
 
     /*-------------------------------------------------
     Create some random data to try and transfer
@@ -191,7 +189,7 @@ namespace DC::Tasks::RADIO
       /*-------------------------------------------------
       Transmit some data
       -------------------------------------------------*/
-      if ( ( tx_count < 100 ) && ( ( Chimera::millis() - lastTx ) > 25 ) )
+      if ( ( tx_count < 10 ) && ( ( Chimera::millis() - lastTx ) > 25 ) )
       {
         LOG_INFO( "Transmitting\r\n" );
         lastTx = Chimera::millis();

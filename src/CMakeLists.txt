@@ -143,7 +143,7 @@ if(Toolchain::HAS_GCC_ARM_NONE_EABI)
     freertos_cm4f_port_rel
 
     # Ripple NetIf
-    ripple_netif_nrf24_datalink_rel
+    ripple_netif_nrf24_datalink_dbg
     ripple_netif_nrf24_physical_rel
 
     # Segger System View
