@@ -21,8 +21,9 @@ namespace DC
    *  CHANGELOG;
    *
    *  v0.1.0: Initial version
+   *  v0.2.0: Core hardware working, including basic networking.
    */
-  static constexpr std::string_view version = "0.1.0";
+  static constexpr std::string_view version = "0.2.0";
 
 }  // namespace DC
 
