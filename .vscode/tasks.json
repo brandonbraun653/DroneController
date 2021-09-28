@@ -4,7 +4,7 @@
     {
       "label": "CMake Clean",
       "type": "shell",
-      "command": "rm -rf ${workspaceFolder}/build/*",
+      "command": "mkdir -p ${workspaceFolder}/build && rm -rf ${workspaceFolder}/build/*",
       "problemMatcher": []
     },
     {
