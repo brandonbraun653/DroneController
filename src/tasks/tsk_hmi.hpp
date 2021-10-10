@@ -26,7 +26,7 @@ namespace DC::Tasks::HMI
   -------------------------------------------------------------------------------*/
   static constexpr size_t STACK                          = STACK_BYTES( 4096 );
   static constexpr std::string_view NAME                 = "hmi";
-  static constexpr Chimera::Thread::Priority PRIORITY = Chimera::Thread::Priority::LEVEL_3;
+  static constexpr Chimera::Thread::Priority PRIORITY = Chimera::Thread::Priority::LEVEL_4;
 
   /*-------------------------------------------------------------------------------
   Public Functions

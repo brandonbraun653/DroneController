@@ -91,33 +91,33 @@ namespace DC::RF::BT
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  /**
-   * @brief Initialize the bluetooth driver module
-   */
+  void getDevice( ::RN4871::DeviceDriver **dev )
+  {
+    RT_HARD_ASSERT( dev );
+    *dev = &s_bt_device;
+  }
+
+
   void initDriver()
   {
-    /*-------------------------------------------------
-    Initialize local data
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Init local data
+    -------------------------------------------------------------------------*/
     s_is_enabled = false;
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Power up the serial communication
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     initSerial();
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Initialize the bluetooth device driver
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
+    s_bt_device.initialize();
     s_bt_device.assignSerial( DC::IO::Bluetooth::serialChannel );
   }
 
 
-  /**
-   * @brief Controls power to the bluetooth module
-   *
-   * @param state     Which state to place the power into
-   */
   void setPower( const PowerState state )
   {
     if( state == PowerState::ENABLED )
@@ -139,63 +139,62 @@ namespace DC::RF::BT
   }
 
 
-  /**
-   * @brief Performs POR procedures to init module
-   */
-  void doPowerOnReset()
+  void doPowerOnReset( const Chimera::Thread::TaskId mgrId )
   {
-    /*-------------------------------------------------
-    Power cycle the unit
-    -------------------------------------------------*/
+    using namespace Chimera::Thread;
+
+    /*-------------------------------------------------------------------------
+    Power cycle the unit and wait for boot up to occur
+    -------------------------------------------------------------------------*/
     LOG_INFO( "Powering down bluetooth module...\r\n" );
     setPower( PowerState::DISABLED );
-    Chimera::delayMilliseconds( 500 );
+    Chimera::delayMilliseconds( 1000 );
     LOG_INFO( "Powering up bluetooth module...\r\n" );
     setPower( PowerState::ENABLED );
-    Chimera::delayMilliseconds( 150 );
+    Chimera::delayMilliseconds( 1000 );
 
-    auto serial = Chimera::Serial::getDriver( DC::IO::Bluetooth::serialChannel );
-    serial->flush( Chimera::Hardware::SubPeripheral::RX );
+    sendTaskMsg( mgrId, TSK_MSG_WAKEUP, TIMEOUT_BLOCK );
+    this_thread::yield();
 
-    /*-------------------------------------------------
-    Set core feature set
-    -------------------------------------------------*/
-    RN4871::Feature bitset = RN4871::Feature::NONE;
-    s_bt_device.setFeatures( bitset );
+    // /*-------------------------------------------------
+    // Set core feature set
+    // -------------------------------------------------*/
+    // RN4871::Feature bitset = RN4871::Feature::NONE;
+    // s_bt_device.setFeatures( bitset );
 
-    /*-------------------------------------------------
-    Ping the unit to grab version information
-    -------------------------------------------------*/
-    LOG_INFO( "Bluetooth version: %s\r\n", s_bt_device.softwareVersion().data() );
-    LOG_INFO( "Configuring Bluetooth...\r\n" );
+    // /*-------------------------------------------------
+    // Ping the unit to grab version information
+    // -------------------------------------------------*/
+    // LOG_INFO( "Bluetooth version: %s\r\n", s_bt_device.softwareVersion().data() );
+    // LOG_INFO( "Configuring Bluetooth...\r\n" );
 
-    /*-------------------------------------------------
-    Set the device name to something useful
-    -------------------------------------------------*/
-    s_bt_device.setName( "DroneCtrl" );
+    // /*-------------------------------------------------
+    // Set the device name to something useful
+    // -------------------------------------------------*/
+    // s_bt_device.setName( "DroneCtrl" );
 
-    /*-------------------------------------------------
-    Set device appearance as Generic Remote Control
-    -------------------------------------------------*/
-    s_bt_device.setGAPService( 0x1080 );
+    // /*-------------------------------------------------
+    // Set device appearance as Generic Remote Control
+    // -------------------------------------------------*/
+    // s_bt_device.setGAPService( 0x1080 );
 
-    /*-------------------------------------------------
-    Set the output power for broadcasting
-    -------------------------------------------------*/
-    s_bt_device.setAdvertisePower( RN4871::OutputPower::LEVEL_0 );
-    s_bt_device.setConnectedPower( RN4871::OutputPower::LEVEL_0 );
+    // /*-------------------------------------------------
+    // Set the output power for broadcasting
+    // -------------------------------------------------*/
+    // s_bt_device.setAdvertisePower( RN4871::OutputPower::LEVEL_0 );
+    // s_bt_device.setConnectedPower( RN4871::OutputPower::LEVEL_0 );
 
-    /*-------------------------------------------------
-    Apply configuration settings by doing a warm reset
-    -------------------------------------------------*/
-    s_bt_device.reboot();
-    Chimera::delayMilliseconds( 100 );
+    // /*-------------------------------------------------
+    // Apply configuration settings by doing a warm reset
+    // -------------------------------------------------*/
+    // s_bt_device.reboot();
+    // Chimera::delayMilliseconds( 100 );
 
-    /*-------------------------------------------------
-    Begin advertising the controller
-    -------------------------------------------------*/
-    s_bt_device.startAdvertisement();
-    s_bt_device.enterUARTMode();
+    // /*-------------------------------------------------
+    // Begin advertising the controller
+    // -------------------------------------------------*/
+    // s_bt_device.startAdvertisement();
+    // s_bt_device.enterUARTMode();
   }
 
 }    // namespace DC::RF::BT

@@ -15,8 +15,14 @@
 /* Aurora Includes */
 #include <Aurora/utility>
 
+/* Chimera Includes */
+#include <Chimera/common>
+#include <Chimera/serial>
+#include <Chimera/thread>
+
 /* ETL Includes */
 #include <etl/string.h>
+#include <etl/queue.h>
 
 namespace RN4871
 {
@@ -60,12 +66,12 @@ namespace RN4871
 
   enum class OutputPower : uint8_t
   {
-    LEVEL_0,  /* Maximum output power */
+    LEVEL_0, /* Maximum output power */
     LEVEL_1,
     LEVEL_2,
     LEVEL_3,
     LEVEL_4,
-    LEVEL_5   /* Minimum output power */
+    LEVEL_5 /* Minimum output power */
   };
 
   enum class Feature : uint16_t
@@ -88,6 +94,51 @@ namespace RN4871
   ENUM_CLS_BITWISE_OPERATOR( Feature, | );
   ENUM_CLS_BITWISE_OPERATOR( Feature, & );
 
+  /*---------------------------------------------------------------------------
+  Structures
+  ---------------------------------------------------------------------------*/
+
+  namespace Internal
+  {
+    /**
+     * @brief Describes a transaction to the bluetooth module
+     */
+    struct Transfer
+    {
+      PacketString *message;                    /**< Message to send */
+      PacketString *response;                   /**< Response callback */
+      Chimera::Thread::BinarySemaphore *signal; /**< Signal to wake up caller */
+      size_t timeout;                           /**< Response timeout */
+      bool waitForResponse;                     /**< Wait for a response? */
+    };
+
+    /**
+     * @brief Keeps state of an RN4871 device at runtime
+     */
+    struct ControlBlock
+    {
+      bool isInitialized;                     /**< Overall init state */
+      Chimera::Thread::RecursiveMutex *lock;  /**< This structure's lock */
+      Chimera::Thread::TaskId mgrID;          /**< Thread ID of manager task */
+      Chimera::Serial::Channel serialChannel; /**< Serial channel device is on */
+      OpMode currentMode;                     /**< Current operational mode of the device */
+      size_t upTime;                          /**< Amount of time the device has been on */
+
+      etl::queue<Transfer, 5> txfrQueue;
+
+      ControlBlock()
+      {
+        currentMode   = OpMode::UNKNOWN;
+        isInitialized = false;
+        lock          = nullptr;
+        mgrID         = Chimera::Thread::THREAD_ID_INVALID;
+        serialChannel = Chimera::Serial::Channel::NOT_SUPPORTED;
+        upTime        = 0;
+      }
+    };
+
+
+  }    // namespace Internal
 
 }    // namespace RN4871
 

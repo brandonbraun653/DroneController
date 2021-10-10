@@ -14,28 +14,63 @@
 
 /* Chimera Includes */
 #include <Chimera/serial>
+#include <Chimera/thread>
 
 /* Driver Includes */
 #include <src/wireless/bluetooth/rn4871/rn_types.hpp>
 
 namespace RN4871
 {
+  /*---------------------------------------------------------------------------
+  Forward Declarations
+  ---------------------------------------------------------------------------*/
+  class DeviceDriver;
+
+  /*---------------------------------------------------------------------------
+  Public Functions
+  ---------------------------------------------------------------------------*/
+  /**
+   * @brief Starts the RN4871 device manager thread
+   *
+   * @param device                      Which device to act on
+   * @param attr                        Optional thread attributes
+   * @return Chimera::Thread::TaskId    ID of the created thread
+   */
+  Chimera::Thread::TaskId startDevice( DeviceDriver &device, const Chimera::Thread::TaskConfig *attr );
+
+  /*---------------------------------------------------------------------------
+  Classes
+  ---------------------------------------------------------------------------*/
   class DeviceDriver
   {
   public:
     DeviceDriver();
     ~DeviceDriver();
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Device Information
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     VersionString softwareVersion();
     int connectionStrength();
     bool isConnected();
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Configuration
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
+    /**
+     * @brief Performs more complex class initialization
+     *
+     * @return true
+     * @return false
+     */
+    bool initialize();
+
+    /**
+     * @brief Assigns the serial channel used to communicate with the module
+     * @note The serial driver must already be initialized.
+     *
+     * @param channel     Which serial channel to use
+     */
     void assignSerial( const Chimera::Serial::Channel channel );
     bool setName( const std::string_view &name );
     bool setAdvertisePower( const OutputPower pwr );
@@ -43,30 +78,53 @@ namespace RN4871
     bool setGAPService( const uint16_t service );
     bool setFeatures( const Feature bitmap );
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     System Commands
-    -------------------------------------------------*/
-    bool enterCommandMode();
-    bool enterDataMode();
+    -------------------------------------------------------------------------*/
     bool enterUARTMode();
     bool reboot();
     bool startAdvertisement();
     bool stopAdvertisement();
     bool killCurrentConnection();
 
-    /*-------------------------------------------------
-    Data Transfer
-    -------------------------------------------------*/
-    StatusCode transfer( const PacketString &cmd );
-    StatusCode accumulateResponse( PacketString &rsp, const std::string_view &terminator );
-
   protected:
+    friend Chimera::Thread::TaskId startDevice( DeviceDriver &, const Chimera::Thread::TaskConfig * );
 
+    Internal::ControlBlock dcb;   /**< Device control block */
 
+    /**
+     * @brief Manager thread for the device
+     *
+     * @param arg   Unused
+     */
+    void run( void *arg );
 
   private:
-    Chimera::Serial::Channel mSerialChannel; /**< Serial channel device is on */
-    OpMode mCurrentMode;
+    /**
+     * @brief Sends a string to the BT module
+     *
+     * @param cmd       Command to send
+     * @return StatusCode
+     */
+    StatusCode transfer( const PacketString &cmd );
+
+    /**
+     * @brief Instructs the module to enter comand mode
+     *
+     * @return true   Command mode entered
+     * @return false  Command mode not entered
+     */
+    bool enterCommandMode();
+
+    /**
+     * @brief Instructs the module to enter data mode
+     *
+     * @return true   Data mode entered
+     * @return false  Data mode not entered
+     */
+    bool enterDataMode();
+
+    StatusCode accumulateResponse( PacketString &rsp, const std::string_view &terminator );
   };
 }    // namespace RN4871
 

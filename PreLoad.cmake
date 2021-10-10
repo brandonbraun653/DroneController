@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.18.0)
-
 # ====================================================
 # Override the toolchain used. This must be done here
 # else CMake won't allow the override.

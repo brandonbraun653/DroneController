@@ -191,7 +191,7 @@ namespace DC::Tasks::RADIO
       -------------------------------------------------*/
       if ( ( tx_count < 10 ) && ( ( Chimera::millis() - lastTx ) > 25 ) )
       {
-        LOG_INFO( "Transmitting\r\n" );
+        //LOG_INFO( "Transmitting\r\n" );
         lastTx = Chimera::millis();
 
         /*-----------------------------------------------------------------
@@ -213,7 +213,7 @@ namespace DC::Tasks::RADIO
 
         if ( tx_count == 100 )
         {
-          LOG_INFO( "Finished transmitting all data\r\n" );
+          //LOG_INFO( "Finished transmitting all data\r\n" );
         }
       }
 #endif /* SIMULATOR */

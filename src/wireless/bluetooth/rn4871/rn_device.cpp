@@ -27,24 +27,37 @@
 
 namespace RN4871
 {
-  DeviceDriver::DeviceDriver() : mSerialChannel( Chimera::Serial::Channel::NOT_SUPPORTED ), mCurrentMode( OpMode::INVALID )
+  /*---------------------------------------------------------------------------
+  Class Methods
+  ---------------------------------------------------------------------------*/
+  DeviceDriver::DeviceDriver()
   {
+
   }
 
 
   DeviceDriver::~DeviceDriver()
   {
+    if( dcb.lock )
+    {
+      free( dcb.lock );
+    }
   }
 
 
-  /**
-   * @brief Assigns the serial channel used to communicate with the module
-   *
-   * @param channel     Which serial channel to use
-   */
+  bool DeviceDriver::initialize()
+  {
+    dcb.lock = new Chimera::Thread::RecursiveMutex();
+    dcb.isInitialized = true;
+
+    return dcb.isInitialized;
+  }
+
+
   void DeviceDriver::assignSerial( const Chimera::Serial::Channel channel )
   {
-    mSerialChannel = channel;
+    Chimera::Thread::LockGuard lck( *dcb.lock );
+    dcb.serialChannel = channel;
   }
 
 
@@ -349,70 +362,6 @@ namespace RN4871
 
 
   /**
-   * @brief Instructs the module to enter comand mode
-   */
-  bool DeviceDriver::enterCommandMode()
-  {
-    PacketString response;
-
-    /*-------------------------------------------------
-    Already in command mode?
-    -------------------------------------------------*/
-    if ( mCurrentMode == OpMode::COMMAND )
-    {
-      return true;
-    }
-
-    /*-------------------------------------------------
-    Send the request
-    -------------------------------------------------*/
-    this->transfer( "$$$" );
-    if ( this->accumulateResponse( response, "CMD>" ) == StatusCode::OK )
-    {
-      mCurrentMode = OpMode::COMMAND;
-      return true;
-    }
-    else
-    {
-      LOG_ERROR( "Failed to enter command mode\r\n" );
-      return false;
-    }
-  }
-
-
-  /**
-   * @brief Instructs the module to enter data mode
-   */
-  bool DeviceDriver::enterDataMode()
-  {
-    PacketString cmd, response;
-
-    /*-------------------------------------------------
-    Already in data mode?
-    -------------------------------------------------*/
-    if ( mCurrentMode == OpMode::DATA )
-    {
-      return true;
-    }
-
-    /*-------------------------------------------------
-    Send the request
-    -------------------------------------------------*/
-    this->transfer( "---\r" );
-    if ( ( this->accumulateResponse( response, " " ) == StatusCode::OK ) && ( response == "END" ) )
-    {
-      mCurrentMode = OpMode::DATA;
-      return true;
-    }
-    else
-    {
-      LOG_ERROR( "Failed to enter data mode\r\n" );
-      return false;
-    }
-  }
-
-
-  /**
    * @brief Instructs the device to enter the UART transparent mode
    * @return bool
    */
@@ -472,7 +421,7 @@ namespace RN4871
     {
       return false;
     }
-    mCurrentMode = OpMode::UNKNOWN;
+    dcb.currentMode = OpMode::UNKNOWN;
     LOG_INFO( "Bluetooth: %s\r\n", r1.data() );
 
     /* Wait for the reboot complete */
@@ -562,119 +511,5 @@ namespace RN4871
     return false;
   }
 
-
-  /**
-   * @brief Sends a command string, optionally listening for a response
-   *
-   * @param cmd       Command to send
-   * @param rsp       Optional buffer to write the raw response into
-   * @return StatusCode
-   */
-  StatusCode DeviceDriver::transfer( const PacketString &cmd  )
-  {
-    using namespace Chimera::Event;
-    using namespace Chimera::Thread;
-
-    auto serial = Chimera::Serial::getDriver( mSerialChannel );
-
-    /*-------------------------------------------------
-    Do the transfer
-    -------------------------------------------------*/
-    if( serial->write( cmd.data(), cmd.size() ) == Chimera::Status::OK )
-    {
-      serial->await( Trigger::TRIGGER_WRITE_COMPLETE, TIMEOUT_BLOCK );
-      return StatusCode::OK;
-    }
-    else
-    {
-      return StatusCode::FAIL;
-    }
-  }
-
-
-  /**
-   * @brief Accumulates a terminated response
-   *
-   *
-   * @param rsp
-   * @return StatusCode
-   */
-  StatusCode DeviceDriver::accumulateResponse( PacketString &response, const std::string_view &terminator )
-  {
-    using namespace Chimera::Thread;
-
-    auto serial = Chimera::Serial::getDriver( mSerialChannel );
-
-    /*-------------------------------------------------
-    Use a temp buffer to accumulate into
-    -------------------------------------------------*/
-    char tmp_buffer[ PacketString::MAX_SIZE ];
-    memset( tmp_buffer, 0, PacketString::MAX_SIZE );
-
-    /*-------------------------------------------------
-    Start the 2 second timeout waiting for a response
-    -------------------------------------------------*/
-    size_t start_time        = Chimera::millis();
-    bool timeout_expired     = false;
-    bool accumulate_done     = false;
-    size_t bytesAvailable    = 0;
-    size_t byteOffset        = 0;
-
-    while ( !timeout_expired )
-    {
-      /*-------------------------------------------------
-      Pull more data into the accumulation buffer
-      -------------------------------------------------*/
-      if( serial->available( &bytesAvailable ) )
-      {
-        /*-------------------------------------------------
-        Protect against buffer overflow
-        -------------------------------------------------*/
-        if( ( byteOffset + bytesAvailable ) > ARRAY_BYTES( tmp_buffer ) )
-        {
-          return StatusCode::OVERFLOW;
-        }
-
-        /*-------------------------------------------------
-        Update the accumulation buffer
-        -------------------------------------------------*/
-        serial->readAsync( reinterpret_cast<uint8_t *>( &tmp_buffer[ byteOffset ] ), bytesAvailable );
-        byteOffset += bytesAvailable;
-      }
-
-      /*-------------------------------------------------
-      Parse the buffer for the expected terminator
-      -------------------------------------------------*/
-      auto eom_ptr = strstr( tmp_buffer, terminator.data() );
-      if ( eom_ptr )
-      {
-        size_t str_size = eom_ptr - tmp_buffer;
-        response        = PacketString( tmp_buffer, str_size );
-        accumulate_done = true;
-        break;
-      }
-
-      timeout_expired = ( Chimera::millis() - start_time ) > ( 2 * TIMEOUT_1S );
-      this_thread::yield();
-    }
-
-    /*-------------------------------------------------
-    Ensure the RX buffers are clean on exit to help
-    with parsing the next message.
-    -------------------------------------------------*/
-    serial->flush( Chimera::Hardware::SubPeripheral::RX );
-
-    /*-------------------------------------------------
-    Retrieve the response if available
-    -------------------------------------------------*/
-    if ( timeout_expired || !accumulate_done )
-    {
-      return StatusCode::NO_RESPONSE;
-    }
-    else
-    {
-      return StatusCode::OK;
-    }
-  }
 
 }    // namespace RN4871

@@ -76,6 +76,7 @@ namespace DC::HMI::Discrete
    * @brief Global copy of all current IO states
    */
   static std::array<IOState, EnumValue( GPIO::Pin::NUM_PINS )> s_pin_states;
+  static uint8_t s_last_output_sr_value;
 
   static Chimera::Thread::Mutex s_pin_state_lock;
 
@@ -96,23 +97,23 @@ namespace DC::HMI::Discrete
     uint8_t output_state = 0;
     LockGuard lck( s_pin_state_lock );
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Check the state of each output pin
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     for ( size_t pin = 0; pin < s_pin_states.size(); pin++ )
     {
-      /*-------------------------------------------------
+      /*-----------------------------------------------------------------------
       Check if pin is an output type
-      -------------------------------------------------*/
+      -----------------------------------------------------------------------*/
       auto outPin = GPIO::pinToOutputId( static_cast<GPIO::Pin>( pin ) );
       if ( outPin == GPIO::OutputPin::NUM_PINS )
       {
         continue;
       }
 
-      /*-------------------------------------------------
+      /*-----------------------------------------------------------------------
       If the state is high, add it to the output data
-      -------------------------------------------------*/
+      -----------------------------------------------------------------------*/
       if ( s_pin_states[ pin ] == Chimera::GPIO::State::HIGH )
       {
         uint8_t bitField = static_cast<uint8_t>( GPIO::pinToBitField( outPin ) );
@@ -120,9 +121,9 @@ namespace DC::HMI::Discrete
       }
     }
 
-    /*-------------------------------------------------
-    Update the output state
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Update the output state if a change occurred
+    -------------------------------------------------------------------------*/
     DC::GPIO::SR::write( &output_state, sizeof( output_state ) );
   }
 
@@ -139,7 +140,8 @@ namespace DC::HMI::Discrete
     Aurora::HMI::SR::InputConfig bitCfg;
     Chimera::Status_t result = Chimera::Status::OK;
 
-    s_driver_enabled = false;
+    s_driver_enabled       = false;
+    s_last_output_sr_value = 0;
 
     /*-------------------------------------------------
     Initialize module memory
@@ -179,7 +181,6 @@ namespace DC::HMI::Discrete
     Initialize states of the IO cache
     -------------------------------------------------*/
     s_pin_states.fill( Chimera::GPIO::State::LOW );
-
 
     s_driver_enabled = ( result == Chimera::Status::OK );
     LOG_ERROR_IF( !s_driver_enabled, "Failed to initialize discrete input driver\r\n" );

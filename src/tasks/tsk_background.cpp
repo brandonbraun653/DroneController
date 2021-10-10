@@ -76,12 +76,12 @@ namespace DC::Tasks::BKGD
    */
   static TaskTiming s_timing_stats[] = {
     /* clang-format off */
+    { .id = PrjTaskId::MONITOR,      .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
     { .id = PrjTaskId::BLUETOOTH,    .lower = 0, .upper = 0,   .exact = 0 },
     { .id = PrjTaskId::FILE_SYSTEM,  .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
     { .id = PrjTaskId::HEART_BEAT,   .lower = 0, .upper = 12,  .exact = 0 },
     { .id = PrjTaskId::HMI,          .lower = 0, .upper = 0,   .exact = 0 }, // Choosing not to monitor just yet
     { .id = PrjTaskId::KERNEL,       .lower = 0, .upper = 0,   .exact = 0 },
-    { .id = PrjTaskId::MONITOR,      .lower = 0, .upper = 0,   .exact = 0 }, // Can't monitor this thread
     { .id = PrjTaskId::RADIO,        .lower = 0, .upper = 50,  .exact = 0 },
     { .id = PrjTaskId::SYSTEM,       .lower = 0, .upper = 0,   .exact = 0 },
     { .id = PrjTaskId::USB,          .lower = 0, .upper = 0,   .exact = 0 },
@@ -157,7 +157,7 @@ namespace DC::Tasks::BKGD
       -------------------------------------------------*/
       if ( ( lastTickWoken - lastKick ) > HW_WDG_KICK_RATE )
       {
-        s_watchdog->kick();
+        //s_watchdog->kick();
         lastKick = Chimera::millis();
       }
 
@@ -191,6 +191,11 @@ namespace DC::Tasks::BKGD
   {
     using namespace Chimera::Thread;
 
+    /*---------------------------------------------------------------------------
+    Validate some assumptions
+    ---------------------------------------------------------------------------*/
+    RT_HARD_ASSERT( s_timing_stats[ 0 ].id == PrjTaskId::MONITOR );
+
     /*-------------------------------------------------
     Initialize local memory
     -------------------------------------------------*/
@@ -204,18 +209,18 @@ namespace DC::Tasks::BKGD
     -------------------------------------------------*/
     s_watchdog = Chimera::Watchdog::getDriver( WDG_CHANNEL );
 
-    if ( s_watchdog->initialize( WDG_CHANNEL, HW_WDG_TIMEOUT ) == Chimera::Status::OK )
-    {
-      s_watchdog->pauseOnDebugHalt( true );
-      s_watchdog->start();
-    }
-    else
-    {
-    #if !defined( CHIMERA_SIMULATOR )
-      Chimera::insert_debug_breakpoint();
-      Chimera::System::softwareReset();
-    #endif
-    }
+    // if ( s_watchdog->initialize( WDG_CHANNEL, HW_WDG_TIMEOUT ) == Chimera::Status::OK )
+    // {
+    //   s_watchdog->pauseOnDebugHalt( true );
+    //   s_watchdog->start();
+    // }
+    // else
+    // {
+    // #if !defined( CHIMERA_SIMULATOR )
+    //   Chimera::insert_debug_breakpoint();
+    //   Chimera::System::softwareReset();
+    // #endif
+    // }
 
 #if defined( CHIMERA_SIMULATOR )
     /*-------------------------------------------------
@@ -237,7 +242,6 @@ namespace DC::Tasks::BKGD
       }
 
       Chimera::Thread::sendTaskMsg( threadId, ITCMsg::TSK_MSG_WAKEUP, TIMEOUT_DONT_WAIT );
-      Chimera::delayMilliseconds( 53 );
     }
   }
 }    // namespace DC::Tasks::BKGD

@@ -65,7 +65,8 @@
       "servertype": "jlink",
       "interface": "jtag",
       "device": "STM32F446RE",
-      "svdFile": "${workspaceRoot}/lib/CommonTools/svd/STM32F446.svd"
+      "svdFile": "${workspaceRoot}/lib/CommonTools/svd/STM32F446.svd",
+      "gdbPath": "gdb-multiarch"
     },
   ]
 }

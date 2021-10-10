@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  embedded:
+    image: "arm_cortex_m:latest"
+    volumes:
+      - .:/code
+    user: "vscode"
+    group_add: dialout
+    privileged: true

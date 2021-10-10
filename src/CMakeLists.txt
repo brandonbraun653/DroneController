@@ -57,6 +57,7 @@ target_link_libraries(DroneController PRIVATE
 
   # Project Libraries
   lib_bluetooth
+  lib_rn4871
   lib_config_bsp
   lib_config_ripple
   lib_debug
@@ -130,9 +131,6 @@ if(Toolchain::HAS_GCC_ARM_NONE_EABI)
   target_link_libraries(DroneController PRIVATE
     # Aurora
     aurora_filesystem_spiffs_rel
-
-    # Thor
-    thor_lld_intf_rel
 
     # Threading Library
     freertos_intf_inc_all
