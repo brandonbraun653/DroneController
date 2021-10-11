@@ -113,77 +113,68 @@ namespace RN4871
       last_time = Chimera::millis();
 
       /*-----------------------------------------------------------------------
-      Pull the next transaction off the queue
+      Copy out the current execution mode
       -----------------------------------------------------------------------*/
-      bool do_transaction = false;
-      Internal::Transfer txfr;
-
+      OpMode mode = OpMode::UNKNOWN;
       dcb.lock->lock();
-      {
-        if( !dcb.txfrQueue.empty() )
-        {
-          do_transaction = true;
-          dcb.txfrQueue.pop_into( txfr );
-        }
-      }
+      mode = dcb.currentMode;
       dcb.lock->unlock();
 
       /*-----------------------------------------------------------------------
-      Do the next transaction if available
+      Process based on the current mode
       -----------------------------------------------------------------------*/
-      if( do_transaction )
+      switch( mode )
       {
-        // Send data
-        // Listen for response?
-        //    Accumulate
-        //    Invoke callback
-        // Signal transfer initiator
-      }
+        case OpMode::COMMAND:
+          doTransactionalProcessing();
+          break;
 
+        case OpMode::DATA:
+          doPassthroughProcessing();
+          break;
+
+        default:
+          LOG_DEBUG( "Unhandled BT manager processing mode: %d\r\n", mode );
+          break;
+      };
+
+      /*-----------------------------------------------------------------------
+      Look again in a few milliseconds
+      -----------------------------------------------------------------------*/
       dcb.upTime += Chimera::millis() - last_time;
-    }
-  }
-
-
-  StatusCode DeviceDriver::transfer( const PacketString &cmd  )
-  {
-    using namespace Chimera::Event;
-    using namespace Chimera::Thread;
-
-    auto serial = Chimera::Serial::getDriver( dcb.serialChannel );
-
-    /*-------------------------------------------------
-    Do the transfer
-    -------------------------------------------------*/
-    if( serial->write( cmd.data(), cmd.size() ) == Chimera::Status::OK )
-    {
-      serial->await( Trigger::TRIGGER_WRITE_COMPLETE, TIMEOUT_BLOCK );
-      return StatusCode::OK;
-    }
-    else
-    {
-      return StatusCode::FAIL;
+      Chimera::delayMilliseconds( 25 );
     }
   }
 
 
   bool DeviceDriver::enterCommandMode()
   {
+    using namespace Chimera::Thread;
     PacketString response;
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Already in command mode?
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     if ( dcb.currentMode == OpMode::COMMAND )
     {
       return true;
     }
 
-    /*-------------------------------------------------
-    Send the request
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Ensure the BT module has been online long enough to be listening
+    -------------------------------------------------------------------------*/
+    size_t uptime = 0;
+    do
+    {
+      LockGuard _lck( *dcb.lock );
+      uptime = dcb.upTime;
+    } while ( uptime < ( 2 * TIMEOUT_1S ) );
+
+    /*-------------------------------------------------------------------------
+    Send the request and listen for the entrance success message
+    -------------------------------------------------------------------------*/
     this->transfer( "$$$" );
-    if ( this->accumulateResponse( response, "CMD>" ) == StatusCode::OK )
+    if ( this->accumulateResponse( response, "CMD>", ( 2 * TIMEOUT_1S ) ) == StatusCode::OK )
     {
       dcb.currentMode = OpMode::COMMAND;
       return true;
@@ -198,21 +189,22 @@ namespace RN4871
 
   bool DeviceDriver::enterDataMode()
   {
+    using namespace Chimera::Thread;
     PacketString cmd, response;
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Already in data mode?
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     if ( dcb.currentMode == OpMode::DATA )
     {
       return true;
     }
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Send the request
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     this->transfer( "---\r" );
-    if ( ( this->accumulateResponse( response, " " ) == StatusCode::OK ) && ( response == "END" ) )
+    if ( ( this->accumulateResponse( response, "\r", ( 2 * TIMEOUT_1S ) ) == StatusCode::OK ) && ( response == "END" ) )
     {
       dcb.currentMode = OpMode::DATA;
       return true;
@@ -225,10 +217,94 @@ namespace RN4871
   }
 
 
-  StatusCode DeviceDriver::accumulateResponse( PacketString &response, const std::string_view &terminator )
+  void DeviceDriver::doTransactionalProcessing()
+  {
+    /*-----------------------------------------------------------------------
+    Pull the next transaction off the queue
+    -----------------------------------------------------------------------*/
+    bool do_transaction = false;
+    Internal::Transfer txfr;
+
+    dcb.lock->lock();
+    {
+      if ( !dcb.txfrQueue.empty() )
+      {
+        do_transaction = true;
+        dcb.txfrQueue.pop_into( txfr );
+      }
+    }
+    dcb.lock->unlock();
+
+    /*-----------------------------------------------------------------------
+    Do the next transaction if available
+    -----------------------------------------------------------------------*/
+    if ( do_transaction )
+    {
+      /*---------------------------------------------------------------------
+      TX the message to the module. Flush the RX queue first so the start of
+      the response (if needed) is the first thing out.
+      ---------------------------------------------------------------------*/
+      auto serial = Chimera::Serial::getDriver( dcb.serialChannel );
+      serial->flush( Chimera::Hardware::SubPeripheral::RX );
+
+      StatusCode result = transfer( *txfr.message );
+
+      /*---------------------------------------------------------------------
+      Optionally look for a response
+      ---------------------------------------------------------------------*/
+      if ( txfr.waitForResponse && ( result == StatusCode::OK ) )
+      {
+        result = accumulateResponse( *txfr.response, txfr.termination, txfr.timeout );
+      }
+
+      /*---------------------------------------------------------------------
+      Notify whomever queued the transaction
+      ---------------------------------------------------------------------*/
+      *txfr.result = result;
+      txfr.signal->release();
+    }
+  }
+
+
+  void DeviceDriver::doPassthroughProcessing()
+  {
+    // Move data through circular buffers on TX/RX sides
+  }
+
+
+  StatusCode DeviceDriver::transfer( const PacketString &cmd  )
+  {
+    using namespace Chimera::Event;
+    using namespace Chimera::Thread;
+
+    /*-------------------------------------------------------------------------
+    Look up the serial driver assigned to the module
+    -------------------------------------------------------------------------*/
+    auto serial = Chimera::Serial::getDriver( dcb.serialChannel );
+
+    /*-------------------------------------------------------------------------
+    Do the transfer, waiting for all bytes to send before continuing.
+    -------------------------------------------------------------------------*/
+    if( serial->write( cmd.data(), cmd.size() ) == Chimera::Status::OK )
+    {
+      serial->await( Trigger::TRIGGER_WRITE_COMPLETE, TIMEOUT_BLOCK );
+      return StatusCode::OK;
+    }
+    else
+    {
+      return StatusCode::FAIL;
+    }
+  }
+
+
+  StatusCode DeviceDriver::accumulateResponse( PacketString &response, const std::string_view &terminator,
+                                               const size_t timeout )
   {
     using namespace Chimera::Thread;
 
+    /*-------------------------------------------------------------------------
+    Look up the serial driver assigned to the module
+    -------------------------------------------------------------------------*/
     auto serial = Chimera::Serial::getDriver( dcb.serialChannel );
 
     /*-------------------------------------------------
@@ -280,7 +356,7 @@ namespace RN4871
         break;
       }
 
-      timeout_expired = ( Chimera::millis() - start_time ) > ( 2 * TIMEOUT_1S );
+      timeout_expired = ( Chimera::millis() - start_time ) > timeout;
       this_thread::yield();
     }
 

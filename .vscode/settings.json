@@ -116,7 +116,8 @@
     "ranges": "cpp",
     "span": "cpp",
     "stop_token": "cpp",
-    "typeindex": "cpp"
+    "typeindex": "cpp",
+    "cstdbool": "cpp"
   },
   "peacock.color": "#1857a4",
   "cSpell.words": [

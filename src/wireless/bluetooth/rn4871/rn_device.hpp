@@ -124,7 +124,19 @@ namespace RN4871
      */
     bool enterDataMode();
 
-    StatusCode accumulateResponse( PacketString &rsp, const std::string_view &terminator );
+    /**
+     * @brief Listens for a message from the BT module
+     *
+     * @param rsp         Where to write the response into
+     * @param terminator  Expected termination string
+     * @param timeout     How long to wait for the message
+     * @return StatusCode Result of the accumulation
+     */
+    StatusCode accumulateResponse( PacketString &rsp, const std::string_view &terminator, const size_t timeout );
+
+    void doTransactionalProcessing();
+
+    void doPassthroughProcessing();
   };
 }    // namespace RN4871
 

@@ -106,10 +106,12 @@ namespace RN4871
     struct Transfer
     {
       PacketString *message;                    /**< Message to send */
-      PacketString *response;                   /**< Response callback */
+      PacketString *response;                   /**< Response data */
       Chimera::Thread::BinarySemaphore *signal; /**< Signal to wake up caller */
+      StatusCode *result;                       /**< Result of the transaction */
       size_t timeout;                           /**< Response timeout */
       bool waitForResponse;                     /**< Wait for a response? */
+      std::string_view termination;             /**< Expected termination of response */
     };
 
     /**
