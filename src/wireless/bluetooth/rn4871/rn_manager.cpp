@@ -77,9 +77,13 @@ namespace RN4871
     manager.create( cfg );
 
     /*-------------------------------------------------------------------------
-    Start the thread
+    Start the thread. Yield to allow the scheduler a chance to run the thread.
+    Normally this isn't required, but the task init structure is being created
+    on the stack, which can cause problems with the FreeRTOS implementation.
     -------------------------------------------------------------------------*/
     device.dcb.mgrID = manager.start();
+    this_thread::yield();
+
     return device.dcb.mgrID;
   }
 
@@ -168,13 +172,25 @@ namespace RN4871
     {
       LockGuard _lck( *dcb.lock );
       uptime = dcb.upTime;
+      this_thread::yield();
     } while ( uptime < ( 2 * TIMEOUT_1S ) );
+
+    /*-------------------------------------------------------------------------
+    Do a quick test if the device responds to a command that would indicate it
+    is already in command mode from a previous power cycle.
+    -------------------------------------------------------------------------*/
+    this->transfer( "V\n" );
+    if ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK )
+    {
+      dcb.currentMode = OpMode::COMMAND;
+      return true;
+    }
 
     /*-------------------------------------------------------------------------
     Send the request and listen for the entrance success message
     -------------------------------------------------------------------------*/
     this->transfer( "$$$" );
-    if ( this->accumulateResponse( response, "CMD>", ( 2 * TIMEOUT_1S ) ) == StatusCode::OK )
+    if ( this->accumulateResponse( response, "CMD", RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       dcb.currentMode = OpMode::COMMAND;
       return true;

@@ -148,13 +148,21 @@ namespace DC::RF::BT
     -------------------------------------------------------------------------*/
     LOG_INFO( "Powering down bluetooth module...\r\n" );
     setPower( PowerState::DISABLED );
-    Chimera::delayMilliseconds( 1000 );
+    Chimera::delayMilliseconds( 100 );
     LOG_INFO( "Powering up bluetooth module...\r\n" );
     setPower( PowerState::ENABLED );
-    Chimera::delayMilliseconds( 1000 );
+    Chimera::delayMilliseconds( 100 );
 
     sendTaskMsg( mgrId, TSK_MSG_WAKEUP, TIMEOUT_BLOCK );
     this_thread::yield();
+
+    /*-------------------------------------------------------------------------
+    Enter command mode to allow setup of the module
+    -------------------------------------------------------------------------*/
+    if( !s_bt_device.enterCommandMode() )
+    {
+      RT_HARD_ASSERT( false );
+    }
 
     // /*-------------------------------------------------
     // Set core feature set

@@ -36,7 +36,8 @@ namespace RN4871
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr char CMD_TERM = '\n';
+  static constexpr char CMD_TERM           = '\n';
+  static constexpr size_t RESPONSE_TIMEOUT = 2 * Chimera::Thread::TIMEOUT_1S;
 
   /*-------------------------------------------------------------------------------
   Enumerations

@@ -142,7 +142,7 @@ if(Toolchain::HAS_GCC_ARM_NONE_EABI)
 
     # Ripple NetIf
     ripple_netif_nrf24_datalink_dbg
-    ripple_netif_nrf24_physical_rel
+    ripple_netif_nrf24_physical_dbg
 
     # Segger System View
     segger_sys_view_rel

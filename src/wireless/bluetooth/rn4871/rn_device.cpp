@@ -87,7 +87,7 @@ namespace RN4871
 
     PacketString response;
     this->transfer( buf );
-    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    if( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) && ( response == "AOK" ) )
     {
       return true;
     }
@@ -123,7 +123,7 @@ namespace RN4871
 
     PacketString response;
     this->transfer( buf );
-    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    if( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) && ( response == "AOK" ) )
     {
       return true;
     }
@@ -160,7 +160,7 @@ namespace RN4871
 
     PacketString response;
     this->transfer( buf );
-    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    if( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) && ( response == "AOK" ) )
     {
       return true;
     }
@@ -203,7 +203,7 @@ namespace RN4871
     -------------------------------------------------*/
     PacketString response;
     bool success = this->transfer( buf ) == StatusCode::OK;
-    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    if( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) && ( response == "AOK" ) )
     {
       return true;
     }
@@ -245,7 +245,7 @@ namespace RN4871
     -------------------------------------------------*/
     PacketString response;
     this->transfer( buf );
-    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    if( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) && ( response == "AOK" ) )
     {
       return true;
     }
@@ -279,7 +279,7 @@ namespace RN4871
     CMD::Action::version( cmd );
     this->transfer( cmd );
 
-    if ( this->accumulateResponse( response, "\r" ) == StatusCode::OK )
+    if ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       return response;
     }
@@ -311,7 +311,7 @@ namespace RN4871
     PacketString response;
     this->transfer( "M\r" );
 
-    if ( this->accumulateResponse( response, "\r" ) == StatusCode::OK )
+    if ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       if( strstr( response.c_str(), "Err" ) )
       {
@@ -344,7 +344,7 @@ namespace RN4871
     PacketString response;
     this->transfer( "GK\r" );
 
-    if ( this->accumulateResponse( response, "\r" ) == StatusCode::OK )
+    if ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       if( strstr( response.c_str(), "none" ) )
       {
@@ -381,7 +381,7 @@ namespace RN4871
     PacketString response;
 
     this->transfer( "I\r" );
-    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( strstr( response.c_str(), "AOK" ) ) )
+    if( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) && ( strstr( response.c_str(), "AOK" ) ) )
     {
       return true;
     }
@@ -417,7 +417,7 @@ namespace RN4871
 
     /* Send reboot command */
     this->transfer( "R,1\r" );
-    if( this->accumulateResponse( r1, "\r" ) != StatusCode::OK )
+    if( this->accumulateResponse( r1, "\r", RESPONSE_TIMEOUT ) != StatusCode::OK )
     {
       return false;
     }
@@ -425,7 +425,7 @@ namespace RN4871
     LOG_INFO( "Bluetooth: %s\r\n", r1.data() );
 
     /* Wait for the reboot complete */
-    if( this->accumulateResponse( r2, "%RE" ) == StatusCode::OK )
+    if( this->accumulateResponse( r2, "%RE", RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       return true;
     }
@@ -456,7 +456,7 @@ namespace RN4871
     -------------------------------------------------*/
     PacketString response;
     this->transfer( "A\r" );
-    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    if( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) && ( response == "AOK" ) )
     {
       return true;
     }
@@ -487,7 +487,7 @@ namespace RN4871
     -------------------------------------------------*/
     PacketString response;
     this->transfer( "Y\r" );
-    if( ( this->accumulateResponse( response, "\r" ) == StatusCode::OK ) && ( response == "AOK" ) )
+    if( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) && ( response == "AOK" ) )
     {
       return true;
     }

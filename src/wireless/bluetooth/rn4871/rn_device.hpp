@@ -87,6 +87,22 @@ namespace RN4871
     bool stopAdvertisement();
     bool killCurrentConnection();
 
+    /**
+     * @brief Instructs the module to enter comand mode
+     *
+     * @return true   Command mode entered
+     * @return false  Command mode not entered
+     */
+    bool enterCommandMode();
+
+    /**
+     * @brief Instructs the module to enter data mode
+     *
+     * @return true   Data mode entered
+     * @return false  Data mode not entered
+     */
+    bool enterDataMode();
+
   protected:
     friend Chimera::Thread::TaskId startDevice( DeviceDriver &, const Chimera::Thread::TaskConfig * );
 
@@ -108,21 +124,6 @@ namespace RN4871
      */
     StatusCode transfer( const PacketString &cmd );
 
-    /**
-     * @brief Instructs the module to enter comand mode
-     *
-     * @return true   Command mode entered
-     * @return false  Command mode not entered
-     */
-    bool enterCommandMode();
-
-    /**
-     * @brief Instructs the module to enter data mode
-     *
-     * @return true   Data mode entered
-     * @return false  Data mode not entered
-     */
-    bool enterDataMode();
 
     /**
      * @brief Listens for a message from the BT module
