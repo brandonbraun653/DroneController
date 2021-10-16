@@ -24,9 +24,9 @@ namespace DC::Tasks::BKGD
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr size_t STACK                          = STACK_BYTES( 2048 );
-  static constexpr std::string_view NAME                 = "watchdog";
-  static constexpr Chimera::Thread::Priority PRIORITY    = Chimera::Thread::Priority::LEVEL_0;
+  static constexpr size_t STACK                           = STACK_BYTES( 2048 );
+  static constexpr std::string_view NAME                  = "watchdog";
+  static constexpr Chimera::Thread::TaskPriority PRIORITY = 0;
 
   /*-------------------------------------------------------------------------------
   Public Functions

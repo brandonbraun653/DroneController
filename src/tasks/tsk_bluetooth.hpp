@@ -24,9 +24,9 @@ namespace DC::Tasks::BT
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr size_t STACK                       = STACK_BYTES( 4096 );
-  static constexpr std::string_view NAME              = "bluetooth";
-  static constexpr Chimera::Thread::Priority PRIORITY = Chimera::Thread::Priority::LEVEL_3;
+  static constexpr size_t STACK                           = STACK_BYTES( 4096 );
+  static constexpr std::string_view NAME                  = "bluetooth";
+  static constexpr Chimera::Thread::TaskPriority PRIORITY = 3;
 
   /*-------------------------------------------------------------------------------
   Public Functions

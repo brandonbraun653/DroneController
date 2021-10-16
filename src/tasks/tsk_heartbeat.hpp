@@ -24,9 +24,9 @@ namespace DC::Tasks::HB
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr size_t STACK                          = STACK_BYTES( 512 );
-  static constexpr std::string_view NAME                 = "heartbeat";
-  static constexpr Chimera::Thread::Priority PRIORITY = Chimera::Thread::Priority::LEVEL_1;
+  static constexpr size_t STACK                           = STACK_BYTES( 512 );
+  static constexpr std::string_view NAME                  = "heartbeat";
+  static constexpr Chimera::Thread::TaskPriority PRIORITY = 1;
 
   /*-------------------------------------------------------------------------------
   Public Functions

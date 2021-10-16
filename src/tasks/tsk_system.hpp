@@ -24,10 +24,10 @@ namespace DC::Tasks::SYSTEM
   /*-------------------------------------------------------------------------------
   Constants
   -------------------------------------------------------------------------------*/
-  static constexpr size_t STACK                       = STACK_BYTES( 4096 );
-  static constexpr size_t RUN_PERIOD                  = 50 * Chimera::Thread::TIMEOUT_1MS;
-  static constexpr std::string_view NAME              = "system";
-  static constexpr Chimera::Thread::Priority PRIORITY = Chimera::Thread::Priority::NORMAL;
+  static constexpr size_t STACK                           = STACK_BYTES( 4096 );
+  static constexpr size_t RUN_PERIOD                      = 50 * Chimera::Thread::TIMEOUT_1MS;
+  static constexpr std::string_view NAME                  = "system";
+  static constexpr Chimera::Thread::TaskPriority PRIORITY = 3;
 
   /*-------------------------------------------------------------------------------
   Public Functions

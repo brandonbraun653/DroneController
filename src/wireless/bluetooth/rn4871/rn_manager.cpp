@@ -32,7 +32,7 @@ namespace RN4871
   Local Constants
   ---------------------------------------------------------------------------*/
   static constexpr size_t DFLT_STACK_SIZE            = STACK_BYTES( 4096 );
-  static constexpr auto DFLT_THREAD_PRIORITY         = Chimera::Thread::Priority::LEVEL_3;
+  static constexpr auto DFLT_THREAD_PRIORITY         = 3;
   static constexpr std::string_view DFLT_THREAD_NAME = "rn4871mgr";
 
   /*---------------------------------------------------------------------------
@@ -138,7 +138,6 @@ namespace RN4871
           break;
 
         default:
-          LOG_DEBUG( "Unhandled BT manager processing mode: %d\r\n", mode );
           break;
       };
 
