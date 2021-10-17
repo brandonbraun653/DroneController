@@ -100,7 +100,7 @@ target_link_libraries(DroneController PRIVATE
 
 # Hardware Driver Model
 if(${DEVICE_TARGET} MATCHES "^stm32f4")
-  target_link_libraries(DroneController PRIVATE embedded_core_libs_rel)
+  target_link_libraries(DroneController PRIVATE embedded_core_libs_dbg)
 elseif(${DEVICE_TARGET} MATCHES "^sim")
   target_link_libraries(DroneController PRIVATE chimera_sim_core)
 else()

@@ -31,6 +31,7 @@ namespace RN4871
   /*---------------------------------------------------------------------------
   Local Constants
   ---------------------------------------------------------------------------*/
+  static constexpr bool DEBUG_MODULE                 = true;
   static constexpr size_t DFLT_STACK_SIZE            = STACK_BYTES( 4096 );
   static constexpr auto DFLT_THREAD_PRIORITY         = 3;
   static constexpr std::string_view DFLT_THREAD_NAME = "rn4871mgr";
@@ -144,8 +145,8 @@ namespace RN4871
       /*-----------------------------------------------------------------------
       Look again in a few milliseconds
       -----------------------------------------------------------------------*/
-      dcb.upTime += Chimera::millis() - last_time;
       Chimera::delayMilliseconds( 25 );
+      dcb.upTime += Chimera::millis() - last_time;
     }
   }
 
@@ -167,22 +168,34 @@ namespace RN4871
     Ensure the BT module has been online long enough to be listening
     -------------------------------------------------------------------------*/
     size_t uptime = 0;
-    do
+    while( 1 )
     {
-      LockGuard _lck( *dcb.lock );
+      dcb.lock->lock();
       uptime = dcb.upTime;
-      this_thread::yield();
-    } while ( uptime < ( 2 * TIMEOUT_1S ) );
+      dcb.lock->unlock();
+
+      if( uptime < ( 10 * TIMEOUT_1S ) )
+      {
+        Chimera::delayMilliseconds( 100 );
+      }
+      else
+      {
+        break;
+      }
+    }
 
     /*-------------------------------------------------------------------------
     Do a quick test if the device responds to a command that would indicate it
     is already in command mode from a previous power cycle.
     -------------------------------------------------------------------------*/
-    this->transfer( "V\n" );
+    this->transfer( "v\n" );
     if ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
-      dcb.currentMode = OpMode::COMMAND;
-      return true;
+      if ( response.find( "Err", 0 ) != response.npos )
+      {
+        dcb.currentMode = OpMode::COMMAND;
+        return true;
+      }
     }
 
     /*-------------------------------------------------------------------------
@@ -191,18 +204,32 @@ namespace RN4871
     this->transfer( "$$$" );
     if ( this->accumulateResponse( response, "CMD", RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
-      dcb.currentMode = OpMode::COMMAND;
-      return true;
+      /*-----------------------------------------------------------------------
+      Per section 2.6.2, if the CMD response is terminated with a >, then the
+      module has successfully entered command mode. Otherwise it's not ready.
+      -----------------------------------------------------------------------*/
+      if( response.find( "CMD>", 0 ) != response.npos )
+      {
+        dcb.currentMode = OpMode::COMMAND;
+        return true;
+      }
+      else
+      {
+        dcb.currentMode = OpMode::DATA;
+        return false;
+      }
     }
     else
     {
-      LOG_ERROR( "Failed to enter command mode\r\n" );
+      this->transfer( "---\r" );
+      this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT );
+      dcb.currentMode = OpMode::DATA;
       return false;
     }
   }
 
 
-  bool DeviceDriver::enterDataMode()
+  bool DeviceDriver::exitCommandMode()
   {
     using namespace Chimera::Thread;
     PacketString cmd, response;
@@ -226,7 +253,7 @@ namespace RN4871
     }
     else
     {
-      LOG_ERROR( "Failed to enter data mode\r\n" );
+      LOG_ERROR_IF( DEBUG_MODULE, "Failed to exit command mode\r\n" );
       return false;
     }
   }
@@ -318,72 +345,78 @@ namespace RN4871
     using namespace Chimera::Thread;
 
     /*-------------------------------------------------------------------------
+    Check the inputs
+    -------------------------------------------------------------------------*/
+    RT_HARD_ASSERT( !terminator.empty() && timeout );
+    response.clear();
+
+    /*-------------------------------------------------------------------------
     Look up the serial driver assigned to the module
     -------------------------------------------------------------------------*/
     auto serial = Chimera::Serial::getDriver( dcb.serialChannel );
 
-    /*-------------------------------------------------
-    Use a temp buffer to accumulate into
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Use a temporary buffer to accumulate RX'd data into
+    -------------------------------------------------------------------------*/
     char tmp_buffer[ PacketString::MAX_SIZE ];
     memset( tmp_buffer, 0, PacketString::MAX_SIZE );
 
-    /*-------------------------------------------------
-    Start the 2 second timeout waiting for a response
-    -------------------------------------------------*/
-    size_t start_time        = Chimera::millis();
-    bool timeout_expired     = false;
-    bool accumulate_done     = false;
-    size_t bytesAvailable    = 0;
-    size_t byteOffset        = 0;
+    /*-------------------------------------------------------------------------
+    Listen for data
+    -------------------------------------------------------------------------*/
+    size_t start_time     = Chimera::millis();
+    bool timeout_expired  = false;
+    bool accumulate_done  = false;
+    size_t bytesAvailable = 0;
+    size_t byteOffset     = 0;
 
     while ( !timeout_expired )
     {
-      /*-------------------------------------------------
+      /*-----------------------------------------------------------------------
       Pull more data into the accumulation buffer
-      -------------------------------------------------*/
+      -----------------------------------------------------------------------*/
       if( serial->available( &bytesAvailable ) )
       {
-        /*-------------------------------------------------
-        Protect against buffer overflow
-        -------------------------------------------------*/
+        /*---------------------------------------------------------------------
+        Protect against buffer overflows
+        ---------------------------------------------------------------------*/
         if( ( byteOffset + bytesAvailable ) > ARRAY_BYTES( tmp_buffer ) )
         {
           return StatusCode::OVERFLOW;
         }
 
-        /*-------------------------------------------------
-        Update the accumulation buffer
-        -------------------------------------------------*/
+        /*---------------------------------------------------------------------
+        Push more data into the accumulation buffer
+        ---------------------------------------------------------------------*/
         serial->readAsync( reinterpret_cast<uint8_t *>( &tmp_buffer[ byteOffset ] ), bytesAvailable );
         byteOffset += bytesAvailable;
       }
 
-      /*-------------------------------------------------
+      /*-----------------------------------------------------------------------
       Parse the buffer for the expected terminator
-      -------------------------------------------------*/
-      auto eom_ptr = strstr( tmp_buffer, terminator.data() );
-      if ( eom_ptr )
+      -----------------------------------------------------------------------*/
+      if ( strstr( tmp_buffer, terminator.data() ) != nullptr )
       {
-        size_t str_size = eom_ptr - tmp_buffer;
-        response        = PacketString( tmp_buffer, str_size );
+        response        = PacketString( tmp_buffer, strlen( tmp_buffer ) );
         accumulate_done = true;
         break;
       }
 
+      /*-----------------------------------------------------------------------
+      Check the timeout conditions and wait for more data to arrive
+      -----------------------------------------------------------------------*/
       timeout_expired = ( Chimera::millis() - start_time ) > timeout;
-      this_thread::yield();
+      Chimera::delayMilliseconds( 5 );
     }
 
-    /*-------------------------------------------------
-    Ensure the RX buffers are clean on exit to help
-    with parsing the next message.
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Ensure RX buffers are clean on exit to help with parsing the next message
+    -------------------------------------------------------------------------*/
     serial->flush( Chimera::Hardware::SubPeripheral::RX );
 
-    /*-------------------------------------------------
-    Retrieve the response if available
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Deduce the status code to return
+    -------------------------------------------------------------------------*/
     if ( timeout_expired || !accumulate_done )
     {
       return StatusCode::NO_RESPONSE;

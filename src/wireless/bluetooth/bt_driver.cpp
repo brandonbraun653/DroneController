@@ -159,10 +159,18 @@ namespace DC::RF::BT
     /*-------------------------------------------------------------------------
     Enter command mode to allow setup of the module
     -------------------------------------------------------------------------*/
-    if( !s_bt_device.enterCommandMode() )
-    {
-      RT_HARD_ASSERT( false );
-    }
+    RT_HARD_ASSERT( s_bt_device.enterCommandMode() );
+
+    /*-------------------------------------------------------------------------
+    Ping the unit to grab version information
+    -------------------------------------------------------------------------*/
+    LOG_INFO( "Bluetooth version: %s\r\n", s_bt_device.softwareVersion().data() );
+    LOG_INFO( "Configuring Bluetooth...\r\n" );
+
+    /*-------------------------------------------------------------------------
+    Leave command mode and go back to UART passthrough
+    -------------------------------------------------------------------------*/
+    RT_HARD_ASSERT( s_bt_device.exitCommandMode() );
 
     // /*-------------------------------------------------
     // Set core feature set
@@ -173,8 +181,7 @@ namespace DC::RF::BT
     // /*-------------------------------------------------
     // Ping the unit to grab version information
     // -------------------------------------------------*/
-    // LOG_INFO( "Bluetooth version: %s\r\n", s_bt_device.softwareVersion().data() );
-    // LOG_INFO( "Configuring Bluetooth...\r\n" );
+    //
 
     // /*-------------------------------------------------
     // Set the device name to something useful

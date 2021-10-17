@@ -101,7 +101,7 @@ namespace RN4871
      * @return true   Data mode entered
      * @return false  Data mode not entered
      */
-    bool enterDataMode();
+    bool exitCommandMode();
 
   protected:
     friend Chimera::Thread::TaskId startDevice( DeviceDriver &, const Chimera::Thread::TaskConfig * );
