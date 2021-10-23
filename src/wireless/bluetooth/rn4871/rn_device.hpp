@@ -55,7 +55,7 @@ namespace RN4871
     bool isConnected();
 
     /*-------------------------------------------------------------------------
-    Configuration
+    General Configuration
     -------------------------------------------------------------------------*/
     /**
      * @brief Performs more complex class initialization
@@ -72,9 +72,40 @@ namespace RN4871
      * @param channel     Which serial channel to use
      */
     void assignSerial( const Chimera::Serial::Channel channel );
+
+    /**
+     * @brief Assigns the name to the BT device
+     *
+     * @param name    Name to be assigned
+     * @return true   Device accepted the name
+     * @return false  Failure occurred
+     */
     bool setName( const std::string_view &name );
+
+    /**
+     * @brief Sets the TX power during advertisement
+     *
+     * @param pwr       Power level to transmit at
+     * @return bool
+     */
     bool setAdvertisePower( const OutputPower pwr );
+
+    /**
+     * @brief Sets the TX power once connected to a device
+     *
+     * @param pwr       Power level to transmit at
+     * @return bool
+     */
     bool setConnectedPower( const OutputPower pwr );
+
+    /**
+     * @brief Sets the GAP service the device will identify as
+     * See https://www.bluetooth.com/ for more information, or download the values from
+     * https://specificationrefs.bluetooth.com/assigned-values/Appearance%20Values.pdf.
+     *
+     * @param service   Service ID to identify as
+     * @return bool
+     */
     bool setGAPService( const uint16_t service );
 
     /**
@@ -138,6 +169,13 @@ namespace RN4871
      */
     bool exitCommandMode();
 
+    /*-------------------------------------------------------------------------
+    Service Configuration Commands
+    -------------------------------------------------------------------------*/
+    bool clearServices();
+
+    bool setCharacteristic( const DeviceCharacteristic &dc );
+
   protected:
     friend Chimera::Thread::TaskId startDevice( DeviceDriver &, const Chimera::Thread::TaskConfig * );
 
@@ -152,13 +190,29 @@ namespace RN4871
 
   private:
     /**
+     * @brief Auto-performs a full command communication cycle
+     *
+     * Handles transitioning the device to command mode and performing the full
+     * transaction. This includes listening for the expected response as well as
+     * performing any number of retries.
+     *
+     * @param command     Command to send
+     * @param terminator  Expected valid response terminator
+     * @param expected    Expected valid response string
+     * @param retries     Number of retries to allow
+     * @param timeout     Response timeout from the BT device
+     * @return StatusCode
+     */
+    StatusCode doCommand( const PacketString &command, const std::string_view &terminator, const std::string_view &expected,
+                          const size_t retries, const size_t timeout );
+
+    /**
      * @brief Sends a string to the BT module
      *
      * @param cmd       Command to send
      * @return StatusCode
      */
     StatusCode transfer( const PacketString &cmd );
-
 
     /**
      * @brief Listens for a message from the BT module

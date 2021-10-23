@@ -113,7 +113,7 @@ namespace RN4871
     Run the bluetooth communication manager stack
     -------------------------------------------------------------------------*/
     size_t last_time = 0;
-    while( 1 )
+    while ( 1 )
     {
       last_time = Chimera::millis();
 
@@ -128,7 +128,7 @@ namespace RN4871
       /*-----------------------------------------------------------------------
       Process based on the current mode
       -----------------------------------------------------------------------*/
-      switch( mode )
+      switch ( mode )
       {
         case OpMode::COMMAND:
           doTransactionalProcessing();
@@ -168,13 +168,13 @@ namespace RN4871
     Ensure the BT module has been online long enough to be listening
     -------------------------------------------------------------------------*/
     size_t uptime = 0;
-    while( 1 )
+    while ( 1 )
     {
       dcb.lock->lock();
       uptime = dcb.upTime;
       dcb.lock->unlock();
 
-      if( uptime < ( 2 * TIMEOUT_1S ) )
+      if ( uptime < ( 2 * TIMEOUT_1S ) )
       {
         Chimera::delayMilliseconds( 100 );
       }
@@ -208,7 +208,7 @@ namespace RN4871
       Per section 2.6.2, if the CMD response is terminated with a >, then the
       module has successfully entered command mode. Otherwise it's not ready.
       -----------------------------------------------------------------------*/
-      if( response.find( "CMD>", 0 ) != response.npos )
+      if ( response.find( "CMD>", 0 ) != response.npos )
       {
         dcb.currentMode = OpMode::COMMAND;
         return true;
@@ -221,9 +221,14 @@ namespace RN4871
     }
     else
     {
-      this->transfer( "---\r" );
-      this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT );
-      dcb.currentMode = OpMode::DATA;
+      /*-----------------------------------------------------------------------
+      Try to perform a clean exit. If actually in command mode but the response
+      wasn't picked up (not sent?), then try to transition to a known state.
+      -----------------------------------------------------------------------*/
+      if( !this->exitCommandMode() )
+      {
+        dcb.currentMode = OpMode::UNKNOWN;
+      }
       goto fail;
     }
 
@@ -252,7 +257,7 @@ namespace RN4871
     this->transfer( "---\r" );
     if ( this->accumulateResponse( response, "\r", ( 2 * TIMEOUT_1S ) ) == StatusCode::OK )
     {
-      if( response.find( "END" ) != response.npos )
+      if ( response.find( "END" ) != response.npos )
       {
         LOG_INFO( "BT: Exit command mode\r\n" );
         dcb.currentMode = OpMode::DATA;
@@ -329,7 +334,52 @@ namespace RN4871
   }
 
 
-  StatusCode DeviceDriver::transfer( const PacketString &cmd  )
+  StatusCode DeviceDriver::doCommand( const PacketString &command, const std::string_view &terminator,
+                                      const std::string_view &expected, const size_t retries, const size_t timeout )
+  {
+    /*-------------------------------------------------------------------------
+    Switch to command mode
+    -------------------------------------------------------------------------*/
+    if( !this->enterCommandMode() )
+    {
+      return StatusCode::FAIL;
+    }
+
+    /*-------------------------------------------------------------------------
+    Attempt to perform the transaction
+    -------------------------------------------------------------------------*/
+    size_t attempts = 0;
+    StatusCode result = StatusCode::FAIL;
+
+    while ( ( attempts < retries ) && ( result != StatusCode::OK ) )
+    {
+      /*-----------------------------------------------------------------------
+      Ship the command off to the device
+      -----------------------------------------------------------------------*/
+      this->transfer( command );
+
+      /*-----------------------------------------------------------------------
+      Listen for a response
+      -----------------------------------------------------------------------*/
+      PacketString response;
+
+      if ( ( this->accumulateResponse( response, terminator, timeout ) == StatusCode::OK ) &&
+          ( response.find( expected.data() ) != response.npos ) )
+      {
+        result = StatusCode::OK;
+      }
+
+      /*-----------------------------------------------------------------------
+      Increment counters
+      -----------------------------------------------------------------------*/
+      attempts++;
+    }
+
+    return result;
+  }
+
+
+  StatusCode DeviceDriver::transfer( const PacketString &cmd )
   {
     using namespace Chimera::Event;
     using namespace Chimera::Thread;
@@ -342,7 +392,7 @@ namespace RN4871
     /*-------------------------------------------------------------------------
     Do the transfer, waiting for all bytes to send before continuing.
     -------------------------------------------------------------------------*/
-    if( serial->write( cmd.data(), cmd.size() ) == Chimera::Status::OK )
+    if ( serial->write( cmd.data(), cmd.size() ) == Chimera::Status::OK )
     {
       serial->await( Trigger::TRIGGER_WRITE_COMPLETE, TIMEOUT_BLOCK );
       return StatusCode::OK;
@@ -390,12 +440,12 @@ namespace RN4871
       /*-----------------------------------------------------------------------
       Pull more data into the accumulation buffer
       -----------------------------------------------------------------------*/
-      if( serial->available( &bytesAvailable ) )
+      if ( serial->available( &bytesAvailable ) )
       {
         /*---------------------------------------------------------------------
         Protect against buffer overflows
         ---------------------------------------------------------------------*/
-        if( ( byteOffset + bytesAvailable ) > ARRAY_BYTES( tmp_buffer ) )
+        if ( ( byteOffset + bytesAvailable ) > ARRAY_BYTES( tmp_buffer ) )
         {
           return StatusCode::OVERFLOW;
         }

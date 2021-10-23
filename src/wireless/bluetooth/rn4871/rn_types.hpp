@@ -37,6 +37,7 @@ namespace RN4871
   Constants
   -------------------------------------------------------------------------------*/
   static constexpr char CMD_TERM           = '\n';
+  static constexpr size_t DFLT_RETRIES     = 2;
   static constexpr size_t RESPONSE_TIMEOUT = 2 * Chimera::Thread::TIMEOUT_1S;
 
   /*-------------------------------------------------------------------------------
@@ -98,6 +99,13 @@ namespace RN4871
   /*---------------------------------------------------------------------------
   Structures
   ---------------------------------------------------------------------------*/
+  struct DeviceCharacteristic
+  {
+    bool isPublic;          /**< Public: 16-bit id, Private: 128-bit */
+    uint8_t id[ 16 ];       /**< Up to 128 bit service id */
+    uint8_t characteristic; /**< Bit map of characteristic */
+    uint8_t dataSize;       /**< Octet data size */
+  };
 
   namespace Internal
   {
@@ -139,7 +147,6 @@ namespace RN4871
         upTime        = 0;
       }
     };
-
 
   }    // namespace Internal
 

@@ -61,23 +61,8 @@ namespace RN4871
   }
 
 
-  /**
-   * @brief Assigns the name to the BT device
-   *
-   * @param name    Name to be assigned
-   * @return true   Device accepted the name
-   * @return false  Failure occurred
-   */
   bool DeviceDriver::setName( const std::string_view &name )
   {
-    /*-------------------------------------------------------------------------
-    This action requires command mode
-    -------------------------------------------------------------------------*/
-    if ( !this->enterCommandMode() )
-    {
-      return false;
-    }
-
     /*-------------------------------------------------------------------------
     Format the command string
     -------------------------------------------------------------------------*/
@@ -88,10 +73,7 @@ namespace RN4871
     /*-------------------------------------------------------------------------
     Send the command
     -------------------------------------------------------------------------*/
-    PacketString response;
-    this->transfer( buf );
-    if ( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) &&
-         ( response.find( "AOK" ) != response.npos ) )
+    if( this->doCommand( buf, "\r", "AOK", DFLT_RETRIES, RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       LOG_INFO( "BT: Assigned device name [%s]\r\n", name.data() );
       return true;
@@ -104,12 +86,6 @@ namespace RN4871
   }
 
 
-  /**
-   * @brief Sets the TX power during advertisement
-   *
-   * @param pwr       Power level to transmit at
-   * @return bool
-   */
   bool DeviceDriver::setAdvertisePower( const OutputPower pwr )
   {
     /*-------------------------------------------------------------------------
@@ -147,12 +123,6 @@ namespace RN4871
   };
 
 
-  /**
-   * @brief Sets the TX power once connected to a device
-   *
-   * @param pwr       Power level to transmit at
-   * @return bool
-   */
   bool DeviceDriver::setConnectedPower( const OutputPower pwr )
   {
     /*-------------------------------------------------------------------------
@@ -190,14 +160,6 @@ namespace RN4871
   }
 
 
-  /**
-   * @brief Sets the GAP service the device will identify as
-   * See https://www.bluetooth.com/ for more information, or download the values from
-   * https://specificationrefs.bluetooth.com/assigned-values/Appearance%20Values.pdf.
-   *
-   * @param service   Service ID to identify as
-   * @return bool
-   */
   bool DeviceDriver::setGAPService( const uint16_t service )
   {
     /*-------------------------------------------------------------------------
