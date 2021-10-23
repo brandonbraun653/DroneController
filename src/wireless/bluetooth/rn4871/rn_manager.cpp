@@ -174,7 +174,7 @@ namespace RN4871
       uptime = dcb.upTime;
       dcb.lock->unlock();
 
-      if( uptime < ( 10 * TIMEOUT_1S ) )
+      if( uptime < ( 2 * TIMEOUT_1S ) )
       {
         Chimera::delayMilliseconds( 100 );
       }
@@ -188,7 +188,7 @@ namespace RN4871
     Do a quick test if the device responds to a command that would indicate it
     is already in command mode from a previous power cycle.
     -------------------------------------------------------------------------*/
-    this->transfer( "v\n" );
+    this->transfer( "V\n" );
     if ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       if ( response.find( "Err", 0 ) != response.npos )
@@ -216,7 +216,7 @@ namespace RN4871
       else
       {
         dcb.currentMode = OpMode::DATA;
-        return false;
+        goto fail;
       }
     }
     else
@@ -224,8 +224,12 @@ namespace RN4871
       this->transfer( "---\r" );
       this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT );
       dcb.currentMode = OpMode::DATA;
-      return false;
+      goto fail;
     }
+
+  fail:
+    LOG_ERROR( "BT: Failed to enter command mode\r\n" );
+    return false;
   }
 
 
@@ -246,16 +250,27 @@ namespace RN4871
     Send the request
     -------------------------------------------------------------------------*/
     this->transfer( "---\r" );
-    if ( ( this->accumulateResponse( response, "\r", ( 2 * TIMEOUT_1S ) ) == StatusCode::OK ) && ( response == "END" ) )
+    if ( this->accumulateResponse( response, "\r", ( 2 * TIMEOUT_1S ) ) == StatusCode::OK )
     {
-      dcb.currentMode = OpMode::DATA;
-      return true;
+      if( response.find( "END" ) != response.npos )
+      {
+        LOG_INFO( "BT: Exit command mode\r\n" );
+        dcb.currentMode = OpMode::DATA;
+        return true;
+      }
+      else
+      {
+        goto fail;
+      }
     }
     else
     {
-      LOG_ERROR_IF( DEBUG_MODULE, "Failed to exit command mode\r\n" );
-      return false;
+      goto fail;
     }
+
+  fail:
+    LOG_ERROR( "BT: Failed to leave command mode\r\n" );
+    return false;
   }
 
 

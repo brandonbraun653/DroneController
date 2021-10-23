@@ -164,52 +164,43 @@ namespace DC::RF::BT
     /*-------------------------------------------------------------------------
     Ping the unit to grab version information
     -------------------------------------------------------------------------*/
-    LOG_INFO( "Bluetooth version: %s\r\n", s_bt_device.softwareVersion().data() );
-    LOG_INFO( "Configuring Bluetooth...\r\n" );
+    LOG_INFO( "BT: Configuring...\r\n" );
+    LOG_INFO( "BT: %s\r\n", s_bt_device.softwareVersion().data() );
 
     /*-------------------------------------------------------------------------
-    Leave command mode and go back to UART passthrough
+    Set core feature set
     -------------------------------------------------------------------------*/
+    RN4871::Feature bitset = RN4871::Feature::NONE;
+    s_bt_device.setFeatures( bitset );
+
+    /*-------------------------------------------------------------------------
+    Set the device name to something useful
+    -------------------------------------------------------------------------*/
+    s_bt_device.setName( "DroneCtrl" );
+
+    /*-------------------------------------------------------------------------
+    Set device appearance as Generic Remote Control
+    -------------------------------------------------------------------------*/
+    s_bt_device.setGAPService( 0x1080 );
+
+    /*-------------------------------------------------------------------------
+    Set the output power for broadcasting
+    -------------------------------------------------------------------------*/
+    s_bt_device.setAdvertisePower( RN4871::OutputPower::LEVEL_0 );
+    s_bt_device.setConnectedPower( RN4871::OutputPower::LEVEL_0 );
+
+    /*-------------------------------------------------------------------------
+    Apply configuration settings by doing a warm reset
+    -------------------------------------------------------------------------*/
+    s_bt_device.reboot();
+    Chimera::delayMilliseconds( 500 );
+
+    /*-------------------------------------------------------------------------
+    Instruct the device to advertise itself so a client may connect. Switch to
+    transparent UART mode in prep for any data that gets sent by the client.
+    -------------------------------------------------------------------------*/
+    s_bt_device.startAdvertisement();
     RT_HARD_ASSERT( s_bt_device.exitCommandMode() );
-
-    // /*-------------------------------------------------
-    // Set core feature set
-    // -------------------------------------------------*/
-    // RN4871::Feature bitset = RN4871::Feature::NONE;
-    // s_bt_device.setFeatures( bitset );
-
-    // /*-------------------------------------------------
-    // Ping the unit to grab version information
-    // -------------------------------------------------*/
-    //
-
-    // /*-------------------------------------------------
-    // Set the device name to something useful
-    // -------------------------------------------------*/
-    // s_bt_device.setName( "DroneCtrl" );
-
-    // /*-------------------------------------------------
-    // Set device appearance as Generic Remote Control
-    // -------------------------------------------------*/
-    // s_bt_device.setGAPService( 0x1080 );
-
-    // /*-------------------------------------------------
-    // Set the output power for broadcasting
-    // -------------------------------------------------*/
-    // s_bt_device.setAdvertisePower( RN4871::OutputPower::LEVEL_0 );
-    // s_bt_device.setConnectedPower( RN4871::OutputPower::LEVEL_0 );
-
-    // /*-------------------------------------------------
-    // Apply configuration settings by doing a warm reset
-    // -------------------------------------------------*/
-    // s_bt_device.reboot();
-    // Chimera::delayMilliseconds( 100 );
-
-    // /*-------------------------------------------------
-    // Begin advertising the controller
-    // -------------------------------------------------*/
-    // s_bt_device.startAdvertisement();
-    // s_bt_device.enterUARTMode();
   }
 
 }    // namespace DC::RF::BT

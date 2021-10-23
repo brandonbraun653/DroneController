@@ -76,16 +76,51 @@ namespace RN4871
     bool setAdvertisePower( const OutputPower pwr );
     bool setConnectedPower( const OutputPower pwr );
     bool setGAPService( const uint16_t service );
+
+    /**
+     * @brief Configure supported feature set
+     *
+     * @param bitmap      Feature set bitmap
+     * @return true       Features were set
+     * @return false      Features were not set
+     */
     bool setFeatures( const Feature bitmap );
 
     /*-------------------------------------------------------------------------
     System Commands
     -------------------------------------------------------------------------*/
+    /**
+     * @brief Instructs the device to enter the UART transparent mode
+     *
+     * @return true   Mode entered
+     * @return false  Mode not entered
+     */
     bool enterUARTMode();
+
+    /**
+     * @brief Instructs the RN4871 to perform a warm reset
+     * Will only return once the expected command sequence was observed
+     *
+     * @return true   Reboot process success
+     * @return false  Reboot failed
+     */
     bool reboot();
+
+    /**
+     * @brief Start advertisement of the device
+     *
+     * @return true   Advertisement started
+     * @return false  Advertisement failed to start
+     */
     bool startAdvertisement();
+
+    /**
+     * @brief Stop advertisement of the device
+     *
+     * @return true   Advertisement stopped
+     * @return false  Advertisement still going
+     */
     bool stopAdvertisement();
-    bool killCurrentConnection();
 
     /**
      * @brief Instructs the module to enter comand mode
@@ -106,7 +141,7 @@ namespace RN4871
   protected:
     friend Chimera::Thread::TaskId startDevice( DeviceDriver &, const Chimera::Thread::TaskConfig * );
 
-    Internal::ControlBlock dcb;   /**< Device control block */
+    Internal::ControlBlock dcb; /**< Device control block */
 
     /**
      * @brief Manager thread for the device
