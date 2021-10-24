@@ -187,11 +187,6 @@ namespace RN4871
   }
 
 
-  /**
-   * @brief Gets the software version running on the RN4871
-   *
-   * @return VersionString
-   */
   VersionString DeviceDriver::softwareVersion()
   {
     static const char *error_msg = "ERROR";
@@ -238,11 +233,6 @@ namespace RN4871
   }
 
 
-  /**
-   * @brief Gets the current connection signal strength in dBm
-   *
-   * @return int
-   */
   int DeviceDriver::connectionStrength()
   {
     /*-------------------------------------------------

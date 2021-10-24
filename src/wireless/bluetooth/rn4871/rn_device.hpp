@@ -50,8 +50,26 @@ namespace RN4871
     /*-------------------------------------------------------------------------
     Device Information
     -------------------------------------------------------------------------*/
+    /**
+     * @brief Gets the software version running on the RN4871
+     *
+     * @return VersionString
+     */
     VersionString softwareVersion();
+
+    /**
+     * @brief Gets the current connection signal strength in dBm
+     *
+     * @return int
+     */
     int connectionStrength();
+
+    /**
+     * @brief Checks if a connection is currently active
+     *
+     * @return true     Active
+     * @return false    Inactive
+     */
     bool isConnected();
 
     /*-------------------------------------------------------------------------
