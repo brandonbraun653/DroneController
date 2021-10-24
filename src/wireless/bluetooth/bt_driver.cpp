@@ -146,19 +146,21 @@ namespace DC::RF::BT
     /*-------------------------------------------------------------------------
     Power cycle the unit and wait for boot up to occur
     -------------------------------------------------------------------------*/
-    LOG_INFO( "Powering down bluetooth module...\r\n" );
-    setPower( PowerState::DISABLED );
-    Chimera::delayMilliseconds( 100 );
-    LOG_INFO( "Powering up bluetooth module...\r\n" );
-    setPower( PowerState::ENABLED );
-    Chimera::delayMilliseconds( 100 );
+    // LOG_INFO( "Powering down bluetooth module...\r\n" );
+    // setPower( PowerState::DISABLED );
+    // Chimera::delayMilliseconds( 100 );
+    // LOG_INFO( "Powering up bluetooth module...\r\n" );
+    // setPower( PowerState::ENABLED );
+    // Chimera::delayMilliseconds( 100 );
 
     sendTaskMsg( mgrId, TSK_MSG_WAKEUP, TIMEOUT_BLOCK );
     this_thread::yield();
 
     /*-------------------------------------------------------------------------
-    Enter command mode to allow setup of the module
+    Enter command mode to allow setup of the module. Attempt to leave command
+    mode first to try and put the system into a known state.
     -------------------------------------------------------------------------*/
+    s_bt_device.exitCommandMode();
     RT_HARD_ASSERT( s_bt_device.enterCommandMode() );
 
     /*-------------------------------------------------------------------------

@@ -121,14 +121,6 @@ namespace RN4871
     System Commands
     -------------------------------------------------------------------------*/
     /**
-     * @brief Instructs the device to enter the UART transparent mode
-     *
-     * @return true   Mode entered
-     * @return false  Mode not entered
-     */
-    bool enterUARTMode();
-
-    /**
      * @brief Instructs the RN4871 to perform a warm reset
      * Will only return once the expected command sequence was observed
      *

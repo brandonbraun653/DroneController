@@ -189,13 +189,12 @@ namespace RN4871
     is already in command mode from a previous power cycle.
     -------------------------------------------------------------------------*/
     this->transfer( "V\n" );
-    if ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK )
+    response.clear();
+
+    if ( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) && ( response.length() != 0 ) )
     {
-      if ( response.find( "Err", 0 ) != response.npos )
-      {
-        dcb.currentMode = OpMode::COMMAND;
-        return true;
-      }
+      dcb.currentMode = OpMode::COMMAND;
+      return true;
     }
 
     /*-------------------------------------------------------------------------
@@ -255,7 +254,7 @@ namespace RN4871
     Send the request
     -------------------------------------------------------------------------*/
     this->transfer( "---\r" );
-    if ( this->accumulateResponse( response, "\r", ( 2 * TIMEOUT_1S ) ) == StatusCode::OK )
+    if ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       if ( response.find( "END" ) != response.npos )
       {

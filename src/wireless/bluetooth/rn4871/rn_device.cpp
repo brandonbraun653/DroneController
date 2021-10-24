@@ -73,7 +73,7 @@ namespace RN4871
     /*-------------------------------------------------------------------------
     Send the command
     -------------------------------------------------------------------------*/
-    if( this->doCommand( buf, "\r", "AOK", DFLT_RETRIES, RESPONSE_TIMEOUT ) == StatusCode::OK )
+    if( this->doCommand( buf, "CMD", "AOK", DFLT_RETRIES, RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       LOG_INFO( "BT: Assigned device name [%s]\r\n", name.data() );
       return true;
@@ -89,14 +89,6 @@ namespace RN4871
   bool DeviceDriver::setAdvertisePower( const OutputPower pwr )
   {
     /*-------------------------------------------------------------------------
-    This action requires command mode
-    -------------------------------------------------------------------------*/
-    if ( !this->enterCommandMode() )
-    {
-      return false;
-    }
-
-    /*-------------------------------------------------------------------------
     Format the command string
     -------------------------------------------------------------------------*/
     PacketBuffer buf;
@@ -106,11 +98,7 @@ namespace RN4871
     /*-------------------------------------------------------------------------
     Send the command
     -------------------------------------------------------------------------*/
-    PacketString response;
-    this->transfer( buf );
-
-    if ( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) &&
-         ( response.find( "AOK" ) != response.npos ) )
+    if( this->doCommand( buf, "CMD", "AOK", DFLT_RETRIES, RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       LOG_INFO( "BT: Configured advertise TX power\r\n" );
       return true;
@@ -126,14 +114,6 @@ namespace RN4871
   bool DeviceDriver::setConnectedPower( const OutputPower pwr )
   {
     /*-------------------------------------------------------------------------
-    This action requires command mode
-    -------------------------------------------------------------------------*/
-    if ( !this->enterCommandMode() )
-    {
-      return false;
-    }
-
-    /*-------------------------------------------------------------------------
     Format the command string
     -------------------------------------------------------------------------*/
     PacketBuffer buf;
@@ -143,11 +123,7 @@ namespace RN4871
     /*-------------------------------------------------------------------------
     Send the command
     -------------------------------------------------------------------------*/
-    PacketString response;
-    this->transfer( buf );
-
-    if ( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) &&
-         ( response.find( "AOK" ) != response.npos ) )
+    if( this->doCommand( buf, "CMD", "AOK", DFLT_RETRIES, RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       LOG_INFO( "BT: Configured connected TX power\r\n" );
       return true;
@@ -163,14 +139,6 @@ namespace RN4871
   bool DeviceDriver::setGAPService( const uint16_t service )
   {
     /*-------------------------------------------------------------------------
-    This action requires command mode
-    -------------------------------------------------------------------------*/
-    if ( !this->enterCommandMode() )
-    {
-      return false;
-    }
-
-    /*-------------------------------------------------------------------------
     Format the command string
     -------------------------------------------------------------------------*/
     PacketBuffer buf;
@@ -181,11 +149,7 @@ namespace RN4871
     /*-------------------------------------------------------------------------
     Send the command
     -------------------------------------------------------------------------*/
-    PacketString response;
-    this->transfer( buf );
-
-    if ( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) &&
-         ( response.find( "AOK" ) != response.npos ) )
+    if( this->doCommand( buf, "CMD", "AOK", DFLT_RETRIES, RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       LOG_INFO( "BT: GAP assignment OK\r\n" );
       return true;
@@ -201,14 +165,6 @@ namespace RN4871
   bool DeviceDriver::setFeatures( const Feature bitmap )
   {
     /*-------------------------------------------------------------------------
-    This action requires command mode
-    -------------------------------------------------------------------------*/
-    if ( !this->enterCommandMode() )
-    {
-      return false;
-    }
-
-    /*-------------------------------------------------------------------------
     Format the command string
     -------------------------------------------------------------------------*/
     PacketBuffer buf;
@@ -218,10 +174,7 @@ namespace RN4871
     /*-------------------------------------------------------------------------
     Do the transaction
     -------------------------------------------------------------------------*/
-    PacketString response;
-    this->transfer( buf );
-    if(  ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) &&
-         ( response.find( "AOK" ) != response.npos ) )
+    if( this->doCommand( buf, "CMD", "AOK", DFLT_RETRIES, RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       LOG_INFO( "BT: Assigned features\r\n" );
       return true;
@@ -258,7 +211,7 @@ namespace RN4871
     CMD::Action::version( cmd );
     this->transfer( cmd );
 
-    if ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK )
+    if ( this->accumulateResponse( response, "CMD", RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       /*-----------------------------------------------------------------------
       Strip characters off the front
@@ -356,37 +309,6 @@ namespace RN4871
   }
 
 
-  bool DeviceDriver::enterUARTMode()
-  {
-    /*-------------------------------------------------------------------------
-    Ensure command mode is entered
-    -------------------------------------------------------------------------*/
-    if( !this->enterCommandMode() )
-    {
-      return false;
-    }
-
-    /*-------------------------------------------------------------------------
-    Send the command
-    -------------------------------------------------------------------------*/
-    PacketString response;
-
-    this->transfer( "I\r" );
-    if ( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) &&
-         ( response.find( "AOK" ) != response.npos ) )
-    {
-      LOG_INFO( "BT: Entered UART transparent mode\r\n" );
-      dcb.currentMode = OpMode::DATA;
-      return true;
-    }
-    else
-    {
-      LOG_ERROR( "BT: Failed to enter UART transparent mode\r\n" );
-      return false;
-    }
-  }
-
-
   bool DeviceDriver::reboot()
   {
     /*-------------------------------------------------------------------------
@@ -437,20 +359,9 @@ namespace RN4871
   bool DeviceDriver::startAdvertisement()
   {
     /*-------------------------------------------------------------------------
-    Ensure we are in command mode
-    -------------------------------------------------------------------------*/
-    if ( !this->enterCommandMode() )
-    {
-      return false;
-    }
-
-    /*-------------------------------------------------------------------------
     Send the command
     -------------------------------------------------------------------------*/
-    PacketString response;
-    this->transfer( "A\r" );
-    if ( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) &&
-         ( response.find( "AOK" ) != response.npos ) )
+    if( this->doCommand( "A\r", "CMD", "AOK", DFLT_RETRIES, RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       LOG_INFO( "BT: Advertisement started\r\n" );
       return true;
@@ -466,20 +377,9 @@ namespace RN4871
   bool DeviceDriver::stopAdvertisement()
   {
     /*-------------------------------------------------------------------------
-    Ensure we are in command mode
-    -------------------------------------------------------------------------*/
-    if ( !this->enterCommandMode() )
-    {
-      return false;
-    }
-
-    /*-------------------------------------------------------------------------
     Send the command
     -------------------------------------------------------------------------*/
-    PacketString response;
-    this->transfer( "Y\r" );
-    if ( ( this->accumulateResponse( response, "\r", RESPONSE_TIMEOUT ) == StatusCode::OK ) &&
-         ( response.find( "AOK" ) != response.npos ) )
+    if( this->doCommand( "Y\r", "CMD", "AOK", DFLT_RETRIES, RESPONSE_TIMEOUT ) == StatusCode::OK )
     {
       LOG_ERROR( "BT: Advertisement stopped\r\n" );
       return false;
