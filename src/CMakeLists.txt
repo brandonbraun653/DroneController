@@ -85,7 +85,7 @@ target_link_libraries(DroneController PRIVATE
   aurora_core_rel
   aurora_database_rel
   aurora_datastore_rel
-  aurora_filesystem_core_rel
+  aurora_filesystem_core_dbg
   aurora_hmi_rel
   aurora_logging_rel
   aurora_memory_rel
@@ -113,7 +113,7 @@ if(Toolchain::HAS_GCC)
 
   target_link_libraries(DroneController PRIVATE
     # Aurora
-    aurora_filesystem_generic_driver
+    aurora_filesystem_generic_driver_dbg
 
     # Ripple NetIf
     ripple_netif_loopback
@@ -130,7 +130,7 @@ endif()
 if(Toolchain::HAS_GCC_ARM_NONE_EABI)
   target_link_libraries(DroneController PRIVATE
     # Aurora
-    aurora_filesystem_spiffs_rel
+    aurora_filesystem_spiffs_dbg
 
     # Threading Library
     freertos_intf_inc_all

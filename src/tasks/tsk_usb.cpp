@@ -43,7 +43,7 @@ namespace DC::Tasks::USB
     /*-------------------------------------------------
     Power up the USB stack
     -------------------------------------------------*/
-    LOG_ERROR( "Can't boot USB until hardware rev is performed. See schematic notes.");
+    LOG_ERROR( "Can't boot USB until hardware rev is performed. See schematic notes.\r\n");
     //LOG_INFO( "Booting USB thread\r\n" );
     //tusb_init();
 

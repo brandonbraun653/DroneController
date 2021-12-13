@@ -25,38 +25,36 @@
 #include <src/config/bsp/board_map.hpp>
 #include <src/registry/reg_intf.hpp>
 #include <src/registry/reg_data.hpp>
+#include <src/registry/reg_files.hpp>
 
 namespace DC::REG
 {
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Static Functions
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   static bool initializeSPI();
   static void registerDatabaseKeys();
   static void registerObservables();
   static void datastoreRegisterFail( const size_t id );
+  static bool initializeFiles();
+  static void populateStructuredData();
 
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Static Data
-  -------------------------------------------------------------------------------*/
-  /*-------------------------------------------------
-  Database Memory Allocation
-  -------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
+  /* Database Memory Allocation */
   Aurora::Database::RAM Database;
   static Aurora::Database::EntryStore<NUM_DATABASE_KEYS> dbEntryStore;
   static std::array<uint8_t, 1024> dbRAM;
 
-  /*-------------------------------------------------
-  Datastore Memory Allocation
-  -------------------------------------------------*/
+  /* Datastore Memory Allocation */
   static constexpr size_t ObservableRange = KEY_OBSERVABLE_END - KEY_OBSERVABLE_START;
-
   Aurora::Datastore::Manager Datastore;
   static Aurora::Datastore::ObservableMapStorage<ObservableRange> dsMemory;
 
-  /*-------------------------------------------------------------------------------
-  Public Functions
-  -------------------------------------------------------------------------------*/
+  /*---------------------------------------------------------------------------
+  Public Interface Functions
+  ---------------------------------------------------------------------------*/
   bool initialize()
   {
     using namespace Aurora::Flash::NOR;
@@ -66,9 +64,9 @@ namespace DC::REG
 
     bool result = true;
 
-    /*-------------------------------------------------
-    Prepare the FileSystem driver
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Prepare the FileSystem Driver
+    -------------------------------------------------------------------------*/
     if constexpr ( DEFAULT_FILESYSTEM == BackendType::DRIVER_SPIFFS )
     {
       result |= initializeSPI();
@@ -76,23 +74,19 @@ namespace DC::REG
       RT_HARD_ASSERT( result );
     }
 
-    /*-------------------------------------------------
-    Now actually initialize the FileSystem
-    -------------------------------------------------*/
     result = Aurora::FileSystem::configureDriver( DEFAULT_FILESYSTEM );
     RT_HARD_ASSERT( result );
 
-    /*-------------------------------------------------
-    Initialize the database, which forms the back-end
-    of the datastore.
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Initialize the database, which forms the back-end of the datastore.
+    -------------------------------------------------------------------------*/
     Database.assignCoreMemory( dbEntryStore, dbRAM.data(), dbRAM.size() );
     Database.reset();
     registerDatabaseKeys();
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Initialize the datastore
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     auto registerCallback = etl::delegate<void( size_t )>::create<datastoreRegisterFail>();
 
     Datastore.assignCoreMemory( &dsMemory );
@@ -100,41 +94,38 @@ namespace DC::REG
     Datastore.registerCallback( CB_REGISTER_FAIL, registerCallback );
     registerObservables();
 
-    LOG_DEBUG( "Registry initialized\r\n" );
     return true;
   }
 
 
   void format()
   {
-    // uint32_t eraseTimeout = 10000;
-    // LOG_ERROR( "Performing full chip erase. Timeout of %d ms.\r\n", eraseTimeout );
-    // Aurora::Memory::LFS::fullChipErase( eraseTimeout );
-    // LOG_ERROR( "Chip erased\r\n" );
+    LOG_INFO( "Performing full chip erase. Please be patient...\r\n" );
+    Aurora::FileSystem::massErase();
+    LOG_INFO( "Chip erased\r\n" );
   }
 
 
   void doPeriodicProcessing()
   {
-    /*-------------------------------------------------
-    Process the observables
-    -------------------------------------------------*/
+    /* Process observables */
     Datastore.process();
   }
 
+
   bool readSafe( const DatabaseKeys key, void *const data, const size_t size )
   {
-    /*-------------------------------------------------
-    Input protection
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Input Protections
+    -------------------------------------------------------------------------*/
     if ( !data || !size || !( key < NUM_DATABASE_KEYS ) )
     {
       return false;
     }
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Select the proper interface to read from
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     if ( ( KEY_SIMPLE_START <= key ) && ( key < KEY_SIMPLE_END ) && ( size == Database.size( key ) ) )
     {
       return Database.read( key, data );
@@ -152,18 +143,18 @@ namespace DC::REG
 
   bool writeSafe( const DatabaseKeys key, const void *const data, const size_t size )
   {
-    /*-------------------------------------------------
-    Input protection
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Input Protection
+    -------------------------------------------------------------------------*/
     if ( !data || !size || !( key < NUM_DATABASE_KEYS ) )
     {
       return false;
     }
 
-    /*-------------------------------------------------
-    Select the proper interface to write. Observable
-    registry key types cannot be directly written to.
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Select the proper interface to write. Observable registry key types cannot
+    be directly written to.
+    -------------------------------------------------------------------------*/
     if ( ( KEY_SIMPLE_START <= key ) && ( key < KEY_SIMPLE_END ) && ( size == Database.size( key ) ) )
     {
       return Database.write( key, data );
@@ -175,9 +166,16 @@ namespace DC::REG
   }
 
 
-  /*-------------------------------------------------------------------------------
+  void loadRegistryFromFile()
+  {
+    initializeFiles();
+    populateStructuredData();
+  }
+
+
+  /*---------------------------------------------------------------------------
   Static Functions
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   /**
    *  Configures the SPI controller for the NOR flash chip that
    *  hosts the project's FileSystem.
@@ -293,9 +291,18 @@ namespace DC::REG
           result = Database.insert( x, sizeof( Aurora::HMI::Encoder::State ) );
           break;
 
+        case KEY_RF24_CONFIG:
+          result = Database.insert( x, sizeof( DC::Files::RF24Config::DataType ) );
+          break;
+
+        case KEY_UNIT_INFO:
+          result = Database.insert( x, sizeof( DC::Files::UnitInfo::DataType ) );
+          break;
+
         default:
           // A parameter was forgotten to be registered
           result = Chimera::Status::FAIL;
+          LOG_ERROR( "Failed to register parameter: %d\r\n", x );
           break;
       }
 
@@ -328,5 +335,82 @@ namespace DC::REG
   {
     using namespace Aurora::Logging;
     LOG_ERROR( "Failed to register observable" );
+  }
+
+
+  /**
+   * @brief Creates all files on the system to ensure they exist at runtime
+   *
+   * @return true
+   * @return false
+   */
+  static bool initializeFiles()
+  {
+    /*-------------------------------------------------------------------------
+    Files that should exist at boot
+    -------------------------------------------------------------------------*/
+    const std::array<std::string_view, 3> files = {
+      DC::Files::BootCount::Filename,
+      DC::Files::UnitInfo::Filename,
+      DC::Files::RF24Config::Filename
+    };
+
+    /*-------------------------------------------------------------------------
+    Ensure each file exists on disk
+    -------------------------------------------------------------------------*/
+    Aurora::FileSystem::BinaryFile f;
+    uint32_t creation_errors = 0;
+    for( auto file : files )
+    {
+      if ( !f.open( file, "rb" ) )
+      {
+        f.clearErrors();
+        f.create( file );
+        if( !f.open( file, "wb" ) )
+        {
+          creation_errors++;
+          LOG_ERROR( "Creation of %s failed: %d\r\n", file.data(), f.getError() );
+        }
+      }
+
+      f.close();
+    }
+
+    return creation_errors == 0;
+  }
+
+
+  /**
+   * @brief Pull data out from files and push them to the registry
+   */
+  static void populateStructuredData()
+  {
+    Aurora::FileSystem::BinaryFile file;
+
+    /*-------------------------------------------------------------------------
+    Unit Information
+    -------------------------------------------------------------------------*/
+    if( file.open( DC::Files::UnitInfo::Filename, "rb" ) )
+    {
+      DC::Files::UnitInfo::DataType data;
+      if( file.read( &data, sizeof( data ) ) )
+      {
+        writeSafe( DC::Files::UnitInfo::DBKey, &data, sizeof( data ) );
+      }
+      file.close();
+    }
+
+    /*-------------------------------------------------------------------------
+    RF24 Configuration
+    -------------------------------------------------------------------------*/
+    if( file.open( DC::Files::RF24Config::Filename, "rb" ) )
+    {
+      DC::Files::RF24Config::DataType data;
+      if( file.read( &data, sizeof( data ) ) )
+      {
+        writeSafe( DC::Files::RF24Config::DBKey, &data, sizeof( data ) );
+      }
+      file.close();
+    }
   }
 }    // namespace DC::REG

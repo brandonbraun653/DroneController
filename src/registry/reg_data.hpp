@@ -49,6 +49,8 @@ namespace DC::REG
     KEY_BATT_VOLTAGE_SENSE,            /**< Battery analog voltage sense */
     KEY_ENCODER_0_STATE,               /**< State data for the first rotary encoder */
     KEY_ENCODER_1_STATE,               /**< State data for the second rotary encoder */
+    KEY_RF24_CONFIG,                   /**< NRF24 radio configuration */
+    KEY_UNIT_INFO,                     /**< Information about the unit */
 
     /*-------------------------------------------------
     Observable Data/Events
@@ -128,6 +130,10 @@ namespace DC::REG
   static_assert( ARRAY_COUNT( ObservableList ) == ( KEY_OBSERVABLE_END - KEY_OBSERVABLE_START ) );
   /* clang-format on */
 
+  /*---------------------------------------------------------------------------
+  Public Functions
+  ---------------------------------------------------------------------------*/
+  void loadRegistryFromFile();
 }    // namespace DC::REG
 
 #endif /* !DC_REGISTRY_DATA_HPP */

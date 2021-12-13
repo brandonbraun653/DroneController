@@ -1062,4 +1062,6 @@ F 4 "C69336" H 8100 2900 50  0001 C CNN "LCSC"
 $EndComp
 Text Notes 10550 2650 0    50   ~ 0
 BMB: 07/11/21\n-- Need to add VBUS and ID lines to USB (PA10, 9)\n-- Need re-enumeration circuit to enable FS with 1.5k pullup. See nucleo.\n-- Move encoder 1A/B to PA2/3
+Text Notes 1600 3450 0    50   ~ 0
+BMB: 07/11/21\nUse smaller shift registers if JLC allows it.
 $EndSCHEMATC

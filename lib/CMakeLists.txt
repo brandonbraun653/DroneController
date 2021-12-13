@@ -44,7 +44,6 @@ gen_static_lib_variants(
     ${tusb_src_dir}/class/midi/midi_device.c
     ${tusb_src_dir}/class/msc/msc_device.c
     ${tusb_src_dir}/class/msc/msc_host.c
-    ${tusb_src_dir}/class/net/net_device.c
     ${tusb_src_dir}/class/usbtmc/usbtmc_device.c
     ${tusb_src_dir}/class/vendor/vendor_device.c
     ${tusb_src_dir}/class/vendor/vendor_host.c

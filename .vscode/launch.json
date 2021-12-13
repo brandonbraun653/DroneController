@@ -30,7 +30,8 @@
       "logging": {
         "engineLogging": true
       },
-      "miDebuggerPath": "/usr/bin/gdb-multiarch",
+      "miDebuggerPath": "/usr/bin/arm-none-eabi-gdb",
+      "debugServerPath": "",
       "serverLaunchTimeout": 10000,
       "customLaunchSetupCommands": [
         {

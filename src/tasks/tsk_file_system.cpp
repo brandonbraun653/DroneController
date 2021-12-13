@@ -40,9 +40,9 @@ struct TestStruct
 
 namespace DC::Tasks::FIL
 {
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Public Functions
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   void FileSystemThread( void *arg )
   {
     using namespace Chimera::Thread;
@@ -50,48 +50,24 @@ namespace DC::Tasks::FIL
     using namespace Chimera::Peripheral;
     using namespace Aurora::Logging;
 
-    /*-------------------------------------------------
-    Wait for initialization command
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Wait for the initialization command
+    -------------------------------------------------------------------------*/
     waitInit();
     Chimera::delayMilliseconds( 100 );
 
-    /*-------------------------------------------------
+    /*-------------------------------------------------------------------------
     Mount the filesystem
-    -------------------------------------------------*/
+    -------------------------------------------------------------------------*/
     //Aurora::FileSystem::massErase();
     Aurora::FileSystem::mount();
+    DC::REG::loadRegistryFromFile();
     SYS::updateBootCount();
 
-    /*-------------------------------------------------
-    Test the file interface
-    -------------------------------------------------*/
-    TestStruct dataWrite, dataRead;
-
-    memset( &dataRead, 0, sizeof( TestStruct ) );
-    dataWrite.logThing = 14928;
-    dataWrite.mySensor = 3.14159f;
-    dataWrite.timestamp = Chimera::millis();
-
-
-    Aurora::FileSystem::BinaryFile file;
-    file.create( "test_file.bin" );
-    file.open( "test_file.bin", "wb" );
-    file.write( &dataWrite, sizeof( TestStruct ) );
-    file.close();
-
-    file.open( "test_file.bin", "rb" );
-    file.read( &dataRead, sizeof( TestStruct ) );
-    file.close();
-
-    if( memcmp( &dataWrite, &dataRead, sizeof( TestStruct ) ) == 0 )
-    {
-      LOG_DEBUG( "File save PASS\r\n" );
-    }
-    else
-    {
-      LOG_DEBUG( "File save FAIL\r\n" );
-    }
+    /*-------------------------------------------------------------------------
+    Program the device configuration
+    -------------------------------------------------------------------------*/
+    //DC::SYS::configureDevice( DC::SYS::DEV_1 );
 
     size_t lastWoken;
     while ( true )

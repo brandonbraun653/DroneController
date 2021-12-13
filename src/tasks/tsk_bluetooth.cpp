@@ -40,19 +40,19 @@ namespace DC::Tasks::BT
     /*-------------------------------------------------------------------------
     Power up the bluetooth manager stack
     -------------------------------------------------------------------------*/
-    RN4871::DeviceDriver *bt = nullptr;
-    RF::BT::getDevice( &bt );
+    // RN4871::DeviceDriver *bt = nullptr;
+    // RF::BT::getDevice( &bt );
 
-    TaskId tsk = RN4871::startDevice( *bt, nullptr );
-    if( tsk == THREAD_ID_INVALID )
-    {
-      RT_HARD_ASSERT( false );
-    }
+    // TaskId tsk = RN4871::startDevice( *bt, nullptr );
+    // if( tsk == THREAD_ID_INVALID )
+    // {
+    //   RT_HARD_ASSERT( false );
+    // }
 
     /*-------------------------------------------------------------------------
     Power on the hardware
     -------------------------------------------------------------------------*/
-    RF::BT::doPowerOnReset( tsk );
+    //RF::BT::doPowerOnReset( tsk );
 
     while ( 1 )
     {

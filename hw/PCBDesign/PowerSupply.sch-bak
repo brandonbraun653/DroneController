@@ -183,7 +183,6 @@ Wire Wire Line
 Wire Wire Line
 	3950 1650 3950 1700
 Connection ~ 3950 1700
-NoConn ~ 4250 1450
 $Comp
 L Device:C C37
 U 1 1 6047A799
@@ -199,7 +198,7 @@ $EndComp
 Wire Wire Line
 	4850 1450 4850 1700
 Wire Wire Line
-	4850 1700 3950 1700
+	4850 1700 4350 1700
 Wire Wire Line
 	4250 1050 4850 1050
 Wire Wire Line
@@ -429,7 +428,7 @@ F 4 "C25741" H 4150 3450 50  0001 C CNN "LCSC"
 	-1   0    0    1   
 $EndComp
 Connection ~ 7850 3300
-Text HLabel 6250 3750 2    50   Output ~ 0
+Text HLabel 6950 3750 2    50   Output ~ 0
 V_Batt_Sense
 $Comp
 L Device:R_US R84
@@ -458,12 +457,12 @@ $EndComp
 $Comp
 L power:GND #PWR087
 U 1 1 60606795
-P 6150 4100
-F 0 "#PWR087" H 6150 3850 50  0001 C CNN
-F 1 "GND" H 6155 3927 50  0000 C CNN
-F 2 "" H 6150 4100 50  0001 C CNN
-F 3 "" H 6150 4100 50  0001 C CNN
-	1    6150 4100
+P 6150 4300
+F 0 "#PWR087" H 6150 4050 50  0001 C CNN
+F 1 "GND" H 6155 4127 50  0000 C CNN
+F 2 "" H 6150 4300 50  0001 C CNN
+F 3 "" H 6150 4300 50  0001 C CNN
+	1    6150 4300
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -645,9 +644,11 @@ $EndComp
 Wire Wire Line
 	5050 2950 5050 3050
 $Comp
-L tp4056:TP4056 U7
+L DroneController-rescue:TP4056-tp4056 U7
 U 1 1 605D5703
 P 4750 4000
+AR Path="/605D5703" Ref="U7"  Part="1" 
+AR Path="/60472222/605D5703" Ref="U7"  Part="1" 
 F 0 "U7" H 4750 4537 60  0000 C CNN
 F 1 "TP4056" H 4750 4431 60  0000 C CNN
 F 2 "PMIC:TP4056_SOP-8-PP" H 4750 4537 60  0001 C CNN
@@ -729,14 +730,57 @@ F 3 "" H 4150 3300 50  0001 C CNN
 	1    4150 3300
 	-1   0    0    1   
 $EndComp
-Text Notes 5000 1650 0    50   ~ 0
-BMB: 07/11/21\nConnect ID pin to ground. We want device mode only. Add test points.
 Text Notes 4100 2650 0    50   ~ 0
 BMB: 07/11/21\nWhen no battery is connected, the charger IC won't enable thus\npreventing powering solely from USB. Need some kind of switch to\ndrive the regulator. Only need to handle 500mA.
-Text Notes 6600 4250 0    50   ~ 0
-BMB: 07/11/21\nV_Batt_Sense needs to go through a voltage divider to translate to the\nADC range. Currently will blast +5V into the MCU.
 Text Notes 7650 3000 0    50   ~ 0
 BMB: 07/11/21\nNeed a low dropout voltage regulator for battery power. This one is\nabsolutely horrendous. Consider a small SMPS.
 Text Notes 4250 6250 0    50   ~ 0
 BMB: 07/11/21\nIncrease & balance the resistances on these leds. They are too bright.
+Wire Wire Line
+	4250 1450 4350 1450
+Wire Wire Line
+	4350 1450 4350 1700
+Connection ~ 4350 1700
+Wire Wire Line
+	4350 1700 3950 1700
+$Comp
+L Device:R_US R?
+U 1 1 61B7FC62
+P 6400 3750
+F 0 "R?" H 6332 3704 50  0000 R CNN
+F 1 "10k" H 6332 3795 50  0000 R CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 6440 3740 50  0001 C CNN
+F 3 "~" H 6400 3750 50  0001 C CNN
+F 4 "C25744" H 6400 3750 50  0001 C CNN "LCSC"
+	1    6400 3750
+	0    -1   1    0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 61B83B12
+P 6600 3950
+F 0 "R?" H 6532 3904 50  0000 R CNN
+F 1 "10k" H 6532 3995 50  0000 R CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 6640 3940 50  0001 C CNN
+F 3 "~" H 6600 3950 50  0001 C CNN
+F 4 "C25744" H 6600 3950 50  0001 C CNN "LCSC"
+	1    6600 3950
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6150 4100 6150 4200
+Wire Wire Line
+	6600 4100 6600 4200
+Wire Wire Line
+	6600 4200 6150 4200
+Connection ~ 6150 4200
+Wire Wire Line
+	6150 4200 6150 4300
+Wire Wire Line
+	6550 3750 6600 3750
+Wire Wire Line
+	6600 3750 6600 3800
+Wire Wire Line
+	6950 3750 6600 3750
+Connection ~ 6600 3750
 $EndSCHEMATC

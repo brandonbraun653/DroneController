@@ -25,6 +25,9 @@
 #include <Ripple/netif/loopback>
 
 /* Project Includes */
+#include <src/registry/reg_data.hpp>
+#include <src/registry/reg_intf.hpp>
+#include <src/registry/reg_files.hpp>
 #include <src/config/bsp/board_map.hpp>
 #include <src/tasks/tsk_common.hpp>
 #include <src/tasks/tsk_background.hpp>
@@ -42,12 +45,6 @@
 
 static etl::random_xorshift rng;
 
-/*-----------------------------------------------------------------
-Device 0 is the Transmitter. Device 1 is the Receiver.
------------------------------------------------------------------*/
-#define CONTROLLER_DEVICE 0
-
-
 namespace DC::Tasks::RADIO
 {
 #if defined( EMBEDDED )
@@ -60,7 +57,9 @@ namespace DC::Tasks::RADIO
 
   static void CmnHandler( const Ripple::PacketId id, const void *const data, const size_t size )
   {
-    LOG_INFO( "Received pkt %d of size %d\r\n", id, size );
+    static uint32_t pkt_num = 0;
+    LOG_INFO( "#%d -- Received pkt %d of size %d\r\n", pkt_num, id, size );
+    pkt_num++;
   }
 
   /*-------------------------------------------------------------------------------
@@ -78,9 +77,10 @@ namespace DC::Tasks::RADIO
     waitInit();
 
     /*-------------------------------------------------
-    Power up the Radio
+    Power up the Radio. Wait for the HMI task to grab
     -------------------------------------------------*/
     DC::RF::RF24::setPower( DC::RF::RF24::PowerState::ENABLED );
+    Chimera::delayMilliseconds( 500 );
 
     /*-------------------------------------------------------------------------------
     Network testing
@@ -114,49 +114,35 @@ namespace DC::Tasks::RADIO
     Inform the NRF ARP how to resolve addresses
     -------------------------------------------------*/
 #if defined( EMBEDDED )
-#if ( CONTROLLER_DEVICE == 1 )
-    IPAddress thisNode = 23;
-    uint64_t thisMAC   = 0xB4B5B6B7B5;
-
-    IPAddress destNode = 35;
-    uint64_t destMAC   = 0xA4A5A6A7A0;
-
-#else
-    IPAddress destNode = 23;
-    uint64_t destMAC   = 0xB4B5B6B7B5;
-
-    IPAddress thisNode = 35;
-    uint64_t thisMAC   = 0xA4A5A6A7A0;
-
-#endif /* CONTROLLER_DEVICE */
-#else
-#endif
+    DC::Files::RF24Config::DataType rfData;
+    DC::REG::readSafe( DC::REG::DatabaseKeys::KEY_RF24_CONFIG, &rfData, sizeof( rfData  ) );
 
     Ripple::SocketConfig sock_cfg;
     sock_cfg.txFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
     sock_cfg.rxFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
+    sock_cfg.devicePort = rfData.thisNodeIp;
 
-#if defined( EMBEDDED )
-    sock_cfg.devicePort = thisNode;
+    netif->addARPEntry( rfData.thisNodeIp, &rfData.thisNodeMAC, sizeof( rfData.thisNodeMAC ) );
+    netif->addARPEntry( rfData.destNodeIp, &rfData.destNodeMAC, sizeof( rfData.destNodeMAC ) );
+    netif->setRootMAC( rfData.thisNodeMAC );
 
-    netif->addARPEntry( thisNode, &thisMAC, sizeof( thisMAC ) );
-    netif->addARPEntry( destNode, &destMAC, sizeof( destMAC ) );
-    netif->setRootMAC( thisMAC );
-
-    Socket_rPtr txSocket = context->socket( ( CONTROLLER_DEVICE ? SocketType::PULL : SocketType::PUSH ), 2048 );
+    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 2048 );
     txSocket->open( sock_cfg );
-    txSocket->connect( destNode, destNode );
+    txSocket->connect( rfData.destNodeIp, rfData.destNodeIp );
+
+    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 2048 );
+    rxSocket->open( sock_cfg );
+    rxSocket->connect( rfData.destNodeIp, rfData.destNodeIp );
 
 #else
-
     /*-------------------------------------------------
     Create two sockets for a full duplex pipe
     -------------------------------------------------*/
     sock_cfg.devicePort = LOCAL_HOST_PORT;
 
-    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 2048 );
-    txSocket->open( sock_cfg );
-    txSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
+    Socket_rPtr socket = context->socket( SocketType::PUSH, 2048 );
+    socket->open( sock_cfg );
+    socket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
     Socket_rPtr rxSocket = context->socket( SocketType::PULL, 2048 );
     rxSocket->open( sock_cfg );
@@ -166,10 +152,10 @@ namespace DC::Tasks::RADIO
 
 #endif /* EMBEDDED */
 
-    /*-----------------------------------------------------------------
-    Register default handlers for RX data
-    -----------------------------------------------------------------*/
-    Ripple::onReceive( *txSocket, CmnHandler );
+    /*-------------------------------------------------------------------------
+    Register default handlers for RX Data
+    -------------------------------------------------------------------------*/
+    Ripple::onReceive( *rxSocket, CmnHandler );
 
     /*-------------------------------------------------
     Create some random data to try and transfer
@@ -184,14 +170,11 @@ namespace DC::Tasks::RADIO
 
     while ( 1 )
     {
-
-#if defined( SIMULATOR ) || ( defined( EMBEDDED ) && ( CONTROLLER_DEVICE == 0 ) )
-      /*-------------------------------------------------
-      Transmit some data
-      -------------------------------------------------*/
-      if ( ( tx_count < 10 ) && ( ( Chimera::millis() - lastTx ) > 25 ) )
+      /*-----------------------------------------------------------------------
+      Transmit some data periodically
+      -----------------------------------------------------------------------*/
+      if ( ( Chimera::millis() - lastTx ) > 100 )
       {
-        //LOG_INFO( "Transmitting\r\n" );
         lastTx = Chimera::millis();
 
         /*-----------------------------------------------------------------
@@ -210,13 +193,7 @@ namespace DC::Tasks::RADIO
         {
           tx_count++;
         }
-
-        if ( tx_count == 100 )
-        {
-          //LOG_INFO( "Finished transmitting all data\r\n" );
-        }
       }
-#endif /* SIMULATOR */
 
       BKGD::kickDog( PrjTaskId::RADIO );
       Chimera::delayMilliseconds( 10 );
