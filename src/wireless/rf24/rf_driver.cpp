@@ -67,14 +67,15 @@ namespace DC::RF::RF24
 
     config.clear();
     config.cfg.verifyRegisters      = true;
-    config.cfg.hwRFChannel          = 96;
+    config.cfg.hwRFChannel          = 150;
     config.cfg.hwAddressWidth       = AddressWidth::AW_5Byte;
-    config.cfg.hwDataRate           = DataRate::DR_1MBPS;
-    config.cfg.hwPowerAmplitude     = RFPower::PA_LVL_0;
+    config.cfg.hwDataRate           = DataRate::DR_2MBPS;
+    config.cfg.hwPowerAmplitude     = RFPower::PA_LVL_2;
     config.cfg.hwStaticPayloadWidth = 32;
     config.cfg.hwCRCLength          = CRCLength::CRC_16;
     config.cfg.hwISRMask            = bfISRMask::ISR_MSK_ALL;
-    config.cfg.hwRTXDelay           = ART_DELAY_500uS;
+    config.cfg.hwRTXDelay           = ART_DELAY_250uS;
+    config.cfg.hwRTXCount           = ART_COUNT_4;
 
     /*-------------------------------------------------
     GPIO: IRQ Input

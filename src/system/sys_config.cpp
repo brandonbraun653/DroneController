@@ -14,6 +14,7 @@ Includes
 #include <cstring>
 #include <Aurora/logging>
 #include <Aurora/filesystem>
+#include <Aurora/utility>
 #include <src/registry/reg_intf.hpp>
 #include <src/registry/reg_files.hpp>
 #include <src/system/sys_config.hpp>
@@ -125,7 +126,7 @@ namespace DC::SYS
     Copy out the current registry data and insert the new name
     -------------------------------------------------------------------------*/
     DC::REG::readSafe( UnitInfo::DBKey, &data, sizeof( data ) );
-    strlcpy( data.name, name, sizeof( data.name ) );
+    safe_strcpy( data.name, sizeof( data.name ), name );
 
     /*-------------------------------------------------------------------------
     Write the data back to NVM
@@ -170,7 +171,7 @@ namespace DC::SYS
     Copy out the current registry data and insert the new serial number
     -------------------------------------------------------------------------*/
     DC::REG::readSafe( UnitInfo::DBKey, &data, sizeof( data ) );
-    strlcpy( data.serial, serial, sizeof( data.serial ) );
+    safe_strcpy( data.serial, sizeof( data.serial ), serial );
 
     /*-------------------------------------------------------------------------
     Write the data back to NVM

@@ -50,7 +50,7 @@ namespace DC::Files
       uint8_t  _pad[ 3 ];                    /**< Pad for alignment */
       char     name[ Name_t::MAX_SIZE ];     /**< Name of the device */
       char     serial[ Serial_t::MAX_SIZE ]; /**< Serial number of the device */
-    } __packed;
+    };
 
     static const std::string_view          Filename = "unit_info.bin";
     static constexpr DC::REG::DatabaseKeys DBKey    = DC::REG::DatabaseKeys::KEY_UNIT_INFO;
@@ -70,7 +70,7 @@ namespace DC::Files
       uint64_t          thisNodeMAC; /**< Unique MAC address of this LRU */
       Ripple::IPAddress destNodeIp;  /**< Node identifier for the destination LRU */
       uint64_t          destNodeMAC; /**< Unique MAC address for destination LRU */
-    } __packed;
+    };
 
     static const std::string_view          Filename = "nrf24_config.bin";
     static constexpr DC::REG::DatabaseKeys DBKey    = DC::REG::DatabaseKeys::KEY_RF24_CONFIG;

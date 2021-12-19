@@ -48,9 +48,9 @@ static etl::random_xorshift rng;
 namespace DC::Tasks::RADIO
 {
 #if defined( EMBEDDED )
-  std::array<uint8_t, 10 * 1024> netMemoryPool;
-#else  /* SIMULATOR */
-  std::array<uint8_t, 1024 * 1024> netMemoryPool;
+  std::array<uint8_t, 16 * 1024> netMemoryPool;
+#else /* SIMULATOR */
+  std::array<uint8_t, 100 * 1024> netMemoryPool;
 
 #endif /* EMBEDDED */
 
@@ -58,7 +58,7 @@ namespace DC::Tasks::RADIO
   static void CmnHandler( const Ripple::PacketId id, const void *const data, const size_t size )
   {
     static uint32_t pkt_num = 0;
-    LOG_INFO( "#%d -- Received pkt %d of size %d\r\n", pkt_num, id, size );
+    LOG_INFO_IF( false, "#%d -- Received pkt %d of size %d\r\n", pkt_num, id, size );
     pkt_num++;
   }
 
@@ -113,14 +113,20 @@ namespace DC::Tasks::RADIO
     /*-------------------------------------------------
     Inform the NRF ARP how to resolve addresses
     -------------------------------------------------*/
-#if defined( EMBEDDED )
-    DC::Files::RF24Config::DataType rfData;
-    DC::REG::readSafe( DC::REG::DatabaseKeys::KEY_RF24_CONFIG, &rfData, sizeof( rfData  ) );
-
+    bool transmit_node = false;
     Ripple::SocketConfig sock_cfg;
     sock_cfg.txFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
     sock_cfg.rxFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
+
+#if defined( EMBEDDED )
+    DC::Files::RF24Config::DataType rfData;
+    DC::REG::readSafe( DC::REG::DatabaseKeys::KEY_RF24_CONFIG, &rfData, sizeof( rfData ) );
+
+    DC::Files::UnitInfo::DataType unitInfo;
+    DC::REG::readSafe( DC::REG::DatabaseKeys::KEY_UNIT_INFO, &unitInfo, sizeof( unitInfo ) );
+
     sock_cfg.devicePort = rfData.thisNodeIp;
+    transmit_node = strcmp( unitInfo.name, "Onyx" ) == 0;
 
     netif->addARPEntry( rfData.thisNodeIp, &rfData.thisNodeMAC, sizeof( rfData.thisNodeMAC ) );
     netif->addARPEntry( rfData.destNodeIp, &rfData.destNodeMAC, sizeof( rfData.destNodeMAC ) );
@@ -140,9 +146,9 @@ namespace DC::Tasks::RADIO
     -------------------------------------------------*/
     sock_cfg.devicePort = LOCAL_HOST_PORT;
 
-    Socket_rPtr socket = context->socket( SocketType::PUSH, 2048 );
-    socket->open( sock_cfg );
-    socket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
+    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 2048 );
+    txSocket->open( sock_cfg );
+    txSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
     Socket_rPtr rxSocket = context->socket( SocketType::PULL, 2048 );
     rxSocket->open( sock_cfg );
@@ -165,15 +171,16 @@ namespace DC::Tasks::RADIO
     /*-------------------------------------------------
     Initialize some local data for the transfers
     -------------------------------------------------*/
-    size_t lastTx    = Chimera::millis();
-    size_t tx_count  = 0;
+    size_t lastTx   = Chimera::millis();
+    size_t lastPrint = Chimera::millis();
+    size_t tx_count = 0;
 
     while ( 1 )
     {
       /*-----------------------------------------------------------------------
       Transmit some data periodically
       -----------------------------------------------------------------------*/
-      if ( ( Chimera::millis() - lastTx ) > 100 )
+      if ( transmit_node && ( ( Chimera::millis() - lastTx ) > 25 ) )
       {
         lastTx = Chimera::millis();
 
@@ -181,18 +188,24 @@ namespace DC::Tasks::RADIO
         Initialize some protobuf data
         -----------------------------------------------------------------*/
         ControllerInputs inputs;
-        inputs.encoder_inputs = 1;
-        inputs.stick_inputs = 2;
-        inputs.switch_inputs = 3;
-        inputs.timestamp = 4;
+        inputs.encoder_inputs = static_cast<uint32_t>( rand() );
+        inputs.stick_inputs   = static_cast<uint32_t>( rand() );
+        inputs.switch_inputs  = static_cast<uint32_t>( rand() );
+        inputs.timestamp      = Chimera::millis();
 
         /*-----------------------------------------------------------------
         Pack the protobuf data into a packet
         -----------------------------------------------------------------*/
-        if( Ripple::transmit( PKT_CMD_CONTROLLER_INPUTS, *txSocket, &inputs, sizeof( ControllerInputs ) ) )
+        if ( Ripple::transmit( PKT_CMD_CONTROLLER_INPUTS, *txSocket, &inputs, sizeof( ControllerInputs ) ) )
         {
           tx_count++;
         }
+      }
+
+      if( ( Chimera::millis() - lastPrint ) > 1000 )
+      {
+        lastPrint = Chimera::millis();
+        context->printStats();
       }
 
       BKGD::kickDog( PrjTaskId::RADIO );
