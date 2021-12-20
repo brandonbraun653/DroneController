@@ -167,6 +167,7 @@
     "rtos",
     "sdio",
     "sdmmc",
+    "STBY",
     "usart",
     "vgdb",
     "wwdg",
