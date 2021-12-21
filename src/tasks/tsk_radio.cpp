@@ -188,7 +188,7 @@ namespace DC::Tasks::RADIO
       /*-----------------------------------------------------------------------
       Transmit some data periodically
       -----------------------------------------------------------------------*/
-      if ( transmit_node && ( ( Chimera::millis() - lastTx ) > 50 ) )
+      if ( transmit_node && ( ( Chimera::millis() - lastTx ) > 25 ) )
       {
         lastTx = Chimera::millis();
 
