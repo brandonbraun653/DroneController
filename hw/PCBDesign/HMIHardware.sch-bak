@@ -511,10 +511,6 @@ Wire Wire Line
 	5250 4500 5250 4350
 Text Notes 6300 5150 2    50   ~ 0
 These inputs currently unused
-Text GLabel 7150 2000 2    50   Output ~ 0
-nBatteryPowerGood
-Text GLabel 7150 2100 2    50   Output ~ 0
-nBatteryChargeGood
 $Comp
 L Device:R_US R45
 U 1 1 604B372E
@@ -686,4 +682,58 @@ Text Label 4950 4350 0    50   ~ 0
 d21
 Text Label 5550 4350 0    50   ~ 0
 d20
+$Comp
+L Device:R_US R52
+U 1 1 61E28C24
+P 6750 4650
+F 0 "R52" H 6818 4696 50  0000 L CNN
+F 1 "10k" H 6818 4605 50  0000 L CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 6790 4640 50  0001 C CNN
+F 3 "~" H 6750 4650 50  0001 C CNN
+F 4 "C25744" H 6750 4650 50  0001 C CNN "LCSC"
+	1    6750 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR071
+U 1 1 61E28C2A
+P 6750 4800
+F 0 "#PWR071" H 6750 4550 50  0001 C CNN
+F 1 "GND" H 6755 4627 50  0000 C CNN
+F 2 "" H 6750 4800 50  0001 C CNN
+F 3 "" H 6750 4800 50  0001 C CNN
+	1    6750 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6750 4500 6750 4350
+$Comp
+L Device:R_US R54
+U 1 1 61E28C32
+P 7050 4650
+F 0 "R54" H 7118 4696 50  0000 L CNN
+F 1 "10k" H 7118 4605 50  0000 L CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 7090 4640 50  0001 C CNN
+F 3 "~" H 7050 4650 50  0001 C CNN
+F 4 "C25744" H 7050 4650 50  0001 C CNN "LCSC"
+	1    7050 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR079
+U 1 1 61E28C38
+P 7050 4800
+F 0 "#PWR079" H 7050 4550 50  0001 C CNN
+F 1 "GND" H 7055 4627 50  0000 C CNN
+F 2 "" H 7050 4800 50  0001 C CNN
+F 3 "" H 7050 4800 50  0001 C CNN
+	1    7050 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7050 4500 7050 4350
+Text Label 7050 4350 0    50   ~ 0
+d0
+Text Label 6750 4350 0    50   ~ 0
+d1
 $EndSCHEMATC
