@@ -264,34 +264,6 @@ F 3 "" H 7800 3900 50  0001 C CNN
 	1    7800 3900
 	1    0    0    -1  
 $EndComp
-$Comp
-L Connector:TestPoint TP?
-U 1 1 605EF9F2
-P 5250 3050
-AR Path="/6045890B/605EF9F2" Ref="TP?"  Part="1" 
-AR Path="/604707FB/605EF9F2" Ref="TP?"  Part="1" 
-AR Path="/60472222/605EF9F2" Ref="TP25"  Part="1" 
-F 0 "TP25" H 5308 3168 50  0000 L CNN
-F 1 "TestPoint" H 5308 3077 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 5450 3050 50  0001 C CNN
-F 3 "~" H 5450 3050 50  0001 C CNN
-	1    5250 3050
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP?
-U 1 1 605EFDA7
-P 6850 3050
-AR Path="/6045890B/605EFDA7" Ref="TP?"  Part="1" 
-AR Path="/604707FB/605EFDA7" Ref="TP?"  Part="1" 
-AR Path="/60472222/605EFDA7" Ref="TP26"  Part="1" 
-F 0 "TP26" H 6908 3168 50  0000 L CNN
-F 1 "TestPoint" H 6908 3077 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 7050 3050 50  0001 C CNN
-F 3 "~" H 7050 3050 50  0001 C CNN
-	1    6850 3050
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	4100 3600 4200 3600
 Wire Wire Line
@@ -308,10 +280,6 @@ Wire Wire Line
 	5250 3200 5700 3200
 Wire Wire Line
 	4700 3100 4700 3200
-Wire Wire Line
-	5250 3050 5250 3200
-Wire Wire Line
-	6850 3050 6850 3200
 Wire Wire Line
 	7800 3200 7800 3300
 Wire Wire Line
