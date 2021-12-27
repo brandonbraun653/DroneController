@@ -760,30 +760,6 @@ NoConn ~ 7400 2800
 Wire Wire Line
 	6450 3500 7400 3500
 $Comp
-L Connector:TestPoint TP?
-U 1 1 605E052A
-P 6150 3150
-AR Path="/6045890B/605E052A" Ref="TP?"  Part="1" 
-AR Path="/604707FB/605E052A" Ref="TP22"  Part="1" 
-F 0 "TP22" H 6208 3268 50  0000 L CNN
-F 1 "TestPoint" H 6208 3177 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 6350 3150 50  0001 C CNN
-F 3 "~" H 6350 3150 50  0001 C CNN
-	1    6150 3150
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR012
-U 1 1 605E0530
-P 6150 3150
-F 0 "#PWR012" H 6150 2900 50  0001 C CNN
-F 1 "GND" H 6155 2977 50  0000 C CNN
-F 2 "" H 6150 3150 50  0001 C CNN
-F 3 "" H 6150 3150 50  0001 C CNN
-	1    6150 3150
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:LED D3
 U 1 1 6066A05B
 P 6400 4550
@@ -899,7 +875,7 @@ F 3 "" H 9450 3050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9450 2750 9450 2400
+	9450 2750 9450 2700
 Wire Wire Line
 	9450 2400 8800 2400
 Text Label 9150 2400 0    50   ~ 0
@@ -1165,4 +1141,11 @@ F 4 "C20526" H 10350 1700 50  0001 C CNN "LCSC"
 	1    10350 1700
 	-1   0    0    -1  
 $EndComp
+Text HLabel 10450 2700 2    50   UnSpc ~ 0
+USB_ID
+Wire Wire Line
+	10450 2700 9450 2700
+Connection ~ 9450 2700
+Wire Wire Line
+	9450 2700 9450 2400
 $EndSCHEMATC

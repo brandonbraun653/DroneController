@@ -650,21 +650,21 @@ Text HLabel 9500 4800 0    50   Input ~ 0
 VAnalogRef
 Text Label 9300 3400 0    50   ~ 0
 d3
-Text Label 9300 3500 0    50   ~ 0
-d15
-Text Label 9300 3200 0    50   ~ 0
-d14
-Text Label 9300 4250 0    50   ~ 0
-d13
-Text Label 9300 3300 0    50   ~ 0
-d12
 Text Label 9300 3600 0    50   ~ 0
-d8
+d15
 Text Label 9300 4150 0    50   ~ 0
-d9
+d14
 Text Label 9300 3700 0    50   ~ 0
-d10
+d13
 Text Label 9300 3800 0    50   ~ 0
+d12
+Text Label 9300 3500 0    50   ~ 0
+d8
+Text Label 9300 3200 0    50   ~ 0
+d9
+Text Label 9300 4250 0    50   ~ 0
+d10
+Text Label 9300 3300 0    50   ~ 0
 d11
 Text Label 9300 4050 0    50   ~ 0
 d23

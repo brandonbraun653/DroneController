@@ -875,7 +875,7 @@ F 3 "" H 9450 3050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9450 2750 9450 2400
+	9450 2750 9450 2700
 Wire Wire Line
 	9450 2400 8800 2400
 Text Label 9150 2400 0    50   ~ 0
@@ -1141,4 +1141,11 @@ F 4 "C20526" H 10350 1700 50  0001 C CNN "LCSC"
 	1    10350 1700
 	-1   0    0    -1  
 $EndComp
+Text HLabel 10450 2700 2    50   UnSpc ~ 0
+USB_ID
+Wire Wire Line
+	10450 2700 9450 2700
+Connection ~ 9450 2700
+Wire Wire Line
+	9450 2700 9450 2400
 $EndSCHEMATC

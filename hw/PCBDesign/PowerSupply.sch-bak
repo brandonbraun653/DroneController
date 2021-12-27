@@ -185,8 +185,6 @@ $EndComp
 Wire Wire Line
 	4700 3600 4700 3850
 Wire Wire Line
-	4700 3850 4200 3850
-Wire Wire Line
 	4100 3200 4700 3200
 Wire Wire Line
 	4700 3200 4700 3300
@@ -267,11 +265,6 @@ $EndComp
 Wire Wire Line
 	4100 3600 4200 3600
 Wire Wire Line
-	4200 3600 4200 3850
-Connection ~ 4200 3850
-Wire Wire Line
-	4200 3850 3800 3850
-Wire Wire Line
 	4700 3200 5250 3200
 Wire Wire Line
 	5250 3300 5250 3200
@@ -287,4 +280,8 @@ Wire Wire Line
 Wire Wire Line
 	8000 3200 7800 3200
 Connection ~ 7800 3200
+Wire Wire Line
+	3800 3850 4700 3850
+Text HLabel 4200 3600 2    50   UnSpc ~ 0
+USB_ID
 $EndSCHEMATC
