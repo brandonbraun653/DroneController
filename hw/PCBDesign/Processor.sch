@@ -81,13 +81,13 @@ Text HLabel 8800 1600 2    50   Input ~ 0
 ENCODER1_A
 Text HLabel 8800 1700 2    50   Input ~ 0
 ENCODER1_B
-Text HLabel 7400 3100 0    50   Input ~ 0
-ANALOG_IN_VPITCH
-Text HLabel 7400 3000 0    50   Input ~ 0
-ANALOG_IN_VROLL
-Text HLabel 7400 3300 0    50   Input ~ 0
-ANALOG_IN_VYAW
 Text HLabel 7400 3200 0    50   Input ~ 0
+ANALOG_IN_VPITCH
+Text HLabel 7400 3300 0    50   Input ~ 0
+ANALOG_IN_VROLL
+Text HLabel 7400 3100 0    50   Input ~ 0
+ANALOG_IN_VYAW
+Text HLabel 7400 3000 0    50   Input ~ 0
 ANALOG_IN_VTHROTTLE
 Wire Wire Line
 	10700 5350 11050 5350
