@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 11
+Sheet 2 10
 Title ""
 Date ""
 Rev ""
@@ -69,14 +69,6 @@ F5 "vThrottle" O L 9600 5350 50
 F6 "vYaw" O L 9600 5250 50 
 $EndSheet
 $Sheet
-S 9600 5700 900  450 
-U 60452CE3
-F0 "Audio Output" 50
-F1 "AudioOut.sch" 50
-F2 "V+" I L 9600 5850 50 
-F3 "PWM_In" I L 9600 6000 50 
-$EndSheet
-$Sheet
 S 9600 1650 900  1050
 U 60456C21
 F0 "Button Input" 50
@@ -86,8 +78,6 @@ F3 "KeyReset" O L 9600 2500 50
 F4 "KeyBoot" O L 9600 2000 50 
 F5 "KeyUser" O L 9600 1900 50 
 $EndSheet
-Text HLabel 9550 6000 0    50   Input ~ 0
-PWM_Buzzer
 Text HLabel 10650 850  2    50   Output ~ 0
 ENC0_A
 Text HLabel 10650 950  2    50   Output ~ 0
@@ -212,12 +202,6 @@ Wire Wire Line
 	9500 5350 9600 5350
 Wire Wire Line
 	9500 4800 9600 4800
-Text HLabel 9550 5850 0    50   Input ~ 0
-V+
-Wire Wire Line
-	9550 6000 9600 6000
-Wire Wire Line
-	9550 5850 9600 5850
 Text HLabel 9450 3050 0    50   Input ~ 0
 V+
 Wire Wire Line

@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A3 16535 11693
 encoding utf-8
-Sheet 11 11
+Sheet 10 10
 Title ""
 Date ""
 Rev ""
@@ -61,10 +61,6 @@ Text HLabel 8100 1100 1    50   Input ~ 0
 V+
 Text HLabel 7200 1400 0    50   Input ~ 0
 nRESET
-Text HLabel 8800 3700 2    50   Output ~ 0
-PWM_Buzzer
-Text HLabel 8800 3100 2    50   Output ~ 0
-KEY_MOSI
 Text HLabel 7400 4100 0    50   Input ~ 0
 KEY_MISO
 Text HLabel 7400 4000 0    50   Output ~ 0
@@ -271,8 +267,6 @@ F 4 "C5947" H 2950 2300 50  0001 C CNN "LCSC"
 $EndComp
 Text HLabel 2550 2100 0    50   Output ~ 0
 KEY_SCK
-Text HLabel 2550 1900 0    50   Output ~ 0
-KEY_MOSI
 Text Label 1950 2400 0    50   ~ 0
 KeyOut_nCS
 Wire Wire Line
@@ -1070,4 +1064,13 @@ Wire Wire Line
 	9450 2700 9450 2400
 NoConn ~ 7400 2500
 NoConn ~ 7400 2600
+NoConn ~ 8800 3700
+Wire Wire Line
+	2550 1900 2000 1900
+Text Label 2050 1900 0    50   ~ 0
+KEY_MOSI
+Wire Wire Line
+	8800 3100 9250 3100
+Text Label 8850 3100 0    50   ~ 0
+KEY_MOSI
 $EndSCHEMATC
