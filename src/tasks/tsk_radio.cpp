@@ -222,10 +222,10 @@ namespace DC::Tasks::RADIO
         /*-----------------------------------------------------------------
         Pack the protobuf data into a packet
         -----------------------------------------------------------------*/
-        Ripple::transmit( PKT_CMD_CONTROLLER_INPUTS, *txSocket, &inputs, sizeof( ControllerInputs ) );
-        Ripple::transmit( PKT_AHRS_ACCEL_DATA, *txSocket, &accel, sizeof( AccelSample ) );
-        Ripple::transmit( PKT_AHRS_GYRO_DATA, *txSocket, &gyro, sizeof( GyroSample ) );
-        Ripple::transmit( PKT_AHRS_MAG_DATA, *txSocket, &mag, sizeof( MagSample ) );
+        // Ripple::transmit( PKT_CMD_CONTROLLER_INPUTS, *txSocket, &inputs, sizeof( ControllerInputs ) );
+        // Ripple::transmit( PKT_AHRS_ACCEL_DATA, *txSocket, &accel, sizeof( AccelSample ) );
+        // Ripple::transmit( PKT_AHRS_GYRO_DATA, *txSocket, &gyro, sizeof( GyroSample ) );
+        // Ripple::transmit( PKT_AHRS_MAG_DATA, *txSocket, &mag, sizeof( MagSample ) );
 
         txCount++;
       }
@@ -233,7 +233,7 @@ namespace DC::Tasks::RADIO
       if ( ( Chimera::millis() - lastPrint ) > 1000 )
       {
         lastPrint = Chimera::millis();
-        context->printStats();
+        //context->printStats();
       }
 
       BKGD::kickDog( PrjTaskId::RADIO );
