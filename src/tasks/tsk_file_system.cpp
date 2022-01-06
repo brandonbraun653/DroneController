@@ -70,7 +70,7 @@ namespace DC::Tasks::FIL
     -------------------------------------------------------------------------*/
     //DC::SYS::configureDevice( DC::SYS::DEV_1 );
 
-    uint16_t address        = 0x32;
+    uint16_t address        = 0x00;
     char     test_data[ 5 ] = { '0', '1', '2', '3', '4' };
 
     auto i2c = Chimera::I2C::getDriver( Chimera::I2C::Channel::I2C2 );
@@ -79,7 +79,7 @@ namespace DC::Tasks::FIL
     cfg.validity = true;
 
     cfg.HWInit.channel = Chimera::I2C::Channel::I2C2;
-    cfg.HWInit.frequency = Chimera::I2C::Frequency::F400KHZ;
+    cfg.HWInit.frequency = Chimera::I2C::Frequency::F100KHZ;
 
     cfg.SCLInit.alternate = Chimera::GPIO::Alternate::I2C3_SCL;
     cfg.SCLInit.drive     = Chimera::GPIO::Drive::ALTERNATE_OPEN_DRAIN;
@@ -95,8 +95,17 @@ namespace DC::Tasks::FIL
     cfg.SDAInit.threaded  = true;
     cfg.SDAInit.validity  = true;
 
-    i2c->open( cfg );
-    i2c->write( address, test_data, sizeof( test_data ) );
+    // i2c->open( cfg );
+
+    // for ( address = 0; address < 255; address++ )
+    // {
+    //   i2c->write( address, test_data, sizeof( test_data ) );
+    //   auto result = i2c->await( Chimera::Event::Trigger::TRIGGER_WRITE_COMPLETE, Chimera::Thread::TIMEOUT_BLOCK );
+    //   if( result == Chimera::Status::OK )
+    //   {
+    //     Chimera::insert_debug_breakpoint();
+    //   }
+    // }
 
     size_t lastWoken;
     while ( true )

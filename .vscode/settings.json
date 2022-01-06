@@ -118,7 +118,8 @@
     "stop_token": "cpp",
     "typeindex": "cpp",
     "cstdbool": "cpp",
-    "dma": "cpp"
+    "dma": "cpp",
+    "event": "cpp"
   },
   "peacock.color": "#1857a4",
   "cSpell.words": [
