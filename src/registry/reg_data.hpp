@@ -12,7 +12,9 @@
 #ifndef DC_REGISTRY_DATA_HPP
 #define DC_REGISTRY_DATA_HPP
 
-/* Aurora Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include <Aurora/database>
 #include <Aurora/datastore>
 #include <Aurora/hmi>
@@ -91,41 +93,41 @@ namespace DC::REG
                       Name              Type                      AccessKey               NumObservers      Rate  Timeout
   -------------------------------------------------------------------------------*/
   /* clang-format off */
-  DECLARE_OBSERVABLE( PitchTrimUp,      bool,                           KEY_PITCH_TRIM_UP,      DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( PitchTrimDn,      bool,                           KEY_PITCH_TRIM_DN,      DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( RollTrimUp,       bool,                           KEY_ROLL_TRIM_UP,       DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( RollTrimDn,       bool,                           KEY_ROLL_TRIM_DN,       DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( YawTrimUp,        bool,                           KEY_YAW_TRIM_UP,        DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( YawTrimDn,        bool,                           KEY_YAW_TRIM_DN,        DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( ThrottleTrimUp,   bool,                           KEY_THROTTLE_TRIM_UP,   DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( ThrottleTrimDn,   bool,                           KEY_THROTTLE_TRIM_DN,   DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( SwitchAToggle,    Chimera::GPIO::State,           KEY_SWITCH_A_TOGGLE,    DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( SwitchBToggle,    Chimera::GPIO::State,           KEY_SWITCH_B_TOGGLE,    DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( SwitchCToggle,    Chimera::GPIO::State,           KEY_SWITCH_C_TOGGLE,    DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( SwitchDToggle,    Chimera::GPIO::State,           KEY_SWITCH_D_TOGGLE,    DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( Encoder0Btn,      bool,                           KEY_ENCODER_0_BTN,      DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( Encoder1Btn,      bool,                           KEY_ENCODER_1_BTN,      DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( Encoder0Rotation, Aurora::HMI::Encoder::State,    KEY_ENCODER_0_ROTATE,   DFLT_OBSERVERS,   50,   100 );
-  DECLARE_OBSERVABLE( Encoder1Rotation, Aurora::HMI::Encoder::State,    KEY_ENCODER_1_ROTATE,   DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( PitchTrimUp,      bool,                           KEY_PITCH_TRIM_UP,      DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( PitchTrimDn,      bool,                           KEY_PITCH_TRIM_DN,      DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( RollTrimUp,       bool,                           KEY_ROLL_TRIM_UP,       DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( RollTrimDn,       bool,                           KEY_ROLL_TRIM_DN,       DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( YawTrimUp,        bool,                           KEY_YAW_TRIM_UP,        DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( YawTrimDn,        bool,                           KEY_YAW_TRIM_DN,        DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( ThrottleTrimUp,   bool,                           KEY_THROTTLE_TRIM_UP,   DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( ThrottleTrimDn,   bool,                           KEY_THROTTLE_TRIM_DN,   DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( SwitchAToggle,    Chimera::GPIO::State,           KEY_SWITCH_A_TOGGLE,    DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( SwitchBToggle,    Chimera::GPIO::State,           KEY_SWITCH_B_TOGGLE,    DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( SwitchCToggle,    Chimera::GPIO::State,           KEY_SWITCH_C_TOGGLE,    DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( SwitchDToggle,    Chimera::GPIO::State,           KEY_SWITCH_D_TOGGLE,    DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( Encoder0Btn,      bool,                           KEY_ENCODER_0_BTN,      DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( Encoder1Btn,      bool,                           KEY_ENCODER_1_BTN,      DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( Encoder0Rotation, Aurora::HMI::Encoder::State,    KEY_ENCODER_0_ROTATE,   DFLT_OBSERVERS,   50,   100 );
+  ObservableDeclare( Encoder1Rotation, Aurora::HMI::Encoder::State,    KEY_ENCODER_1_ROTATE,   DFLT_OBSERVERS,   50,   100 );
 
 
   static Aurora::Datastore::IObservableAttr *const ObservableList[] = {
-    OBSERVABLE_PTR( PitchTrimUp ),
-    OBSERVABLE_PTR( PitchTrimDn ),
-    OBSERVABLE_PTR( RollTrimUp ),
-    OBSERVABLE_PTR( RollTrimDn ),
-    OBSERVABLE_PTR( YawTrimUp ),
-    OBSERVABLE_PTR( YawTrimDn ),
-    OBSERVABLE_PTR( ThrottleTrimUp ),
-    OBSERVABLE_PTR( ThrottleTrimDn ),
-    OBSERVABLE_PTR( SwitchAToggle ),
-    OBSERVABLE_PTR( SwitchBToggle ),
-    OBSERVABLE_PTR( SwitchCToggle ),
-    OBSERVABLE_PTR( SwitchDToggle ),
-    OBSERVABLE_PTR( Encoder0Btn ),
-    OBSERVABLE_PTR( Encoder1Btn ),
-    OBSERVABLE_PTR( Encoder0Rotation ),
-    OBSERVABLE_PTR( Encoder1Rotation ),
+    ObservablePointer( PitchTrimUp ),
+    ObservablePointer( PitchTrimDn ),
+    ObservablePointer( RollTrimUp ),
+    ObservablePointer( RollTrimDn ),
+    ObservablePointer( YawTrimUp ),
+    ObservablePointer( YawTrimDn ),
+    ObservablePointer( ThrottleTrimUp ),
+    ObservablePointer( ThrottleTrimDn ),
+    ObservablePointer( SwitchAToggle ),
+    ObservablePointer( SwitchBToggle ),
+    ObservablePointer( SwitchCToggle ),
+    ObservablePointer( SwitchDToggle ),
+    ObservablePointer( Encoder0Btn ),
+    ObservablePointer( Encoder1Btn ),
+    ObservablePointer( Encoder0Rotation ),
+    ObservablePointer( Encoder1Rotation ),
   };
   static_assert( ARRAY_COUNT( ObservableList ) == ( KEY_OBSERVABLE_END - KEY_OBSERVABLE_START ) );
   /* clang-format on */

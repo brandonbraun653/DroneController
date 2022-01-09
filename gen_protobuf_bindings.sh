@@ -5,9 +5,11 @@
 #   bindings for C/Python. Expects to be using quadcopter Conda environment
 #   from lib/Conda.
 #
-# Install Protobuf: sudo apt-get install protobuf-compiler
+# Install Protobuf locally: sudo apt-get install protobuf-compiler
+# Ensure installed in Conda: protobuf grpcio-tools
 #
-# Note: Assumes execution within the quadcopter conda environment
+# Note: Assumes execution within the quadcopter conda environment and run from
+#       the root directory of the project.
 #------------------------------------------------------------------------------
 
 # Root directory of the project

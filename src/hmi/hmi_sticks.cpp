@@ -5,7 +5,7 @@
  *  Description:
  *    Reads the joysticks and populates the information into the global registry
  *
- *  2021 | Brandon Braun | brandonbraun653@gmail.com
+ *  2021-2022 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
 /* Aurora Includes */
@@ -37,7 +37,7 @@ namespace DC::HMI::JoyStick
   /*-------------------------------------------------------------------------------
   Public Functions
   -------------------------------------------------------------------------------*/
-  void initialize()
+  void initHWDriver()
   {
     using namespace Aurora::Logging;
     using namespace Chimera;
@@ -163,8 +163,7 @@ namespace DC::HMI::JoyStick
     /*-------------------------------------------------
     Populate the registry with the new data
     -------------------------------------------------*/
-    float voltage = adc->toVoltage( detail.data );
-
+    const float voltage = adc->toVoltage( detail.data );
 
     switch( detail.channel )
     {

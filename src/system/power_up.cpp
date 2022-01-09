@@ -60,7 +60,7 @@ namespace DC::SYS
     /*-------------------------------------------------
     Power up the HMI drivers
     -------------------------------------------------*/
-    DC::HMI::JoyStick::initialize();
+    DC::HMI::JoyStick::initHWDriver();
 
     /*-------------------------------------------------
     Power up the encoder

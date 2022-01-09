@@ -48,10 +48,19 @@ static etl::random_xorshift rng;
 
 namespace DC::Tasks::RADIO
 {
+  /*---------------------------------------------------------------------------
+  Public Data
+  ---------------------------------------------------------------------------*/
+  Ripple::Socket_rPtr txSocket;  /**< Transmit socket for NRF24 radio */
+  Ripple::Socket_rPtr rxSocket;  /**< Receive socket for NRF24 radio */
+
+  /*---------------------------------------------------------------------------
+  Static Data
+  ---------------------------------------------------------------------------*/
 #if defined( EMBEDDED )
-  std::array<uint8_t, 16 * 1024> netMemoryPool;
+  static std::array<uint8_t, 16 * 1024> netMemoryPool;
 #else  /* SIMULATOR */
-  std::array<uint8_t, 100 * 1024> netMemoryPool;
+  static std::array<uint8_t, 100 * 1024> netMemoryPool;
 #endif /* EMBEDDED */
 
 
@@ -62,23 +71,25 @@ namespace DC::Tasks::RADIO
     pkt_num++;
   }
 
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Public Functions
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
   void RadioThread( void *arg )
   {
     using namespace Aurora::Logging;
     using namespace Chimera::Thread;
     using namespace Ripple;
 
-    /*-------------------------------------------------
-    Wait to be told to initialize by monitor thread
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Initialize the task data
+    -------------------------------------------------------------------------*/
+    txSocket = nullptr;
+    rxSocket = nullptr;
     waitInit();
 
-    /*-------------------------------------------------
-    Power up the Radio. Wait for the HMI task to grab
-    -------------------------------------------------*/
+    /*-------------------------------------------------------------------------
+    Power up the Radio. Wait for the HMI task to actually enact the request.
+    -------------------------------------------------------------------------*/
     DC::RF::RF24::setPower( DC::RF::RF24::PowerState::ENABLED );
     Chimera::delayMilliseconds( 500 );
 
@@ -115,12 +126,12 @@ namespace DC::Tasks::RADIO
     -------------------------------------------------*/
     bool                 transmit_node = false;
     Ripple::SocketConfig sock_cfg;
-    sock_cfg.txFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
+    sock_cfg.txFilter[ 0 ] = PKT_CMD_STICK_INPUTS;
     sock_cfg.txFilter[ 1 ] = PKT_AHRS_ACCEL_DATA;
     sock_cfg.txFilter[ 2 ] = PKT_AHRS_GYRO_DATA;
     sock_cfg.txFilter[ 3 ] = PKT_AHRS_MAG_DATA;
 
-    sock_cfg.rxFilter[ 0 ] = PKT_CMD_CONTROLLER_INPUTS;
+    sock_cfg.rxFilter[ 0 ] = PKT_CMD_STICK_INPUTS;
     sock_cfg.rxFilter[ 1 ] = PKT_AHRS_ACCEL_DATA;
     sock_cfg.rxFilter[ 2 ] = PKT_AHRS_GYRO_DATA;
     sock_cfg.rxFilter[ 3 ] = PKT_AHRS_MAG_DATA;
@@ -139,11 +150,13 @@ namespace DC::Tasks::RADIO
     netif->addARPEntry( rfData.destNodeIp, &rfData.destNodeMAC, sizeof( rfData.destNodeMAC ) );
     netif->setRootMAC( rfData.thisNodeMAC );
 
-    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 2048 );
+    txSocket = context->socket( SocketType::PUSH, 2048 );
+    RT_HARD_ASSERT( txSocket );
     txSocket->open( sock_cfg );
     txSocket->connect( rfData.destNodeIp, rfData.destNodeIp );
 
-    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 2048 );
+    rxSocket = context->socket( SocketType::PULL, 2048 );
+    RT_HARD_ASSERT( rxSocket );
     rxSocket->open( sock_cfg );
     rxSocket->connect( rfData.destNodeIp, rfData.destNodeIp );
 
@@ -154,11 +167,11 @@ namespace DC::Tasks::RADIO
     transmit_node       = true;
     sock_cfg.devicePort = LOCAL_HOST_PORT;
 
-    Socket_rPtr txSocket = context->socket( SocketType::PUSH, 2048 );
+    txSocket = context->socket( SocketType::PUSH, 2048 );
     txSocket->open( sock_cfg );
     txSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
-    Socket_rPtr rxSocket = context->socket( SocketType::PULL, 2048 );
+    rxSocket = context->socket( SocketType::PULL, 2048 );
     rxSocket->open( sock_cfg );
     rxSocket->connect( LOCAL_HOST_IP, LOCAL_HOST_PORT );
 
@@ -195,12 +208,6 @@ namespace DC::Tasks::RADIO
         /*-----------------------------------------------------------------
         Initialize some protobuf data
         -----------------------------------------------------------------*/
-        ControllerInputs inputs;
-        inputs.encoder_inputs = static_cast<uint32_t>( rand() );
-        inputs.stick_inputs   = static_cast<uint32_t>( rand() );
-        inputs.switch_inputs  = static_cast<uint32_t>( rand() );
-        inputs.timestamp      = Chimera::millis();
-
         AccelSample accel;
         accel.x         = static_cast<float>( rand() );
         accel.y         = static_cast<float>( rand() );
@@ -222,7 +229,6 @@ namespace DC::Tasks::RADIO
         /*-----------------------------------------------------------------
         Pack the protobuf data into a packet
         -----------------------------------------------------------------*/
-        // Ripple::transmit( PKT_CMD_CONTROLLER_INPUTS, *txSocket, &inputs, sizeof( ControllerInputs ) );
         // Ripple::transmit( PKT_AHRS_ACCEL_DATA, *txSocket, &accel, sizeof( AccelSample ) );
         // Ripple::transmit( PKT_AHRS_GYRO_DATA, *txSocket, &gyro, sizeof( GyroSample ) );
         // Ripple::transmit( PKT_AHRS_MAG_DATA, *txSocket, &mag, sizeof( MagSample ) );

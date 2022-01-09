@@ -2,9 +2,11 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 
 gen_static_lib_variants(
   TARGET
-    lib_network
+    lib_controller
   SOURCES
-    net_data_package.cpp
+    ctrl_intf.cpp
+    ctrl_joystick.cpp
+    ctrl_observers.cpp
   PRV_LIBRARIES
     chimera_intf_inc
     aurora_intf_inc

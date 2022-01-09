@@ -1,27 +1,33 @@
-/********************************************************************************
+/******************************************************************************
  *  File Name:
- *    sys_debug.cpp
+ *    ctrl_intf.cpp
  *
  *  Description:
- *    Debug functionality implementation
+ *    Controller public facing hardware component interface implementation
  *
- *  2021 | Brandon Braun | brandonbraun653@gmail.com
- *******************************************************************************/
+ *  2022 | Brandon Braun | brandonbraun653@gmail.com
+ *****************************************************************************/
 
-/* Aurora Includes */
-#include <Aurora/logging>
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
+#include <Aurora/utility>
+#include <src/controller/ctrl_intf.hpp>
+#include <src/controller/ctrl_observers.hpp>
+#include <src/registry/reg_data.hpp>
 
-/* Project Includes */
-#include <src/registry/reg_intf.hpp>
-#include <src/debug/sys_debug.hpp>
-#include <src/debug/io_debug_observables.hpp>
-
-
-namespace DC::DBG
+namespace DC::CTRL
 {
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Static Data
-  -------------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
+  static JoyStick s_sticks[ EnumValue( DC::HMI::JoyStick::Axis::NUM_OPTIONS ) ]{
+    { DC::HMI::JoyStick::Axis::PITCH },
+    { DC::HMI::JoyStick::Axis::ROLL },
+    { DC::HMI::JoyStick::Axis::YAW },
+    { DC::HMI::JoyStick::Axis::THROTTLE },
+  };
+
   static PitchTrimUpObserver s_pitch_trim_up_observer;
   static PitchTrimDnObserver s_pitch_trim_dn_observer;
   static RollTrimUpObserver s_roll_trim_up_observer;
@@ -36,16 +42,18 @@ namespace DC::DBG
   static SwitchDObserver s_switch_d_observer;
   static Encoder0CenterButtonObserver s_enc_0_observer;
   static Encoder1CenterButtonObserver s_enc_1_observer;
-  static Encoder0RotateObserver s_enc_0_rotate_observer;
-  static Encoder1RotateObserver s_enc_1_rotate_observer;
 
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
   Public Functions
-  -------------------------------------------------------------------------------*/
-  void registerDebugObservers()
+  ---------------------------------------------------------------------------*/
+  void initController()
   {
     using namespace DC::REG;
 
+    /*-------------------------------------------------------------------------
+    Register all observers with their observable. These will generate NET IO
+    events to inform the quadrotor that something has occurred from the pilot.
+    -------------------------------------------------------------------------*/
     ObservablePointer( PitchTrimUp )->add_observer( s_pitch_trim_up_observer );
     ObservablePointer( PitchTrimDn )->add_observer( s_pitch_trim_dn_observer );
     ObservablePointer( RollTrimUp )->add_observer( s_roll_trim_up_observer );
@@ -61,13 +69,19 @@ namespace DC::DBG
     ObservablePointer( SwitchDToggle )->add_observer( s_switch_d_observer );
     ObservablePointer( Encoder0Btn )->add_observer( s_enc_0_observer );
     ObservablePointer( Encoder1Btn )->add_observer( s_enc_1_observer );
-    ObservablePointer( Encoder0Rotation )->add_observer( s_enc_0_rotate_observer );
-    ObservablePointer( Encoder1Rotation )->add_observer( s_enc_1_rotate_observer );
   }
 
 
-  void doPeriodicDebugProcessing()
+  JoyStick *getJoyStick( const DC::HMI::JoyStick::Axis type )
   {
+    if( type < DC::HMI::JoyStick::Axis::NUM_OPTIONS )
+    {
+      return &s_sticks[ EnumValue( type ) ];
+    }
+    else
+    {
+      return nullptr;
+    }
   }
 
-}    // namespace DC::DBG
+}  // namespace DC::CTRL

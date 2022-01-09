@@ -5,6 +5,7 @@ include("${COMMON_TOOL_ROOT}/cmake/utility/embedded.cmake")
 # -----------------------------------------------------------------------------
 add_subdirectory(config/bsp)
 add_subdirectory(config/ripple)
+add_subdirectory(controller)
 add_subdirectory(debug)
 add_subdirectory(hmi)
 add_subdirectory(io)
@@ -60,6 +61,7 @@ target_link_libraries(DroneController PRIVATE
   lib_rn4871
   lib_config_bsp
   lib_config_ripple
+  lib_controller
   lib_debug
   lib_human_interface
   lib_io

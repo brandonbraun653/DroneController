@@ -12,44 +12,34 @@
 #ifndef DC_HMI_JOYSTICK_HPP
 #define DC_HMI_JOYSTICK_HPP
 
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
+#include <cstdint>
 
 namespace DC::HMI::JoyStick
 {
-  /*-------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------
+  Enumerations
+  ---------------------------------------------------------------------------*/
+  enum class Axis : uint8_t
+  {
+    PITCH,
+    ROLL,
+    YAW,
+    THROTTLE,
+
+    NUM_OPTIONS,
+    UNKNOWN
+  };
+
+  /*-----------------------------------------------------------------------------
   Public Functions
-  -------------------------------------------------------------------------------*/
+  -----------------------------------------------------------------------------*/
   /**
    * @brief Initialize the Joystick driver
    */
-  void initialize();
-
-  /**
-   * @brief Reads the pitch analog input
-   *
-   * @return float
-   */
-  float readPitch();
-
-  /**
-   * @brief Reads the roll analog input
-   *
-   * @return float
-   */
-  float readRoll();
-
-  /**
-   * @brief Reads the yaw analog input
-   *
-   * @return float
-   */
-  float readYaw();
-
-  /**
-   * @brief Reads the throttle analog input
-   *
-   * @return float
-   */
-  float readThrottle();
+  void initHWDriver();
 
 }    // namespace DC::HMI::JoyStick
 

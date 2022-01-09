@@ -5,20 +5,16 @@
  *  Description:
  *    Packet definitions for use with Rippl
  *
- *  2021 | Brandon Braun | brandonbraun653@gmail.com
+ *  2021-2022 | Brandon Braun | brandonbraun653@gmail.com
  *******************************************************************************/
 
-/* ETL Includes */
-#include <etl/map.h>
-
-/* Ripple Includes */
-#include <Ripple/packets>
-
-/* NanoPB Includes */
+/*-----------------------------------------------------------------------------
+Includes
+-----------------------------------------------------------------------------*/
 #include "ahrs.pb.h"
 #include "controller.pb.h"
-
-/* Project Includes */
+#include <Ripple/packets>
+#include <etl/map.h>
 #include <src/config/ripple/ripple_packet_contract_prj.hpp>
 
 namespace Ripple
@@ -32,10 +28,11 @@ namespace Ripple
   etl::map<PacketId, PacketDef, RIPPLE_MAX_NUM_PKTS> PacketDefinitions{
     /* clang-format off */
 
-    { PKT_AHRS_ACCEL_DATA,        PacketDef{ PKT_AHRS_ACCEL_DATA,         AccelSample_size,       AccelSample_fields      } },
-    { PKT_AHRS_GYRO_DATA,         PacketDef{ PKT_AHRS_GYRO_DATA,          GyroSample_size,        GyroSample_fields       } },
-    { PKT_AHRS_MAG_DATA,          PacketDef{ PKT_AHRS_MAG_DATA,           MagSample_size,         MagSample_fields        } },
-    { PKT_CMD_CONTROLLER_INPUTS,  PacketDef{ PKT_CMD_CONTROLLER_INPUTS,   ControllerInputs_size,  ControllerInputs_fields } },
+    { PKT_AHRS_ACCEL_DATA,        PacketDef{ PKT_AHRS_ACCEL_DATA,         AccelSample_size,       AccelSample_fields   } },
+    { PKT_AHRS_GYRO_DATA,         PacketDef{ PKT_AHRS_GYRO_DATA,          GyroSample_size,        GyroSample_fields    } },
+    { PKT_AHRS_MAG_DATA,          PacketDef{ PKT_AHRS_MAG_DATA,           MagSample_size,         MagSample_fields     } },
+    { PKT_CMD_STICK_INPUTS,       PacketDef{ PKT_CMD_STICK_INPUTS,        StickInputs_size,       StickInputs_fields   } },
+    { PKT_EVENT_DISCRETE_INPUT,   PacketDef{ PKT_EVENT_DISCRETE_INPUT,    DiscreteEvent_size,     DiscreteEvent_fields } },
 
   }; /* clang-format on */
 

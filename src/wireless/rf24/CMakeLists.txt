@@ -5,7 +5,6 @@ gen_static_lib_variants(
     lib_rf24
   SOURCES
     rf_driver.cpp
-    rf_packet_types.cpp
   PRV_LIBRARIES
     aurora_intf_inc
     chimera_intf_inc
