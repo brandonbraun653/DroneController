@@ -101,7 +101,7 @@ namespace DC::NET
 
   void procStateData()
   {
-
+    // Add generic system info here. Systick, etc.
   }
 
 }  // namespace DC::NET

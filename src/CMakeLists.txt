@@ -33,6 +33,34 @@ gen_intf_lib_variants(
     ${PROJECT_BINARY_DIR}/DroneController
 )
 
+gen_intf_lib_variants(
+  TARGET
+    ripple_libs
+  LIBRARIES
+    ripple_shared
+    ripple_user_intf
+    ripple_network_stack
+    ripple_packets
+  EXPORT_DIR
+    ${PROJECT_BINARY_DIR}/DroneController
+)
+
+gen_intf_lib_variants(
+  TARGET
+    aurora_libs
+  LIBRARIES
+    aurora_core
+    aurora_database
+    aurora_datastore
+    aurora_filesystem_core
+    aurora_hmi
+    aurora_logging
+    aurora_memory
+  EXPORT_DIR
+    ${PROJECT_BINARY_DIR}/DroneController
+)
+
+
 # -----------------------------------------------------------------------------
 # Hardware Config:
 # cmake -DTOOLCHAIN=arm-none-eabi -DFREERTOS_THREADS=ON -DDEVICE_TARGET=stm32f446re -DCMAKE_BUILD_TYPE=Debug ./../
@@ -73,27 +101,11 @@ target_link_libraries(DroneController PRIVATE
   lib_usb
   lib_utility
 
-  # Networking Libraries
-  ripple_shared_dbg
-  ripple_user_intf_dbg
-  ripple_network_stack_dbg
-  ripple_packets_dbg
-  # ripple_util
-
-  # Packet Defintions
-  vdrone_nanopb_proto_rel
-
-  # Utility Libraries
-  aurora_core_rel
-  aurora_database_rel
-  aurora_datastore_rel
-  aurora_filesystem_core_dbg
-  aurora_hmi_rel
-  aurora_logging_rel
-  aurora_memory_rel
-
-  # Hardware Libraries
+  # Submodule Libraries
   chimera_core_rel
+  aurora_libs_rel
+  ripple_libs_rel
+  vdrone_nanopb_proto_rel
 
   # Target Properties
   prj_device_target
@@ -102,7 +114,7 @@ target_link_libraries(DroneController PRIVATE
 
 # Hardware Driver Model
 if(${DEVICE_TARGET} MATCHES "^stm32f4")
-  target_link_libraries(DroneController PRIVATE embedded_core_libs_dbg)
+  target_link_libraries(DroneController PRIVATE embedded_core_libs_rel)
 elseif(${DEVICE_TARGET} MATCHES "^sim")
   target_link_libraries(DroneController PRIVATE chimera_sim_core)
 else()
@@ -132,7 +144,7 @@ endif()
 if(Toolchain::HAS_GCC_ARM_NONE_EABI)
   target_link_libraries(DroneController PRIVATE
     # Aurora
-    aurora_filesystem_spiffs_dbg
+    aurora_filesystem_spiffs_rel
 
     # Threading Library
     freertos_intf_inc_all
@@ -143,8 +155,8 @@ if(Toolchain::HAS_GCC_ARM_NONE_EABI)
     freertos_cm4f_port_rel
 
     # Ripple NetIf
-    ripple_netif_nrf24_datalink_dbg
-    ripple_netif_nrf24_physical_dbg
+    ripple_netif_nrf24_datalink_rel
+    ripple_netif_nrf24_physical_rel
 
     # Segger System View
     segger_sys_view_rel

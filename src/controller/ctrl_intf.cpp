@@ -66,7 +66,6 @@ namespace DC::CTRL
     ObservablePointer( SwitchBToggle )->add_observer( s_switch_b_observer );
     ObservablePointer( SwitchCToggle )->add_observer( s_switch_c_observer );
     ObservablePointer( SwitchDToggle )->add_observer( s_switch_d_observer );
-    ObservablePointer( SwitchDToggle )->add_observer( s_switch_d_observer );
     ObservablePointer( Encoder0Btn )->add_observer( s_enc_0_observer );
     ObservablePointer( Encoder1Btn )->add_observer( s_enc_1_observer );
   }
